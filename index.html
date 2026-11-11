@@ -135,6 +135,13 @@ main>section{position:relative;padding-block:112px}
   background:var(--ink);color:#fff;font-size:26px;font-weight:500;white-space:nowrap;box-shadow:0 16px 30px -14px rgba(14,18,22,.6);transition:opacity .4s var(--ease)}
 .drag-hint::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 5px rgba(34,154,214,.25)}
 .vstage.is-steered .drag-hint{opacity:0}
+.hand{position:absolute;left:0;top:0;z-index:9;width:118px;height:118px;pointer-events:none;opacity:0;transform:translate(-36px,-6px) scale(.9);transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.hand svg{width:100%;height:100%;filter:drop-shadow(0 14px 18px rgba(14,18,22,.35))}
+.hand i{position:absolute;left:30px;top:2px;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(34,154,214,.35);box-shadow:0 0 0 0 rgba(34,154,214,.45);opacity:0}
+.hand.on{opacity:1;transform:translate(-36px,-6px)}
+.hand.press{transform:translate(-36px,-6px) scale(.92)}
+.hand.press i{opacity:1;animation:ripple 1.1s ease-out infinite}
+@keyframes ripple{0%{box-shadow:0 0 0 0 rgba(34,154,214,.45)}100%{box-shadow:0 0 0 26px rgba(34,154,214,0)}}
 @media (hover:none),(pointer:coarse){.grab{display:block}.drag-hint{display:inline-flex}.vstage{cursor:auto}}
 .handle{position:absolute;width:26px;height:120px;border-radius:13px;background:linear-gradient(90deg,#1d242c,#0e1216 60%,#2a323b);z-index:4;pointer-events:none;opacity:0;transform-origin:50% 0;box-shadow:0 18px 30px -12px rgba(14,18,22,.6)}
 .handle.on{opacity:1;transition:opacity .35s var(--ease)}
@@ -434,7 +441,17 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
   .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .head{gap:16px}
 }
-@media (max-width:1100px){.lane{display:none}}
+@media (min-width:641px) and (max-width:1100px){.lane{display:none}}
+@media (max-width:640px){
+  .track{position:relative;padding-inline-start:66px}
+  .lane{position:absolute;top:0;bottom:0;right:0;width:58px;height:auto;margin:0}
+  .lane .lb,.lane .lf{top:0;left:50%;width:4px;height:0;margin:0 0 0 -2px}
+  .lane .lb{background-image:linear-gradient(180deg,rgba(29,86,137,.22) 50%,transparent 0);background-size:4px 12px}
+  .lane .lf{background:linear-gradient(180deg,var(--sky),var(--blue));transition:height .9s cubic-bezier(.34,1.3,.64,1)}
+  .ld{left:50%}
+  .tok{top:0;left:50%;margin:0 0 0 -27px;width:54px;height:54px}
+  .tic svg{width:24px;height:24px}
+}
 @media (max-width:640px){
   .fprog span{min-width:0}
   body{font-size:17px}
@@ -442,14 +459,19 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
   .hero .sub{font-size:18px}
   .mode{display:flex}.mode button{flex:1;justify-content:center;padding:0 10px;font-size:14.5px}.mode button svg{display:none}
   .acts .btn{width:100%;justify-content:space-between}
-  .facts{flex-direction:column;gap:14px}
-  .facts div+div{padding-inline-start:0;border-inline-start:0}
+  .facts{margin-top:36px;padding-top:18px}
+  .facts div{padding-inline-end:10px}.facts div+div{padding-inline-start:10px}
+  .facts dt{font-size:12.5px;line-height:1.35}.facts dd{font-size:15px;line-height:1.3}
   .card{padding:30px 22px 26px}
   .audit{grid-template-columns:1fr}
   .card h3{font-size:25px}
   .flow{flex-wrap:wrap;row-gap:10px}.flow i{min-width:14px;flex:0 0 14px}
   .vows li{padding:16px;gap:14px}.vows b{font-size:17.5px}
-  .pframe{display:none}
+  .pwrap{order:-1;width:calc(100% - 24px);margin:0 auto 0 12px}
+  .pframe{transform:translate(-10px,10px) rotate(-2deg)}.about.in .pframe{transform:translate(-12px,12px) rotate(-3deg)}
+  .sigcard{left:-8px;bottom:24px}
+  .asig{top:auto;height:340px}
+  main>section.about{padding-bottom:140px}
   .sigcard{left:12px}
   .steps{grid-template-columns:1fr}
   .statement{padding:26px 22px}
@@ -544,6 +566,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
           <div class="lens" id="lens" aria-hidden="true"><div class="inner" id="inner"></div></div>
           <div class="grab" id="grab" aria-hidden="true"></div>
           <div class="drag-hint" aria-hidden="true">אפשר לגרור את הזכוכית</div>
+          <div class="hand" id="hand" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M24 30V11a5 5 0 0 1 10 0v15l2-.6a5 5 0 0 1 6 3.2l.4.3a5 5 0 0 1 6.4 2.4l.2.4a5 5 0 0 1 6.6 3.6l1.4 6.3c1.5 7-1 14-6.6 18.4L48 61H30L17.6 46.8a5.4 5.4 0 0 1 7.2-8L24 38z" fill="#fff" stroke="#0e1216" stroke-width="2.6" stroke-linejoin="round"/></svg><i></i></div>
           <div class="find" id="find" aria-hidden="true"></div>
         </div>
 
@@ -657,6 +680,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
         <div><span class="eyebrow">תהליך העבודה</span><h2 class="h2" id="proc-h">מהשיחה הראשונה <span>ועד דוכן העדים</span></h2></div>
         <p class="lead">ארבעה שלבים, וחוות דעת אחת שנכתבת מההתחלה כדי לעמוד בחקירה.</p>
       </div>
+      <div class="track">
       <div class="lane" id="lane" aria-hidden="true"><i class="lb" id="lb"></i><i class="lf" id="lf"></i><span class="ld"></span><span class="ld"></span><span class="ld"></span><span class="ld"></span><div class="tok" id="tok"><span class="tic" id="tic"></span><span class="burst"><i style="--a:0deg"></i><i style="--a:40deg"></i><i style="--a:80deg"></i><i style="--a:120deg"></i><i style="--a:160deg"></i><i style="--a:200deg"></i><i style="--a:240deg"></i><i style="--a:280deg"></i><i style="--a:320deg"></i></span></div></div>
       <ol class="steps">
         <li class="step"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9.5h8M8 12.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="n">שלב 1</span><h3>שיחת היכרות</h3><p>מבינים את התיק, את הטענה שבמחלוקת ואת הראיות שכבר הוגשו.</p></li>
@@ -664,6 +688,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
         <li class="step"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h9l4 4v14H6V3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M9 13h7M9 17h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="n">שלב 3</span><h3>בדיקה וחוות דעת</h3><p>מבצעים את הבדיקה או את המחקר, וכותבים חוות דעת מומחה חתומה.</p></li>
         <li class="step"><span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 0 0 6 0L5 7zm14 0-3 7a3 3 0 0 0 6 0l-3-7zM8 21h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="n">שלב 4</span><h3>ליווי עד החקירה</h3><p>הכנה לחקירה נגדית, והופעה בבית המשפט לפי הצורך.</p></li>
       </ol>
+      </div>
       <div class="statement">
         <p>סקר הוא ראיה רק אם <b>השיטה שלו מחזיקה<svg class="loop" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M186 14C150 0 36 2 12 22-8 40 50 58 110 56 170 54 204 36 192 18 182 6 140 4 108 6"/></svg></b>. זה מה שבודקים קודם.</p>
         <a class="btn" href="#contact">תיאום שיחה מקצועית<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
@@ -750,7 +775,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 
   /* about: the signature stroke draws and the commitments rise, once */
   const about = document.getElementById('about');
-  new IntersectionObserver((en, ob) => { if (en[0].isIntersecting) { about.classList.add('in'); ob.disconnect(); } }, { threshold: .3 }).observe(about);
+  new IntersectionObserver((en, ob) => { if (en[0].isIntersecting) { about.classList.add('in'); ob.disconnect(); } }, { threshold: 0, rootMargin: '0px 0px -25% 0px' }).observe(about);
 
   /* ---------- the loupe ---------- */
   const vcol = document.getElementById('vcol'), vs = document.getElementById('vstage');
@@ -780,6 +805,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
     lens.style.left = lx + 'px'; lens.style.top = ly + 'px';
     inner.style.transform = `translate(${R - cx * S}px, ${R - cy * S}px) scale(${S})`;
     grab.style.left = lx + 'px'; grab.style.top = ly + 'px';
+    hand.style.left = (PX + cx) + 'px'; hand.style.top = (PY + cy) + 'px';
     handle.style.left = (lx + 22) + 'px'; handle.style.top = (ly + R * 2 - 34) + 'px'; handle.style.transform = 'rotate(40deg)';
     placeFind();
   };
@@ -795,22 +821,35 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
     const step = now => { const t = Math.min(1, (now - t0) / dur), e = ease(t); cx = x0 + (x - x0) * e; cy = y0 + (y - y0) * e; place(); t < 1 ? anim = requestAnimationFrame(step) : done && done(); };
     anim = requestAnimationFrame(step);
   };
+  const coarse = matchMedia('(hover:none),(pointer:coarse)').matches;
+  let demos = 0, steered = false, demoing = false, round = 0, demoRound = -1;
+  const demo = () => {
+    demoing = true; demos++; demoRound = round;
+    const x0 = cx, y0 = cy, wait = (ms, f) => { timer = setTimeout(() => { if (!demoing) return; f(); }, ms); };
+    hand.classList.add('on');
+    wait(450, () => { hand.classList.add('press');
+      go(Math.min(440, x0 + 120), y0 + 70, 850, () => wait(120, () =>
+        go(Math.max(60, x0 - 110), y0 + 150, 950, () => wait(120, () =>
+          go(x0, y0, 850, () => { hand.classList.remove('press'); wait(300, () => { hand.classList.remove('on'); demoing = false; timer = setTimeout(tour, 500); }); }))))); });
+  };
+  const stopDemo = () => { if (!demoing) return; demoing = false; hand.classList.remove('on', 'press'); };
   const tour = () => {
     if (!touring || !visible || mode !== 'review' || calm()) return;
+    if (coarse && !steered && !demoing && demos < 2 && (demos === 0 || (tIdx === 0 && round > demoRound)) && pts.length) { const q = pts[tIdx]; show(-1); return go(q.x, q.y - 10, 700, () => demo()); }
     const p = pts[tIdx]; show(-1);
-    go(p.x, p.y, 1000, () => { show(tIdx); timer = setTimeout(() => { tIdx = (tIdx + 1) % pts.length; tour(); }, 2600); });
+    go(p.x, p.y, 1000, () => { show(tIdx); timer = setTimeout(() => { tIdx = (tIdx + 1) % pts.length; if (tIdx === 0) round++; tour(); }, 2600); });
   };
   /* steering: a mouse hovers; a finger drags the lens or taps a spot on the report (the rest of the stage still scrolls) */
   const toPage = e => { const fr = front.getBoundingClientRect(); return [Math.max(0, Math.min(500, (e.clientX - fr.left) / k)), Math.max(0, Math.min(640, (e.clientY - fr.top) / k))]; };
   const nearest = () => { let best = -1, bd = 1e9; pts.forEach((p, i) => { const d = Math.hypot(p.x - cx, (p.y - cy) * 1.6); if (d < bd) { bd = d; best = i; } }); show(bd < 120 ? best : -1); };
-  const hold = () => { touring = false; clearTimeout(timer); cancelAnimationFrame(anim); vs.classList.add('is-steered'); };
+  const hold = () => { touring = false; clearTimeout(timer); cancelAnimationFrame(anim); stopDemo(); steered = true; vs.classList.add('is-steered'); };
   const resume = ms => { clearTimeout(timer); timer = setTimeout(() => { touring = true; tour(); }, ms); };
   vs.addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse' && !dragging) return;
     hold(); [cx, cy] = toPage(e); place(); nearest();
   });
   vs.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') resume(1200); });
-  const grab = document.getElementById('grab');
+  const grab = document.getElementById('grab'), hand = document.getElementById('hand');
   let dragging = false, down = null;
   grab.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') return; dragging = true; try { grab.setPointerCapture(e.pointerId); } catch (_) {} hold(); });
   const endDrag = () => { if (!dragging) return; dragging = false; resume(3500); };
@@ -825,7 +864,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
   });
   new IntersectionObserver(([en]) => {
     const was = visible; visible = en.isIntersecting;
-    if (!visible) { clearTimeout(timer); cancelAnimationFrame(anim); rStop(); }
+    if (!visible) { clearTimeout(timer); cancelAnimationFrame(anim); stopDemo(); rStop(); }
     else if (!was) { if (mode === 'review' && touring && pts.length) { clearTimeout(timer); tour(); } else if (mode === 'research') rPlay(); }
   }).observe(vcol);
   const start = () => {
@@ -883,7 +922,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
     if (!first) document.getElementById('mode-live').textContent = m === 'review' ? 'מוצגת הגרסה: ביקורת על סקר שהגיש הצד השני' : 'מוצגת הגרסה: מחקר חדש לבחינת טענה';
     vs.classList.toggle('is-off', m !== 'review'); rs.classList.toggle('is-off', m !== 'research');
     moveThumb();
-    if (m === 'research') { clearTimeout(timer); cancelAnimationFrame(anim); show(-1); rPlace(); if (visible) rPlay(); }
+    if (m === 'research') { clearTimeout(timer); cancelAnimationFrame(anim); stopDemo(); show(-1); rPlace(); if (visible) rPlay(); }
     else { rStop(); if (!first && pts.length) { touring = true; tIdx = 0; tour(); } }
     if (!first) history.replaceState(null, '', m === 'research' ? '#research' : location.pathname + location.search);
   };
@@ -904,13 +943,23 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
   const proc = document.getElementById('process'), lane = document.getElementById('lane'), tok = document.getElementById('tok'), tic = document.getElementById('tic');
   const lb = document.getElementById('lb'), lf = document.getElementById('lf'), lds = [...lane.querySelectorAll('.ld')], steps = [...proc.querySelectorAll('.step')];
   let xs = [], pIdx = -1, pTimer = 0, pOn = false;
+  const vmq = matchMedia('(max-width:640px)'); let vert = vmq.matches;
   const pMeasure = () => {
-    const L = lane.getBoundingClientRect(); if (!L.width) return;
-    xs = steps.map(st => { const r = st.getBoundingClientRect(); return r.left + r.width / 2 - L.left; });
-    lds.forEach((d, i) => d.style.left = xs[i] + 'px');
-    const a = Math.min(...xs), b = Math.max(...xs);
-    lb.style.left = a + 'px'; lb.style.width = (b - a) + 'px';
-    lf.style.right = (L.width - xs[0]) + 'px';
+    vert = vmq.matches;
+    const L = lane.getBoundingClientRect(); if (!L.width || !L.height) return;
+    [lb, lf, ...lds].forEach(el => el.removeAttribute('style'));
+    if (vert) {
+      xs = steps.map(st => { const r = st.getBoundingClientRect(); return r.top + Math.min(64, r.height / 2) - L.top; });
+      lds.forEach((d, i) => d.style.top = xs[i] + 'px');
+      lb.style.top = xs[0] + 'px'; lb.style.height = (xs[xs.length - 1] - xs[0]) + 'px';
+      lf.style.top = xs[0] + 'px';
+    } else {
+      xs = steps.map(st => { const r = st.getBoundingClientRect(); return r.left + r.width / 2 - L.left; });
+      lds.forEach((d, i) => d.style.left = xs[i] + 'px');
+      const a = Math.min(...xs), b = Math.max(...xs);
+      lb.style.left = a + 'px'; lb.style.width = (b - a) + 'px';
+      lf.style.right = (L.width - xs[0]) + 'px';
+    }
     if (pIdx >= 0) pGo(pIdx, true);
   };
   const pGo = (i, quiet) => {
@@ -918,17 +967,17 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
     steps.forEach((st, k) => st.classList.toggle('on', k === i));
     lds.forEach((d, k) => d.classList.toggle('on', k <= i));
     if (!xs.length) return;
-    tok.style.transform = `translateX(${xs[i] - 29}px)`;
-    lf.style.left = xs[i] + 'px';
+    if (vert) { tok.style.transform = `translateY(${xs[i] - 27}px)`; lf.style.height = (xs[i] - xs[0]) + 'px'; }
+    else { tok.style.transform = `translateX(${xs[i] - 29}px)`; lf.style.left = xs[i] + 'px'; }
     tic.innerHTML = steps[i].querySelector('.ic svg').outerHTML;
     if (!quiet) { tok.classList.remove('hop', 'party'); void tok.offsetWidth; setTimeout(() => tok.classList.add('hop'), 700); if (i === steps.length - 1) setTimeout(() => tok.classList.add('party'), 900); }
   };
   const pLoop = () => { if (!pOn) return; if (calm()) return pGo(steps.length - 1, true); const n = (pIdx + 1) % steps.length; pGo(n); pTimer = setTimeout(pLoop, n === steps.length - 1 ? 3200 : 1900); };
-  new ResizeObserver(pMeasure).observe(lane);
+  new ResizeObserver(pMeasure).observe(lane); vmq.addEventListener('change', pMeasure);
   new IntersectionObserver(([en]) => {
     if (en.isIntersecting) { proc.classList.add('in'); if (!pOn) { pOn = true; pIdx = -1; pMeasure(); pLoop(); } }
     else { pOn = false; clearTimeout(pTimer); }
-  }, { threshold: .25 }).observe(proc);
+  }, { threshold: 0, rootMargin: '0px 0px -25% 0px' }).observe(proc);
 
   /* contact: a short chat plays while the panel is on screen */
   const chat = document.getElementById('chat'), bubs = [...chat.querySelectorAll('.bub')];
@@ -955,7 +1004,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
     try { localStorage.setItem('midgam-motion', stopped ? 'off' : 'on'); } catch (_) {}
     paint();
     if (stopped) {
-      clearTimeout(timer); cancelAnimationFrame(anim);
+      clearTimeout(timer); cancelAnimationFrame(anim); stopDemo();
       if (mode === 'research') rFinal();
       clearTimeout(pTimer); if (pOn) pGo(steps.length - 1, true);
       if (cOn) cPlay();
