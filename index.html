@@ -928,7 +928,11 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
   };
   mBtns.forEach(b => b.addEventListener('click', () => { if (b.dataset.mode !== mode) setMode(b.dataset.mode); }));
   new ResizeObserver(moveThumb).observe(modeEl);
-  setMode(location.hash === '#research' ? 'research' : 'review', true);
+  const qs = new URLSearchParams(location.search);
+  setMode(location.hash === '#research' || qs.get('v') === 'research' ? 'research' : 'review', true);
+  /* ad links: ?go=services|about|process|contact opens at that section (sitelinks need distinct addresses) */
+  const jump = qs.get('go');
+  if (jump && /^(services|about|process|contact)$/.test(jump)) addEventListener('load', () => { const t = document.getElementById(jump); if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' }); });
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { moveThumb(); setTimeout(start, 50); });
 
   /* audit rows light in turn */
