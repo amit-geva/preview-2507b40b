@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>יום אחד במדגם</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Direction D: an original top-down pixel world in Midgam blues, running in demo mode beside the headline. */
+:root{
+  --bg:#f1f5f9; --ink:#0e1216; --ink-2:#545e69; --line:rgba(14,18,22,.08);
+  --blue:#1d5689; --blue-dd:#123a5e; --sky:#229ad6; --sky-soft:#eaf2f9; --grey-blue:#5d7d9c;
+  --font:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --ease:cubic-bezier(.23,1,.32,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;top:0;left:0;width:1440px;height:900px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(760px 620px at 30% 56%,#fff 0%,rgba(255,255,255,0) 70%),radial-gradient(620px 460px at 98% -4%,rgba(34,154,214,.22),transparent 70%),radial-gradient(700px 520px at 4% 100%,rgba(29,86,137,.12),transparent 70%),var(--bg)}
+.nav{position:absolute;top:0;left:0;right:0;height:96px;display:flex;align-items:center;gap:22px;padding:0 72px}
+.logo{height:42px;width:auto;display:block}
+.links{display:flex;gap:4px;margin-inline-start:auto;padding:5px;border-radius:999px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--line)}
+.links a{height:38px;display:inline-flex;align-items:center;padding:0 16px;border-radius:999px;font-size:15px;color:var(--ink-2)}
+.lang{display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--line);font-size:14px;font-weight:600}
+.lang span{height:32px;min-width:38px;display:inline-grid;place-items:center;padding:0 10px;border-radius:999px;color:var(--ink-2)}
+.lang span.on{background:var(--blue);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:12px;height:52px;padding-inline-start:24px;padding-inline-end:7px;border-radius:999px;background:var(--blue);color:#fff;font:500 16.5px/1 var(--font);box-shadow:0 14px 26px -14px rgba(29,86,137,.8)}
+.btn .ar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff;color:var(--blue)}
+.btn .ar svg{width:14px;height:14px}
+.btn--sm{height:46px;font-size:15px;padding-inline-start:20px;padding-inline-end:6px}.btn--sm .ar{width:34px;height:34px}
+.btn--lg{height:60px;font-size:17.5px;padding-inline-start:30px;padding-inline-end:9px}.btn--lg .ar{width:44px;height:44px}
+.btn--soft{background:#fff;color:var(--blue);padding-inline-end:26px;box-shadow:0 0 0 1px rgba(29,86,137,.18),0 8px 20px -14px rgba(29,86,137,.45)}
+.copy{position:absolute;top:176px;right:72px;width:560px}
+.badge{display:inline-flex;align-items:center;gap:10px;height:36px;padding-inline-start:5px;padding-inline-end:14px;border-radius:999px;background:#fff;box-shadow:0 0 0 1px var(--line);font-size:14.5px;font-weight:500;color:var(--ink-2)}
+.badge b{height:26px;display:inline-grid;place-items:center;padding:0 11px;border-radius:999px;background:var(--sky);color:#fff;font-size:13px;font-weight:700}
+h1{margin:22px 0 0;font-size:74px;line-height:1.02;font-weight:800;letter-spacing:-.04em}
+h1 span{display:block;color:var(--grey-blue);font-weight:700}
+.sub{margin:22px 0 0;font-size:19.5px;line-height:1.65;color:var(--ink-2)}
+.acts{display:flex;gap:12px;margin-top:30px}
+.fields{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2);line-height:1.7}
+.fields b{color:var(--ink);font-weight:700}
+/* the game frame */
+.game{position:absolute;left:72px;top:118px;width:704px;height:712px;border-radius:30px;background:#0b2238;padding:16px;box-shadow:0 40px 80px -36px rgba(11,34,56,.75),inset 0 0 0 2px rgba(143,211,245,.15)}
+canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering:pixelated;image-rendering:crisp-edges}
+.gbar{display:flex;align-items:center;justify-content:space-between;height:60px;padding:12px 4px 0;color:#bfe6fa;font-size:14px}
+.mission{display:flex;align-items:center;gap:8px;height:44px;padding:0 4px 10px;color:#bfe6fa;font-size:14px;overflow:hidden;white-space:nowrap}
+.mission .lbl{flex:none;font-weight:700;color:#fff}
+.mission .done{flex:none;color:#7f9bb5;text-decoration:line-through;text-decoration-thickness:1.5px}
+.mission .more{flex:none;color:#7f9bb5}
+.mission .next{flex:none;height:30px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border-radius:999px;background:#229ad6;color:#fff;font-weight:700}
+.mission .next.fin{background:#f2c14e;color:#0b2238}
+.gbar b{color:#fff;font-weight:700;letter-spacing:.02em}
+.gbar .keys{display:flex;gap:6px;align-items:center}
+.gbar kbd{min-width:28px;height:28px;display:inline-grid;place-items:center;border-radius:8px;background:#1d5689;color:#fff;font:700 13px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.play{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px 0 8px;border-radius:999px;background:#fff;color:var(--blue);font:800 16px var(--font);box-shadow:0 0 0 4px rgba(255,255,255,.18)}
+.play i{width:32px;height:32px;border-radius:50%;background:var(--blue);display:grid;place-items:center}
+.play i svg{width:16px;height:16px}
+.play,.ctl,.fin button,.fin a{cursor:pointer;border:0}
+.play:focus-visible,.ctl:focus-visible,.fin button:focus-visible,.fin a:focus-visible,canvas:focus-visible{outline:3px solid #8fd3f5;outline-offset:3px}
+.copy,.game{transition:opacity .45s var(--ease),transform .55s var(--ease),left .55s var(--ease),top .55s var(--ease)}
+.stage.playing .copy{opacity:.12;pointer-events:none}
+.stage.playing .game{left:50%;top:50%;animation:none;opacity:1;transform:translate(-50%,-50%) scale(1.14);z-index:10}
+.controls{display:none;align-items:center;gap:8px}
+.stage.playing .controls{display:flex}
+.stage.playing .demo-only{display:none}
+.pad{display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(2,26px);gap:3px}
+.ctl{display:grid;place-items:center;border-radius:10px;background:#1d5689;color:#fff;font:700 14px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3);touch-action:none;user-select:none;-webkit-user-select:none}
+.ctl:active{transform:translateY(1px);background:#229ad6}
+.ctl svg{width:14px;height:14px}
+.pad [data-dir=up]{grid-column:2;grid-row:1}.pad [data-dir=left]{grid-column:3;grid-row:2}.pad [data-dir=down]{grid-column:2;grid-row:2}.pad [data-dir=right]{grid-column:1;grid-row:2}
+.ctl.talk{height:46px;padding:0 18px;border-radius:999px;background:#f2c14e;color:#0b2238;font-size:15px}
+.ctl.exit{height:40px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.12);font-size:14px}
+.hint{font-size:13px;color:#bfe6fa;display:inline-flex;align-items:center;gap:6px}
+.hint .kb{display:inline-flex;gap:2px;direction:ltr}
+.hint kbd{min-width:20px;height:20px;display:inline-grid;place-items:center;padding:0 3px;border-radius:5px;background:#1d5689;color:#fff;font:700 11px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.hint kbd.space{width:44px;position:relative}
+.hint kbd.space::after{content:"";position:absolute;left:10px;right:10px;bottom:6px;height:4px;border:1.5px solid #fff;border-top:0;border-radius:0 0 2px 2px}
+.fin{position:absolute;left:16px;right:16px;top:60px;height:576px;border-radius:16px;background:rgba(11,34,56,.86);display:grid;place-items:center;text-align:center;color:#fff;z-index:3}
+.fin[hidden]{display:none}
+.fin .card{width:440px;max-width:90%;padding:30px 30px 26px;border-radius:24px;background:#fff;color:#0e1216;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.fin h2{margin:0;font-size:26px;line-height:1.2;font-weight:800}
+.fin p{margin:8px 0 0;color:#545e69;font-size:16px}
+.fin .row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.fin button,.fin a{height:48px;padding:0 20px;border-radius:999px;background:#eaf2f9;color:#1d5689;font:700 16px var(--font);display:inline-flex;align-items:center;text-decoration:none}
+.fin .pri{background:#1d5689;color:#fff}
+.fin .pct{font-size:56px;font-weight:800;color:#1d5689;line-height:1;margin-top:6px}
+.fin small{display:block;margin-top:8px;color:#5f6975;font-size:13px}
+/* mobile play: the game takes the whole screen */
+#mplay{position:fixed;inset:0;z-index:100;display:none;background:#0b2238;color:#fff;touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;
+  padding:max(10px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));
+  grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"top" "game" "hint" "ctl";gap:10px;align-items:start;justify-items:center}
+html.mobile-play #mplay{display:grid}
+html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
+#mplay .mtop{grid-area:top;width:100%;display:flex;align-items:center;gap:8px;min-width:0}
+#mplay .mission{flex:1;min-width:0;height:auto;padding:0;overflow-x:auto;scrollbar-width:none}
+#mplay .mission::-webkit-scrollbar{display:none}
+#mplay .ctl.exit{flex:none;height:40px;padding:0 16px}
+#mplay canvas{grid-area:game;width:100%;max-width:min(100%,calc((100dvh - 250px) * 224 / 192));height:auto;aspect-ratio:224/192;border-radius:12px;touch-action:none}
+#mplay .mctl{grid-area:ctl;align-self:end;width:100%;max-width:560px;display:flex;align-items:center;justify-content:space-between;direction:ltr;padding:0 6px}
+#mplay .pad{direction:rtl;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(2,52px);gap:6px}
+#mplay .ctl{touch-action:none}
+#mplay .ctl svg{width:24px;height:24px}
+#mplay .ctl.talk{width:100px;height:100px;padding:0;border-radius:50%;font-size:20px;box-shadow:0 0 0 6px rgba(242,193,78,.18),inset 0 -3px 0 rgba(0,0,0,.25)}
+#mplay .mhint{grid-area:hint;font-size:13px;color:#bfe6fa;pointer-events:none}
+#mplay .fin{position:fixed;inset:0;height:auto;border-radius:0;left:0;right:0;top:0}
+@media (orientation:landscape) and (max-height:560px){
+  #mplay{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"top top top" "pad game talk";gap:8px 16px;align-items:center;direction:ltr}
+  #mplay .mtop{direction:rtl}
+  #mplay .mctl{display:contents}
+  #mplay .pad{grid-area:pad}
+  #mplay .ctl.talk{grid-area:talk}
+  #mplay canvas{max-width:none;width:auto;height:calc(100dvh - 76px);max-height:calc(100dvh - 76px)}
+  #mplay .mhint{display:none}
+}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+[data-up]{opacity:0;transform:translateY(14px);animation:up .7s var(--ease) forwards;animation-delay:calc(var(--i,0)*90ms + 120ms)}
+@keyframes up{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){[data-up]{animation:none;opacity:1;transform:none}.play{animation:none}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <header class="nav">
+    <img class="logo" src="assets/midgam-logo.png" alt="מדגם — ייעוץ ומחקר בע״מ">
+    <nav class="links"><a>תחומי פעילות</a><a>ממצאים</a><a>מקרי בוחן</a><a>אודות</a></nav>
+    <div class="lang"><span class="on">עב</span><span>EN</span><span>ع</span></div>
+    <a class="btn btn--sm">פנייה למחקר<span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </header>
+
+  <div class="copy">
+    <span class="badge" data-up style="--i:0"><b>משחק · 3 דקות</b>יום אחד במדגם</span>
+    <h1 data-up style="--i:1">תצליחו להגיש<span>סקר תקין?</span></h1>
+    <p class="sub" data-up style="--i:2">פוגשים ברחוב עורכת שצריכה סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. היא תקבל את הסקר רק אם הוא תקין.</p>
+    <div class="acts" data-up style="--i:3">
+      <a class="btn btn--lg" href="#" data-play>שחקו עכשיו<span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="currentColor"/></svg></span></a>
+      <a class="btn btn--lg btn--soft">פנייה למחקר</a>
+    </div>
+    <p class="fields" data-up style="--i:4">מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b></p>
+  </div>
+
+  <div class="game" data-up style="--i:2">
+    <div class="mission" id="mission" aria-live="polite"></div>
+    <canvas id="cv" tabindex="0" width="672" height="576" role="img" aria-label="משחק פיקסלים במצב הדגמה: חוקר צעיר פוגש ברחוב עורכת שמבקשת סקר, עובר במשרדי מדגם בין מנו גבע, התכנון, המוקד הטלפוני, האיסוף האינטרנטי, המעבדה והדוחות, ומגיש לה בחדר החדשות סקר תקין שמתפרסם."></canvas>
+    <div class="gbar">
+      <span class="demo-only"><b>יום אחד במדגם</b> · מצב הדגמה</span>
+      <a class="play demo-only" href="#" data-play><i><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="#fff"/></svg></i>שחקו</a>
+      <div class="controls">
+        <div class="pad" aria-label="כפתורי הליכה">
+          <button class="ctl" type="button" data-dir="up" aria-label="למעלה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 10 8 5.5l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="right" aria-label="ימינה"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="down" aria-label="למטה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 6 8 10.5 12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="left" aria-label="שמאלה"><svg viewBox="0 0 16 16" fill="none"><path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <button class="ctl talk" type="button" id="talk">דברו</button>
+      </div>
+      <span class="controls"><span class="hint"><span class="kb"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd></span> להליכה · <kbd class="space"></kbd> מקש רווח לדיבור</span><button class="ctl exit" type="button" id="exit">יציאה</button></span>
+    </div>
+    <div class="fin" id="finale" hidden>
+      <div class="card" id="fin-q"><h2>ומה אתם חושבים?</h2><p>להישאר בשעון קיץ כל השנה?</p><div class="row"><button type="button" data-ans="0">בעד</button><button type="button" data-ans="1">נגד</button><button type="button" data-ans="2">לא יודע/ת</button></div></div>
+      <div class="card" id="fin-r" hidden><h2>אנשים כמוכם</h2><div class="pct" id="fin-pct"></div><p>מהמשיבים בסקר שלכם חושבים כמוכם.</p><small>נתונים בדיוניים מתוך המשחק</small><div class="row"><a class="pri" href="#">לממצאים של מדגם</a><a href="#">פנייה למחקר</a><button type="button" id="again">לשחק שוב</button></div></div>
+    </div>
+    <p class="sr" id="live" aria-live="polite"></p>
+    <div id="mplay" role="dialog" aria-modal="true" aria-label="יום אחד במדגם"><div class="mtop" id="mtop"></div><div class="mctl" id="mctl"></div><span class="mhint" id="mhint">הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר</span></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const st = document.getElementById('stage');
+  const fit = () => { const k = Math.min(innerWidth / 1440, innerHeight / 900); st.style.transform = `translate(${(innerWidth - 1440 * k) / 2}px,${(innerHeight - 900 * k) / 2}px) scale(${k})`; };
+  addEventListener('resize', fit); fit();
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- palette: Midgam blues, one warm gold for the celebration, red only for "live" ---------- */
+  const P = { k: '#0b2238', d: '#123a5e', b: '#1d5689', s: '#229ad6', l: '#8fd3f5', p: '#cfe8f7', g: '#e3eef8', w: '#ffffff', n: '#9fb4c8', a: '#2a4b6c', y: '#f2c14e', r: '#d1453b', o: '#e8f1f8' };
+  const cv = document.getElementById('cv'), x = cv.getContext('2d');
+  x.setTransform(3, 0, 0, 3, 0, 0); x.imageSmoothingEnabled = false;
+  const W = 224, H = 192, T = 16;
+  const R = (c, X, Y, w = 1, h = 1) => { x.fillStyle = P[c] || c; x.fillRect(Math.round(X), Math.round(Y), w, h); };
+  const txt = (s, X, Y, size, c, weight = 700, align = 'center') => { x.font = `${weight} ${size}px Heebo, Arial`; x.fillStyle = P[c] || c; x.textAlign = align; x.textBaseline = 'middle'; x.fillText(s, X, Y); };
+  const hash = (i, j) => (((i * 73856093) ^ (j * 19349663)) >>> 0) % 997;
+  const plate = (label, cx, cy, size = 5.5, fill = 'w', ink = 'b') => {
+    x.font = `700 ${size}px Heebo, Arial`; const w = Math.ceil(x.measureText(label).width) + 10, h = Math.round(size + 5);
+    R('k', cx - w / 2, cy - h / 2, w, h); R(fill, cx - w / 2 + 1, cy - h / 2 + 1, w - 2, h - 2); R(fill === 'w' ? 'p' : 'k', cx - w / 2 + 1, cy + h / 2 - 2, w - 2, 1);
+    txt(label, cx, cy + .3, size, ink);
+  };
+
+  /* ---------- characters: outlined, shaded, three facings, two-frame walk ---------- */
+  const DOWN = ['................', '.....kkkkkk.....', '....kHHHHHHk....', '...kHHHHHHHHk...', '...kHhhhhhhHk...', '...kHwwwwwwHk...', '...kwwkwwkwwk...', '...kwwwwwwwwk...', '....kwwggwwk....', '...kkSSSSSSkk...', '..kwkSSSSSSkwk..', '..kwkSsSSsSkwk..', '...kkPPPPPPkk...', '....kPPkkPPk....', '....kkk..kkk....', '................'];
+  const DOWN2 = DOWN.slice(0, 13).concat(['...kPPk..kPPk...', '...kkk....kkk...', '................']);
+  const UP = DOWN.map((r, i) => i === 5 || i === 6 ? '...kHHHHHHHHk...' : i === 7 ? '...kHhhhhhhHk...' : i === 8 ? '....kggggggk....' : r);
+  const UP2 = UP.slice(0, 13).concat(['...kPPk..kPPk...', '...kkk....kkk...', '................']);
+  const SIDE = ['................', '......kkkkk.....', '.....kHHHHHk....', '....kHHHHHHHk...', '....kHHHhhHHk...', '....kwwwHHHHk...', '....kwkwwHHHk...', '....kwwwwwHHk...', '.....kwgwwwk....', '.....kSSSSSk....', '....kSSwSSSk....', '....kSSwSsSk....', '.....kPPPPPk....', '.....kPPkPPk....', '.....kkk.kkk....', '................'];
+  const SIDE2 = SIDE.slice(0, 13).concat(['....kPPk.kPPk...', '....kkk...kkk...', '................']);
+  const spr = (rows, X, Y, c, flip) => {
+    X = Math.round(X); Y = Math.round(Y);
+    x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 4, Y + 14, 8, 2);
+    rows.forEach((r, j) => { for (let i = 0; i < 16; i++) { const ch = r[flip ? 15 - i : i]; if (ch === '.') continue; R(c[ch] || ch, X + i, Y + j); } });
+  };
+  const person = (who, X, Y, face, step) => {
+    const rows = face === 'up' ? (step ? UP2 : UP) : face === 'down' ? (step ? DOWN2 : DOWN) : (step ? SIDE2 : SIDE);
+    spr(rows, X, Y, who.c, face === 'right');
+    if (who.glasses && face === 'down') { R('k', X + 4, Y + 6, 4, 1); R('k', X + 8, Y + 6, 4, 1); R('l', X + 5, Y + 6, 2, 1); R('l', X + 9, Y + 6, 2, 1); }
+    if (who.glasses && (face === 'left' || face === 'right')) { const gx = face === 'left' ? X + 4 : X + 8; R('k', gx, Y + 6, 4, 1); R('l', gx + 1, Y + 6, 2, 1); }
+    if (who.longHair && face !== 'up') { R(who.c.H, X + 3, Y + 6, 1, 4); R(who.c.H, X + 12, Y + 6, 1, 4); R('k', X + 2, Y + 6, 1, 4); R('k', X + 13, Y + 6, 1, 4); }
+    if (who.headset) { R('k', X + 3, Y + 3, 1, 5); R('k', X + 12, Y + 3, 1, 5); R('k', X + 4, Y + 2, 8, 1); R('k', X + 11, Y + 8, 2, 1); }
+    if (who.pad && face === 'down') { R('k', X + 10, Y + 9, 5, 6); R('w', X + 11, Y + 10, 3, 4); R('n', X + 11, Y + 11, 3, 1); }
+  };
+  const PEOPLE = {
+    me: { c: { H: 'k', h: 'd', S: 's', s: 'b', P: 'd' } },
+    mano: { c: { H: 'n', h: 'g', S: 'b', s: 'd', P: 'k' }, glasses: true },
+    editor: { c: { H: 'k', h: 'd', S: 'l', s: 's', P: 'd' }, pad: true },
+    res: { c: { H: 'b', h: 'd', S: 'w', s: 'p', P: 'd' }, glasses: true },
+    res2: { c: { H: 'k', h: 'd', S: 's', s: 'b', P: 'k' } },
+    res3: { c: { H: 'd', h: 'k', S: 'p', s: 'l', P: 'd' }, longHair: true },
+    sec: { c: { H: 'd', h: 'b', S: 'g', s: 'p', P: 'd' }, longHair: true },
+    field: { c: { H: 'k', h: 'd', S: 'b', s: 'd', P: 'k' }, pad: true },
+    vp1: { c: { H: 'n', h: 'g', S: 'd', s: 'k', P: 'k' } },
+    vp2: { c: { H: 'd', h: 'k', S: 'b', s: 'd', P: 'k' }, glasses: true },
+    a: { c: { H: 'b', h: 'd', S: 'p', s: 'l', P: 'd' } },
+    b: { c: { H: 'k', h: 'd', S: 'w', s: 'p', P: 'b' } },
+    c: { c: { H: 'd', h: 'k', S: 'b', s: 'd', P: 'k' }, headset: true },
+    e: { c: { H: 'n', h: 'g', S: 'l', s: 's', P: 'd' }, headset: true },
+    f: { c: { H: 'b', h: 'd', S: 'g', s: 'p', P: 'd' }, glasses: true }
+  };
+
+  /* ---------- street scene ---------- */
+  const grass = (X, Y) => {
+    R('o', X, Y, T, T); const h = hash(X, Y);
+    if (h % 3 === 0) { R('p', X + 3, Y + 5, 1, 2); R('p', X + 4, Y + 4, 1, 2); }
+    if (h % 4 === 1) { R('p', X + 11, Y + 11, 1, 2); R('p', X + 12, Y + 10, 1, 2); }
+    if (h % 13 === 2) { R('w', X + 7, Y + 7, 1, 1); R('w', X + 9, Y + 7, 1, 1); R('w', X + 8, Y + 6, 1, 1); R('w', X + 8, Y + 8, 1, 1); R('s', X + 8, Y + 7, 1, 1); }
+  };
+  const sidewalk = (X, Y) => { R('w', X, Y, T, T); R('g', X, Y, T, 1); R('g', X, Y + 8, T, 1); R('g', X, Y, 1, 8); R('g', X + 8, Y + 8, 1, 8); };
+  const road = (X, Y) => { R('a', X, Y, T, T); if (hash(X, Y) % 5 === 0) R('d', X + 5, Y + 9, 2, 1); };
+  const tree = (X, Y) => {
+    x.fillStyle = 'rgba(11,34,56,.2)'; x.fillRect(X + 2, Y + 14, 12, 3);
+    R('k', X + 6, Y + 10, 4, 6); R('d', X + 7, Y + 10, 2, 5);
+    R('k', X + 2, Y + 1, 12, 11); R('k', X + 1, Y + 3, 14, 7);
+    R('b', X + 3, Y + 2, 10, 9); R('b', X + 2, Y + 4, 12, 5);
+    R('s', X + 4, Y + 3, 5, 3); R('l', X + 5, Y + 3, 2, 1);
+    R('d', X + 3, Y + 8, 10, 2); R('d', X + 10, Y + 5, 2, 3);
+  };
+  const lamp = (X, Y) => { R('k', X + 7, Y - 4, 2, 18); R('k', X + 5, Y - 7, 6, 4); R('y', X + 6, Y - 6, 4, 2); R('k', X + 5, Y + 13, 6, 2); };
+  const bush = (X, Y) => { R('k', X, Y + 2, 14, 7); R('b', X + 1, Y + 3, 12, 5); R('s', X + 2, Y + 3, 4, 2); R('d', X + 1, Y + 7, 12, 1); };
+  const windowAt = (X, Y) => {
+    R('k', X, Y, 12, 11); R('s', X + 1, Y + 1, 10, 9); R('b', X + 1, Y + 6, 10, 4);
+    R('l', X + 2, Y + 2, 3, 1); R('l', X + 2, Y + 3, 1, 2); R('k', X + 6, Y + 1, 1, 9);
+    R('k', X - 1, Y + 11, 14, 2); R('w', X, Y + 11, 12, 1);
+  };
+  const facade = (X, Y, w, h, roof, label, opts = {}) => {
+    x.fillStyle = 'rgba(11,34,56,.2)'; x.fillRect(X + 3, Y + h - 1, w, 4);
+    R('k', X, Y + 10, w, h - 10); R('w', X + 1, Y + 11, w - 2, h - 12);
+    for (let yy = Y + 15; yy < Y + h - 2; yy += 4) R('g', X + 1, yy, w - 2, 1);
+    R('k', X - 2, Y, w + 4, 13); R(roof, X - 1, Y + 1, w + 2, 11); R('l', X - 1, Y + 1, w + 2, 1); R('d', X - 1, Y + 10, w + 2, 2);
+    for (let i = X + 1; i < X + w - 1; i += 6) R('d', i, Y + 4, 3, 1);
+    // signboard on the parapet
+    plate(label, X + w / 2, Y + 6.5, 6, 'w', 'b');
+    // windows: an upper row evenly spaced, a lower row clear of the door
+    const n = opts.cols || 4, m = 8, gap = (w - 2 * m - n * 12) / (n - 1);
+    for (let i = 0; i < n; i++) windowAt(X + m + i * (12 + gap), Y + 18);
+    const doorX = X + w / 2 - 8, doorY = Y + h - 21;
+    for (let i = 0; i < n; i++) { const wx = X + m + i * (12 + gap); if (wx + 12 <= doorX - 4 || wx >= doorX + 20) windowAt(wx, Y + h - 22); }
+    // awning, door frame, glass, panels, step
+    R('k', doorX - 4, doorY - 6, 24, 5); for (let i = 0; i < 22; i += 4) { R('s', doorX - 3 + i, doorY - 5, 2, 3); R('w', doorX - 1 + i, doorY - 5, 2, 3); }
+    R('k', doorX - 1, doorY, 18, 21); R('b', doorX, doorY + 1, 16, 20); R('l', doorX + 2, doorY + 3, 12, 5); R('w', doorX + 3, doorY + 4, 3, 1);
+    R('d', doorX + 7, doorY + 1, 2, 20); R('d', doorX + 2, doorY + 11, 4, 6); R('d', doorX + 10, doorY + 11, 4, 6); R('y', doorX + 6, doorY + 12, 1, 2); R('y', doorX + 9, doorY + 12, 1, 2);
+    R('k', doorX - 3, Y + h, 22, 2); R('g', doorX - 2, Y + h, 20, 1);
+    if (opts.dish) { R('k', X + w - 16, Y - 9, 12, 8); R('w', X + w - 15, Y - 8, 10, 6); R('p', X + w - 14, Y - 5, 8, 2); R('k', X + w - 11, Y - 1, 2, 2); R('r', X + w - 10, Y - 11, 2, 2); }
+    if (opts.logo) { R('k', X + w - 18, Y + 3, 12, 7); R('b', X + w - 17, Y + 4, 10, 5); R('s', X + w - 16, Y + 6, 8, 1); }
+  };
+  const house = (X, Y) => {
+    x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 3, Y + 27, 30, 3);
+    for (let i = 0; i < 9; i++) { R('k', X - 2 + i, Y + 9 - i, 36 - 2 * i, 1); R(i % 2 ? 'b' : 'd', X - 1 + i, Y + 10 - i, 34 - 2 * i, 1); }
+    R('k', X, Y + 10, 32, 18); R('w', X + 1, Y + 11, 30, 16); R('g', X + 1, Y + 15, 30, 1); R('g', X + 1, Y + 20, 30, 1);
+    windowAt(X + 4, Y + 13); R('k', X + 20, Y + 15, 8, 13); R('b', X + 21, Y + 16, 6, 12); R('y', X + 25, Y + 22, 1, 1);
+  };
+  const fence = (X, Y, w) => { for (let i = 0; i < w; i += 5) { R('k', X + i, Y, 3, 8); R('w', X + i + 1, Y + 1, 1, 6); } R('k', X, Y + 3, w, 1); };
+  const STREET_DOOR = { hq: [56, 80], news: [172, 80] };
+  const drawStreet = () => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) { const X = i * T, Y = j * T; (j === 5 || j === 8 ? sidewalk : j === 6 || j === 7 ? road : grass)(X, Y); }
+    R('n', 0, 95, W, 1); R('n', 0, 128, W, 1);
+    for (let i = 0; i < W; i += 14) if (i < 108 || i > 146) R('w', i, 111, 7, 1);
+    for (let k = 0; k < 5; k++) R('w', 112, 98 + k * 6, 32, 3);
+    facade(14, 6, 100, 74, 'b', 'מדגם · ייעוץ ומחקר', { cols: 5, logo: true });
+    facade(140, 16, 70, 64, 'd', 'חדשות', { cols: 3, dish: true });
+    tree(120, 30); tree(120, 54); lamp(110, 82); lamp(200, 130); lamp(26, 130);
+    house(18, 150); house(176, 150); fence(56, 168, 40); fence(130, 168, 40); tree(100, 152); tree(150, 156); bush(60, 156); bush(140, 150);
+    tree(-4, 40); tree(210, 0);
+  };
+
+  /* ---------- Midgam offices: four departments along one corridor ---------- */
+  const OFF = ['##############', '#....#...#...#', '#....#...#...#', '#....#...#...#', '#.####.###.###', '..............', '..............', '#.######.###.#', '#......#..#..#', '#......#..#..#', '#......#..#..#', '##############'];
+  const wallTile = (i, j) => {
+    const X = i * T, Y = j * T, below = OFF[j + 1] && OFF[j + 1][i] === '.';
+    R('d', X, Y, T, T); R('b', X, Y, T, below ? 10 : T); R('s', X, Y, T, 1);
+    if (below) { R('p', X, Y + 10, T, 6); R('l', X, Y + 10, T, 1); R('n', X, Y + 15, T, 1); }
+  };
+  const floorTile = (i, j) => { const X = i * T, Y = j * T; for (let a = 0; a < 2; a++) for (let b2 = 0; b2 < 2; b2++) R((a + b2) % 2 ? 'g' : 'w', X + a * 8, Y + b2 * 8, 8, 8); };
+  const desk = (X, Y, w) => { R('k', X, Y, w, 10); R('w', X + 1, Y + 1, w - 2, 5); R('p', X + 1, Y + 6, w - 2, 3); R('k', X + 2, Y + 10, 2, 2); R('k', X + w - 4, Y + 10, 2, 2); };
+  const monitor = (X, Y, glow = 's') => { R('k', X, Y, 11, 8); R(glow, X + 1, Y + 1, 9, 6); R('l', X + 2, Y + 2, 3, 1); R('k', X + 4, Y + 8, 3, 2); };
+  const plant = (X, Y) => { R('b', X + 5, Y, 3, 4); R('s', X + 2, Y + 2, 4, 3); R('s', X + 7, Y + 1, 4, 3); R('b', X + 1, Y + 4, 10, 4); R('s', X, Y + 6, 3, 3); R('s', X + 9, Y + 6, 3, 3); R('l', X + 5, Y + 3, 1, 1); R('d', X + 3, Y + 7, 6, 2); R('k', X + 2, Y + 9, 8, 1); R('k', X + 2, Y + 10, 1, 5); R('k', X + 9, Y + 10, 1, 5); R('k', X + 3, Y + 14, 6, 1); R('w', X + 3, Y + 10, 6, 4); R('p', X + 3, Y + 12, 6, 2); };
+  const board = (X, Y, w, h, kind) => {
+    R('k', X, Y, w, h); R('w', X + 1, Y + 1, w - 2, h - 2); R('k', X + 3, Y + h, 2, 4); R('k', X + w - 5, Y + h, 2, 4);
+    if (kind === 'bars') [5, 9, 6, 11, 8].forEach((v, i) => R(i === 3 ? 'b' : 's', X + 4 + i * 5, Y + h - 2 - v, 3, v));
+    if (kind === 'grid') { for (let i = 0; i < 4; i++) R('p', X + 3, Y + 3 + i * 3, w - 6, 1); R('b', X + 4, Y + 3, 6, 9); R('s', X + 12, Y + 6, 8, 6); }
+  };
+  const papers = (X, Y) => { R('k', X, Y, 9, 7); R('w', X + 1, Y + 1, 7, 5); R('n', X + 2, Y + 2, 5, 1); R('n', X + 2, Y + 4, 4, 1); };
+  const shelf = (X, Y) => { R('k', X, Y, 26, 15); R('d', X + 1, Y + 1, 24, 13); R('k', X + 1, Y + 7, 24, 1); [['s', 2], ['l', 5], ['w', 8], ['b', 11], ['p', 14], ['s', 18], ['w', 21]].forEach(([c, o], i) => { R(c, X + o, Y + 2, 2, 5); R(i % 2 ? 'l' : 'w', X + o + 1, Y + 8, 2, 5); }); };
+  const pot = (X, Y) => { R('b', X + 4, Y, 2, 3); R('s', X + 1, Y + 2, 3, 2); R('s', X + 6, Y + 1, 3, 2); R('b', X + 2, Y + 3, 6, 3); R('s', X, Y + 4, 3, 2); R('s', X + 7, Y + 4, 3, 2); R('l', X + 4, Y + 2, 1, 1); R('k', X + 2, Y + 7, 6, 1); R('k', X + 2, Y + 8, 1, 5); R('k', X + 7, Y + 8, 1, 5); R('k', X + 3, Y + 12, 4, 1); R('w', X + 3, Y + 8, 4, 4); R('p', X + 3, Y + 10, 4, 2); };
+  const printer = (X, Y) => { R('k', X + 3, Y - 4, 12, 5); R('w', X + 4, Y - 3, 10, 4); R('n', X + 5, Y - 2, 7, 1); R('k', X, Y, 18, 13); R('w', X + 1, Y + 1, 16, 6); R('g', X + 1, Y + 7, 16, 5); R('k', X + 3, Y + 3, 12, 2); R('l', X + 3, Y + 9, 10, 1); R('s', X + 14, Y + 8, 2, 2); };
+  const DOG = ['................', '..kk............', '.kwwk...........', 'kwkwwk......kk..', 'kwwwwwkkkkkkwwk.', '.kbbwwwwwwwwwwk.', '..kwwwwgwwwwwk..', '..kwwkkkkkkwwk..', '..kwk......kwk..', '..kk........kk..'];
+  const dog = (X, Y, t) => { const hop = S.barkT > 0 ? Math.round(Math.abs(Math.sin(t / 70)) * 2) : 0; x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 2, Y + 10, 12, 2); DOG.forEach((r, j) => { for (let i = 0; i < 16; i++) { const ch = r[15 - i]; if (ch !== '.') R(ch, X + i, Y + j - hop); } }); if (S.barkT > 0 && Math.floor(t / 160) % 2) { R('k', X + 15, Y - 9, 3, 6); R('y', X + 16, Y - 8, 1, 4); R('k', X + 15, Y - 2, 3, 2); } };
+  const CALL_DESKS = [[38, 142], [62, 142], [86, 142], [38, 164], [62, 164], [86, 164]];
+  const aiDevice = (X, Y, t) => {
+    const pulse = Math.floor(t / 420) % 2;
+    x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 2, Y + 20, 24, 2);
+    R('k', X, Y, 28, 19); R('d', X + 1, Y + 1, 26, 17);
+    R(pulse ? 's' : 'b', X + 3, Y + 3, 22, 10); R('l', X + 4, Y + 4, 4, 1);
+    txt('AI', X + 14, Y + 8.6, 7.5, 'w', 800);
+    [0, 1, 2, 3].forEach(i => R((Math.floor(t / 260) + i) % 4 === 0 ? 'l' : 'b', X + 5 + i * 5, Y + 15, 3, 1));
+    R('k', X + 4, Y + 19, 2, 3); R('k', X + 22, Y + 19, 2, 3);
+  };
+  const vpRoom = (X, who, side) => side === 'right'
+    ? (plant(X + 2, 158), person(who, X + 14, 138, 'left'), desk(X + 12, 154, 18), monitor(X + 15, 146))
+    : (plant(X + 18, 158), person(who, X + 2, 138, 'right'), desk(X, 154, 18), monitor(X + 4, 146));
+  const plate2 = (l1, l2, cx, cy, size) => {
+    x.font = `700 ${size}px Heebo, Arial`; const w = Math.ceil(Math.max(x.measureText(l1).width, x.measureText(l2).width)) + 8, h = Math.round(size * 2 + 6);
+    R('k', cx - w / 2, cy - h / 2, w, h); R('w', cx - w / 2 + 1, cy - h / 2 + 1, w - 2, h - 2); R('p', cx - w / 2 + 1, cy + h / 2 - 2, w - 2, 1);
+    txt(l1, cx, cy - size / 2 - .2, size, 'b'); txt(l2, cx, cy + size / 2 + .2, size, 'b');
+  };
+  const drawOffice = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) (OFF[j][i] === '#' ? wallTile : floorTile)(i, j);
+    R('p', 0, 86, W, 20); R('l', 0, 86, W, 1); R('l', 0, 105, W, 1); R('s', 212, 86, 12, 20);
+    // plaques: each one sits just left of its own door
+    // signs sit on each room's own wall, beside its door; one shared sign for senior management
+    plate('חוקרים', 56, 71); plate2('איסוף', 'אינטרנטי', 128, 71, 4.6); plate('מנו גבע', 192, 71, 5, 'b', 'w');
+    plate('מוקד טלפוני', 72, 119, 4.8); plate(TEXT.vp_title, 168, 119, 5);
+    // researchers: builds the study, later builds the findings
+    aiDevice(18, 15, t); board(48, 16, 30, 17, 'grid');
+    person(PEOPLE.res2, 44, 32, 'down'); desk(40, 46, 24); papers(44, 48); person(PEOPLE.res, 64, 40, 'left'); person(PEOPLE.res3, 30, 44, 'right');
+    // online collection
+    board(114, 17, 28, 16, 'bars'); person(PEOPLE.b, 120, 38, 'left');
+    // Mano Geva
+    shelf(182, 16); person(PEOPLE.mano, 180, 30, 'left'); desk(178, 48, 22); monitor(184, 40);
+    // the hallway: plants, the printer by the entrance, the dog at the far end, the secretary behind her counter
+    [84, 148].forEach(X => pot(X, 79)); [44, 74, 160].forEach(X => pot(X, 100));
+    printer(96, 99); dog(3, 94, t);
+    // the secretary: in the hallway by the top wall near the entrance, behind her counter
+    person(PEOPLE.sec, 206, 70, 'down');
+    R('k', 202, 83, 22, 11); R('w', 203, 84, 20, 4); R('p', 203, 88, 20, 5); R('n', 203, 92, 20, 1);
+    R('k', 204, 80, 5, 3); R('y', 205, 80, 3, 2); R('k', 206, 79, 1, 1);
+    // call center: six interviewers with headsets
+    CALL_DESKS.forEach(([dx, dy], i) => { person(i % 2 ? PEOPLE.c : PEOPLE.e, dx + 3, dy - 12, 'down'); desk(dx, dy, 20); monitor(dx + 5, dy - 4, 'l'); });
+    // two VP offices, same size
+    vpRoom(128, PEOPLE.vp1, 'right'); vpRoom(176, PEOPLE.vp2, 'left');
+  };
+
+  /* ---------- newsroom ---------- */
+  const drawNews = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) { const X = i * T, Y = j * T; R((i + j) % 2 ? 'g' : 'o', X, Y, T, T); }
+    R('d', 0, 0, W, 26); R('b', 0, 0, W, 20); R('s', 0, 0, W, 1); R('p', 0, 20, W, 6); R('l', 0, 20, W, 1);
+    R('k', 64, 3, 96, 19); R('d', 65, 4, 94, 17); txt('חדשות', 120, 11, 8, 'w', 800); R('r', 74, 9, 4, 4);
+    R('s', 65, 17, 94, 4); for (let i = 0; i < 90; i += 8) R('w', 66 + ((i + Math.floor(t / 60)) % 92), 18, 4, 1);
+    R('d', 0, 26, 6, H); R('d', W - 6, 26, 6, H); R('b', 0, 26, 5, H); R('b', W - 5, 26, 5, H);
+    R('k', 96, H - 4, 32, 4); R('s', 97, H - 3, 30, 3);
+    const deskRow = (y, who) => [[18, who[0]], [62, who[1]], [146, who[2]], [190, who[3]]].forEach(([dx, p]) => { if (p) person(PEOPLE[p], dx - 2, y - 12, 'up'); desk(dx - 10, y, 28); monitor(dx - 3, y - 7); });
+    deskRow(84, ['a', 'b', 'f', 'a']); deskRow(134, ['b', null, 'a', 'f']);
+    desk(96, 46, 36); monitor(100, 38); papers(115, 39); plant(140, 40); plant(78, 40);
+  };
+
+  /* ---------- the texts: defaults here, edited live from the design page ---------- */
+  const TEXT = {
+    editor_brief: 'שלום! אני צריך סקר עד יום חמישי: להישאר בשעון קיץ כל השנה?',
+    gate_editor_early: 'בלי אישור של מנו גבע אני לא מפרסם.',
+    editor_final: 'עבודה יפה! מפרסמים!',
+    secretary_line: 'שלום! מנו מוכן לקבל אותך, החדר שלו ממש כאן.',
+    gate_mano_nobrief: 'עוד אין לנו לקוח. מישהו ברחוב חיפש סקר, כדאי לבדוק.',
+    mano_start: 'הגעת למדגם. מתחילים אצל החוקרים: שאלון, מדגם ומכסות. רק אחר כך יוצאים לשטח.',
+    gate_mano_early: 'עוד לא ראיתי ממצאים. החוקרים מחכים לך!',
+    mano_end: 'בדקתי הכול, נראה טוב. מחכים לך בחדשות!',
+    gate_research_early: 'קודם תיפגש עם מנו גבע, הוא פותח כל מחקר.',
+    researcher_design: 'השאלון הוטמע, המדגם הוגדר עם מכסות. מחכים לך במוקד הטלפוני והפאנל',
+    gate_findings_early: 'אין עדיין נתונים מהשטח. קודם המוקד והאיסוף האינטרנטי.',
+    researcher_findings: 'הנתונים משוקללים ונקיים. הנה הממצאים.',
+    gate_call_early: 'עוד אין שאלון ומדגם. קודם לחוקרים, ואז נתחיל להתקשר.',
+    call_center: 'סיימנו עם הראיונות בטלפון, הנתונים נשלחו לחוקרים.',
+    gate_panel_early: 'עוד אין שאלון ומדגם. קודם לחוקרים.',
+    panel: 'האיסוף הסתיים דרך אייפאנל, הנתונים נשלחו לחוקרים.',
+    dog_line: 'הב! הב!',
+    printer_caption: 'צוות מדגם בטיול השנתי',
+    paper_headline: 'סקר מדגם: רוב הציבור בעד שעון קיץ כל השנה',
+    field_ask: 'היי, אני עובד במדגם. איך הייתם מדרגים את ראש העיר?',
+    field_thanks: 'תודה על שיתוף הפעולה!',
+    vp_title: 'ניהול בכיר',
+    vp1_line: 'הסקר שלך בידיים טובות. אצלנו כל לקוח מקבל בדיוק את מה שהוא צריך.',
+    vp2_line: 'כל סקר של מדגם עובר אותה בדיקה, גדול או קטן. ככה בונים אמון.'
+  };
+  addEventListener('message', e => {
+    if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-texts') return;
+    const t = e.data.texts || {};
+    Object.keys(TEXT).forEach(k => { if (typeof t[k] === 'string' && t[k].trim()) TEXT[k] = t[k].slice(0, 400); });
+    if (S.say && S.key) { S.say = TEXT[S.key]; }
+  });
+  if (window.parent !== window) window.parent.postMessage({ type: 'midgam-game-ready' }, '*');
+
+  /* ---------- the story: order matters, rooms send you back ---------- */
+  const STEPS = ['קבלו בריף מהעורך', 'פגישת פתיחה עם מנו גבע', 'בניית המחקר אצל החוקרים', 'איסוף במוקד הטלפוני', 'איסוף אינטרנטי', 'בניית ממצאים אצל החוקרים', 'אישור סופי של מנו גבע', 'הגשה לעורך'];
+  const SCRIPT = [
+    { scene: 'street', path: [[120, 128], [120, 80]], face: 'right', who: 'העורך', key: 'editor_brief', done: 1 },
+    { scene: 'street', path: [STREET_DOOR.hq], face: 'up', go: ['office', 'משרדי מדגם', [206, 86]] },
+    { scene: 'office', path: [[200, 86]], face: 'up', who: 'המזכירה', key: 'secretary_line' },
+    { scene: 'office', path: [[160, 92], [160, 34]], face: 'right', who: 'מנו גבע', key: 'mano_start', done: 2 },
+    { scene: 'office', path: [[160, 92], [16, 92], [16, 130]], face: 'right', who: 'מוקד טלפוני', key: 'gate_call_early', refuse: true },
+    { scene: 'office', path: [[16, 92], [16, 34]], face: 'right', who: 'חוקרים', key: 'researcher_design', done: 3 },
+    { scene: 'office', path: [[16, 92], [16, 130]], face: 'right', who: 'מוקד טלפוני', key: 'call_center', done: 4 },
+    { scene: 'office', path: [[16, 92], [96, 92], [96, 32]], face: 'right', who: 'איסוף אינטרנטי', key: 'panel', done: 5 },
+    { scene: 'office', path: [[96, 92], [16, 92], [16, 34]], face: 'right', who: 'חוקרים', key: 'researcher_findings', done: 6 },
+    { scene: 'office', path: [[16, 92], [160, 92], [160, 34]], face: 'right', who: 'מנו גבע', key: 'mano_end', done: 7 },
+    { scene: 'office', path: [[160, 92], [218, 92]], face: 'right', go: ['street', '', STREET_DOOR.hq] },
+    { scene: 'street', path: [[56, 88], [172, 88], STREET_DOOR.news], face: 'up', go: ['news', 'חדר החדשות', [104, 172]] },
+    { scene: 'news', path: [[104, 62]], face: 'up', who: 'העורך', key: 'editor_final', done: 8, party: true }
+  ];
+  const S = { scene: 'street', me: { x: 0, y: 128, face: 'right' }, i: 0, wps: [], wait: 0, say: '', key: '', who: '', refuse: false, shown: 0, done: 0, fade: 0, fadeDir: 0, card: '', next: null, conf: [], leg: 0, cardT: 0, reset: false, partyT: 0, paper: false, paperP: 0, egg: null, photo: false, photoP: 0, barkT: 0 };
+  const startAction = () => { const a = SCRIPT[S.i]; S.wps = a.path.map(p => p.slice()); };
+  const finishWalk = () => {
+    const a = SCRIPT[S.i]; S.me.face = a.face;
+    if (a.go) { S.fadeDir = 1; S.next = a.go; return; }
+    S.key = a.key; S.say = TEXT[a.key]; S.who = a.who; S.refuse = !!a.refuse; S.shown = 0; S.wait = a.party ? 9500 : a.refuse ? 3000 : 3800;
+    if (a.done) S.done = a.done;
+    if (a.party) S.partyT = 0;
+  };
+  const advance = () => {
+    S.say = ''; S.key = ''; S.refuse = false; S.i++;
+    if (S.i >= SCRIPT.length) { S.fadeDir = 1; S.next = ['street', '', [0, 128]]; S.reset = true; return; }
+    startAction();
+  };
+  const burst = () => { const cols = ['s', 'l', 'b', 'w', 'y', 'p']; S.conf = Array.from({ length: 160 }, () => ({ x: 112 + (Math.random() - .5) * 60, y: 40, vx: (Math.random() - .5) * 3.4, vy: -Math.random() * 3.4 - 1, c: cols[Math.floor(Math.random() * cols.length)], w: Math.random() < .5 ? 2 : 3, ph: Math.random() * 6 })); };
+
+  /* ---------- easter eggs: the design page can ask for one ---------- */
+  const EGGS = {
+    secretary: { pos: [200, 86], face: 'up', who: 'המזכירה', key: 'secretary_line', wait: 3400 },
+    dog: { pos: [20, 96], face: 'left', who: 'הכלב', key: 'dog_line', wait: 2600, bark: true },
+    printer: { pos: [80, 86], face: 'right', who: 'המדפסת', key: 'printer_caption', wait: 7000, photo: true }
+  };
+  addEventListener('message', e => {
+    if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-egg' || !EGGS[e.data.egg] || reduce || MODE === 'play') return;
+    const g = EGGS[e.data.egg];
+    S.scene = 'office'; S.fadeDir = 0; S.fade = 0; S.card = ''; S.conf = []; S.paper = false; S.wps = [];
+    S.me.x = g.pos[0]; S.me.y = g.pos[1]; S.me.face = g.face; S.egg = e.data.egg;
+    S.key = g.photo ? '' : g.key; S.say = g.photo ? '' : TEXT[g.key]; S.who = g.who; S.refuse = false; S.shown = 0; S.wait = g.wait;
+    S.barkT = g.bark ? g.wait : 0; S.photo = !!g.photo; S.photoP = 0;
+  });
+
+  /* ---------- the printed photo: the team on a field trip (an illustration until a real photo arrives) ---------- */
+  const TEAM = ['res', 'mano', 'a', 'res3', 'b', 'sec', 'f', 'res2'];
+  const photo = (p) => {
+    const e = 1 - Math.pow(1 - p, 3), X = 42, w = 140, h = 116, y0 = 18 + (1 - e) * 180;
+    x.fillStyle = 'rgba(11,34,56,.35)'; x.fillRect(X + 4, y0 + 4, w, h);
+    R('k', X, y0, w, h); R('w', X + 1, y0 + 1, w - 2, h - 2);
+    const ix = X + 7, iy = y0 + 7, iw = w - 14, ih = 80;
+    R('l', ix, iy, iw, ih); R('p', ix, iy + 22, iw, 20);
+    R('y', ix + 18, iy + 8, 10, 10); R('w', ix + 20, iy + 9, 3, 2);
+    for (let i = 0; i < iw; i++) { const m1 = Math.round(14 + 12 * Math.abs(Math.sin(i / 22))); R('b', ix + i, iy + ih - 34 - m1, 1, m1); const m2 = Math.round(8 + 8 * Math.abs(Math.sin(i / 13 + 1))); R('d', ix + i, iy + ih - 30 - m2, 1, m2); }
+    R('o', ix, iy + ih - 30, iw, 30); for (let i = 0; i < iw; i += 9) R('p', ix + i, iy + ih - 26 + (i % 3), 2, 1);
+    [[ix + 4, iy + 34], [ix + iw - 18, iy + 32]].forEach(([tx, ty]) => tree(tx, ty));
+    TEAM.forEach((k, i) => person(PEOPLE[k], ix + 6 + i * 14.5, iy + ih - 22 - (i % 2) * 4, 'down'));
+    R('k', ix, iy, iw, 1); R('k', ix, iy + ih, iw, 1);
+    x.font = '700 7px Heebo, Arial'; const cap = wrapLines(TEXT.printer_caption, w - 16).slice(0, 2);
+    cap.forEach((l, i) => txt(l, X + w / 2, y0 + 96 + i * 9, 7, 'k', 700));
+  };
+
+  /* ---------- the newspaper with the published survey (fictional results) ---------- */
+  const wrapLines = (str, maxW) => { const out = []; let line = ''; for (const w of str.split(' ')) { const t2 = line ? line + ' ' + w : w; if (x.measureText(t2).width > maxW && line) { out.push(line); line = w; } else line = t2; } if (line) out.push(line); return out; };
+  const FAKE = [['בעד', 54, 'b'], ['נגד', 38, 's'], ['לא יודעים', 8, 'n']];
+  const newspaper = (p) => {
+    const e = 1 - Math.pow(1 - p, 3), X = 36, w = 152, h = 128, y0 = 22 + (1 - e) * 180;
+    x.fillStyle = 'rgba(11,34,56,.35)'; x.fillRect(X + 4, y0 + 4, w, h);
+    R('k', X, y0, w, h); R('w', X + 1, y0 + 1, w - 2, h - 2);
+    txt('החדשות', X + w / 2, y0 + 10, 11, 'k', 800); R('k', X + 6, y0 + 18, w - 12, 1); R('k', X + 6, y0 + 20, w - 12, 1);
+    txt('יום חמישי · מהדורת בוקר', X + w - 8, y0 + 26, 4.4, 'n', 500, 'right');
+    plate('נתונים בדיוניים', X + 26, y0 + 26, 4, 'y', 'k');
+    x.font = '800 7.6px Heebo, Arial'; const hl = wrapLines(TEXT.paper_headline, w - 16).slice(0, 2);
+    hl.forEach((l, i) => txt(l, X + w - 8, y0 + 37 + i * 10, 7.6, 'k', 800, 'right'));
+    const sy = y0 + 37 + hl.length * 10;
+    txt('סקר מדגם ייעוץ ומחקר עבור החדשות', X + w - 8, sy, 4.8, 'b', 600, 'right');
+    const bx = X + 30, L = w - 82;
+    FAKE.forEach(([lab, v, c], i) => { const y = sy + 10 + i * 11; txt(lab, X + w - 8, y, 5.2, 'k', 600, 'right'); R('g', bx, y - 2.5, L, 5); R(c, bx + L - L * v / 100, y - 2.5, L * v / 100, 5); txt(v + '%', X + 18, y, 5.6, 'k', 800); });
+    R('o', X + 6, y0 + h - 18, w - 12, 12); R('p', X + 6, y0 + h - 18, w - 12, 1);
+    txt('מדגם 1,000 · טעות דגימה ±3.1% · שוקלל לפי גיל ואזור', X + w - 10, y0 + h - 12, 4.3, 'k', 500, 'right');
+  };
+
+  /* ---------- HUD: the next step, and what is already done, crossed out ---------- */
+  const mission = document.getElementById('mission'); let lastHud = '';
+  const hud = () => {
+    let done, next;
+    if (MODE === 'play') { done = PLAY_STEPS.filter(([k]) => F[k]).map(([, l]) => l); const n = PLAY_STEPS.find(([k]) => !F[k]); next = n && n[1]; }
+    else { done = STEPS.slice(0, S.done); next = STEPS[S.done]; }
+    const key = MODE + done.join('|') + next; if (key === lastHud) return; lastHud = key;
+    const shown = done.slice(-2), more = done.length - shown.length;
+    mission.innerHTML = '<span class="lbl">המשימה</span>' + (more ? `<span class="more">${more} שלבים הושלמו ·</span>` : '') + shown.map(d => `<span class="done">${d}</span>`).join('') + (next ? `<span class="next">הבא: ${next}</span>` : '<span class="next fin">הסקר פורסם!</span>');
+  };
+  const dialog = (t) => {
+    if (!S.say) return;
+    x.font = '600 6.6px Heebo, Arial';
+    const lines = wrapLines(S.say, 196), h = 14 + lines.length * 9.5, by = H - 6 - h, edge = S.refuse ? 'r' : 'k';
+    R(edge, 6, by, 212, h); R('w', 8, by + 2, 208, h - 4); R('p', 8, by + h - 5, 208, 1);
+    if (S.who) plate(S.who, 196, by, 5.2, S.refuse ? 'r' : 'b', 'w');
+    let left = Math.floor(S.shown); x.font = '600 6.6px Heebo, Arial'; x.fillStyle = P.k; x.textAlign = 'right'; x.textBaseline = 'top';
+    lines.forEach((l, i) => { if (left <= 0) return; const part = l.slice(0, left); left -= l.length + 1; x.fillText(part, 210, by + 8 + i * 9.5); });
+    if (S.shown >= S.say.length && Math.floor(t / 380) % 2) { R(S.refuse ? 'r' : 'b', 14, by + h - 11, 5, 2); R(S.refuse ? 'r' : 'b', 15, by + h - 9, 3, 1); }
+  };
+  const confetti = (dt, t) => {
+    if (!S.conf.length) return;
+    S.conf.forEach(c => { c.vy += .06 * dt / 16; c.x += (c.vx + Math.sin(t / 160 + c.ph) * .3) * dt / 16; c.y += c.vy * dt / 16; c.vx *= .99; R(c.c, c.x, c.y, c.w, Math.sin(t / 90 + c.ph) > 0 ? 2 : 1); });
+    S.conf = S.conf.filter(c => c.y < H + 4);
+    plate('הסקר פורסם!', W / 2, 12, 9, 'y', 'k');
+  };
+
+  /* ---------- play mode: you walk, rooms keep their order ---------- */
+  let MODE = 'demo';
+  const F = {};
+  const PLAY_STEPS = [['brief', 'קבלו בריף מהעורך'], ['manoStart', 'פגישת פתיחה עם מנו גבע'], ['design', 'בניית המחקר אצל החוקרים'], ['call', 'איסוף במוקד הטלפוני'], ['panel', 'איסוף אינטרנטי'], ['findings', 'בניית ממצאים אצל החוקרים'], ['manoEnd', 'אישור סופי של מנו גבע'], ['submitted', 'הגשה לעורך']];
+  const keys = new Set();
+  const bx = (x0, y0, w, h) => ({ x: x0, y: y0, w, h });
+  const hit = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  const BLOCK = {
+    street: [bx(12, 4, 108, 76), bx(138, 10, 76, 70), ...[[120, 30], [120, 54], [-4, 40], [210, 0], [100, 152], [150, 156]].map(([X, Y]) => bx(X + 2, Y + 8, 12, 8)),
+      ...[[110, 82], [200, 130], [26, 130]].map(([X, Y]) => bx(X + 6, Y + 8, 4, 6)), bx(16, 152, 36, 28), bx(174, 152, 36, 28), bx(56, 168, 40, 8), bx(130, 168, 40, 8), bx(60, 158, 14, 7), bx(140, 152, 14, 7)],
+    office: [],
+    news: [bx(0, 0, W, 28), bx(0, 0, 6, H), bx(W - 6, 0, 6, H), bx(0, H - 4, 96, 4), bx(128, H - 4, 96, 4), bx(86, 44, 56, 14), bx(76, 38, 14, 16), bx(138, 38, 14, 16),
+      ...[18, 62, 146, 190].flatMap(dx => [bx(dx - 10, 76, 28, 20), bx(dx - 10, 126, 28, 20)])]
+  };
+  OFF.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.office.push(bx(i * T, j * T, T, T)); }));
+  BLOCK.office.push(
+    bx(18, 15, 28, 22), bx(48, 16, 30, 21), bx(40, 44, 24, 14), bx(66, 48, 12, 8), bx(32, 52, 12, 8),
+    bx(114, 17, 28, 20), bx(122, 46, 12, 8),
+    bx(182, 16, 26, 15), bx(178, 46, 22, 14), bx(184, 38, 8, 8),
+    ...[84, 148].map(X => bx(X + 1, 84, 8, 8)), ...[44, 74, 160].map(X => bx(X + 1, 104, 8, 8)),
+    bx(96, 105, 18, 7), bx(3, 98, 14, 6), bx(202, 78, 22, 18),
+    ...CALL_DESKS.map(([dx, dy]) => bx(dx, dy - 10, 22, 22)),
+    bx(130, 160, 12, 12), bx(140, 146, 18, 18), bx(194, 160, 12, 12), bx(176, 146, 18, 18));
+  const feet = (X, Y) => bx(X + 4, Y + 11, 8, 5);
+  const blocked = (X, Y) => {
+    const f = feet(X, Y);
+    if (f.x < 0 || f.y < 0 || f.x + f.w > W || f.y + f.h > H) return true;
+    const list = BLOCK[S.scene].slice();
+    if (S.scene === 'street' && !F.brief) list.push(bx(140, 90, 8, 6));
+    if (S.scene === 'street') list.push(bx(164, 135, 8, 6));
+    if (S.scene === 'news' && F.brief) list.push(bx(110, 42, 8, 6));
+    return list.some(b => hit(f, b));
+  };
+  const talk = (who, key, refuse) => { S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(who + ': ' + TEXT[key]); };
+  const live = document.getElementById('live');
+  const announce = text => { live.textContent = ''; setTimeout(() => { live.textContent = text; }, 30); };
+  const researchers = () => {
+    if (!F.manoStart) return talk('חוקרים', 'gate_research_early', true);
+    if (!F.design) { F.design = true; return talk('חוקרים', 'researcher_design'); }
+    if (!(F.call && F.panel)) return talk('חוקרים', 'gate_findings_early', true);
+    if (!F.findings) F.findings = true;
+    talk('חוקרים', 'researcher_findings');
+  };
+  const callCenter = () => { if (!F.design) return talk('מוקד טלפוני', 'gate_call_early', true); F.call = true; talk('מוקד טלפוני', 'call_center'); };
+  const TARGETS = () => {
+    if (S.scene === 'street') return [{ x: 168, y: 132, act: () => { if (F.asked) return talk('סוקר של מדגם', 'field_thanks'); F.asked = true; talk('סוקר של מדגם', 'field_ask'); } }].concat(F.brief ? [] : [{ x: 144, y: 88, act: () => { F.brief = true; talk('העורך', 'editor_brief'); } }]);
+    if (S.scene === 'news') return F.brief ? [{ x: 114, y: 42, act: () => {
+      if (!F.manoEnd) return talk('העורך', 'gate_editor_early', true);
+      if (!F.submitted) { F.submitted = true; S.partyT = 0; S.partyPending = true; }
+      talk('העורך', 'editor_final'); S.onClose = () => { S.finaleAt = 2000; };
+    } }] : [];
+    return [
+      { x: 214, y: 84, act: () => talk('המזכירה', 'secretary_line') },
+      { x: 188, y: 40, act: () => {
+        if (!F.brief) return talk('מנו גבע', 'gate_mano_nobrief', true);
+        if (!F.manoStart) { F.manoStart = true; return talk('מנו גבע', 'mano_start'); }
+        if (!F.findings) return talk('מנו גבע', 'gate_mano_early', true);
+        F.manoEnd = true; talk('מנו גבע', 'mano_end');
+      } },
+      { x: 38, y: 52, act: researchers }, { x: 52, y: 44, act: researchers }, { x: 72, y: 50, act: researchers },
+      ...CALL_DESKS.map(([dx, dy]) => ({ x: dx + 4, y: dy - 2, act: callCenter })),
+      { x: 124, y: 46, act: () => { if (!F.design) return talk('איסוף אינטרנטי', 'gate_panel_early', true); F.panel = true; talk('איסוף אינטרנטי', 'panel'); } },
+      { x: 150, y: 146, act: () => talk(TEXT.vp_title, 'vp1_line') },
+      { x: 186, y: 146, act: () => talk(TEXT.vp_title, 'vp2_line') },
+      { x: 105, y: 98, act: () => { S.photo = true; S.photoP = 0; announce(TEXT.printer_caption); } },
+      { x: 11, y: 100, act: () => { S.barkT = 1600; talk('הכלב', 'dog_line'); } }
+    ];
+  };
+  const FACE = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+  const nearest = () => {
+    // talk to whoever is in front of you: targets behind your facing direction are skipped
+    const cx = S.me.x + 8, cy = S.me.y + 10, [fx, fy] = FACE[S.me.face] || [0, 0]; let best = null, bd = 26;
+    TARGETS().forEach(t2 => { const vx = t2.x - cx, vy = t2.y - cy, d = Math.hypot(vx, vy); if (d < bd && vx * fx + vy * fy > -3) { bd = d; best = t2; } });
+    return best;
+  };
+  const finale = document.getElementById('finale');
+  const overlayOpen = () => !finale.hidden;
+  const act = () => {
+    if (MODE !== 'play' || S.fadeDir !== 0 || overlayOpen()) return;
+    if (S.say) { if (S.shown < S.say.length) { S.shown = S.say.length; return; } S.say = ''; S.refuse = false; const cb = S.onClose; S.onClose = null; if (cb) cb(); return; }
+    if (S.photo) { S.photo = false; return; }
+    const t2 = nearest(); if (t2) t2.act();
+  };
+  const faceTo = (tx, ty) => { const vx = tx - (S.me.x + 8), vy = ty - (S.me.y + 10); S.me.face = Math.abs(vx) > Math.abs(vy) ? (vx < 0 ? 'left' : 'right') : (vy < 0 ? 'up' : 'down'); };
+  cv.addEventListener('pointerdown', e => {
+    if (MODE !== 'play' || overlayOpen() || S.fadeDir !== 0) return;
+    e.preventDefault(); mhint.hidden = true;
+    if (S.say || S.photo) return act();
+    const r = cv.getBoundingClientRect(), wx = (e.clientX - r.left) / r.width * W, wy = (e.clientY - r.top) / r.height * H;
+    const t2 = TARGETS().find(o => Math.hypot(o.x - wx, o.y - wy) < 16);
+    if (t2 && Math.hypot(t2.x - (S.me.x + 8), t2.y - (S.me.y + 10)) < 26) { faceTo(t2.x, t2.y); return t2.act(); }
+    S.tap = { x: wx - 8, y: wy - 13, target: t2 || null, stuck: 0 };
+  });
+  const go = (scene, title, pos, face) => { S.fadeDir = 1; S.next = [scene, title, pos]; S.nextFace = face; keys.clear(); };
+  const playStep = (dt) => {
+    if (S.fadeDir !== 0 || S.say || S.photo || overlayOpen()) return false;
+    let dx = 0, dy = 0;
+    if (keys.has('left')) dx -= 1; if (keys.has('right')) dx += 1; if (keys.has('up')) dy -= 1; if (keys.has('down')) dy += 1;
+    if (dx || dy) S.tap = null;
+    else if (S.tap) {
+      // walking to a tapped spot; arriving next to a tapped person starts the conversation
+      const tp = S.tap;
+      if (tp.target && Math.hypot(tp.target.x - (S.me.x + 8), tp.target.y - (S.me.y + 10)) < 24) { S.tap = null; faceTo(tp.target.x, tp.target.y); tp.target.act(); return false; }
+      const ex = tp.x - S.me.x, ey = tp.y - S.me.y;
+      if (Math.abs(ex) < 1.5 && Math.abs(ey) < 1.5) { S.tap = null; return false; }
+      dx = Math.abs(ex) >= 1.5 ? Math.sign(ex) : 0; dy = Math.abs(ey) >= 1.5 ? Math.sign(ey) : 0;
+    }
+    if (!dx && !dy) return false;
+    const bx0 = S.me.x, by0 = S.me.y;
+    const sp = 1.15 * dt / 16;
+    S.me.face = dx ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down');
+    if (dx && !blocked(S.me.x + dx * sp, S.me.y)) S.me.x += dx * sp;
+    if (dy && !blocked(S.me.x, S.me.y + dy * sp)) S.me.y += dy * sp;
+    S.leg += dt;
+    if (S.tap && !keys.size) { if (Math.abs(S.me.x - bx0) + Math.abs(S.me.y - by0) < .05) { if (++S.tap.stuck > 8) S.tap = null; } else S.tap.stuck = 0; }
+    const f = feet(S.me.x, S.me.y);
+    if (S.scene === 'street' && dy < 0 && hit(f, bx(56, 79, 16, 4))) go('office', 'משרדי מדגם', [206, 88], 'left');
+    else if (S.scene === 'street' && dy < 0 && hit(f, bx(166, 79, 18, 4))) go('news', 'חדר החדשות', [104, 170], 'up');
+    else if (S.scene === 'office' && dx > 0 && S.me.x > 209) go('street', '', [56, 82], 'down');
+    else if (S.scene === 'news' && dy > 0 && S.me.y > 174) go('street', '', [172, 82], 'down');
+    return true;
+  };
+  const resetPlay = () => {
+    PLAY_STEPS.forEach(([k]) => F[k] = false); F.asked = false;
+    Object.assign(S, { scene: 'street', say: '', who: '', key: '', refuse: false, shown: 0, conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, card: '', barkT: 0, partyPending: false, finaleAt: 0, onClose: null, wps: [], wait: 0, egg: null });
+    S.me = { x: 6, y: 128, face: 'right' }; finale.hidden = true; lastHud = '';
+  };
+  const stage = document.getElementById('stage');
+  const mplay = document.getElementById('mplay'), mtop = document.getElementById('mtop'), mctl = document.getElementById('mctl'), mhint = document.getElementById('mhint');
+  document.body.appendChild(mplay);
+  const isMobile = () => matchMedia('(pointer:coarse)').matches || innerWidth < 900;
+  const padEl = document.querySelector('.pad'), talkEl = document.getElementById('talk'), exitEl = document.getElementById('exit');
+  // remember where each piece lives, so leaving play puts it back exactly
+  const MOVED = [mission, cv, padEl, talkEl, exitEl, finale].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
+  const toMobile = () => {
+    mtop.append(mission, exitEl); mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale);
+    document.documentElement.classList.add('mobile-play'); mhint.hidden = false;
+    try { const p = mplay.requestFullscreen && mplay.requestFullscreen({ navigationUI: 'hide' }); if (p && p.catch) p.catch(() => {}); } catch (_) {}
+  };
+  const fromMobile = () => {
+    MOVED.forEach(({ el, c }) => c.parentNode.insertBefore(el, c.nextSibling));
+    document.documentElement.classList.remove('mobile-play');
+    try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (_) {}
+  };
+  const enterPlay = () => {
+    MODE = 'play'; resetPlay(); keys.clear();
+    if (isMobile()) toMobile(); else stage.classList.add('playing');
+    cv.focus({ preventScroll: true }); announce('המשחק התחיל. חצים להליכה, רווח לדיבור, Escape ליציאה. העורך מחכה ברחוב.');
+  };
+  const exitPlay = () => {
+    MODE = 'demo'; keys.clear(); finale.hidden = true; stage.classList.remove('playing'); S.tap = null;
+    if (document.documentElement.classList.contains('mobile-play')) fromMobile();
+    Object.assign(S, { scene: 'street', i: 0, done: 0, say: '', conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, wait: 0, egg: null, onClose: null });
+    S.me = { x: 0, y: 128, face: 'right' }; lastHud = ''; startAction();
+  };
+  function showFinale() {
+    finale.hidden = false; document.getElementById('fin-q').hidden = false; document.getElementById('fin-r').hidden = true;
+    finale.querySelector('button').focus(); announce('ומה אתם חושבים? בחרו תשובה.');
+  }
+  finale.querySelectorAll('[data-ans]').forEach(b => b.addEventListener('click', () => {
+    const v = FAKE[+b.dataset.ans][1];
+    document.getElementById('fin-pct').textContent = v + '%';
+    document.getElementById('fin-q').hidden = true; document.getElementById('fin-r').hidden = false;
+    document.getElementById('again').focus(); announce(v + ' אחוז מהמשיבים בסקר שלכם חושבים כמוכם.');
+  }));
+  document.getElementById('again').addEventListener('click', () => { resetPlay(); cv.focus({ preventScroll: true }); });
+  document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); enterPlay(); }));
+  document.getElementById('exit').addEventListener('click', exitPlay);
+  const KEYMAP = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down', A: 'left', D: 'right', W: 'up', S: 'down' };
+  addEventListener('keydown', e => {
+    if (MODE !== 'play') return;
+    if (e.key === 'Escape') { e.preventDefault(); return exitPlay(); }
+    if (overlayOpen()) return;
+    if (KEYMAP[e.key]) { e.preventDefault(); keys.add(KEYMAP[e.key]); }
+    else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!e.repeat) act(); }
+  });
+  addEventListener('keyup', e => { if (KEYMAP[e.key]) keys.delete(KEYMAP[e.key]); });
+  addEventListener('blur', () => keys.clear());
+  document.querySelectorAll('[data-dir]').forEach(b => {
+    const k = b.dataset.dir, on = e => { e.preventDefault(); keys.add(k); }, off = () => keys.delete(k);
+    b.addEventListener('pointerdown', on); ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, off));
+  });
+  document.getElementById('talk').addEventListener('click', act);
+  const promptAt = (t) => {
+    if (MODE !== 'play' || S.say || S.photo || S.fadeDir || overlayOpen()) return;
+    const t2 = nearest(); if (!t2) return;
+    const yy = t2.y - 26 + (Math.floor(t / 300) % 2);
+    R('k', t2.x - 4, yy, 9, 10); R('w', t2.x - 3, yy + 1, 7, 8); txt('!', t2.x + .5, yy + 5, 7, 'b', 800);
+  };
+
+  if (new URLSearchParams(location.search).has('debug')) window.__midgam = { S, F, TARGETS, BLOCK, feet, hit, nearest };
+
+  /* ---------- loop ---------- */
+  let last = performance.now();
+  startAction();
+  const frame = (t) => {
+    const dt = Math.min(50, t - last); last = t;
+    if (S.scene === 'street') drawStreet(); else if (S.scene === 'office') drawOffice(t); else drawNews(t);
+    // people standing in the scene
+    if (S.scene === 'street' && (MODE === 'demo' ? S.i <= 1 : !F.brief)) person(PEOPLE.editor, 136, 80, 'left');
+    if (S.scene === 'street') { person(PEOPLE.field, 160, 124, 'down'); R('k', 162, 116, 13, 6); R('b', 163, 117, 11, 4); txt('מדגם', 168.5, 119.2, 3.6, 'w', 800); }
+    if (S.scene === 'street') { person(PEOPLE.a, 186 - (t / 30 % 220), 112 + 18, 'left', Math.floor(t / 200) % 2); }
+    if (S.scene === 'news' && (MODE === 'demo' || F.brief)) person(PEOPLE.editor, 106, 32, 'down');
+    // the player
+    let playMoving = false;
+    if (MODE === 'play') playMoving = playStep(dt);
+    else if (S.fadeDir === 0 && S.wait <= 0 && S.wps.length && !reduce) {
+      const [gx, gy] = S.wps[0], dx = gx - S.me.x, dy = gy - S.me.y, d = Math.hypot(dx, dy), sp = .95 * dt / 16;
+      if (d <= sp) { S.me.x = gx; S.me.y = gy; S.wps.shift(); if (!S.wps.length) finishWalk(); }
+      else { S.me.x += dx / d * sp; S.me.y += dy / d * sp; S.me.face = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down'); S.leg += dt; }
+    }
+    const walking = MODE === 'play' ? playMoving : S.wps.length > 0 && S.wait <= 0 && S.fadeDir === 0;
+    person(PEOPLE.me, S.me.x, S.me.y, S.me.face, walking && Math.floor(S.leg / 150) % 2);
+    if (MODE === 'demo' && !walking && Math.floor(t / 500) % 2) { R('k', S.me.x + 6, S.me.y - 7, 4, 4); R('y', S.me.x + 7, S.me.y - 6, 2, 2); }
+    if (S.barkT > 0) S.barkT -= dt;
+    if (MODE === 'play') { if (S.shown < (S.say || '').length) S.shown += dt / 22; if (S.partyPending) { S.partyT += dt; if (S.partyT > 900) { S.partyPending = false; S.paper = true; S.paperP = 0; burst(); } }
+      if (S.finaleAt > 0 && S.paper && S.paperP >= 1) { S.finaleAt -= dt; if (S.finaleAt <= 0) { S.finaleAt = 0; showFinale(); } } }
+    else if (S.wait > 0) { S.wait -= dt; if (S.shown < S.say.length) S.shown += dt / 26; if (S.wait <= 0) { if (S.egg) { S.egg = null; S.photo = false; S.say = ''; S.fadeDir = 1; S.next = ['street', '', [0, 128]]; S.reset = true; } else advance(); } }
+    if (MODE === 'demo' && S.scene === 'news' && SCRIPT[S.i] && SCRIPT[S.i].party && S.wait > 0) { S.partyT += dt; if (S.partyT > 1700 && !S.paper) { S.paper = true; S.paperP = 0; burst(); } }
+    if (S.paper) { S.paperP = Math.min(1, S.paperP + dt / 700); newspaper(S.paperP); }
+    if (S.photo) { S.photoP = Math.min(1, S.photoP + dt / 700); photo(S.photoP); }
+    confetti(dt, t);
+    promptAt(t); hud(); dialog(t);
+    // scene transitions: fade out, title card, fade in
+    if (S.fadeDir !== 0) {
+      S.fade += S.fadeDir * dt / 320;
+      if (S.fade >= 1 && S.fadeDir === 1) {
+        S.fade = 1; const [scene, title, pos] = S.next; S.scene = scene; S.me.x = pos[0]; S.me.y = pos[1]; S.card = title; S.cardT = title ? 800 : 0;
+        if (MODE === 'play') { S.me.face = S.nextFace || 'down'; }
+        else if (S.reset) { S.reset = false; S.i = 0; S.done = 0; S.conf = []; S.paper = false; S.me.face = 'right'; startAction(); } else if (!SCRIPT[S.i].party) { S.i++; startAction(); }
+        S.fadeDir = 2;
+      }
+      if (S.fadeDir === 2) { S.cardT -= dt; if (S.cardT <= 0) S.fadeDir = -1; }
+      if (S.fade <= 0 && S.fadeDir === -1) { S.fade = 0; S.fadeDir = 0; S.card = ''; }
+      x.fillStyle = `rgba(11,34,56,${Math.min(1, Math.max(0, S.fade))})`; x.fillRect(0, 0, W, H);
+      if (S.card && S.fadeDir === 2) { txt(S.card, W / 2, H / 2, 11, 'w', 800); R('s', W / 2 - 20, H / 2 + 10, 40, 1); }
+    }
+    requestAnimationFrame(frame);
+  };
+  if (reduce) { S.scene = 'news'; S.done = 8; S.key = 'editor_final'; S.say = TEXT.editor_final; S.paper = true; S.paperP = 1; S.who = 'העורך'; S.shown = 999; S.wait = 1e12; S.me = { x: 104, y: 62, face: 'up' }; S.wps = []; }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { requestAnimationFrame(frame); if (new URLSearchParams(location.search).has('play') && !reduce) enterPlay(); });
+})();
+</script>
+</body>
+</html>
