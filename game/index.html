@@ -948,7 +948,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   })();
   ['pointerdown', 'pointerup', 'touchend', 'keydown', 'click'].forEach(ev => addEventListener(ev, () => { if (MODE === 'play' && !Music.ready()) Music.start(); }, true));
   addEventListener('pageshow', () => { if (MODE === 'play') Music.resume(); });
-  const SCENE_TUNE = { street: 'street', office: 'office', office2: 'office2', vault: 'vault', news: 'news' };
+  // both office screens share one hallway, so they share the lounge tune and it keeps playing as you walk between them
+  const SCENE_TUNE = { street: 'street', office: 'office2', office2: 'office2', vault: 'vault', news: 'news' };
 
   /* ---------- play mode: you walk, rooms keep their order ---------- */
   let MODE = 'demo';
