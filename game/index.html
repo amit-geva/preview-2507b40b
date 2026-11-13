@@ -842,57 +842,91 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     // "E5:2 G5:2 -:4" -> events by 16th-note step; "-" is a rest
     const seq = str => { const ev = {}; let t = 0; str.trim().split(/\s+/).forEach(tok => { const [n, l] = tok.split(':'); if (n !== '-') ev[t] = { f: hz(n), l: +l }; t += +l; }); return { ev, len: t }; };
     // bass: one root per bar, played in a pattern of [semitones above root, length]
-    // soft and slow: a round triangle melody, sustained chord pads, a gentle bass, no drums
+    // chords used by the tunes (pads, arpeggios and the bass, which plays the chord's lowest note an octave down)
+    const CH = { C: ['C4', 'E4', 'G4'], Am: ['A3', 'C4', 'E4'], F: ['F3', 'A3', 'C4'], G: ['G3', 'B3', 'D4'], Dm: ['D4', 'F4', 'A4'], Em: ['E4', 'G4', 'B4'],
+      Bb: ['Bb3', 'D4', 'F4'], Gm: ['G3', 'Bb3', 'D4'], D: ['D4', 'F#4', 'A4'], Bm: ['B3', 'D4', 'F#4'], E: ['E4', 'G#4', 'B4'],
+      Dm7: ['D4', 'F4', 'A4', 'C5'], G7: ['G3', 'B3', 'D4', 'F4'], Cmaj7: ['C4', 'E4', 'G4', 'B4'], Am7: ['A3', 'C4', 'E4', 'G4'] };
+    const chords = str => str.trim().split(/\s+/).map(n => CH[n].map(hz));
+    // five tunes, each with its own instruments and groove; all soft, none harsh
     const TRACKS = {
-      // a calm morning on the street
-      street: { bpm: 84, lead: seq('E5:4 D5:4 C5:4 G4:4  A4:8 C5:4 E5:4  F5:4 E5:4 D5:4 C5:4  D5:12 -:4  E5:4 G5:4 E5:4 C5:4  B4:8 E5:4 G5:4  A5:4 G5:4 F5:4 D5:4  C5:12 -:4'),
-        chords: [['C4', 'E4', 'G4'], ['A3', 'C4', 'E4'], ['F3', 'A3', 'C4'], ['G3', 'B3', 'D4'], ['C4', 'E4', 'G4'], ['E3', 'G3', 'B3'], ['F3', 'A3', 'C4'], ['G3', 'B3', 'D4']],
-        bass: ['C3', 'A2', 'F2', 'G2', 'C3', 'E2', 'F2', 'G2'] },
-      // a warm, steady day at the office
-      office: { bpm: 92, lead: seq('A4:4 C5:4 F5:6 E5:2  D5:8 A4:8  Bb4:4 D5:4 F5:4 D5:4  C5:8 E5:4 G5:4  F5:6 E5:2 D5:4 C5:4  C5:8 A4:8  Bb4:4 C5:4 D5:4 E5:4  F5:12 -:4'),
-        chords: [['F3', 'A3', 'C4'], ['D3', 'F3', 'A3'], ['Bb3', 'D4', 'F4'], ['C4', 'E4', 'G4'], ['F3', 'A3', 'C4'], ['A3', 'C4', 'E4'], ['Bb3', 'D4', 'F4'], ['C4', 'E4', 'G4']],
-        bass: ['F2', 'D2', 'Bb2', 'C3', 'F2', 'A2', 'Bb2', 'C3'] },
-      // the secret stairs: slow and a little mysterious
-      vault: { bpm: 66, lead: seq('E5:8 C5:8  A4:16  F5:8 D5:8  G#4:16'),
-        chords: [['A3', 'C4', 'E4'], ['F3', 'A3', 'C4'], ['D3', 'F3', 'A3'], ['E3', 'G#3', 'B3']],
-        bass: ['A2', 'F2', 'D2', 'E2'] },
-      // the newsroom: bright but unhurried
-      news: { bpm: 96, lead: seq('D5:4 G5:4 B5:6 A5:2  G5:8 E5:8  E5:4 G5:4 C6:6 B5:2  A5:12 -:4  B5:4 A5:4 G5:4 D5:4  E5:8 G5:8  F#5:4 G5:4 A5:4 D5:4  G5:12 -:4'),
-        chords: [['G3', 'B3', 'D4'], ['E3', 'G3', 'B3'], ['C4', 'E4', 'G4'], ['D3', 'F#3', 'A3'], ['G3', 'B3', 'D4'], ['C4', 'E4', 'G4'], ['D3', 'F#3', 'A3'], ['G3', 'B3', 'D4']],
-        bass: ['G2', 'E2', 'C3', 'D3', 'G2', 'C3', 'D3', 'G2'] }
+      // the street: a sunny morning walk, flute over plucked arpeggios
+      street: { bpm: 104, lead: 'flute', arp: { inst: 'pluck', pat: [0, 1, 2, 1], every: 2 }, bassPat: [[0, 6], [7, 2], [0, 4], [7, 4]],
+        drums: { kick: 'x.......x.......', shaker: '..x...x...x...x.' },
+        chords: chords('C Am F G  C Am Dm G  F G Em Am  F G C C'),
+        seq: seq('G4:2 C5:2 E5:4 D5:2 C5:2 E5:4  A5:6 G5:2 E5:8  F5:2 E5:2 F5:2 A5:2 G5:4 F5:4  D5:12 -:4  G4:2 C5:2 E5:4 D5:2 C5:2 G5:4  A5:6 B5:2 C6:8  D6:2 C6:2 A5:4 F5:4 A5:4  G5:12 -:4  A5:3 G5:1 F5:4 C5:4 F5:4  G5:3 F5:1 E5:4 D5:4 B4:4  E5:3 D5:1 E5:4 G5:4 B5:4  A5:12 -:4  F5:2 A5:2 C6:4 A5:2 F5:2 A5:4  G5:2 B5:2 D6:4 B5:2 G5:2 D5:4  E5:4 G5:4 C6:8  C6:8 -:8') },
+      // the main office: busy desks, a bouncy marimba and a walking bass
+      office: { bpm: 112, lead: 'marimba', pad: true, bassPat: [[0, 4], [7, 4], [12, 4], [7, 4]],
+        drums: { kick: 'x.....x...x.....', shaker: '..x...x...x...x.' },
+        chords: chords('F Dm Bb C  F Dm Gm C  Bb C Am Dm  Gm C F F'),
+        seq: seq('C5:2 F5:2 A5:2 F5:2 C6:2 A5:2 F5:4  D5:2 F5:2 A5:2 D6:2 C6:4 A5:4  Bb4:2 D5:2 F5:2 Bb5:2 A5:2 G5:2 F5:4  E5:2 G5:2 C6:4 -:8  A5:2 C6:2 A5:2 F5:2 G5:2 A5:2 F5:4  F5:2 A5:2 D6:2 C6:2 A5:4 F5:4  G5:2 Bb5:2 D6:2 Bb5:2 A5:2 G5:2 E5:4  C5:4 E5:4 G5:4 -:4  D6:4 C6:2 Bb5:2 A5:4 F5:4  E5:4 G5:2 C6:2 Bb5:4 G5:4  C6:4 B5:2 A5:2 E5:4 C5:4  D5:2 E5:2 F5:2 A5:2 D6:8  Bb5:2 A5:2 G5:2 D5:2 G5:4 Bb5:4  A5:2 G5:2 E5:2 C5:2 E5:4 G5:4  F5:2 A5:2 C6:4 A5:2 C6:2 F5:4  F5:8 -:8') },
+      // the new wing: a relaxed lounge, bells with an echo over jazzy seventh chords and soft brushes
+      office2: { bpm: 90, lead: 'bell', pad: true, comp: [4, 10], bassPat: [[0, 4], [7, 4], [12, 4], [7, 4]],
+        drums: { brush: '....x.......x...', shaker: '..x.......x.....' },
+        chords: chords('Dm7 G7 Cmaj7 Am7  Dm7 G7 Cmaj7 Cmaj7  Dm7 G7 Cmaj7 Am7  Dm7 G7 Cmaj7 Cmaj7'),
+        seq: seq('A5:3 F5:3 D5:2 -:4 C5:2 D5:2  F5:6 D5:2 B4:4 -:4  E5:3 G5:3 B5:2 -:2 A5:2 G5:4  E5:12 -:4  A5:3 C6:3 A5:2 -:2 F5:2 A5:4  G5:3 F5:3 D5:2 -:2 B4:2 D5:4  C5:3 E5:3 G5:2 B5:8  C6:12 -:4  D6:4 C6:2 A5:2 -:4 F5:4  B5:4 A5:2 G5:2 -:4 D5:4  E5:2 G5:2 C6:2 E6:2 D6:8  C6:3 B5:3 A5:2 E5:8  F5:2 A5:2 C6:4 A5:4 F5:4  D5:2 F5:2 B5:4 A5:4 G5:4  E5:4 D5:4 C5:4 B4:4  C5:12 -:4') },
+      // the secret stairs: a slow heartbeat, echoing bells, a little suspense
+      vault: { bpm: 72, lead: 'bell', pad: true, arp: { inst: 'pluck', pat: [0, 1, 2, 1], every: 4 }, bassPat: [[0, 16]],
+        drums: { kick: 'x..x............' },
+        chords: chords('Am Am F F Dm Dm E E'),
+        seq: seq('E5:2 -:2 A5:2 -:2 C6:4 B5:4  A5:8 -:8  F5:2 -:2 A5:2 -:2 C6:4 A5:4  G5:8 -:8  D5:2 -:2 F5:2 -:2 A5:4 G5:4  F5:8 E5:8  E5:2 G#5:2 B5:4 D6:4 C6:2 B5:2  G#5:12 -:4') },
+      // the newsroom: on air, a proud little march with a warm organ
+      news: { bpm: 120, lead: 'organ', bassPat: [[0, 2], [12, 2], [0, 2], [12, 2], [0, 2], [12, 2], [0, 2], [12, 2]],
+        drums: { kick: 'x...x...x...x...', snare: '....x.......x...', shaker: '..x...x...x...x.' },
+        chords: chords('G C D G  Em C D D  C D Bm Em  C D G G'),
+        seq: seq('D5:2 G5:2 B5:2 D6:2 B5:4 G5:4  E5:2 G5:2 C6:4 B5:2 A5:2 G5:4  F#5:2 A5:2 D6:4 C6:2 B5:2 A5:4  G5:4 D5:4 G5:8  B5:2 A5:2 G5:2 E5:2 G5:4 B5:4  C6:2 B5:2 A5:2 G5:2 E5:4 G5:4  A5:2 B5:2 C6:2 D6:2 C6:4 A5:4  F#5:8 A5:8  G5:3 E5:1 C5:4 E5:4 G5:4  A5:3 F#5:1 D5:4 F#5:4 A5:4  B5:3 A5:1 F#5:4 D5:4 F#5:4  E5:12 -:4  E5:2 G5:2 C6:4 E5:2 G5:2 C6:4  F#5:2 A5:2 D6:4 C6:2 B5:2 A5:4  B5:4 A5:2 G5:2 D5:4 B4:4  G5:8 -:8') }
     };
-    // every note fades in and out smoothly, so nothing clicks or stabs
-    const tone = (type, f, t, d, g, att = .04, rel = .35) => {
-      const o = ac.createOscillator(), v = ac.createGain(); o.type = type; o.frequency.value = f;
-      const end = t + d, a = Math.min(att, d / 3), r = Math.min(rel, d * .6);
-      v.gain.setValueAtTime(0, t); v.gain.linearRampToValueAtTime(g, t + a); v.gain.setValueAtTime(g, Math.max(t + a, end - r)); v.gain.linearRampToValueAtTime(0, end);
-      o.connect(v).connect(bus); o.start(t); o.stop(end + .02);
+    let bus = null, echo = null, organWave = null;
+    // a smooth envelope on every note, so nothing clicks or stabs
+    const env = (v, t, d, g, att, rel, decay) => {
+      v.gain.setValueAtTime(0, t); v.gain.linearRampToValueAtTime(g, t + Math.min(att, d / 3));
+      if (decay) v.gain.exponentialRampToValueAtTime(.0008, t + d);
+      else { const r = Math.min(rel, d * .6); v.gain.setValueAtTime(g, Math.max(t + att, t + d - r)); v.gain.linearRampToValueAtTime(0, t + d); }
     };
-    const noise = (t, d, g, hp = 2000) => {
+    const osc = (type, f, t, d, g, att, rel, decay, send) => {
+      const o = ac.createOscillator(), v = ac.createGain();
+      if (type === 'organ') o.setPeriodicWave(organWave); else o.type = type;
+      o.frequency.value = f; env(v, t, d, g, att, rel, decay); o.connect(v).connect(bus); if (send) v.connect(echo);
+      o.start(t); o.stop(t + d + .05); return o;
+    };
+    const tone = (type, f, t, d, g, att = .04, rel = .3) => osc(type, f, t, d, g, att, rel, false);
+    const INST = {
+      flute: (f, t, d) => { const o = osc('triangle', f, t, d, .1, .05, .25); const l = ac.createOscillator(), lg = ac.createGain(); l.frequency.value = 5; lg.gain.value = f * .004; l.connect(lg).connect(o.frequency); l.start(t + .15); l.stop(t + d + .05); },
+      marimba: (f, t) => { osc('sine', f, t, .45, .16, .004, 0, true); osc('sine', f * 4, t, .12, .025, .002, 0, true); },
+      bell: (f, t, d) => { osc('sine', f, t, Math.max(1, d), .1, .004, 0, true, true); osc('sine', f * 2.76, t, .5, .02, .002, 0, true, true); },
+      organ: (f, t, d) => osc('organ', f, t, d, .06, .02, .12),
+      pluck: (f, t, d) => osc('triangle', f, t, Math.max(.25, d), .06, .004, 0, true)
+    };
+    const noise = (t, d, g, freq = 2000, q = 1) => {
       if (!noiseBuf) { noiseBuf = ac.createBuffer(1, ac.sampleRate * .5, ac.sampleRate); const a2 = noiseBuf.getChannelData(0); for (let i = 0; i < a2.length; i++) a2[i] = Math.random() * 2 - 1; }
-      const n = ac.createBufferSource(), f = ac.createBiquadFilter(), v = ac.createGain(); n.buffer = noiseBuf; f.type = 'bandpass'; f.frequency.value = hp;
-      v.gain.setValueAtTime(g, t); v.gain.exponentialRampToValueAtTime(.001, t + d); n.connect(f).connect(v).connect(bus); n.start(t); n.stop(t + d);
+      const n = ac.createBufferSource(), f = ac.createBiquadFilter(), v = ac.createGain(); n.buffer = noiseBuf; f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = q;
+      v.gain.setValueAtTime(g, t); v.gain.exponentialRampToValueAtTime(.001, t + d); n.connect(f).connect(v).connect(bus); n.start(t); n.stop(t + d + .02);
     };
-    let bus = null;
+    const kick = (t, g = .16) => { const o = ac.createOscillator(), v = ac.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(110, t); o.frequency.exponentialRampToValueAtTime(42, t + .14); v.gain.setValueAtTime(g, t); v.gain.exponentialRampToValueAtTime(.001, t + .22); o.connect(v).connect(bus); o.start(t); o.stop(t + .25); };
+    const DRUM = { kick: t => kick(t), snare: t => noise(t, .12, .05, 1800, .8), shaker: t => noise(t, .05, .022, 5000, 1.5), brush: t => noise(t, .18, .03, 3000, .7) };
+    // bass offsets within a bar, precomputed per tune
+    Object.values(TRACKS).forEach(tr => { let o = 0; tr.bassEv = tr.bassPat.map(([st, l]) => { const e = { at: o, st, l }; o += l; return e; }); });
     const tick = () => {
       if (!ac || !track) return;
-      const tr = TRACKS[track], sp = 60 / tr.bpm / 4, bars = tr.chords.length;
+      const tr = TRACKS[track], sp = 60 / tr.bpm / 4, len = tr.seq.len;
       if (ac.currentTime < holdUntil) { nextT = holdUntil; step = 0; return; }
+      if (nextT < ac.currentTime - .05) nextT = ac.currentTime + .05;
       while (nextT < ac.currentTime + .2) {
-        const i = step % tr.lead.len, L = tr.lead.ev[i];
-        if (L) tone('triangle', L.f, nextT, L.l * sp * 1.05, .1, .05, .3);
-        if (i % 16 === 0) {
-          const bar = (i / 16) % bars, d = 16 * sp;
-          tr.chords[bar].forEach(n => tone('sine', hz(n), nextT, d * 1.02, .035, .35, .6));
-          tone('triangle', hz(tr.bass[bar]), nextT, d * .5, .12, .06, .3);
-          tone('triangle', hz(tr.bass[bar]), nextT + d * .5, d * .5, .1, .06, .3);
-        }
+        const i = step % len, s16 = i % 16, ch = tr.chords[Math.floor(i / 16) % tr.chords.length], t = nextT, L = tr.seq.ev[i];
+        if (L) INST[tr.lead](L.f, t, L.l * sp);
+        if (tr.pad && s16 === 0) ch.forEach(f => tone('sine', f, t, 16 * sp * 1.02, .022, .3, .5));
+        if (tr.arp && s16 % tr.arp.every === 0) INST[tr.arp.inst](ch[tr.arp.pat[(s16 / tr.arp.every) % tr.arp.pat.length] % ch.length], t, tr.arp.every * sp);
+        if (tr.comp && tr.comp.includes(s16)) ch.forEach(f => osc('triangle', f, t, .5, .03, .006, 0, true));
+        tr.bassEv.forEach(e => { if (e.at === s16) tone('triangle', ch[0] / 2 * Math.pow(2, e.st / 12), t, e.l * sp * .95, .13, .02, .12); });
+        Object.keys(tr.drums || {}).forEach(k => { if (tr.drums[k][s16] === 'x') DRUM[k](t); });
         step++; nextT += sp;
       }
     };
     const ensure = () => {
-      if (!ac) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return false; ac = new C(); master = ac.createGain(); master.gain.value = on ? .45 : 0; const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1900; lp.Q.value = .3; bus = ac.createGain(); bus.connect(lp).connect(master); master.connect(ac.destination); }
-      if (ac.state === 'suspended') ac.resume().catch(() => {});
+      if (!ac) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return false; ac = new C(); master = ac.createGain(); master.gain.value = on ? .45 : 0; const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2600; lp.Q.value = .3; bus = ac.createGain(); bus.connect(lp).connect(master); master.connect(ac.destination);
+        echo = ac.createDelay(1); echo.delayTime.value = .33; const fb = ac.createGain(); fb.gain.value = .32; const elp = ac.createBiquadFilter(); elp.type = 'lowpass'; elp.frequency.value = 1500; echo.connect(fb).connect(echo); echo.connect(elp).connect(master);
+        organWave = ac.createPeriodicWave(new Float32Array([0, 1, .45, .2, .1, .04]), new Float32Array(6)); }
+      if (ac.state !== 'running') ac.resume().catch(() => {});
+      try { const b = ac.createBuffer(1, 1, 22050), src = ac.createBufferSource(); src.buffer = b; src.connect(ac.destination); src.start(0); } catch (_) {}
       if (!timer) timer = setInterval(tick, 40);
       return true;
     };
@@ -907,11 +941,14 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       blip() { if (!ac || !on) return; const t = ac.currentTime; tone('sine', 660, t, .09, .03, .01, .06); tone('sine', 880, t + .07, .1, .025, .01, .07); },
       clang() { if (!ac || !on) return; const t = ac.currentTime; noise(t, .4, .1, 900); tone('triangle', 110, t, .6, .12, .005, .5); },
       glug() { if (!ac || !on) return; const t = ac.currentTime; [0, .14, .28].forEach((a2, i) => tone('sine', 280 + i * 80, t + a2, .12, .08, .01, .08)); },
-      suspend() { if (ac && ac.state === 'running') ac.suspend().catch(() => {}); },
-      resume() { if (ac && track) ac.resume().catch(() => {}); }
+      suspend() { if (ac && ac.state === 'running') ac.suspend().catch(() => {}); if (timer) { clearInterval(timer); timer = null; } },
+      resume() { if (ac && track) { ac.resume().catch(() => {}); if (!timer) timer = setInterval(tick, 40); } },
+      ready() { return !!ac && ac.state === 'running'; }
     };
   })();
-  const SCENE_TUNE = { street: 'street', office: 'office', office2: 'office', vault: 'vault', news: 'news' };
+  ['pointerdown', 'pointerup', 'touchend', 'keydown', 'click'].forEach(ev => addEventListener(ev, () => { if (MODE === 'play' && !Music.ready()) Music.start(); }, true));
+  addEventListener('pageshow', () => { if (MODE === 'play') Music.resume(); });
+  const SCENE_TUNE = { street: 'street', office: 'office', office2: 'office2', vault: 'vault', news: 'news' };
 
   /* ---------- play mode: you walk, rooms keep their order ---------- */
   let MODE = 'demo';
