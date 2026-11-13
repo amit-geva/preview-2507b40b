@@ -81,7 +81,9 @@ canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering
 .pad{direction:rtl;display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(2,26px);gap:3px}
 .ctl{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;display:grid;place-items:center;border-radius:10px;background:#1d5689;color:#fff;font:700 14px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3);touch-action:none;user-select:none;-webkit-user-select:none}
 .ctl:active{transform:translateY(1px);background:#229ad6}
-.ctl svg{width:14px;height:14px}
+.ctl svg{width:14px;height:14px;pointer-events:none}
+.ctl,.ctl *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+html.mobile-play,html.mobile-play *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .pad [data-dir=up]{grid-column:2;grid-row:1}.pad [data-dir=left]{grid-column:3;grid-row:2}.pad [data-dir=down]{grid-column:2;grid-row:2}.pad [data-dir=right]{grid-column:1;grid-row:2}
 .ctl.talk{transition:opacity .18s var(--ease),transform .18s var(--ease);height:46px;padding:0 18px;border-radius:999px;background:#f2c14e;color:#0b2238;font-size:15px}
 .ctl.talk.off{opacity:0;transform:scale(.85);pointer-events:none}
@@ -106,6 +108,8 @@ canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering
 .fin .cta p{margin-top:6px;font-size:15px}
 .fin .cta .row{margin-top:14px}
 .fin .row.sm{margin-top:12px}
+.fin .row.sm .quiet{box-shadow:none;color:#5f6975;font-weight:600}
+.fin .row.sm .quiet:hover{color:#1d5689}
 .fin .row.sm a,.fin .row.sm button{height:40px;font-size:14.5px;padding:0 16px;background:transparent;box-shadow:inset 0 0 0 1px rgba(29,86,137,.25)}
 /* a person's card: placeholder portrait, name, role, a line */
 .fin .pc{text-align:start;padding:24px 24px 20px}
@@ -196,7 +200,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     </div>
     <div class="fin" id="finale" hidden>
       <div class="card" id="fin-q"><h2 data-i18n="finQ">ומה אתם חושבים?</h2><p data-i18n="finQ2">להישאר בשעון קיץ כל השנה?</p><div class="row"><button type="button" data-ans="0" data-i18n="a0">בעד</button><button type="button" data-ans="1" data-i18n="a1">נגד</button><button type="button" data-ans="2" data-i18n="a2">לא יודע/ת</button></div></div>
-      <div class="card" id="fin-r" hidden><h2 data-i18n="finR">אנשים כמוכם</h2><div class="pct" id="fin-pct"></div><p data-i18n="finR2">מהמשיבים בסקר שלכם חושבים כמוכם.</p><small data-i18n="finR3">נתונים בדיוניים מתוך המשחק</small><div class="cta"><h3 data-i18n="next1">ועכשיו, מה הסקר שלך?</h3><p data-i18n="next2">ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.</p><div class="row"><a class="pri" href="#contact" id="contact" data-i18n="contact">דברו איתנו</a></div></div><div class="row sm"><a href="#findings" data-i18n="findings">לממצאים של מדגם</a><button type="button" id="again" data-i18n="again">לשחק שוב</button></div></div>
+      <div class="card" id="fin-r" hidden><h2 data-i18n="finR">אנשים כמוכם</h2><div class="pct" id="fin-pct"></div><p data-i18n="finR2">מבין מי ששיחקו במשחק חושבים כמוכם.</p><small data-i18n="finR3">נתוני דוגמה, עד שנחבר מונה אמיתי באתר</small><div class="cta"><h3 data-i18n="next1">ועכשיו, מה הסקר שלך?</h3><p data-i18n="next2">ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.</p><div class="row"><a class="pri" href="#contact" id="contact" data-i18n="contact">דברו איתנו</a></div></div><div class="row sm"><button type="button" class="quiet" id="again" data-i18n="close">סגירה</button></div></div>
     </div>
     <div class="fin" id="pcard" hidden><div class="card pc" role="dialog" aria-labelledby="pc-name"><div class="pc-top"><img id="pc-img" alt=""><div><small id="pc-role"></small><h2 id="pc-name"></h2></div></div><p id="pc-line"></p><small class="pc-note" id="pc-note" data-i18n="phNote">תמונה וטקסט זמניים</small><div class="row"><button type="button" class="pri" id="pc-close" data-i18n="cont">המשך</button></div></div></div>
     <p class="sr" id="live" aria-live="polite"></p>
@@ -419,7 +423,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (!p) R('w', cx + 6, Y + 6 - Math.floor(t / 220) % 7, 1, 1);
   };
   // a single still gold triangle on the floor, pointing to where the hallway goes on
-  const wayArrow = (X, dir) => { for (let k = 0; k < 6; k++) { const h = 1 + 2 * k; R('k', dir < 0 ? X + k : X + 5 - k, 96 - k - 1, 1, h + 2); } for (let k = 0; k < 5; k++) { const h = 1 + 2 * k; R('y', dir < 0 ? X + k + 1 : X + 4 - k, 96 - k, 1, h); } };
+  const wayArrow = (X, dir) => { for (let k = 0; k < 6; k++) { const h = 1 + 2 * k; R('k', dir < 0 ? X + k : X + 5 - k, 96 - k - 1, 1, h + 2); } for (let k = 0; k < 5; k++) { const h = 1 + 2 * k; R('s', dir < 0 ? X + k + 1 : X + 4 - k, 96 - k, 1, h); } };
   const drawOffice2 = (t) => {
     for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) (OFF2[j][i] === '#' ? (a, b) => wallTile(a, b, OFF2) : floorTile)(i, j);
     R('p', 16, 86, W - 16, 20); R('l', 16, 86, W - 16, 1); R('l', 16, 105, W - 16, 1);
@@ -484,6 +488,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     gate_editor_early: 'בלי אישור של מנו גבע אני לא מפרסם.',
     editor_final: 'עבודה יפה! מפרסמים!',
     secretary_line: 'שלום! מנו מוכן לקבל אותך, החדר שלו ממש כאן.',
+    secretary_done: 'כל הכבוד! מחכים לך בחדשות.',
     gate_mano_nobrief: 'עוד אין לנו לקוח. מישהו ברחוב חיפש סקר, כדאי לבדוק.',
     mano_start: 'הגעת למדגם. מתחילים אצל החוקרים: שאלון, מדגם ומכסות. רק אחר כך יוצאים לשטח.',
     gate_mano_early: 'עוד לא ראיתי ממצאים. החוקרים מחכים לך!',
@@ -526,6 +531,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       gate_editor_early: "Without Mano Geva's sign-off, I'm not publishing.",
       editor_final: "Great work! We're publishing!",
       secretary_line: 'Hello! Mano is ready to see you, his room is right here.',
+      secretary_done: "Well done! They're waiting for you at the news.",
       gate_mano_nobrief: "We don't have a client yet. Someone on the street was looking for a survey, worth a look.",
       mano_start: 'Welcome to Midgam. We start with the researchers: questionnaire, sample and quotas. Only then do we go into the field.',
       gate_mano_early: "I haven't seen any findings yet. The researchers are waiting for you!",
@@ -564,6 +570,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       gate_editor_early: 'بدون موافقة مانو جيفع لن أنشر.',
       editor_final: 'عمل رائع! ننشر!',
       secretary_line: 'أهلًا! مانو جاهز لاستقبالك، غرفته هنا تمامًا.',
+      secretary_done: 'أحسنت! ينتظرونك في الأخبار.',
       gate_mano_nobrief: 'ليس لدينا زبون بعد. شخص في الشارع كان يبحث عن استطلاع، من المفيد أن تتحقق.',
       mano_start: 'وصلت إلى مدجام. نبدأ عند الباحثين: استبيان وعيّنة وحصص. بعدها فقط نخرج إلى الميدان.',
       gate_mano_early: 'لم أرَ نتائج بعد. الباحثون بانتظارك!',
@@ -609,14 +616,14 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       names: { editor: 'העורך', mano: 'מנו גבע', res: 'חוקרים', call: 'מוקד טלפוני', panel: 'איסוף אינטרנטי', sec: 'המזכירה', dog: 'הכלב', printer: 'המדפסת', field: 'סוקר של מדגם' },
       steps: ['קבלו בריף מהעורך', 'פגישת פתיחה עם מנו גבע', 'בניית המחקר אצל החוקרים', 'איסוף במוקד הטלפוני', 'איסוף אינטרנטי', 'בניית ממצאים אצל החוקרים', 'אישור סופי של מנו גבע', 'הגשה לעורך'],
       hint: 'רמז, הבא:',
-      start: 'המשחק התחיל. חצים להליכה, רווח לדיבור, Escape ליציאה. העורך מחכה ברחוב.', askQ: 'ומה אתם חושבים? בחרו תשובה.', pctSay: v => v + ' אחוז מהמשיבים בסקר שלכם חושבים כמוכם.',
+      start: 'המשחק התחיל. חצים להליכה, רווח לדיבור, Escape ליציאה. העורך מחכה ברחוב.', askQ: 'ומה אתם חושבים? בחרו תשובה.', pctSay: v => v + ' אחוז ממי ששיחקו במשחק חושבים כמוכם.',
       html: {
         nav1: 'תחומי פעילות', nav2: 'ממצאים', nav3: 'מקרי בוחן', nav4: 'אודות', cta: 'פנייה למחקר', badge1: 'משחק · 3 דקות', title: 'יום אחד במדגם',
         h1: 'תצליחו להגיש<span>סקר תקין?</span>', sub: 'פוגשים ברחוב עורך שצריך סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. הוא יקבל את הסקר רק אם הוא תקין.',
         playNow: 'שחקו עכשיו', fields: 'מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b>',
         demo: '<b>יום אחד במדגם</b> · מצב הדגמה', play: 'שחקו', talk: 'דברו', cont: 'המשך', phNote: 'תמונה וטקסט זמניים', walk: 'להליכה', space: 'מקש רווח לדיבור', exit: 'יציאה',
         finQ: 'ומה אתם חושבים?', finQ2: 'להישאר בשעון קיץ כל השנה?', a0: 'בעד', a1: 'נגד', a2: 'לא יודע/ת',
-        finR: 'אנשים כמוכם', finR2: 'מהמשיבים בסקר שלכם חושבים כמוכם.', finR3: 'נתונים בדיוניים מתוך המשחק',
+        finR: 'אנשים כמוכם', finR2: 'מבין מי ששיחקו במשחק חושבים כמוכם.', finR3: 'נתוני דוגמה, עד שנחבר מונה אמיתי באתר', close: 'סגירה',
         next1: 'ועכשיו, מה הסקר שלך?', next2: 'ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.', contact: 'דברו איתנו', findings: 'לממצאים של מדגם', again: 'לשחק שוב',
         mhint: 'הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר'
       },
@@ -633,14 +640,14 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       names: { editor: 'The editor', mano: 'Mano Geva', res: 'Researchers', call: 'Call center', panel: 'Online collection', sec: 'Secretary', dog: 'The dog', printer: 'Printer', field: 'Midgam interviewer' },
       steps: ['Get a brief from the editor', 'Kickoff with Mano Geva', 'Build the study with the researchers', 'Collect at the call center', 'Collect online', 'Build the findings with the researchers', 'Final sign-off from Mano Geva', 'Hand it to the editor'],
       hint: 'Hint, next:',
-      start: 'The game has started. Arrows to walk, Space to talk, Escape to exit. The editor is waiting on the street.', askQ: 'And what do you think? Choose an answer.', pctSay: v => v + ' percent of respondents in your survey think like you.',
+      start: 'The game has started. Arrows to walk, Space to talk, Escape to exit. The editor is waiting on the street.', askQ: 'And what do you think? Choose an answer.', pctSay: v => v + ' percent of people who played this game think like you.',
       html: {
         nav1: 'Services', nav2: 'Findings', nav3: 'Case studies', nav4: 'About', cta: 'Start a study', badge1: 'Game · 3 min', title: 'A day at Midgam',
         h1: 'Can you deliver<span>a valid survey?</span>', sub: 'Meet an editor on the street who needs a survey, go through every Midgam department with Mano Geva, and head back to the newsroom. He only accepts a valid survey.',
         playNow: 'Play now', fields: 'Midgam Consulting &amp; Research, since 1988: <b>Public opinion polls</b> · <b>Market research</b> · <b>Social research</b> · <b>Expert opinions for courts</b>',
         demo: '<b>A day at Midgam</b> · demo', play: 'Play', talk: 'Talk', cont: 'Next', phNote: 'Placeholder photo and text', walk: 'to walk', space: 'Space to talk', exit: 'Exit',
         finQ: 'And what do you think?', finQ2: 'Keep daylight saving time all year?', a0: 'For', a1: 'Against', a2: 'Not sure',
-        finR: 'People like you', finR2: 'of respondents in your survey think like you.', finR3: 'Fictional data from the game',
+        finR: 'People like you', finR2: 'of people who played this game think like you.', finR3: 'Sample data until a live counter is connected', close: 'Close',
         next1: "Now, what's your survey?", next2: "Tell us what you want to find out, and we'll come back with a research proposal.", contact: 'Talk to us', findings: "Midgam's findings", again: 'Play again',
         mhint: 'Tap a spot to walk · "Talk" to talk'
       },
@@ -657,14 +664,14 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       names: { editor: 'المحرّر', mano: 'مانو جيفع', res: 'الباحثون', call: 'مركز الاتصال', panel: 'الجمع عبر الإنترنت', sec: 'السكرتيرة', dog: 'الكلب', printer: 'الطابعة', field: 'باحث ميداني من مدجام' },
       steps: ['احصل على الطلب من المحرّر', 'اجتماع افتتاحي مع مانو جيفع', 'بناء البحث عند الباحثين', 'الجمع في مركز الاتصال', 'الجمع عبر الإنترنت', 'بناء النتائج عند الباحثين', 'موافقة نهائية من مانو جيفع', 'التسليم للمحرّر'],
       hint: 'تلميح، التالي:',
-      start: 'بدأت اللعبة. الأسهم للمشي، المسافة للتحدث، Escape للخروج. المحرّر ينتظر في الشارع.', askQ: 'وما رأيكم؟ اختاروا إجابة.', pctSay: v => v + ' بالمئة من المشاركين في استطلاعكم يفكرون مثلكم.',
+      start: 'بدأت اللعبة. الأسهم للمشي، المسافة للتحدث، Escape للخروج. المحرّر ينتظر في الشارع.', askQ: 'وما رأيكم؟ اختاروا إجابة.', pctSay: v => v + ' بالمئة ممن لعبوا هذه اللعبة يفكرون مثلكم.',
       html: {
         nav1: 'مجالات النشاط', nav2: 'النتائج', nav3: 'دراسات حالة', nav4: 'من نحن', cta: 'اطلبوا بحثًا', badge1: 'لعبة · 3 دقائق', title: 'يوم في مدجام',
         h1: 'هل تنجحون في تقديم<span>استطلاع سليم؟</span>', sub: 'تلتقون في الشارع بمحرّر يحتاج استطلاعًا، تمرّون بكل أقسام مدجام مع مانو جيفع، وتعودون إلى غرفة الأخبار. لن يقبل إلا استطلاعًا سليمًا.',
         playNow: 'العبوا الآن', fields: 'مدجام للاستشارات والأبحاث، منذ 1988: <b>استطلاعات الرأي العام</b> · <b>أبحاث السوق</b> · <b>البحث الاجتماعي</b> · <b>آراء خبراء للمحاكم</b>',
         demo: '<b>يوم في مدجام</b> · عرض تجريبي', play: 'العبوا', talk: 'تحدّث', cont: 'متابعة', phNote: 'صورة ونص مؤقتان', walk: 'للمشي', space: 'مفتاح المسافة للتحدث', exit: 'خروج',
         finQ: 'وما رأيكم؟', finQ2: 'إبقاء التوقيت الصيفي طوال السنة؟', a0: 'مع', a1: 'ضد', a2: 'لا أعرف',
-        finR: 'أشخاص مثلكم', finR2: 'من المشاركين في استطلاعكم يفكرون مثلكم.', finR3: 'بيانات خيالية من اللعبة',
+        finR: 'أشخاص مثلكم', finR2: 'ممن لعبوا هذه اللعبة يفكرون مثلكم.', finR3: 'بيانات نموذجية إلى حين ربط عدّاد حقيقي', close: 'إغلاق',
         next1: 'والآن، ما هو استطلاعك؟', next2: 'أخبرونا ماذا تريدون أن تعرفوا، وسنعود إليكم باقتراح بحث.', contact: 'تواصلوا معنا', findings: 'نتائج مدجام', again: 'العب مرة أخرى',
         mhint: 'اضغطوا على مكان للمشي · «تحدّث» للتحدث'
       },
@@ -885,7 +892,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       talk('editor', 'editor_final'); S.onClose = () => { S.finaleAt = 2000; };
     } }] : [];
     return [
-      { x: 214, y: 84, act: () => talk('sec', 'secretary_line') },
+      { x: 214, y: 84, act: () => talk('sec', F.manoEnd ? 'secretary_done' : 'secretary_line') },
       { x: 188, y: 40, act: () => {
         if (!F.brief) return talk('mano', 'gate_mano_nobrief', true);
         if (!F.manoStart) { F.manoStart = true; return talk('mano', 'mano_start'); }
@@ -1061,9 +1068,9 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     const v = FAKE[+b.dataset.ans][0];
     document.getElementById('fin-pct').textContent = v + '%';
     document.getElementById('fin-q').hidden = true; document.getElementById('fin-r').hidden = false;
-    document.getElementById('again').focus(); announce(U.pctSay(v));
+    document.getElementById('contact').focus(); announce(U.pctSay(v));
   }));
-  document.getElementById('again').addEventListener('click', () => { resetPlay(); cv.focus({ preventScroll: true }); });
+  document.getElementById('again').addEventListener('click', exitPlay);
   document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); enterPlay(); }));
   document.getElementById('exit').addEventListener('click', exitPlay);
   const KEYMAP = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down', A: 'left', D: 'right', W: 'up', S: 'down' };
@@ -1088,6 +1095,10 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   ['pointerup', 'pointercancel'].forEach(ev => addEventListener(ev, release));
   document.addEventListener('visibilitychange', () => { keys.clear(); held.clear(); });
   [mplay, document.querySelector('.game')].forEach(el => el.addEventListener('contextmenu', e => e.preventDefault()));
+  // while playing, a long press anywhere never brings up the phone's menu or text selection
+  addEventListener('contextmenu', e => { if (MODE === 'play') { e.preventDefault(); e.stopPropagation(); } }, true);
+  addEventListener('selectstart', e => { if (MODE === 'play') e.preventDefault(); }, true);
+  document.querySelectorAll('[data-dir]').forEach(b => b.addEventListener('touchstart', e => e.preventDefault(), { passive: false }));
   document.getElementById('talk').addEventListener('click', act);
   // stuck for 20 seconds? a bouncing arrow marks where to go next (the person, or the door that leads there)
   const hintSpot = () => {
