@@ -31,6 +31,13 @@ body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased
 .glang{flex:none;background:rgba(255,255,255,.08);box-shadow:none;padding:3px}
 .glang button{height:28px;min-width:34px;padding:0 8px;font-size:13px;color:#bfe6fa}
 .glang button.on{background:#229ad6;color:#fff}
+.snd{flex:none;width:34px;height:34px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);color:#bfe6fa;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.snd svg{width:18px;height:18px;pointer-events:none}
+.snd .x{display:none}.snd[aria-pressed=false] .x{display:block}.snd[aria-pressed=false] .w{display:none}
+.snd[aria-pressed=false]{color:#7f9bb5}
+.snd:focus-visible{outline:3px solid #8fd3f5;outline-offset:2px}
+#mplay .snd{width:40px;height:40px}
+@media (orientation:portrait){#mplay .mtop{flex-wrap:wrap;row-gap:8px}#mplay .mtop .mission{order:5;flex:1 1 100%}#mplay .mtop .ctl.exit{margin-inline-start:auto}}
 .gtop{display:flex;align-items:center;gap:10px;height:44px;padding:0 4px 10px}
 html[dir=ltr] .copy{right:auto;left:72px}
 html[dir=ltr] .game{left:auto;right:72px}
@@ -182,7 +189,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   </div>
 
   <div class="game" data-up style="--i:2">
-    <div class="gtop" id="gtop"><div class="mission" id="mission" aria-live="polite"></div><div class="lang glang" role="group" data-i18n-aria="lang" aria-label="שפה" id="glang"><button type="button" data-lang="he" lang="he" class="on" aria-pressed="true">עב</button><button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ar" lang="ar" aria-pressed="false">ع</button></div></div>
+    <div class="gtop" id="gtop"><div class="mission" id="mission" aria-live="polite"></div><div class="lang glang" role="group" data-i18n-aria="lang" aria-label="שפה" id="glang"><button type="button" data-lang="he" lang="he" class="on" aria-pressed="true">עב</button><button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ar" lang="ar" aria-pressed="false">ع</button></div><button type="button" class="snd" id="snd" data-i18n-aria="music" aria-label="מוזיקה" aria-pressed="true"><svg viewBox="0 0 16 16" fill="none"><path d="M2.5 6h2.2L8 3.2v9.6L4.7 10H2.5z" fill="currentColor"/><path class="w" d="M10.5 5.5a3.5 3.5 0 0 1 0 5M12.3 3.8a6 6 0 0 1 0 8.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path class="x" d="m10.6 6 3.6 4M14.2 6l-3.6 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button></div>
     <canvas id="cv" tabindex="0" width="672" height="576" role="img" data-i18n-aria="canvas" aria-label="משחק פיקסלים: חוקר צעיר פוגש ברחוב עורך שמבקש סקר, עובר במשרדי מדגם אצל מנו גבע, החוקרים, המוקד הטלפוני והאיסוף האינטרנטי, ומגיש לו בחדר החדשות סקר תקין שמתפרסם."></canvas>
     <div class="gbar">
       <span class="demo-only" data-i18n="demo"><b>יום אחד במדגם</b> · מצב הדגמה</span>
@@ -627,7 +634,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
         next1: 'ועכשיו, מה הסקר שלך?', next2: 'ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.', contact: 'דברו איתנו', findings: 'לממצאים של מדגם', again: 'לשחק שוב',
         mhint: 'הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר'
       },
-      aria: { lang: 'שפה', title: 'יום אחד במדגם', pad: 'כפתורי הליכה', up: 'למעלה', right: 'ימינה', down: 'למטה', left: 'שמאלה',
+      aria: { music: 'מוזיקה', lang: 'שפה', title: 'יום אחד במדגם', pad: 'כפתורי הליכה', up: 'למעלה', right: 'ימינה', down: 'למטה', left: 'שמאלה',
         canvas: 'משחק פיקסלים: חוקר צעיר פוגש ברחוב עורך שמבקש סקר, עובר במשרדי מדגם אצל מנו גבע, החוקרים, המוקד הטלפוני והאיסוף האינטרנטי, ומגיש לו בחדר החדשות סקר תקין שמתפרסם.' }
     },
     en: {
@@ -651,7 +658,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
         next1: "Now, what's your survey?", next2: "Tell us what you want to find out, and we'll come back with a research proposal.", contact: 'Talk to us', findings: "Midgam's findings", again: 'Play again',
         mhint: 'Tap a spot to walk · "Talk" to talk'
       },
-      aria: { lang: 'Language', title: 'A day at Midgam', pad: 'Walking buttons', up: 'Up', right: 'Right', down: 'Down', left: 'Left',
+      aria: { music: 'Music', lang: 'Language', title: 'A day at Midgam', pad: 'Walking buttons', up: 'Up', right: 'Right', down: 'Down', left: 'Left',
         canvas: 'Pixel game: a young researcher meets an editor on the street who wants a survey, goes through the Midgam offices to Mano Geva, the researchers, the call center and online collection, and hands a valid survey over in the newsroom.' }
     },
     ar: {
@@ -675,7 +682,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
         next1: 'والآن، ما هو استطلاعك؟', next2: 'أخبرونا ماذا تريدون أن تعرفوا، وسنعود إليكم باقتراح بحث.', contact: 'تواصلوا معنا', findings: 'نتائج مدجام', again: 'العب مرة أخرى',
         mhint: 'اضغطوا على مكان للمشي · «تحدّث» للتحدث'
       },
-      aria: { lang: 'اللغة', title: 'يوم في مدجام', pad: 'أزرار المشي', up: 'أعلى', right: 'يمين', down: 'أسفل', left: 'يسار',
+      aria: { music: 'الموسيقى', lang: 'اللغة', title: 'يوم في مدجام', pad: 'أزرار المشي', up: 'أعلى', right: 'يمين', down: 'أسفل', left: 'يسار',
         canvas: 'لعبة بكسل: باحث شاب يلتقي في الشارع بمحرّر يريد استطلاعًا، يمرّ في مكاتب مدجام عند مانو جيفع والباحثين ومركز الاتصال والجمع عبر الإنترنت، ويسلّم استطلاعًا سليمًا في غرفة الأخبار.' }
     }
   };
@@ -826,6 +833,75 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     plate(U.published, W / 2, 12, 9, 'y', 'k', W - 20);
   };
 
+
+  /* ---------- music: a tiny chiptune player with original loops (square lead, triangle bass, noise hats) ---------- */
+  const Music = (() => {
+    let ac = null, master = null, track = null, step = 0, nextT = 0, timer = null, holdUntil = 0, noiseBuf = null;
+    let on = true; try { on = localStorage.getItem('midgam-music') !== '0'; } catch (_) {}
+    const hz = n => { const m = /^([A-G])(#|b)?(\d)$/.exec(n), b = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0); return 440 * Math.pow(2, ((+m[3] + 1) * 12 + b - 69) / 12); };
+    // "E5:2 G5:2 -:4" -> events by 16th-note step; "-" is a rest
+    const seq = str => { const ev = {}; let t = 0; str.trim().split(/\s+/).forEach(tok => { const [n, l] = tok.split(':'); if (n !== '-') ev[t] = { f: hz(n), l: +l }; t += +l; }); return { ev, len: t }; };
+    // bass: one root per bar, played in a pattern of [semitones above root, length]
+    const bassSeq = (roots, pat) => { const ev = {}; let t = 0; roots.forEach(r => pat.forEach(([st, l]) => { if (st !== null) ev[t] = { f: hz(r) * Math.pow(2, st / 12), l }; t += l; })); return { ev, len: t }; };
+    const TRACKS = {
+      // a bright morning on the street
+      street: { bpm: 132, hat: s2 => s2 % 4 === 2, lead: seq('E5:2 G5:2 C6:4 B5:2 G5:2 E5:4  F5:2 A5:2 G5:4 E5:2 D5:2 C5:4  D5:2 E5:2 F5:2 A5:2 G5:4 E5:4  D5:4 G4:2 B4:2 D5:8  E5:2 G5:2 C6:4 D6:2 C6:2 A5:4  F5:2 A5:2 C6:4 B5:2 A5:2 G5:4  A5:2 G5:2 F5:2 E5:2 D5:4 G5:4  C5:8 -:4 G4:4'),
+        bass: bassSeq(['C3', 'F2', 'D3', 'G2', 'A2', 'F2', 'G2', 'C3'], [[0, 4], [7, 4], [12, 4], [7, 4]]) },
+      // a busy, bouncy day at the office
+      office: { bpm: 120, hat: s2 => s2 % 2 === 1, lead: seq('F5:2 A5:2 C6:2 A5:2 Bb5:4 A5:4  G5:2 F5:2 E5:2 G5:2 C5:8  D5:2 F5:2 Bb5:2 F5:2 A5:4 F5:4  G5:4 A5:2 G5:2 F5:8  A5:2 C6:2 D6:2 C6:2 Bb5:2 A5:2 G5:4  Bb5:2 A5:2 G5:2 F5:2 E5:4 C5:4  D5:2 E5:2 F5:2 G5:2 A5:4 G5:4  F5:6 C5:2 F5:8'),
+        bass: bassSeq(['F2', 'C3', 'Bb2', 'C3', 'D3', 'C3', 'Bb2', 'F2'], [[0, 2], [0, 2], [7, 2], [0, 2], [12, 2], [7, 2], [0, 2], [7, 2]]) },
+      // the secret stairs: slow and mysterious
+      vault: { bpm: 84, hat: () => false, lead: seq('A4:4 C5:4 E5:4 D#5:4  E5:8 -:8  A4:4 C5:4 F5:4 E5:4  B4:12 -:4'),
+        bass: bassSeq(['A2', 'F2', 'D2', 'E2'], [[0, 16]]), soft: true },
+      // breaking news: upbeat and proud
+      news: { bpm: 140, hat: s2 => s2 % 4 === 2 || s2 % 16 === 14, lead: seq('G5:2 G5:2 D5:2 G5:2 B5:4 A5:4  G5:2 F#5:2 E5:2 F#5:2 D5:8  E5:2 G5:2 C6:2 B5:2 A5:4 G5:4  A5:2 B5:2 A5:2 F#5:2 D5:8  G5:2 B5:2 D6:4 C6:2 B5:2 A5:4  C6:2 B5:2 A5:2 G5:2 E5:4 G5:4  F#5:2 G5:2 A5:2 B5:2 C6:4 A5:4  G5:8 D5:4 G5:4'),
+        bass: bassSeq(['G2', 'D3', 'C3', 'D3', 'G2', 'C3', 'D3', 'G2'], [[0, 4], [12, 2], [7, 2], [0, 4], [7, 4]]) }
+    };
+    const tone = (type, f, t, d, g) => {
+      const o = ac.createOscillator(), v = ac.createGain(); o.type = type; o.frequency.value = f;
+      v.gain.setValueAtTime(0, t); v.gain.linearRampToValueAtTime(g, t + .006); v.gain.setValueAtTime(g, t + d * .7); v.gain.linearRampToValueAtTime(0, t + d * .95);
+      o.connect(v).connect(master); o.start(t); o.stop(t + d);
+    };
+    const noise = (t, d, g, hp = 6000) => {
+      if (!noiseBuf) { noiseBuf = ac.createBuffer(1, ac.sampleRate * .5, ac.sampleRate); const a = noiseBuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random() * 2 - 1; }
+      const n = ac.createBufferSource(), f = ac.createBiquadFilter(), v = ac.createGain(); n.buffer = noiseBuf; f.type = 'highpass'; f.frequency.value = hp;
+      v.gain.setValueAtTime(g, t); v.gain.exponentialRampToValueAtTime(.001, t + d); n.connect(f).connect(v).connect(master); n.start(t); n.stop(t + d);
+    };
+    const tick = () => {
+      if (!ac || !track) return;
+      const tr = TRACKS[track], sp = 60 / tr.bpm / 4;
+      if (ac.currentTime < holdUntil) { nextT = holdUntil; step = 0; return; }
+      while (nextT < ac.currentTime + .15) {
+        const i = step % tr.lead.len, L = tr.lead.ev[i], B = tr.bass.ev[i % tr.bass.len];
+        if (L) tone('square', L.f, nextT, L.l * sp, tr.soft ? .05 : .07);
+        if (B) tone('triangle', B.f, nextT, B.l * sp, .22);
+        if (tr.hat(i)) noise(nextT, .04, .05);
+        step++; nextT += sp;
+      }
+    };
+    const ensure = () => {
+      if (!ac) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return false; ac = new C(); master = ac.createGain(); master.gain.value = on ? .5 : 0; master.connect(ac.destination); }
+      if (ac.state === 'suspended') ac.resume().catch(() => {});
+      if (!timer) timer = setInterval(tick, 40);
+      return true;
+    };
+    return {
+      get on() { return on; },
+      start() { ensure(); },
+      stop() { track = null; if (timer) { clearInterval(timer); timer = null; } if (ac) ac.suspend().catch(() => {}); },
+      want(name) { if (!ac || name === track) return; track = name; step = 0; nextT = ac.currentTime + .08; },
+      toggle() { on = !on; try { localStorage.setItem('midgam-music', on ? '1' : '0'); } catch (_) {} if (ac) master.gain.setTargetAtTime(on ? .5 : 0, ac.currentTime, .05); return on; },
+      // the publish fanfare: the loop pauses for it, then comes back
+      fanfare() { if (!ac || !on) return; const t = ac.currentTime + .05, sp = .1; [['C5', 0, 2], ['E5', 2, 2], ['G5', 4, 2], ['C6', 6, 4], ['G5', 10, 2], ['C6', 12, 10]].forEach(([n, a, l]) => tone('square', hz(n), t + a * sp, l * sp, .08)); tone('triangle', hz('C3'), t, 22 * sp, .25); [0, 4, 8, 12].forEach(a => noise(t + a * sp, .08, .07, 3000)); holdUntil = t + 24 * sp; },
+      blip() { if (!ac || !on) return; const t = ac.currentTime; tone('square', 880, t, .05, .035); tone('square', 1320, t + .045, .05, .03); },
+      clang() { if (!ac || !on) return; const t = ac.currentTime; noise(t, .5, .25, 800); tone('square', 110, t, .35, .08); tone('square', 104, t + .02, .35, .06); },
+      glug() { if (!ac || !on) return; const t = ac.currentTime; [0, .12, .24].forEach((a, i) => tone('triangle', 300 + i * 90, t + a, .1, .2)); },
+      suspend() { if (ac && ac.state === 'running') ac.suspend().catch(() => {}); },
+      resume() { if (ac && track) ac.resume().catch(() => {}); }
+    };
+  })();
+  const SCENE_TUNE = { street: 'street', office: 'office', office2: 'office', vault: 'vault', news: 'news' };
+
   /* ---------- play mode: you walk, rooms keep their order ---------- */
   let MODE = 'demo';
   const F = {};
@@ -867,7 +943,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     return list.some(b => hit(f, b));
   };
   const whoName = w => w === 'vp' ? TEXT.vp_title : (U.names[w] || w);
-  const talk = (who, key, refuse) => { wake(); S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(whoName(who) + ': ' + TEXT[key]); };
+  const talk = (who, key, refuse) => { wake(); if (MODE === 'play' && key !== 'vault_locked' && key !== 'shelf_line') Music.blip(); S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(whoName(who) + ': ' + TEXT[key]); };
   const live = document.getElementById('live');
   const announce = text => { live.textContent = ''; setTimeout(() => { live.textContent = text; }, 30); };
   const researchers = () => {
@@ -884,7 +960,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.scene === 'office2') return [
       { x: 32, y: 26, act: () => showCard('qual1') }, { x: 56, y: 26, act: () => showCard('qual2') },
       { x: 180, y: 30, act: () => showCard('ihab') }, { x: 126, y: 142, act: () => showCard('mina') }
-    ].concat(F.shelf ? [] : [{ x: 197, y: 156, act: () => { F.shelf = true; S.shelfP = 0; S.shake = 200; talk('', 'shelf_line'); } }])
+    ].concat(F.shelf ? [] : [{ x: 197, y: 156, act: () => { F.shelf = true; S.shelfP = 0; S.shake = 200; Music.glug(); talk('', 'shelf_line'); } }])
      .concat(F.dog ? [] : [{ x: 28, y: 100, act: () => { S.barkT = 1600; talk('dog', 'dog_line'); S.onClose = () => { F.dog = true; S.trail = [{ x: 20, y: 88 }]; S.dogP = { x: 20, y: 88, left: false }; }; } }]);
     if (S.scene === 'news') return F.brief ? [{ x: 114, y: 42, act: () => {
       if (!F.manoEnd) return talk('editor', 'gate_editor_early', true);
@@ -1023,7 +1099,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     else if (S.scene === 'office2' && dx > 0 && S.me.x > 209) slideTo('office', [-2, S.me.y], 1);
     else if (S.scene === 'office2' && (dx || dy) && F.shelf && S.shelfP >= 1 && hit(f, bx(194, 162, 7, 7))) go('vault', 'vault', [40, 74], 'down');
     else if (S.scene === 'vault' && dy < 0 && hit(f, bx(36, 62, 24, 4))) go('office2', '', [164, 134], 'right');
-    if (S.scene === 'vault' && !F.locked && f.x + f.w > 96) { F.locked = true; S.barsP = 0; S.shake = 300; S.tap = null; keys.clear(); talk('', 'vault_locked', true); }
+    if (S.scene === 'vault' && !F.locked && f.x + f.w > 96) { F.locked = true; S.barsP = 0; S.shake = 300; Music.clang(); S.tap = null; keys.clear(); talk('', 'vault_locked', true); }
     return true;
   };
   const resetPlay = () => {
@@ -1038,9 +1114,10 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const padEl = document.querySelector('.pad'), talkEl = document.getElementById('talk'), exitEl = document.getElementById('exit');
   // remember where each piece lives, so leaving play puts it back exactly
   const glang = document.getElementById('glang');
-  const MOVED = [mission, glang, cv, padEl, talkEl, exitEl, finale, pcard].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
+  const sndEl = document.getElementById('snd');
+  const MOVED = [mission, glang, sndEl, cv, padEl, talkEl, exitEl, finale, pcard].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
   const toMobile = () => {
-    mtop.append(mission, glang, exitEl); lastHud = ''; mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale, pcard);
+    mtop.append(mission, glang, sndEl, exitEl); lastHud = ''; mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale, pcard);
     document.documentElement.classList.add('mobile-play'); mhint.hidden = false;
     try { const p = mplay.requestFullscreen && mplay.requestFullscreen({ navigationUI: 'hide' }); if (p && p.catch) p.catch(() => {}); } catch (_) {}
   };
@@ -1050,12 +1127,12 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (_) {}
   };
   const enterPlay = () => {
-    MODE = 'play'; resetPlay(); keys.clear();
+    MODE = 'play'; resetPlay(); keys.clear(); Music.start();
     if (isMobile()) toMobile(); else stage.classList.add('playing');
     cv.focus({ preventScroll: true }); announce(U.start);
   };
   const exitPlay = () => {
-    MODE = 'demo'; keys.clear(); finale.hidden = true; pcard.hidden = true; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; stage.classList.remove('playing'); S.tap = null;
+    MODE = 'demo'; Music.stop(); keys.clear(); finale.hidden = true; pcard.hidden = true; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; stage.classList.remove('playing'); S.tap = null;
     if (document.documentElement.classList.contains('mobile-play')) fromMobile();
     Object.assign(S, { scene: 'street', i: 0, done: 0, say: '', conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, wait: 0, egg: null, onClose: null });
     S.me = { x: 0, y: 128, face: 'right' }; lastHud = ''; startAction();
@@ -1093,13 +1170,15 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, release));
   });
   ['pointerup', 'pointercancel'].forEach(ev => addEventListener(ev, release));
-  document.addEventListener('visibilitychange', () => { keys.clear(); held.clear(); });
+  document.addEventListener('visibilitychange', () => { keys.clear(); held.clear(); if (document.hidden) Music.suspend(); else if (MODE === 'play') Music.resume(); });
   [mplay, document.querySelector('.game')].forEach(el => el.addEventListener('contextmenu', e => e.preventDefault()));
   // while playing, a long press anywhere never brings up the phone's menu or text selection
   addEventListener('contextmenu', e => { if (MODE === 'play') { e.preventDefault(); e.stopPropagation(); } }, true);
   addEventListener('selectstart', e => { if (MODE === 'play') e.preventDefault(); }, true);
   document.querySelectorAll('[data-dir]').forEach(b => b.addEventListener('touchstart', e => e.preventDefault(), { passive: false }));
   document.getElementById('talk').addEventListener('click', act);
+  const paintSnd = () => sndEl.setAttribute('aria-pressed', Music.on);
+  sndEl.addEventListener('click', () => { Music.toggle(); if (MODE === 'play') Music.start(); paintSnd(); if (MODE === 'play') cv.focus({ preventScroll: true }); }); paintSnd();
   // stuck for 20 seconds? a bouncing arrow marks where to go next (the person, or the door that leads there)
   const hintSpot = () => {
     const sc = S.scene;
@@ -1146,7 +1225,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { setLang(b.dataset.lang, true); if (MODE === 'play') cv.focus({ preventScroll: true }); }));
   { let l0 = new URLSearchParams(location.search).get('lang'); if (!l0) try { l0 = localStorage.getItem('midgam-lang'); } catch (_) {} if (l0 && l0 !== 'he') setLang(l0); }
-  if (new URLSearchParams(location.search).has('debug')) window.__midgam = { S, F, TARGETS, BLOCK, feet, hit, nearest };
+  if (new URLSearchParams(location.search).has('debug')) window.__midgam = { S, F, TARGETS, BLOCK, feet, hit, nearest, Music };
 
   /* ---------- loop ---------- */
   let last = performance.now();
@@ -1170,7 +1249,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.scene === 'news' && (MODE === 'demo' || F.brief)) person(PEOPLE.editor, 106, 32, 'down');
     // the player
     let playMoving = false;
-    if (MODE === 'play') playMoving = playStep(dt);
+    if (MODE === 'play') { playMoving = playStep(dt); Music.want(SCENE_TUNE[S.scene]); }
     else if (S.fadeDir === 0 && S.wait <= 0 && S.wps.length && !reduce) {
       const [gx, gy] = S.wps[0], dx = gx - S.me.x, dy = gy - S.me.y, d = Math.hypot(dx, dy), sp = .95 * dt / 16;
       if (d <= sp) { S.me.x = gx; S.me.y = gy; S.wps.shift(); if (!S.wps.length) finishWalk(); }
@@ -1188,7 +1267,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     person(PEOPLE.me, S.me.x, S.me.y, S.me.face, walking && Math.floor(S.leg / 150) % 2);
     if (MODE === 'demo' && !walking && Math.floor(t / 500) % 2) { R('k', S.me.x + 6, S.me.y - 7, 4, 4); R('y', S.me.x + 7, S.me.y - 6, 2, 2); }
     if (S.barkT > 0) S.barkT -= dt;
-    if (MODE === 'play') { if (S.shown < (S.say || '').length) S.shown += dt / 22; if (S.partyPending) { S.partyT += dt; if (S.partyT > 900) { S.partyPending = false; S.paper = true; S.paperP = 0; burst(); } }
+    if (MODE === 'play') { if (S.shown < (S.say || '').length) S.shown += dt / 22; if (S.partyPending) { S.partyT += dt; if (S.partyT > 900) { S.partyPending = false; S.paper = true; S.paperP = 0; burst(); Music.fanfare(); } }
       if (S.finaleAt > 0 && S.paper && S.paperP >= 1) { S.finaleAt -= dt; if (S.finaleAt <= 0) { S.finaleAt = 0; showFinale(); } } }
     else if (S.wait > 0) { S.wait -= dt; if (S.shown < S.say.length) S.shown += dt / 26; if (S.wait <= 0) { if (S.egg) { S.egg = null; S.photo = false; S.say = ''; S.fadeDir = 1; S.next = ['street', '', [0, 128]]; S.reset = true; } else advance(); } }
     if (MODE === 'demo' && S.scene === 'news' && SCRIPT[S.i] && SCRIPT[S.i].party && S.wait > 0) { S.partyT += dt; if (S.partyT > 1700 && !S.paper) { S.paper = true; S.paperP = 0; burst(); } }
