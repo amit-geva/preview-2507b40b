@@ -392,7 +392,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     shelf(182, 16); person(PEOPLE.mano, 180, 30, 'left'); desk(178, 48, 22); monitor(184, 40);
     // the hallway: plants, the printer by the entrance, the dog at the far end, the secretary behind her counter
     [84, 148].forEach(X => pot(X, 79)); [44, 74, 160].forEach(X => pot(X, 100));
-    midgamPic(100, 113); wayfind(U.more, 56, -1, t);
+    printer(96, 99); wayArrow(3, -1);
     // the secretary: in the hallway by the top wall near the entrance, behind her counter
     person(PEOPLE.sec, 206, 70, 'down');
     R('k', 202, 83, 22, 11); R('w', 203, 84, 20, 4); R('p', 203, 88, 20, 5); R('n', 203, 92, 20, 1);
@@ -404,7 +404,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   };
 
   /* ---------- the rest of the office: the hallway continues to the left ---------- */
-  const OFF2 = ['##############', '#......#.....#', '#......#.....#', '#......#.....#', '#.######.#####', '#.............', '#.............', '#.####.###.###', '#....#...#...#', '#....#...#...#', '#....#...#...#', '##############'];
+  const OFF2 = ['##############', '#....#...#...#', '#....#...#...#', '#....#...#...#', '#.####.###.###', '#.............', '#.............', '#.####.###.###', '#....#...#...#', '#....#...#...#', '#....#...#...#', '##############'];
   const midgamPic = (X, Y) => {
     R('k', X, Y, 24, 14); R('y', X + 1, Y + 1, 22, 12); R('l', X + 2, Y + 2, 20, 10); R('p', X + 2, Y + 8, 20, 4);
     R('k', X + 6, Y + 4, 12, 8); R('b', X + 7, Y + 5, 10, 7); R('s', X + 8, Y + 6, 2, 2); R('s', X + 11, Y + 6, 2, 2); R('s', X + 14, Y + 6, 2, 2); R('w', X + 11, Y + 9, 2, 3); R('d', X + 5, Y + 3, 14, 1);
@@ -418,38 +418,30 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     R('k', cx + 1, Y - 2, 9, 11); R('s', cx + 2, Y - 1, 7, 9); R('l', cx + 3, Y, 2, 6); R('b', cx + 2, Y + 6, 7, 2);
     if (!p) R('w', cx + 6, Y + 6 - Math.floor(t / 220) % 7, 1, 1);
   };
-  // wayfinding: a sign hanging from the ceiling and floor chevrons that light up one after another toward the way on
-  const wayfind = (label, cx, dir, t) => {
-    const w = plate(label, cx, 85, 4.6, 'b', 'w', 70), ax = dir < 0 ? cx - w / 2 - 7 : cx + w / 2 + 1;
-    R('k', cx - w / 2 + 3, 78, 1, 4); R('k', cx + w / 2 - 4, 78, 1, 4);
-    R('k', ax, 80, 7, 10); R('y', ax + 1, 81, 5, 8);
-    for (let k = 0; k < 4; k++) R('k', dir < 0 ? ax + 2 + k : ax + 4 - k, 85 - k, 1, 1 + 2 * k);
-    const ex = dir < 0 ? 2 : W - 30;
-    for (let k = 0; k < 3; k++) {
-      const lit = (Math.floor(t / 200) % 3) === (dir < 0 ? 2 - k : k), c = lit ? 'y' : 'l', X = ex + k * 9;
-      for (let r = 0; r < 4; r++) { const o = dir < 0 ? 3 - r : r; R(c, X + o, 92 + r, 2, 1); R(c, X + o, 99 - r, 2, 1); }
-    }
-  };
+  // a single still gold triangle on the floor, pointing to where the hallway goes on
+  const wayArrow = (X, dir) => { for (let k = 0; k < 6; k++) { const h = 1 + 2 * k; R('k', dir < 0 ? X + k : X + 5 - k, 96 - k - 1, 1, h + 2); } for (let k = 0; k < 5; k++) { const h = 1 + 2 * k; R('y', dir < 0 ? X + k + 1 : X + 4 - k, 96 - k, 1, h); } };
   const drawOffice2 = (t) => {
     for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) (OFF2[j][i] === '#' ? (a, b) => wallTile(a, b, OFF2) : floorTile)(i, j);
     R('p', 16, 86, W - 16, 20); R('l', 16, 86, W - 16, 1); R('l', 16, 105, W - 16, 1);
-    plate(U.rooms.qual, 60, 71, 5, 'w', 'b', 52); plate(U.rooms.arab, 184, 71, 5, 'w', 'b', 72);
+    plate(U.rooms.qual, 62, 71, 5, 'w', 'b', 58); plate(U.rooms.archive, 136, 71, 5, 'w', 'b', 44); plate(U.rooms.arab, 198, 71, 5, 'w', 'b', 44);
     plate(U.rooms.meet, 60, 119, 4.8, 'w', 'b', 56); plate(TEXT.mina_role, 136, 119, 5, 'w', 'b', 46); plate(U.rooms.kitchen, 200, 119, 5, 'w', 'b', 44);
     // qualitative research: two researchers at a focus-group table
-    board(84, 17, 24, 15, 'grid'); person(PEOPLE.qual1, 34, 18, 'down'); person(PEOPLE.qual2, 58, 18, 'down'); desk(30, 32, 48); papers(40, 34); papers(62, 34); plant(94, 44);
-    // the Arabic department
-    board(132, 17, 26, 15, 'bars'); person(PEOPLE.ihab, 166, 20, 'down'); desk(162, 36, 24); monitor(168, 28); plant(194, 44);
+    person(PEOPLE.qual1, 24, 18, 'down'); person(PEOPLE.qual2, 48, 18, 'down'); desk(20, 32, 48); papers(28, 34); papers(52, 34);
+    // the archive
+    shelf(97, 17); shelf(118, 17); papers(104, 44); papers(128, 50);
+    // the Arabic department: one person, a room no bigger than Mano's
+    person(PEOPLE.ihab, 172, 20, 'down'); desk(168, 36, 24); monitor(174, 28); plant(196, 46);
     // meeting room
     [30, 42, 54].forEach(cx => { R('k', cx, 139, 7, 6); R('s', cx + 1, 140, 5, 4); R('k', cx, 159, 7, 6); R('s', cx + 1, 160, 5, 4); }); desk(24, 146, 46); papers(36, 148);
     // Mina Tzemach: legal expert opinions, a small room
-    plant(98, 130); person(PEOPLE.mina, 118, 132, 'down'); desk(112, 148, 26); monitor(126, 140); R('y', 117, 149, 1, 4); R('y', 114, 149, 7, 1); R('y', 114, 151, 2, 1); R('y', 119, 151, 2, 1);
+    person(PEOPLE.mina, 118, 132, 'down'); desk(112, 148, 26); monitor(126, 140); R('y', 117, 149, 1, 4); R('y', 114, 149, 7, 1); R('y', 114, 151, 2, 1); R('y', 119, 151, 2, 1);
     // the kitchen: counter, coffee machine, fridge, and the water cooler with a secret
     R('k', 178, 129, 30, 14); R('w', 179, 130, 28, 8); R('p', 179, 138, 28, 4); R('n', 182, 131, 8, 5); R('a', 183, 132, 6, 3);
     R('k', 196, 126, 9, 10); R('d', 197, 127, 7, 8); R('r', 199, 129, 2, 1); R('w', 198, 133, 3, 2);
     R('k', 161, 152, 12, 22); R('w', 162, 153, 10, 20); R('p', 162, 160, 10, 1); R('n', 170, 155, 1, 3); R('n', 170, 163, 1, 4);
     coolerHatch(192, 150, F.shelf ? S.shelfP : 0, t);
     // the hallway: a bookshelf with a secret, the printer, a pot, and the dog at the far end
-    shelf(98, 66); printer(146, 99); pot(64, 100); wayfind(U.back, 168, 1, t);
+    pot(64, 100); pot(150, 100); wayArrow(214, 1);
     if (!F.dog || MODE !== 'play') dog(20, 94, t);
   };
   const VAULT = ['##############', '##############', '##############', '##.....#.....#', '##.....#.....#', '##.....#.....#', '##...........#', '##.....#.....#', '##.....#.....#', '##.....#.....#', '##############', '##############'];
@@ -509,6 +501,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     paper_headline: 'סקר מדגם: רוב הציבור בעד שעון קיץ כל השנה',
     field_ask: 'היי, אני עובד במדגם. איך הייתם מדרגים את ראש העיר?',
     field_thanks: 'תודה על שיתוף הפעולה!',
+    field_other: 'כבר עניתם לי! עכשיו לכו לצד השני של הרחוב, שם מחכים לכם.',
     vp_title: 'ניהול בכיר',
     vp1_line: 'הסקר שלך בידיים טובות. אצלנו כל לקוח מקבל בדיוק את מה שהוא צריך.',
     vp2_line: 'כל סקר של מדגם עובר אותה בדיקה, גדול או קטן. ככה בונים אמון.',
@@ -550,6 +543,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       paper_headline: 'Midgam survey: most of the public backs daylight saving time all year',
       field_ask: 'Hi, I work for Midgam. How would you rate the mayor of this city?',
       field_thanks: 'Thanks for your cooperation!',
+      field_other: "You already answered! Now head to the other side of the street, they're waiting for you there.",
       vp_title: 'Senior management',
       vp1_line: 'Your survey is in good hands. Every client here gets exactly what they need.',
       vp2_line: "Every Midgam survey goes through the same check, big or small. That's how trust is built.",
@@ -587,6 +581,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       paper_headline: 'استطلاع مدجام: أغلبية الجمهور تؤيد التوقيت الصيفي طوال السنة',
       field_ask: 'مرحبًا، أنا أعمل في مدجام. كيف تقيّمون رئيس بلدية هذه المدينة؟',
       field_thanks: 'شكرًا على تعاونكم!',
+      field_other: 'لقد أجبتم بالفعل! الآن اذهبوا إلى الجهة الأخرى من الشارع، هناك ينتظرونكم.',
       vp_title: 'الإدارة العليا',
       vp1_line: 'استطلاعك في أيدٍ أمينة. عندنا يحصل كل زبون على ما يحتاجه بالضبط.',
       vp2_line: 'كل استطلاع لمدجام يمرّ بنفس الفحص، كبيرًا كان أم صغيرًا. هكذا تُبنى الثقة.',
@@ -607,7 +602,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     he: {
       dir: 'rtl', mission: 'המשימה', doneN: n => `${n} שלבים הושלמו ·`, next: 'הבא:', published: 'הסקר פורסם!', office: 'משרדי מדגם', newsroom: 'חדר החדשות',
       hq: 'מדגם · ייעוץ ומחקר', newsSign: 'חדשות', badge: 'מדגם',
-      rooms: { res: 'חוקרים', p1: 'איסוף', p2: 'אינטרנטי', mano: 'מנו גבע', call: 'מוקד טלפוני', qual: 'מחקר איכותני', arab: 'המחלקה הערבית', meet: 'חדר ישיבות', kitchen: 'מטבח' },
+      rooms: { res: 'חוקרים', p1: 'איסוף', p2: 'אינטרנטי', mano: 'מנו גבע', call: 'מוקד טלפוני', qual: 'מחקר איכותני', arab: 'המחלקה הערבית', meet: 'חדר ישיבות', kitchen: 'מטבח', archive: 'ארכיון' },
       people: { qual1: 'מיכל שפירא', qual2: 'מיכל אבנד', ihab: 'איהאב קדאח', mina: 'מינה צמח', vp1: 'עדי סידי', vp2: 'עדי גבע' }, midgamName: 'מדגם ייעוץ ומחקר', aboutUs: 'קצת עלינו', more: 'עוד משרדים', back: 'לכניסה', vault: 'המדרגות הסודיות',
       paper: { name: 'החדשות', date: 'יום חמישי · מהדורת בוקר', fict: 'נתונים בדיוניים', by: 'סקר מדגם ייעוץ ומחקר עבור החדשות', method: 'מדגם 1,000 · טעות דגימה ±3.1% · שוקלל לפי גיל ואזור' },
       fake: ['בעד', 'נגד', 'לא יודעים'],
@@ -631,7 +626,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     en: {
       dir: 'ltr', mission: 'Mission', doneN: n => `${n} steps done ·`, next: 'Next:', published: 'Survey published!', office: 'Midgam offices', newsroom: 'The newsroom',
       hq: 'Midgam · Research', newsSign: 'NEWS', badge: 'Midgam',
-      rooms: { res: 'Researchers', p1: 'Online', p2: 'collection', mano: 'Mano Geva', call: 'Call center', qual: 'Qualitative research', arab: 'Arabic department', meet: 'Meeting room', kitchen: 'Kitchen' },
+      rooms: { res: 'Researchers', p1: 'Online', p2: 'collection', mano: 'Mano Geva', call: 'Call center', qual: 'Qualitative research', arab: 'Arabic department', meet: 'Meeting room', kitchen: 'Kitchen', archive: 'Archive' },
       people: { qual1: 'Michal Shapira', qual2: 'Michal Avned', ihab: 'Ihab Kadah', mina: 'Mina Tzemach', vp1: 'Adi Sidi', vp2: 'Adi Geva' }, midgamName: 'Midgam Consulting & Research', aboutUs: 'About us', more: 'More offices', back: 'To the entrance', vault: 'The secret stairs',
       paper: { name: 'The News', date: 'Thursday · Morning edition', fict: 'Fictional data', by: 'A Midgam Research survey for The News', method: 'Sample 1,000 · margin of error ±3.1% · weighted by age and region' },
       fake: ['For', 'Against', "Don't know"],
@@ -655,7 +650,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     ar: {
       dir: 'rtl', mission: 'المهمة', doneN: n => `أُنجزت ${n} مراحل ·`, next: 'التالي:', published: 'نُشر الاستطلاع!', office: 'مكاتب مدجام', newsroom: 'غرفة الأخبار',
       hq: 'مدجام · أبحاث', newsSign: 'أخبار', badge: 'مدجام',
-      rooms: { res: 'الباحثون', p1: 'الجمع عبر', p2: 'الإنترنت', mano: 'مانو جيفع', call: 'مركز الاتصال', qual: 'البحث النوعي', arab: 'القسم العربي', meet: 'غرفة الاجتماعات', kitchen: 'المطبخ' },
+      rooms: { res: 'الباحثون', p1: 'الجمع عبر', p2: 'الإنترنت', mano: 'مانو جيفع', call: 'مركز الاتصال', qual: 'البحث النوعي', arab: 'القسم العربي', meet: 'غرفة الاجتماعات', kitchen: 'المطبخ', archive: 'الأرشيف' },
       people: { qual1: 'ميخال شابيرا', qual2: 'ميخال أفنيد', ihab: 'إيهاب قداح', mina: 'مينا تسيماح', vp1: 'عدي سيدي', vp2: 'عدي جيفع' }, midgamName: 'مدجام للاستشارات والأبحاث', aboutUs: 'من نحن', more: 'مكاتب أخرى', back: 'إلى المدخل', vault: 'الدرج السري',
       paper: { name: 'الأخبار', date: 'الخميس · طبعة الصباح', fict: 'بيانات خيالية', by: 'استطلاع مدجام للاستشارات والأبحاث لصالح الأخبار', method: 'عيّنة 1,000 · هامش خطأ ±3.1% · موزونة حسب العمر والمنطقة' },
       fake: ['مع', 'ضد', 'لا أعرف'],
@@ -736,7 +731,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const EGGS = {
     secretary: { pos: [200, 86], face: 'up', who: 'sec', key: 'secretary_line', wait: 3400 },
     dog: { scene: 'office2', pos: [38, 88], face: 'left', who: 'dog', key: 'dog_line', wait: 2600, bark: true },
-    printer: { scene: 'office2', pos: [128, 88], face: 'right', who: 'printer', key: 'printer_caption', wait: 7000, photo: true }
+    printer: { scene: 'office', pos: [86, 88], face: 'right', who: '', key: '', wait: 7000, card: 'midgam' }
   };
   addEventListener('message', e => {
     if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-egg' || !EGGS[e.data.egg] || reduce || MODE === 'play') return;
@@ -744,7 +739,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     S.scene = g.scene || 'office'; S.fadeDir = 0; S.fade = 0; S.card = ''; S.conf = []; S.paper = false; S.wps = [];
     S.me.x = g.pos[0]; S.me.y = g.pos[1]; S.me.face = g.face; S.egg = e.data.egg;
     S.key = g.photo ? '' : g.key; S.say = g.photo ? '' : TEXT[g.key]; S.who = g.who; S.refuse = false; S.shown = 0; S.wait = g.wait;
-    S.barkT = g.bark ? g.wait : 0; S.photo = !!g.photo; S.photoP = 0;
+    S.barkT = g.bark ? g.wait : 0; S.photo = !!g.photo; S.photoP = 0; if (g.card) { S.say = ''; showCard(g.card); }
   });
 
   /* ---------- the printed photo: the team on a field trip (an illustration until a real photo arrives) ---------- */
@@ -843,15 +838,15 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     bx(18, 15, 28, 22), bx(48, 16, 30, 21), bx(40, 44, 24, 14), bx(66, 48, 12, 8), bx(32, 52, 12, 8),
     bx(114, 17, 28, 20), bx(122, 46, 12, 8),
     bx(182, 16, 26, 15), bx(178, 46, 22, 14), bx(184, 38, 8, 8),
-    bx(202, 78, 22, 18),
+    bx(96, 105, 18, 7), bx(202, 78, 22, 18),
     ...CALL_DESKS.map(([dx, dy]) => bx(dx, dy - 10, 22, 22)),
     bx(130, 160, 12, 12), bx(140, 146, 18, 18), bx(194, 160, 12, 12), bx(176, 146, 18, 18));
   BLOCK.office2 = []; BLOCK.vault = [];
   OFF2.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.office2.push(bx(i * T, j * T, T, T)); }));
   VAULT.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.vault.push(bx(i * T, j * T, T, T)); }));
-  BLOCK.office2.push(bx(84, 17, 24, 18), bx(30, 30, 48, 14), bx(36, 18, 12, 14), bx(60, 18, 12, 14), bx(94, 44, 12, 14),
-    bx(132, 17, 26, 18), bx(162, 34, 24, 14), bx(168, 20, 12, 14), bx(194, 44, 12, 14),
-    bx(24, 139, 46, 26), bx(98, 132, 12, 13), bx(112, 146, 26, 14), bx(120, 132, 12, 14), bx(178, 126, 30, 18), bx(161, 152, 12, 22), bx(98, 78, 26, 4), bx(146, 105, 18, 7));
+  BLOCK.office2.push(bx(20, 30, 48, 14), bx(26, 18, 12, 14), bx(50, 18, 12, 14),
+    bx(97, 17, 47, 16), bx(168, 34, 24, 14), bx(174, 20, 12, 14), bx(196, 46, 12, 12),
+    bx(24, 139, 46, 26), bx(112, 146, 26, 14), bx(120, 132, 12, 14), bx(178, 126, 30, 18), bx(161, 152, 12, 22));
   const feet = (X, Y) => bx(X + 4, Y + 11, 8, 5);
   const blocked = (X, Y) => {
     const f = feet(X, Y);
@@ -860,7 +855,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.scene === 'street' && !F.brief) list.push(bx(S.ed.x + 4, S.ed.y + 10, 8, 6));
     if (S.scene === 'street') list.push(bx(164, 135, 8, 6));
     if (S.scene === 'news' && F.brief) list.push(bx(110, 42, 8, 6));
-    if (S.scene === 'office2') list.push(F.shelf ? bx(179, 158, 11, 14) : bx(192, 158, 11, 14));
+    if (S.scene === 'office2' && !F.shelf) list.push(bx(192, 158, 11, 14));
     if (S.scene === 'vault' && F.locked) list.push(bx(112, 96, 16, 16));
     return list.some(b => hit(f, b));
   };
@@ -877,12 +872,11 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   };
   const callCenter = () => { if (!F.design) return talk('call', 'gate_call_early', true); F.call = true; talk('call', 'call_center'); };
   const TARGETS = () => {
-    if (S.scene === 'street') return [{ x: 168, y: 132, act: () => { if (F.asked) return talk('field', 'field_thanks'); F.asked = true; talk('field', 'field_ask'); } }].concat(F.brief ? [] : [{ x: S.ed.x + 8, y: S.ed.y + 8, act: briefNow }]);
+    if (S.scene === 'street') return [{ x: 168, y: 132, act: () => { if (F.thanked) return talk('field', 'field_other'); if (F.asked) { F.thanked = true; return talk('field', 'field_thanks'); } F.asked = true; talk('field', 'field_ask'); } }].concat(F.brief ? [] : [{ x: S.ed.x + 8, y: S.ed.y + 8, act: briefNow }]);
     if (S.scene === 'vault') return [];
     if (S.scene === 'office2') return [
-      { x: 42, y: 26, act: () => showCard('qual1') }, { x: 66, y: 26, act: () => showCard('qual2') },
-      { x: 174, y: 30, act: () => showCard('ihab') }, { x: 126, y: 142, act: () => showCard('mina') },
-      { x: 155, y: 98, act: () => { wake(); S.photo = true; S.photoP = 0; announce(TEXT.printer_caption); } }
+      { x: 32, y: 26, act: () => showCard('qual1') }, { x: 56, y: 26, act: () => showCard('qual2') },
+      { x: 180, y: 30, act: () => showCard('ihab') }, { x: 126, y: 142, act: () => showCard('mina') }
     ].concat(F.shelf ? [] : [{ x: 197, y: 156, act: () => { F.shelf = true; S.shelfP = 0; S.shake = 200; talk('', 'shelf_line'); } }])
      .concat(F.dog ? [] : [{ x: 28, y: 100, act: () => { S.barkT = 1600; talk('dog', 'dog_line'); S.onClose = () => { F.dog = true; S.trail = [{ x: 20, y: 88 }]; S.dogP = { x: 20, y: 88, left: false }; }; } }]);
     if (S.scene === 'news') return F.brief ? [{ x: 114, y: 42, act: () => {
@@ -903,7 +897,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       { x: 124, y: 46, act: () => { if (!F.design) return talk('panel', 'gate_panel_early', true); F.panel = true; talk('panel', 'panel'); } },
       { x: 150, y: 146, act: () => showCard('vp1') },
       { x: 186, y: 146, act: () => showCard('vp2') },
-      { x: 112, y: 110, act: () => showCard('midgam') }
+      { x: 105, y: 98, act: () => showCard('midgam') }
     ];
   };
   const FACE = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
@@ -1007,8 +1001,10 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     // a tapped spot is reached exactly: never step past it
     const spx = S.tap ? Math.min(sp, Math.abs(S.tap.x - S.me.x)) : sp, spy = S.tap ? Math.min(sp, Math.abs(S.tap.y - S.me.y)) : sp;
     S.me.face = dx ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down');
-    if (dx && !blocked(S.me.x + dx * spx, S.me.y)) S.me.x += dx * spx;
-    if (dy && !blocked(S.me.x, S.me.y + dy * spy)) S.me.y += dy * spy;
+    // if something ever ends up overlapping you, you can always walk out of it
+    const trapped = blocked(S.me.x, S.me.y);
+    if (dx && (trapped || !blocked(S.me.x + dx * spx, S.me.y))) S.me.x += dx * spx;
+    if (dy && (trapped || !blocked(S.me.x, S.me.y + dy * spy))) S.me.y += dy * spy;
     S.leg += dt;
     if (S.tap && !keys.size) { if (Math.abs(S.me.x - bx0) + Math.abs(S.me.y - by0) < .05) { if (++S.tap.stuck > 8) S.tap = null; } else S.tap.stuck = 0; }
     const f = feet(S.me.x, S.me.y);
@@ -1024,7 +1020,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     return true;
   };
   const resetPlay = () => {
-    PLAY_STEPS.forEach(k => F[k] = false); F.asked = false; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; S.trail = []; S.shelfP = 0; S.barsP = 0; S.shake = 0;
+    PLAY_STEPS.forEach(k => F[k] = false); F.asked = false; F.thanked = false; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; S.trail = []; S.shelfP = 0; S.barsP = 0; S.shake = 0;
     Object.assign(S, { scene: 'street', say: '', who: '', key: '', refuse: false, shown: 0, conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, card: '', barkT: 0, partyPending: false, finaleAt: 0, onClose: null, wps: [], wait: 0, egg: null });
     S.idle = 0; S.hintOn = false; S.me = { x: 6, y: 128, face: 'right' }; S.ed = { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null }; finale.hidden = true; lastHud = '';
   };
