@@ -7,13 +7,13 @@
 <title>יום אחד במדגם</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* Direction D: an original top-down pixel world in Midgam blues, running in demo mode beside the headline. */
 :root{
   --bg:#f1f5f9; --ink:#0e1216; --ink-2:#545e69; --line:rgba(14,18,22,.08);
   --blue:#1d5689; --blue-dd:#123a5e; --sky:#229ad6; --sky-soft:#eaf2f9; --grey-blue:#5d7d9c;
-  --font:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --ease:cubic-bezier(.23,1,.32,1);
+  --font:"Heebo","Noto Sans Arabic",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --ease:cubic-bezier(.23,1,.32,1);
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
@@ -25,9 +25,21 @@ body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased
 .links{display:flex;gap:4px;margin-inline-start:auto;padding:5px;border-radius:999px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--line)}
 .links a{height:38px;display:inline-flex;align-items:center;padding:0 16px;border-radius:999px;font-size:15px;color:var(--ink-2)}
 .lang{display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--line);font-size:14px;font-weight:600}
-.lang span{height:32px;min-width:38px;display:inline-grid;place-items:center;padding:0 10px;border-radius:999px;color:var(--ink-2)}
-.lang span.on{background:var(--blue);color:#fff}
-.btn{display:inline-flex;align-items:center;gap:12px;height:52px;padding-inline-start:24px;padding-inline-end:7px;border-radius:999px;background:var(--blue);color:#fff;font:500 16.5px/1 var(--font);box-shadow:0 14px 26px -14px rgba(29,86,137,.8)}
+.lang button{appearance:none;border:0;background:transparent;cursor:pointer;font:600 14px var(--font);height:32px;min-width:38px;display:inline-grid;place-items:center;padding:0 10px;border-radius:999px;color:var(--ink-2);transition:background-color .2s var(--ease),color .2s var(--ease)}
+.lang button.on{background:var(--blue);color:#fff}
+.lang button:focus-visible{outline:3px solid #8fd3f5;outline-offset:2px}
+.glang{flex:none;background:rgba(255,255,255,.08);box-shadow:none;padding:3px}
+.glang button{height:28px;min-width:34px;padding:0 8px;font-size:13px;color:#bfe6fa}
+.glang button.on{background:#229ad6;color:#fff}
+.gtop{display:flex;align-items:center;gap:10px;height:44px;padding:0 4px 10px}
+html[dir=ltr] .copy{right:auto;left:72px}
+html[dir=ltr] .game{left:auto;right:72px}
+html[dir=ltr] .stage.playing .game{right:auto}
+html[dir=ltr] .btn .ar svg,html[dir=ltr] .play i svg{transform:scaleX(-1)}
+html[lang=en] h1{font-size:64px;letter-spacing:-.035em}
+html[lang=ar] h1{font-size:54px;letter-spacing:0;line-height:1.15}
+html[lang=ar] .sub{font-size:18.5px}
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:12px;height:52px;padding-inline-start:24px;padding-inline-end:7px;border-radius:999px;background:var(--blue);color:#fff;font:500 16.5px/1 var(--font);box-shadow:0 14px 26px -14px rgba(29,86,137,.8)}
 .btn .ar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff;color:var(--blue)}
 .btn .ar svg{width:14px;height:14px}
 .btn--sm{height:46px;font-size:15px;padding-inline-start:20px;padding-inline-end:6px}.btn--sm .ar{width:34px;height:34px}
@@ -46,16 +58,16 @@ h1 span{display:block;color:var(--grey-blue);font-weight:700}
 .game{position:absolute;left:72px;top:118px;width:704px;height:712px;border-radius:30px;background:#0b2238;padding:16px;box-shadow:0 40px 80px -36px rgba(11,34,56,.75),inset 0 0 0 2px rgba(143,211,245,.15)}
 canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering:pixelated;image-rendering:crisp-edges}
 .gbar{display:flex;align-items:center;justify-content:space-between;height:60px;padding:12px 4px 0;color:#bfe6fa;font-size:14px}
-.mission{display:flex;align-items:center;gap:8px;height:44px;padding:0 4px 10px;color:#bfe6fa;font-size:14px;overflow:hidden;white-space:nowrap}
+.mission{flex:1;min-width:0;display:flex;align-items:center;gap:8px;height:34px;color:#bfe6fa;font-size:14px;overflow:hidden;white-space:nowrap}
 .mission .lbl{flex:none;font-weight:700;color:#fff}
 .mission .done{flex:none;color:#7f9bb5;text-decoration:line-through;text-decoration-thickness:1.5px}
 .mission .more{flex:none;color:#7f9bb5}
 .mission .next{flex:none;height:30px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border-radius:999px;background:#229ad6;color:#fff;font-weight:700}
-.mission .next.fin{background:#f2c14e;color:#0b2238}
+.mission .next.ok{background:#f2c14e;color:#0b2238}
 .gbar b{color:#fff;font-weight:700;letter-spacing:.02em}
 .gbar .keys{display:flex;gap:6px;align-items:center}
 .gbar kbd{min-width:28px;height:28px;display:inline-grid;place-items:center;border-radius:8px;background:#1d5689;color:#fff;font:700 13px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
-.play{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px 0 8px;border-radius:999px;background:#fff;color:var(--blue);font:800 16px var(--font);box-shadow:0 0 0 4px rgba(255,255,255,.18)}
+.play{text-decoration:none;display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px 0 8px;border-radius:999px;background:#fff;color:var(--blue);font:800 16px var(--font);box-shadow:0 0 0 4px rgba(255,255,255,.18)}
 .play i{width:32px;height:32px;border-radius:50%;background:var(--blue);display:grid;place-items:center}
 .play i svg{width:16px;height:16px}
 .play,.ctl,.fin button,.fin a{cursor:pointer;border:0}
@@ -66,12 +78,13 @@ canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering
 .controls{display:none;align-items:center;gap:8px}
 .stage.playing .controls{display:flex}
 .stage.playing .demo-only{display:none}
-.pad{display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(2,26px);gap:3px}
-.ctl{display:grid;place-items:center;border-radius:10px;background:#1d5689;color:#fff;font:700 14px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3);touch-action:none;user-select:none;-webkit-user-select:none}
+.pad{direction:rtl;display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(2,26px);gap:3px}
+.ctl{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;display:grid;place-items:center;border-radius:10px;background:#1d5689;color:#fff;font:700 14px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3);touch-action:none;user-select:none;-webkit-user-select:none}
 .ctl:active{transform:translateY(1px);background:#229ad6}
 .ctl svg{width:14px;height:14px}
 .pad [data-dir=up]{grid-column:2;grid-row:1}.pad [data-dir=left]{grid-column:3;grid-row:2}.pad [data-dir=down]{grid-column:2;grid-row:2}.pad [data-dir=right]{grid-column:1;grid-row:2}
-.ctl.talk{height:46px;padding:0 18px;border-radius:999px;background:#f2c14e;color:#0b2238;font-size:15px}
+.ctl.talk{transition:opacity .18s var(--ease),transform .18s var(--ease);height:46px;padding:0 18px;border-radius:999px;background:#f2c14e;color:#0b2238;font-size:15px}
+.ctl.talk.off{opacity:0;transform:scale(.85);pointer-events:none}
 .ctl.exit{height:40px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.12);font-size:14px}
 .hint{font-size:13px;color:#bfe6fa;display:inline-flex;align-items:center;gap:6px}
 .hint .kb{display:inline-flex;gap:2px;direction:ltr}
@@ -88,15 +101,19 @@ canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering
 .fin .pri{background:#1d5689;color:#fff}
 .fin .pct{font-size:56px;font-weight:800;color:#1d5689;line-height:1;margin-top:6px}
 .fin small{display:block;margin-top:8px;color:#5f6975;font-size:13px}
+.fin .cta{margin-top:20px;padding-top:18px;border-top:1px solid rgba(14,18,22,.1)}
+.fin h3{margin:0;font-size:22px;line-height:1.25;font-weight:800;color:#1d5689}
+.fin .cta p{margin-top:6px;font-size:15px}
+.fin .cta .row{margin-top:14px}
+.fin .row.sm{margin-top:12px}
+.fin .row.sm a,.fin .row.sm button{height:40px;font-size:14.5px;padding:0 16px;background:transparent;box-shadow:inset 0 0 0 1px rgba(29,86,137,.25)}
 /* mobile play: the game takes the whole screen */
-#mplay{position:fixed;inset:0;z-index:100;display:none;background:#0b2238;color:#fff;touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;
+#mplay{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;position:fixed;inset:0;z-index:100;display:none;background:#0b2238;color:#fff;touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;
   padding:max(10px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));
   grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"top" "game" "hint" "ctl";gap:10px;align-items:start;justify-items:center}
 html.mobile-play #mplay{display:grid}
 html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 #mplay .mtop{grid-area:top;width:100%;display:flex;align-items:center;gap:8px;min-width:0}
-#mplay .mission{flex:1;min-width:0;height:auto;padding:0;overflow-x:auto;scrollbar-width:none}
-#mplay .mission::-webkit-scrollbar{display:none}
 #mplay .ctl.exit{flex:none;height:40px;padding:0 16px}
 #mplay canvas{grid-area:game;width:100%;max-width:min(100%,calc((100dvh - 250px) * 224 / 192));height:auto;aspect-ratio:224/192;border-radius:12px;touch-action:none}
 #mplay .mctl{grid-area:ctl;align-self:end;width:100%;max-width:560px;display:flex;align-items:center;justify-content:space-between;direction:ltr;padding:0 6px}
@@ -105,10 +122,16 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 #mplay .ctl svg{width:24px;height:24px}
 #mplay .ctl.talk{width:100px;height:100px;padding:0;border-radius:50%;font-size:20px;box-shadow:0 0 0 6px rgba(242,193,78,.18),inset 0 -3px 0 rgba(0,0,0,.25)}
 #mplay .mhint{grid-area:hint;font-size:13px;color:#bfe6fa;pointer-events:none}
-#mplay .fin{position:fixed;inset:0;height:auto;border-radius:0;left:0;right:0;top:0}
+#mplay #finale{position:fixed;inset:0;height:auto;border-radius:0;overflow:auto;padding:16px}
+#mplay #finale{grid-template-columns:minmax(0,1fr)}
+#mplay #finale .card{width:100%;max-width:440px;margin:0 auto;padding:24px 20px 20px}
+#mplay .glang{flex:none}
+#mplay .mission{flex:1;min-width:0;height:auto;min-height:34px;white-space:normal;overflow:visible}
+#mplay .mission .lbl{font-size:13px;color:#bfe6fa;font-weight:600}
+#mplay .mission .next{flex:1 1 auto;min-width:0;height:auto;min-height:30px;padding:5px 12px;line-height:1.3;white-space:normal}
 @media (orientation:landscape) and (max-height:560px){
   #mplay{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"top top top" "pad game talk";gap:8px 16px;align-items:center;direction:ltr}
-  #mplay .mtop{direction:rtl}
+  html[dir=rtl] #mplay .mtop{direction:rtl}
   #mplay .mctl{display:contents}
   #mplay .pad{grid-area:pad}
   #mplay .ctl.talk{grid-area:talk}
@@ -126,45 +149,45 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 <div class="stage" id="stage">
   <header class="nav">
     <img class="logo" src="assets/midgam-logo.png" alt="מדגם — ייעוץ ומחקר בע״מ">
-    <nav class="links"><a>תחומי פעילות</a><a>ממצאים</a><a>מקרי בוחן</a><a>אודות</a></nav>
-    <div class="lang"><span class="on">עב</span><span>EN</span><span>ع</span></div>
-    <a class="btn btn--sm">פנייה למחקר<span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    <nav class="links"><a data-i18n="nav1">תחומי פעילות</a><a data-i18n="nav2">ממצאים</a><a data-i18n="nav3">מקרי בוחן</a><a data-i18n="nav4">אודות</a></nav>
+    <div class="lang" role="group" data-i18n-aria="lang" aria-label="שפה"><button type="button" data-lang="he" lang="he" class="on" aria-pressed="true">עב</button><button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ar" lang="ar" aria-pressed="false">ع</button></div>
+    <a class="btn btn--sm"><span data-i18n="cta">פנייה למחקר</span><span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </header>
 
   <div class="copy">
-    <span class="badge" data-up style="--i:0"><b>משחק · 3 דקות</b>יום אחד במדגם</span>
-    <h1 data-up style="--i:1">תצליחו להגיש<span>סקר תקין?</span></h1>
-    <p class="sub" data-up style="--i:2">פוגשים ברחוב עורכת שצריכה סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. היא תקבל את הסקר רק אם הוא תקין.</p>
+    <span class="badge" data-up style="--i:0"><b data-i18n="badge1">משחק · 3 דקות</b><span data-i18n="title">יום אחד במדגם</span></span>
+    <h1 data-up style="--i:1" data-i18n="h1">תצליחו להגיש<span>סקר תקין?</span></h1>
+    <p class="sub" data-up style="--i:2" data-i18n="sub">פוגשים ברחוב עורך שצריך סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. הוא יקבל את הסקר רק אם הוא תקין.</p>
     <div class="acts" data-up style="--i:3">
-      <a class="btn btn--lg" href="#" data-play>שחקו עכשיו<span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="currentColor"/></svg></span></a>
-      <a class="btn btn--lg btn--soft">פנייה למחקר</a>
+      <a class="btn btn--lg" href="#" data-play><span data-i18n="playNow">שחקו עכשיו</span><span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="currentColor"/></svg></span></a>
+      <a class="btn btn--lg btn--soft" data-i18n="cta">פנייה למחקר</a>
     </div>
-    <p class="fields" data-up style="--i:4">מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b></p>
+    <p class="fields" data-up style="--i:4" data-i18n="fields">מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b></p>
   </div>
 
   <div class="game" data-up style="--i:2">
-    <div class="mission" id="mission" aria-live="polite"></div>
-    <canvas id="cv" tabindex="0" width="672" height="576" role="img" aria-label="משחק פיקסלים במצב הדגמה: חוקר צעיר פוגש ברחוב עורכת שמבקשת סקר, עובר במשרדי מדגם בין מנו גבע, התכנון, המוקד הטלפוני, האיסוף האינטרנטי, המעבדה והדוחות, ומגיש לה בחדר החדשות סקר תקין שמתפרסם."></canvas>
+    <div class="gtop" id="gtop"><div class="mission" id="mission" aria-live="polite"></div><div class="lang glang" role="group" data-i18n-aria="lang" aria-label="שפה" id="glang"><button type="button" data-lang="he" lang="he" class="on" aria-pressed="true">עב</button><button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ar" lang="ar" aria-pressed="false">ع</button></div></div>
+    <canvas id="cv" tabindex="0" width="672" height="576" role="img" data-i18n-aria="canvas" aria-label="משחק פיקסלים: חוקר צעיר פוגש ברחוב עורך שמבקש סקר, עובר במשרדי מדגם אצל מנו גבע, החוקרים, המוקד הטלפוני והאיסוף האינטרנטי, ומגיש לו בחדר החדשות סקר תקין שמתפרסם."></canvas>
     <div class="gbar">
-      <span class="demo-only"><b>יום אחד במדגם</b> · מצב הדגמה</span>
-      <a class="play demo-only" href="#" data-play><i><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="#fff"/></svg></i>שחקו</a>
+      <span class="demo-only" data-i18n="demo"><b>יום אחד במדגם</b> · מצב הדגמה</span>
+      <a class="play demo-only" href="#" data-play><i><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="#fff"/></svg></i><span data-i18n="play">שחקו</span></a>
       <div class="controls">
-        <div class="pad" aria-label="כפתורי הליכה">
-          <button class="ctl" type="button" data-dir="up" aria-label="למעלה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 10 8 5.5l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button class="ctl" type="button" data-dir="right" aria-label="ימינה"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button class="ctl" type="button" data-dir="down" aria-label="למטה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 6 8 10.5 12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button class="ctl" type="button" data-dir="left" aria-label="שמאלה"><svg viewBox="0 0 16 16" fill="none"><path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="pad" data-i18n-aria="pad" aria-label="כפתורי הליכה">
+          <button class="ctl" type="button" data-dir="up" data-i18n-aria="up" aria-label="למעלה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 10 8 5.5l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="right" data-i18n-aria="right" aria-label="ימינה"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="down" data-i18n-aria="down" aria-label="למטה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 6 8 10.5 12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="left" data-i18n-aria="left" aria-label="שמאלה"><svg viewBox="0 0 16 16" fill="none"><path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
-        <button class="ctl talk" type="button" id="talk">דברו</button>
+        <button class="ctl talk off" type="button" id="talk" data-i18n="talk">דברו</button>
       </div>
-      <span class="controls"><span class="hint"><span class="kb"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd></span> להליכה · <kbd class="space"></kbd> מקש רווח לדיבור</span><button class="ctl exit" type="button" id="exit">יציאה</button></span>
+      <span class="controls"><span class="hint"><span class="kb"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd></span> <span data-i18n="walk">להליכה</span> · <kbd class="space"></kbd> <span data-i18n="space">מקש רווח לדיבור</span></span><button class="ctl exit" type="button" id="exit" data-i18n="exit">יציאה</button></span>
     </div>
     <div class="fin" id="finale" hidden>
-      <div class="card" id="fin-q"><h2>ומה אתם חושבים?</h2><p>להישאר בשעון קיץ כל השנה?</p><div class="row"><button type="button" data-ans="0">בעד</button><button type="button" data-ans="1">נגד</button><button type="button" data-ans="2">לא יודע/ת</button></div></div>
-      <div class="card" id="fin-r" hidden><h2>אנשים כמוכם</h2><div class="pct" id="fin-pct"></div><p>מהמשיבים בסקר שלכם חושבים כמוכם.</p><small>נתונים בדיוניים מתוך המשחק</small><div class="row"><a class="pri" href="#">לממצאים של מדגם</a><a href="#">פנייה למחקר</a><button type="button" id="again">לשחק שוב</button></div></div>
+      <div class="card" id="fin-q"><h2 data-i18n="finQ">ומה אתם חושבים?</h2><p data-i18n="finQ2">להישאר בשעון קיץ כל השנה?</p><div class="row"><button type="button" data-ans="0" data-i18n="a0">בעד</button><button type="button" data-ans="1" data-i18n="a1">נגד</button><button type="button" data-ans="2" data-i18n="a2">לא יודע/ת</button></div></div>
+      <div class="card" id="fin-r" hidden><h2 data-i18n="finR">אנשים כמוכם</h2><div class="pct" id="fin-pct"></div><p data-i18n="finR2">מהמשיבים בסקר שלכם חושבים כמוכם.</p><small data-i18n="finR3">נתונים בדיוניים מתוך המשחק</small><div class="cta"><h3 data-i18n="next1">ועכשיו, מה הסקר שלך?</h3><p data-i18n="next2">ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.</p><div class="row"><a class="pri" href="#contact" id="contact" data-i18n="contact">דברו איתנו</a></div></div><div class="row sm"><a href="#findings" data-i18n="findings">לממצאים של מדגם</a><button type="button" id="again" data-i18n="again">לשחק שוב</button></div></div>
     </div>
     <p class="sr" id="live" aria-live="polite"></p>
-    <div id="mplay" role="dialog" aria-modal="true" aria-label="יום אחד במדגם"><div class="mtop" id="mtop"></div><div class="mctl" id="mctl"></div><span class="mhint" id="mhint">הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר</span></div>
+    <div id="mplay" role="dialog" aria-modal="true" data-i18n-aria="title" aria-label="יום אחד במדגם"><div class="mtop" id="mtop"></div><div class="mctl" id="mctl"></div><span class="mhint" id="mhint" data-i18n="mhint">הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר</span></div>
   </div>
 </div>
 
@@ -179,12 +202,14 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const P = { k: '#0b2238', d: '#123a5e', b: '#1d5689', s: '#229ad6', l: '#8fd3f5', p: '#cfe8f7', g: '#e3eef8', w: '#ffffff', n: '#9fb4c8', a: '#2a4b6c', y: '#f2c14e', r: '#d1453b', o: '#e8f1f8' };
   const cv = document.getElementById('cv'), x = cv.getContext('2d');
   x.setTransform(3, 0, 0, 3, 0, 0); x.imageSmoothingEnabled = false;
-  const W = 224, H = 192, T = 16;
+  const W = 224, H = 192, T = 16, FF = 'Heebo, "Noto Sans Arabic", Arial';
+  let LANG = 'he', RTL = true;
   const R = (c, X, Y, w = 1, h = 1) => { x.fillStyle = P[c] || c; x.fillRect(Math.round(X), Math.round(Y), w, h); };
-  const txt = (s, X, Y, size, c, weight = 700, align = 'center') => { x.font = `${weight} ${size}px Heebo, Arial`; x.fillStyle = P[c] || c; x.textAlign = align; x.textBaseline = 'middle'; x.fillText(s, X, Y); };
+  const txt = (s, X, Y, size, c, weight = 700, align = 'center') => { x.font = `${weight} ${size}px ${FF}`; x.fillStyle = P[c] || c; x.direction = RTL ? 'rtl' : 'ltr'; x.textAlign = align; x.textBaseline = 'middle'; x.fillText(s, X, Y); };
   const hash = (i, j) => (((i * 73856093) ^ (j * 19349663)) >>> 0) % 997;
-  const plate = (label, cx, cy, size = 5.5, fill = 'w', ink = 'b') => {
-    x.font = `700 ${size}px Heebo, Arial`; const w = Math.ceil(x.measureText(label).width) + 10, h = Math.round(size + 5);
+  const plate = (label, cx, cy, size = 5.5, fill = 'w', ink = 'b', maxW = 999) => {
+    x.font = `700 ${size}px ${FF}`; while (x.measureText(label).width + 10 > maxW && size > 3) { size -= .2; x.font = `700 ${size}px ${FF}`; }
+    const w = Math.ceil(x.measureText(label).width) + 10, h = Math.round(size + 5);
     R('k', cx - w / 2, cy - h / 2, w, h); R(fill, cx - w / 2 + 1, cy - h / 2 + 1, w - 2, h - 2); R(fill === 'w' ? 'p' : 'k', cx - w / 2 + 1, cy + h / 2 - 2, w - 2, 1);
     txt(label, cx, cy + .3, size, ink);
   };
@@ -259,7 +284,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     R('k', X - 2, Y, w + 4, 13); R(roof, X - 1, Y + 1, w + 2, 11); R('l', X - 1, Y + 1, w + 2, 1); R('d', X - 1, Y + 10, w + 2, 2);
     for (let i = X + 1; i < X + w - 1; i += 6) R('d', i, Y + 4, 3, 1);
     // signboard on the parapet
-    plate(label, X + w / 2, Y + 6.5, 6, 'w', 'b');
+    plate(label, X + w / 2, Y + 6.5, 6, 'w', 'b', w - 6);
     // windows: an upper row evenly spaced, a lower row clear of the door
     const n = opts.cols || 4, m = 8, gap = (w - 2 * m - n * 12) / (n - 1);
     for (let i = 0; i < n; i++) windowAt(X + m + i * (12 + gap), Y + 18);
@@ -286,8 +311,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     R('n', 0, 95, W, 1); R('n', 0, 128, W, 1);
     for (let i = 0; i < W; i += 14) if (i < 108 || i > 146) R('w', i, 111, 7, 1);
     for (let k = 0; k < 5; k++) R('w', 112, 98 + k * 6, 32, 3);
-    facade(14, 6, 100, 74, 'b', 'מדגם · ייעוץ ומחקר', { cols: 5, logo: true });
-    facade(140, 16, 70, 64, 'd', 'חדשות', { cols: 3, dish: true });
+    facade(14, 6, 100, 74, 'b', U.hq, { cols: 5, logo: true });
+    facade(140, 16, 70, 64, 'd', U.newsSign, { cols: 3, dish: true });
     tree(120, 30); tree(120, 54); lamp(110, 82); lamp(200, 130); lamp(26, 130);
     house(18, 150); house(176, 150); fence(56, 168, 40); fence(130, 168, 40); tree(100, 152); tree(150, 156); bush(60, 156); bush(140, 150);
     tree(-4, 40); tree(210, 0);
@@ -329,7 +354,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     ? (plant(X + 2, 158), person(who, X + 14, 138, 'left'), desk(X + 12, 154, 18), monitor(X + 15, 146))
     : (plant(X + 18, 158), person(who, X + 2, 138, 'right'), desk(X, 154, 18), monitor(X + 4, 146));
   const plate2 = (l1, l2, cx, cy, size) => {
-    x.font = `700 ${size}px Heebo, Arial`; const w = Math.ceil(Math.max(x.measureText(l1).width, x.measureText(l2).width)) + 8, h = Math.round(size * 2 + 6);
+    x.font = `700 ${size}px ${FF}`; const w = Math.ceil(Math.max(x.measureText(l1).width, x.measureText(l2).width)) + 8, h = Math.round(size * 2 + 6);
     R('k', cx - w / 2, cy - h / 2, w, h); R('w', cx - w / 2 + 1, cy - h / 2 + 1, w - 2, h - 2); R('p', cx - w / 2 + 1, cy + h / 2 - 2, w - 2, 1);
     txt(l1, cx, cy - size / 2 - .2, size, 'b'); txt(l2, cx, cy + size / 2 + .2, size, 'b');
   };
@@ -338,8 +363,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     R('p', 0, 86, W, 20); R('l', 0, 86, W, 1); R('l', 0, 105, W, 1); R('s', 212, 86, 12, 20);
     // plaques: each one sits just left of its own door
     // signs sit on each room's own wall, beside its door; one shared sign for senior management
-    plate('חוקרים', 56, 71); plate2('איסוף', 'אינטרנטי', 128, 71, 4.6); plate('מנו גבע', 192, 71, 5, 'b', 'w');
-    plate('מוקד טלפוני', 72, 119, 4.8); plate(TEXT.vp_title, 168, 119, 5);
+    plate(U.rooms.res, 56, 71, 5.5, 'w', 'b', 44); plate2(U.rooms.p1, U.rooms.p2, 128, 71, 4.6); plate(U.rooms.mano, 192, 71, 5, 'b', 'w', 34);
+    plate(U.rooms.call, 72, 119, 4.8, 'w', 'b', 76); plate(TEXT.vp_title, 168, 119, 5, 'w', 'b', 76);
     // researchers: builds the study, later builds the findings
     aiDevice(18, 15, t); board(48, 16, 30, 17, 'grid');
     person(PEOPLE.res2, 44, 32, 'down'); desk(40, 46, 24); papers(44, 48); person(PEOPLE.res, 64, 40, 'left'); person(PEOPLE.res3, 30, 44, 'right');
@@ -364,7 +389,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const drawNews = (t) => {
     for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) { const X = i * T, Y = j * T; R((i + j) % 2 ? 'g' : 'o', X, Y, T, T); }
     R('d', 0, 0, W, 26); R('b', 0, 0, W, 20); R('s', 0, 0, W, 1); R('p', 0, 20, W, 6); R('l', 0, 20, W, 1);
-    R('k', 64, 3, 96, 19); R('d', 65, 4, 94, 17); txt('חדשות', 120, 11, 8, 'w', 800); R('r', 74, 9, 4, 4);
+    R('k', 64, 3, 96, 19); R('d', 65, 4, 94, 17); txt(U.newsSign, 120, 11, 8, 'w', 800); R('r', 74, 9, 4, 4);
     R('s', 65, 17, 94, 4); for (let i = 0; i < 90; i += 8) R('w', 66 + ((i + Math.floor(t / 60)) % 92), 18, 4, 1);
     R('d', 0, 26, 6, H); R('d', W - 6, 26, 6, H); R('b', 0, 26, 5, H); R('b', W - 5, 26, 5, H);
     R('k', 96, H - 4, 32, 4); R('s', 97, H - 3, 30, 3);
@@ -375,7 +400,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 
   /* ---------- the texts: defaults here, edited live from the design page ---------- */
   const TEXT = {
-    editor_brief: 'שלום! אני צריך סקר עד יום חמישי: להישאר בשעון קיץ כל השנה?',
+    editor_brief: 'שלום! אני צריך סקר עד יום חמישי: להישאר בשעון קיץ כל השנה? אחכה לך בבניין החדשות כשתסיים.',
     gate_editor_early: 'בלי אישור של מנו גבע אני לא מפרסם.',
     editor_final: 'עבודה יפה! מפרסמים!',
     secretary_line: 'שלום! מנו מוכן לקבל אותך, החדר שלו ממש כאן.',
@@ -400,32 +425,171 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     vp1_line: 'הסקר שלך בידיים טובות. אצלנו כל לקוח מקבל בדיוק את מה שהוא צריך.',
     vp2_line: 'כל סקר של מדגם עובר אותה בדיקה, גדול או קטן. ככה בונים אמון.'
   };
+
+  /* ---------- languages: Hebrew (default), English, Arabic ---------- */
+  const TX = {
+    he: Object.assign({}, TEXT),
+    en: {
+      editor_brief: "Hi! I need a survey by Thursday: should we keep daylight saving time all year? I'll wait for you at the news building when you're done.",
+      gate_editor_early: "Without Mano Geva's sign-off, I'm not publishing.",
+      editor_final: "Great work! We're publishing!",
+      secretary_line: 'Hello! Mano is ready to see you, his room is right here.',
+      gate_mano_nobrief: "We don't have a client yet. Someone on the street was looking for a survey, worth a look.",
+      mano_start: 'Welcome to Midgam. We start with the researchers: questionnaire, sample and quotas. Only then do we go into the field.',
+      gate_mano_early: "I haven't seen any findings yet. The researchers are waiting for you!",
+      mano_end: "I checked everything, it looks good. They're waiting for you at the news!",
+      gate_research_early: 'First meet Mano Geva, he opens every study.',
+      researcher_design: 'The questionnaire is set up and the sample has its quotas. The call center and the online team are waiting for you.',
+      gate_findings_early: 'No field data yet. The call center and online collection come first.',
+      researcher_findings: 'The data is weighted and clean. Here are the findings.',
+      gate_call_early: 'No questionnaire or sample yet. Researchers first, then we start calling.',
+      call_center: 'We finished the phone interviews, the data went to the researchers.',
+      gate_panel_early: 'No questionnaire or sample yet. Researchers first.',
+      panel: 'Collection through iPanel is done, the data went to the researchers.',
+      dog_line: 'Woof! Woof!',
+      printer_caption: 'The Midgam team on the annual trip',
+      paper_headline: 'Midgam survey: most of the public backs daylight saving time all year',
+      field_ask: 'Hi, I work for Midgam. How would you rate the mayor of this city?',
+      field_thanks: 'Thanks for your cooperation!',
+      vp_title: 'Senior management',
+      vp1_line: 'Your survey is in good hands. Every client here gets exactly what they need.',
+      vp2_line: "Every Midgam survey goes through the same check, big or small. That's how trust is built."
+    },
+    ar: {
+      editor_brief: 'مرحبًا! أحتاج استطلاعًا حتى يوم الخميس: هل نُبقي التوقيت الصيفي طوال السنة؟ سأنتظرك في مبنى الأخبار عندما تنتهي.',
+      gate_editor_early: 'بدون موافقة مانو جيفع لن أنشر.',
+      editor_final: 'عمل رائع! ننشر!',
+      secretary_line: 'أهلًا! مانو جاهز لاستقبالك، غرفته هنا تمامًا.',
+      gate_mano_nobrief: 'ليس لدينا زبون بعد. شخص في الشارع كان يبحث عن استطلاع، من المفيد أن تتحقق.',
+      mano_start: 'وصلت إلى مدجام. نبدأ عند الباحثين: استبيان وعيّنة وحصص. بعدها فقط نخرج إلى الميدان.',
+      gate_mano_early: 'لم أرَ نتائج بعد. الباحثون بانتظارك!',
+      mano_end: 'فحصت كل شيء، يبدو جيدًا. ينتظرونك في الأخبار!',
+      gate_research_early: 'قابل مانو جيفع أولًا، فهو يفتتح كل بحث.',
+      researcher_design: 'الاستبيان جاهز والعيّنة محددة بالحصص. مركز الاتصال والجمع عبر الإنترنت بانتظارك.',
+      gate_findings_early: 'لا توجد بيانات من الميدان بعد. أولًا مركز الاتصال والجمع عبر الإنترنت.',
+      researcher_findings: 'البيانات موزونة ونظيفة. هذه هي النتائج.',
+      gate_call_early: 'لا يوجد استبيان وعيّنة بعد. أولًا إلى الباحثين، ثم نبدأ الاتصال.',
+      call_center: 'أنهينا المقابلات الهاتفية، وأُرسلت البيانات إلى الباحثين.',
+      gate_panel_early: 'لا يوجد استبيان وعيّنة بعد. أولًا إلى الباحثين.',
+      panel: 'انتهى الجمع عبر آي-بانل، وأُرسلت البيانات إلى الباحثين.',
+      dog_line: 'هاو! هاو!',
+      printer_caption: 'فريق مدجام في الرحلة السنوية',
+      paper_headline: 'استطلاع مدجام: أغلبية الجمهور تؤيد التوقيت الصيفي طوال السنة',
+      field_ask: 'مرحبًا، أنا أعمل في مدجام. كيف تقيّمون رئيس بلدية هذه المدينة؟',
+      field_thanks: 'شكرًا على تعاونكم!',
+      vp_title: 'الإدارة العليا',
+      vp1_line: 'استطلاعك في أيدٍ أمينة. عندنا يحصل كل زبون على ما يحتاجه بالضبط.',
+      vp2_line: 'كل استطلاع لمدجام يمرّ بنفس الفحص، كبيرًا كان أم صغيرًا. هكذا تُبنى الثقة.'
+    }
+  };
+  const UI = {
+    he: {
+      dir: 'rtl', mission: 'המשימה', doneN: n => `${n} שלבים הושלמו ·`, next: 'הבא:', published: 'הסקר פורסם!', office: 'משרדי מדגם', newsroom: 'חדר החדשות',
+      hq: 'מדגם · ייעוץ ומחקר', newsSign: 'חדשות', badge: 'מדגם',
+      rooms: { res: 'חוקרים', p1: 'איסוף', p2: 'אינטרנטי', mano: 'מנו גבע', call: 'מוקד טלפוני' },
+      paper: { name: 'החדשות', date: 'יום חמישי · מהדורת בוקר', fict: 'נתונים בדיוניים', by: 'סקר מדגם ייעוץ ומחקר עבור החדשות', method: 'מדגם 1,000 · טעות דגימה ±3.1% · שוקלל לפי גיל ואזור' },
+      fake: ['בעד', 'נגד', 'לא יודעים'],
+      names: { editor: 'העורך', mano: 'מנו גבע', res: 'חוקרים', call: 'מוקד טלפוני', panel: 'איסוף אינטרנטי', sec: 'המזכירה', dog: 'הכלב', printer: 'המדפסת', field: 'סוקר של מדגם' },
+      steps: ['קבלו בריף מהעורך', 'פגישת פתיחה עם מנו גבע', 'בניית המחקר אצל החוקרים', 'איסוף במוקד הטלפוני', 'איסוף אינטרנטי', 'בניית ממצאים אצל החוקרים', 'אישור סופי של מנו גבע', 'הגשה לעורך'],
+      start: 'המשחק התחיל. חצים להליכה, רווח לדיבור, Escape ליציאה. העורך מחכה ברחוב.', askQ: 'ומה אתם חושבים? בחרו תשובה.', pctSay: v => v + ' אחוז מהמשיבים בסקר שלכם חושבים כמוכם.',
+      html: {
+        nav1: 'תחומי פעילות', nav2: 'ממצאים', nav3: 'מקרי בוחן', nav4: 'אודות', cta: 'פנייה למחקר', badge1: 'משחק · 3 דקות', title: 'יום אחד במדגם',
+        h1: 'תצליחו להגיש<span>סקר תקין?</span>', sub: 'פוגשים ברחוב עורך שצריך סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. הוא יקבל את הסקר רק אם הוא תקין.',
+        playNow: 'שחקו עכשיו', fields: 'מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b>',
+        demo: '<b>יום אחד במדגם</b> · מצב הדגמה', play: 'שחקו', talk: 'דברו', walk: 'להליכה', space: 'מקש רווח לדיבור', exit: 'יציאה',
+        finQ: 'ומה אתם חושבים?', finQ2: 'להישאר בשעון קיץ כל השנה?', a0: 'בעד', a1: 'נגד', a2: 'לא יודע/ת',
+        finR: 'אנשים כמוכם', finR2: 'מהמשיבים בסקר שלכם חושבים כמוכם.', finR3: 'נתונים בדיוניים מתוך המשחק',
+        next1: 'ועכשיו, מה הסקר שלך?', next2: 'ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.', contact: 'דברו איתנו', findings: 'לממצאים של מדגם', again: 'לשחק שוב',
+        mhint: 'הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר'
+      },
+      aria: { lang: 'שפה', title: 'יום אחד במדגם', pad: 'כפתורי הליכה', up: 'למעלה', right: 'ימינה', down: 'למטה', left: 'שמאלה',
+        canvas: 'משחק פיקסלים: חוקר צעיר פוגש ברחוב עורך שמבקש סקר, עובר במשרדי מדגם אצל מנו גבע, החוקרים, המוקד הטלפוני והאיסוף האינטרנטי, ומגיש לו בחדר החדשות סקר תקין שמתפרסם.' }
+    },
+    en: {
+      dir: 'ltr', mission: 'Mission', doneN: n => `${n} steps done ·`, next: 'Next:', published: 'Survey published!', office: 'Midgam offices', newsroom: 'The newsroom',
+      hq: 'Midgam · Research', newsSign: 'NEWS', badge: 'Midgam',
+      rooms: { res: 'Researchers', p1: 'Online', p2: 'collection', mano: 'Mano Geva', call: 'Call center' },
+      paper: { name: 'The News', date: 'Thursday · Morning edition', fict: 'Fictional data', by: 'A Midgam Research survey for The News', method: 'Sample 1,000 · margin of error ±3.1% · weighted by age and region' },
+      fake: ['For', 'Against', "Don't know"],
+      names: { editor: 'The editor', mano: 'Mano Geva', res: 'Researchers', call: 'Call center', panel: 'Online collection', sec: 'Secretary', dog: 'The dog', printer: 'Printer', field: 'Midgam interviewer' },
+      steps: ['Get a brief from the editor', 'Kickoff with Mano Geva', 'Build the study with the researchers', 'Collect at the call center', 'Collect online', 'Build the findings with the researchers', 'Final sign-off from Mano Geva', 'Hand it to the editor'],
+      start: 'The game has started. Arrows to walk, Space to talk, Escape to exit. The editor is waiting on the street.', askQ: 'And what do you think? Choose an answer.', pctSay: v => v + ' percent of respondents in your survey think like you.',
+      html: {
+        nav1: 'Services', nav2: 'Findings', nav3: 'Case studies', nav4: 'About', cta: 'Start a study', badge1: 'Game · 3 min', title: 'A day at Midgam',
+        h1: 'Can you deliver<span>a valid survey?</span>', sub: 'Meet an editor on the street who needs a survey, go through every Midgam department with Mano Geva, and head back to the newsroom. He only accepts a valid survey.',
+        playNow: 'Play now', fields: 'Midgam Consulting &amp; Research, since 1988: <b>Public opinion polls</b> · <b>Market research</b> · <b>Social research</b> · <b>Expert opinions for courts</b>',
+        demo: '<b>A day at Midgam</b> · demo', play: 'Play', talk: 'Talk', walk: 'to walk', space: 'Space to talk', exit: 'Exit',
+        finQ: 'And what do you think?', finQ2: 'Keep daylight saving time all year?', a0: 'For', a1: 'Against', a2: 'Not sure',
+        finR: 'People like you', finR2: 'of respondents in your survey think like you.', finR3: 'Fictional data from the game',
+        next1: "Now, what's your survey?", next2: "Tell us what you want to find out, and we'll come back with a research proposal.", contact: 'Talk to us', findings: "Midgam's findings", again: 'Play again',
+        mhint: 'Tap a spot to walk · "Talk" to talk'
+      },
+      aria: { lang: 'Language', title: 'A day at Midgam', pad: 'Walking buttons', up: 'Up', right: 'Right', down: 'Down', left: 'Left',
+        canvas: 'Pixel game: a young researcher meets an editor on the street who wants a survey, goes through the Midgam offices to Mano Geva, the researchers, the call center and online collection, and hands a valid survey over in the newsroom.' }
+    },
+    ar: {
+      dir: 'rtl', mission: 'المهمة', doneN: n => `أُنجزت ${n} مراحل ·`, next: 'التالي:', published: 'نُشر الاستطلاع!', office: 'مكاتب مدجام', newsroom: 'غرفة الأخبار',
+      hq: 'مدجام · أبحاث', newsSign: 'أخبار', badge: 'مدجام',
+      rooms: { res: 'الباحثون', p1: 'الجمع عبر', p2: 'الإنترنت', mano: 'مانو جيفع', call: 'مركز الاتصال' },
+      paper: { name: 'الأخبار', date: 'الخميس · طبعة الصباح', fict: 'بيانات خيالية', by: 'استطلاع مدجام للاستشارات والأبحاث لصالح الأخبار', method: 'عيّنة 1,000 · هامش خطأ ±3.1% · موزونة حسب العمر والمنطقة' },
+      fake: ['مع', 'ضد', 'لا أعرف'],
+      names: { editor: 'المحرّر', mano: 'مانو جيفع', res: 'الباحثون', call: 'مركز الاتصال', panel: 'الجمع عبر الإنترنت', sec: 'السكرتيرة', dog: 'الكلب', printer: 'الطابعة', field: 'باحث ميداني من مدجام' },
+      steps: ['احصل على الطلب من المحرّر', 'اجتماع افتتاحي مع مانو جيفع', 'بناء البحث عند الباحثين', 'الجمع في مركز الاتصال', 'الجمع عبر الإنترنت', 'بناء النتائج عند الباحثين', 'موافقة نهائية من مانو جيفع', 'التسليم للمحرّر'],
+      start: 'بدأت اللعبة. الأسهم للمشي، المسافة للتحدث، Escape للخروج. المحرّر ينتظر في الشارع.', askQ: 'وما رأيكم؟ اختاروا إجابة.', pctSay: v => v + ' بالمئة من المشاركين في استطلاعكم يفكرون مثلكم.',
+      html: {
+        nav1: 'مجالات النشاط', nav2: 'النتائج', nav3: 'دراسات حالة', nav4: 'من نحن', cta: 'اطلبوا بحثًا', badge1: 'لعبة · 3 دقائق', title: 'يوم في مدجام',
+        h1: 'هل تنجحون في تقديم<span>استطلاع سليم؟</span>', sub: 'تلتقون في الشارع بمحرّر يحتاج استطلاعًا، تمرّون بكل أقسام مدجام مع مانو جيفع، وتعودون إلى غرفة الأخبار. لن يقبل إلا استطلاعًا سليمًا.',
+        playNow: 'العبوا الآن', fields: 'مدجام للاستشارات والأبحاث، منذ 1988: <b>استطلاعات الرأي العام</b> · <b>أبحاث السوق</b> · <b>البحث الاجتماعي</b> · <b>آراء خبراء للمحاكم</b>',
+        demo: '<b>يوم في مدجام</b> · عرض تجريبي', play: 'العبوا', talk: 'تحدّث', walk: 'للمشي', space: 'مفتاح المسافة للتحدث', exit: 'خروج',
+        finQ: 'وما رأيكم؟', finQ2: 'إبقاء التوقيت الصيفي طوال السنة؟', a0: 'مع', a1: 'ضد', a2: 'لا أعرف',
+        finR: 'أشخاص مثلكم', finR2: 'من المشاركين في استطلاعكم يفكرون مثلكم.', finR3: 'بيانات خيالية من اللعبة',
+        next1: 'والآن، ما هو استطلاعك؟', next2: 'أخبرونا ماذا تريدون أن تعرفوا، وسنعود إليكم باقتراح بحث.', contact: 'تواصلوا معنا', findings: 'نتائج مدجام', again: 'العب مرة أخرى',
+        mhint: 'اضغطوا على مكان للمشي · «تحدّث» للتحدث'
+      },
+      aria: { lang: 'اللغة', title: 'يوم في مدجام', pad: 'أزرار المشي', up: 'أعلى', right: 'يمين', down: 'أسفل', left: 'يسار',
+        canvas: 'لعبة بكسل: باحث شاب يلتقي في الشارع بمحرّر يريد استطلاعًا، يمرّ في مكاتب مدجام عند مانو جيفع والباحثين ومركز الاتصال والجمع عبر الإنترنت، ويسلّم استطلاعًا سليمًا في غرفة الأخبار.' }
+    }
+  };
+  let U = UI.he;
+  const setLang = (l, save) => {
+    if (!UI[l]) l = 'he';
+    LANG = l; U = UI[l]; RTL = U.dir === 'rtl';
+    Object.assign(TEXT, TX[l]);
+    const de = document.documentElement; de.lang = l; de.dir = U.dir;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const v = U.html[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { const v = U.aria[el.dataset.i18nAria]; if (v != null) el.setAttribute('aria-label', v); });
+    document.querySelectorAll('[data-lang]').forEach(b => { const on = b.dataset.lang === l; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    lastHud = '';
+    if (S.say && S.key) { S.say = TEXT[S.key]; S.shown = Math.min(S.shown, S.say.length); }
+    if (l === 'ar' && document.fonts) document.fonts.load(`700 10px "Noto Sans Arabic"`).catch(() => {});
+    if (save) try { localStorage.setItem('midgam-lang', l); } catch (_) {}
+  };
   addEventListener('message', e => {
     if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-texts') return;
     const t = e.data.texts || {};
-    Object.keys(TEXT).forEach(k => { if (typeof t[k] === 'string' && t[k].trim()) TEXT[k] = t[k].slice(0, 400); });
-    if (S.say && S.key) { S.say = TEXT[S.key]; }
+    // the design page edits the Hebrew texts; they show live when Hebrew is on
+    Object.keys(TX.he).forEach(k => { if (typeof t[k] === 'string' && t[k].trim()) TX.he[k] = t[k].slice(0, 400); });
+    if (LANG === 'he') { Object.assign(TEXT, TX.he); if (S.say && S.key) S.say = TEXT[S.key]; }
   });
   if (window.parent !== window) window.parent.postMessage({ type: 'midgam-game-ready' }, '*');
 
   /* ---------- the story: order matters, rooms send you back ---------- */
-  const STEPS = ['קבלו בריף מהעורך', 'פגישת פתיחה עם מנו גבע', 'בניית המחקר אצל החוקרים', 'איסוף במוקד הטלפוני', 'איסוף אינטרנטי', 'בניית ממצאים אצל החוקרים', 'אישור סופי של מנו גבע', 'הגשה לעורך'];
   const SCRIPT = [
-    { scene: 'street', path: [[120, 128], [120, 80]], face: 'right', who: 'העורך', key: 'editor_brief', done: 1 },
-    { scene: 'street', path: [STREET_DOOR.hq], face: 'up', go: ['office', 'משרדי מדגם', [206, 86]] },
-    { scene: 'office', path: [[200, 86]], face: 'up', who: 'המזכירה', key: 'secretary_line' },
-    { scene: 'office', path: [[160, 92], [160, 34]], face: 'right', who: 'מנו גבע', key: 'mano_start', done: 2 },
-    { scene: 'office', path: [[160, 92], [16, 92], [16, 130]], face: 'right', who: 'מוקד טלפוני', key: 'gate_call_early', refuse: true },
-    { scene: 'office', path: [[16, 92], [16, 34]], face: 'right', who: 'חוקרים', key: 'researcher_design', done: 3 },
-    { scene: 'office', path: [[16, 92], [16, 130]], face: 'right', who: 'מוקד טלפוני', key: 'call_center', done: 4 },
-    { scene: 'office', path: [[16, 92], [96, 92], [96, 32]], face: 'right', who: 'איסוף אינטרנטי', key: 'panel', done: 5 },
-    { scene: 'office', path: [[96, 92], [16, 92], [16, 34]], face: 'right', who: 'חוקרים', key: 'researcher_findings', done: 6 },
-    { scene: 'office', path: [[16, 92], [160, 92], [160, 34]], face: 'right', who: 'מנו גבע', key: 'mano_end', done: 7 },
+    { scene: 'street', path: [[120, 128], [120, 80]], face: 'right', who: 'editor', key: 'editor_brief', done: 1 },
+    { scene: 'street', path: [STREET_DOOR.hq], face: 'up', go: ['office', 'office', [206, 86]] },
+    { scene: 'office', path: [[200, 86]], face: 'up', who: 'sec', key: 'secretary_line' },
+    { scene: 'office', path: [[160, 92], [160, 34]], face: 'right', who: 'mano', key: 'mano_start', done: 2 },
+    { scene: 'office', path: [[160, 92], [16, 92], [16, 130]], face: 'right', who: 'call', key: 'gate_call_early', refuse: true },
+    { scene: 'office', path: [[16, 92], [16, 34]], face: 'right', who: 'res', key: 'researcher_design', done: 3 },
+    { scene: 'office', path: [[16, 92], [16, 130]], face: 'right', who: 'call', key: 'call_center', done: 4 },
+    { scene: 'office', path: [[16, 92], [96, 92], [96, 32]], face: 'right', who: 'panel', key: 'panel', done: 5 },
+    { scene: 'office', path: [[96, 92], [16, 92], [16, 34]], face: 'right', who: 'res', key: 'researcher_findings', done: 6 },
+    { scene: 'office', path: [[16, 92], [160, 92], [160, 34]], face: 'right', who: 'mano', key: 'mano_end', done: 7 },
     { scene: 'office', path: [[160, 92], [218, 92]], face: 'right', go: ['street', '', STREET_DOOR.hq] },
-    { scene: 'street', path: [[56, 88], [172, 88], STREET_DOOR.news], face: 'up', go: ['news', 'חדר החדשות', [104, 172]] },
-    { scene: 'news', path: [[104, 62]], face: 'up', who: 'העורך', key: 'editor_final', done: 8, party: true }
+    { scene: 'street', path: [[56, 88], [172, 88], STREET_DOOR.news], face: 'up', go: ['news', 'newsroom', [104, 172]] },
+    { scene: 'news', path: [[104, 62]], face: 'up', who: 'editor', key: 'editor_final', done: 8, party: true }
   ];
-  const S = { scene: 'street', me: { x: 0, y: 128, face: 'right' }, i: 0, wps: [], wait: 0, say: '', key: '', who: '', refuse: false, shown: 0, done: 0, fade: 0, fadeDir: 0, card: '', next: null, conf: [], leg: 0, cardT: 0, reset: false, partyT: 0, paper: false, paperP: 0, egg: null, photo: false, photoP: 0, barkT: 0 };
+  const S = { scene: 'street', me: { x: 0, y: 128, face: 'right' }, i: 0, wps: [], wait: 0, say: '', key: '', who: '', refuse: false, shown: 0, done: 0, fade: 0, fadeDir: 0, card: '', next: null, conf: [], leg: 0, cardT: 0, reset: false, partyT: 0, paper: false, paperP: 0, egg: null, photo: false, photoP: 0, barkT: 0, ed: { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null } };
   const startAction = () => { const a = SCRIPT[S.i]; S.wps = a.path.map(p => p.slice()); };
   const finishWalk = () => {
     const a = SCRIPT[S.i]; S.me.face = a.face;
@@ -443,9 +607,9 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 
   /* ---------- easter eggs: the design page can ask for one ---------- */
   const EGGS = {
-    secretary: { pos: [200, 86], face: 'up', who: 'המזכירה', key: 'secretary_line', wait: 3400 },
-    dog: { pos: [20, 96], face: 'left', who: 'הכלב', key: 'dog_line', wait: 2600, bark: true },
-    printer: { pos: [80, 86], face: 'right', who: 'המדפסת', key: 'printer_caption', wait: 7000, photo: true }
+    secretary: { pos: [200, 86], face: 'up', who: 'sec', key: 'secretary_line', wait: 3400 },
+    dog: { pos: [20, 96], face: 'left', who: 'dog', key: 'dog_line', wait: 2600, bark: true },
+    printer: { pos: [80, 86], face: 'right', who: 'printer', key: 'printer_caption', wait: 7000, photo: true }
   };
   addEventListener('message', e => {
     if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-egg' || !EGGS[e.data.egg] || reduce || MODE === 'play') return;
@@ -470,61 +634,73 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     [[ix + 4, iy + 34], [ix + iw - 18, iy + 32]].forEach(([tx, ty]) => tree(tx, ty));
     TEAM.forEach((k, i) => person(PEOPLE[k], ix + 6 + i * 14.5, iy + ih - 22 - (i % 2) * 4, 'down'));
     R('k', ix, iy, iw, 1); R('k', ix, iy + ih, iw, 1);
-    x.font = '700 7px Heebo, Arial'; const cap = wrapLines(TEXT.printer_caption, w - 16).slice(0, 2);
+    x.font = `700 7px ${FF}`; const cap = wrapLines(TEXT.printer_caption, w - 16).slice(0, 2);
     cap.forEach((l, i) => txt(l, X + w / 2, y0 + 96 + i * 9, 7, 'k', 700));
   };
 
   /* ---------- the newspaper with the published survey (fictional results) ---------- */
   const wrapLines = (str, maxW) => { const out = []; let line = ''; for (const w of str.split(' ')) { const t2 = line ? line + ' ' + w : w; if (x.measureText(t2).width > maxW && line) { out.push(line); line = w; } else line = t2; } if (line) out.push(line); return out; };
-  const FAKE = [['בעד', 54, 'b'], ['נגד', 38, 's'], ['לא יודעים', 8, 'n']];
+  const FAKE = [[54, 'b'], [38, 's'], [8, 'n']];
   const newspaper = (p) => {
-    const e = 1 - Math.pow(1 - p, 3), X = 36, w = 152, h = 128, y0 = 22 + (1 - e) * 180;
+    const e = 1 - Math.pow(1 - p, 3), X = 36, w = 152, h = 128, y0 = 22 + (1 - e) * 180, Pp = U.paper;
+    // M mirrors an x position for left-to-right languages; A is the reading-start alignment
+    const M = v => RTL ? v : 2 * X + w - v, A = RTL ? 'right' : 'left';
     x.fillStyle = 'rgba(11,34,56,.35)'; x.fillRect(X + 4, y0 + 4, w, h);
     R('k', X, y0, w, h); R('w', X + 1, y0 + 1, w - 2, h - 2);
-    txt('החדשות', X + w / 2, y0 + 10, 11, 'k', 800); R('k', X + 6, y0 + 18, w - 12, 1); R('k', X + 6, y0 + 20, w - 12, 1);
-    txt('יום חמישי · מהדורת בוקר', X + w - 8, y0 + 26, 4.4, 'n', 500, 'right');
-    plate('נתונים בדיוניים', X + 26, y0 + 26, 4, 'y', 'k');
-    x.font = '800 7.6px Heebo, Arial'; const hl = wrapLines(TEXT.paper_headline, w - 16).slice(0, 2);
-    hl.forEach((l, i) => txt(l, X + w - 8, y0 + 37 + i * 10, 7.6, 'k', 800, 'right'));
+    txt(Pp.name, X + w / 2, y0 + 10, 11, 'k', 800); R('k', X + 6, y0 + 18, w - 12, 1); R('k', X + 6, y0 + 20, w - 12, 1);
+    txt(Pp.date, M(X + w - 8), y0 + 26, 4.4, 'n', 500, A);
+    plate(Pp.fict, M(X + 26), y0 + 26, 4, 'y', 'k');
+    x.font = `800 7.6px ${FF}`; const hl = wrapLines(TEXT.paper_headline, w - 16).slice(0, 2);
+    hl.forEach((l, i) => txt(l, M(X + w - 8), y0 + 37 + i * 10, 7.6, 'k', 800, A));
     const sy = y0 + 37 + hl.length * 10;
-    txt('סקר מדגם ייעוץ ומחקר עבור החדשות', X + w - 8, sy, 4.8, 'b', 600, 'right');
-    const bx = X + 30, L = w - 82;
-    FAKE.forEach(([lab, v, c], i) => { const y = sy + 10 + i * 11; txt(lab, X + w - 8, y, 5.2, 'k', 600, 'right'); R('g', bx, y - 2.5, L, 5); R(c, bx + L - L * v / 100, y - 2.5, L * v / 100, 5); txt(v + '%', X + 18, y, 5.6, 'k', 800); });
+    fitTxt(Pp.by, M(X + w - 8), sy, 4.8, 'b', 600, A, w - 16);
+    const L = w - 82, bx0 = RTL ? X + 30 : X + w - 30 - L;
+    FAKE.forEach(([v, c], i) => {
+      const y = sy + 10 + i * 11, fw = L * v / 100;
+      fitTxt(U.fake[i], M(X + w - 8), y, 5.2, 'k', 600, A, 42);
+      R('g', bx0, y - 2.5, L, 5); R(c, RTL ? bx0 + L - fw : bx0, y - 2.5, fw, 5);
+      txt(v + '%', M(X + 18), y, 5.6, 'k', 800);
+    });
     R('o', X + 6, y0 + h - 18, w - 12, 12); R('p', X + 6, y0 + h - 18, w - 12, 1);
-    txt('מדגם 1,000 · טעות דגימה ±3.1% · שוקלל לפי גיל ואזור', X + w - 10, y0 + h - 12, 4.3, 'k', 500, 'right');
+    fitTxt(Pp.method, M(X + w - 10), y0 + h - 12, 4.3, 'k', 500, A, w - 20);
   };
+  const fitTxt = (s2, X, Y, size, c, weight, align, maxW) => { x.font = `${weight} ${size}px ${FF}`; while (x.measureText(s2).width > maxW && size > 3) { size -= .2; x.font = `${weight} ${size}px ${FF}`; } txt(s2, X, Y, size, c, weight, align); };
 
   /* ---------- HUD: the next step, and what is already done, crossed out ---------- */
   const mission = document.getElementById('mission'); let lastHud = '';
   const hud = () => {
-    let done, next;
-    if (MODE === 'play') { done = PLAY_STEPS.filter(([k]) => F[k]).map(([, l]) => l); const n = PLAY_STEPS.find(([k]) => !F[k]); next = n && n[1]; }
-    else { done = STEPS.slice(0, S.done); next = STEPS[S.done]; }
-    const key = MODE + done.join('|') + next; if (key === lastHud) return; lastHud = key;
+    let done, next; const steps = U.steps, mob = document.documentElement.classList.contains('mobile-play');
+    if (MODE === 'play') { done = PLAY_STEPS.map((k, i) => F[k] ? steps[i] : null).filter(Boolean); const n = PLAY_STEPS.findIndex(k => !F[k]); next = n >= 0 ? steps[n] : null; }
+    else { done = steps.slice(0, S.done); next = steps[S.done]; }
+    const key = LANG + mob + MODE + done.join('|') + next; if (key === lastHud) return; lastHud = key;
+    const nextHtml = next ? `<span class="next">${U.next} ${next}</span>` : `<span class="next ok">${U.published}</span>`;
+    // on a phone only the next step shows, in full, with a step count
+    if (mob) { mission.innerHTML = `<span class="lbl">${done.length}/${steps.length}</span>` + nextHtml; return; }
     const shown = done.slice(-2), more = done.length - shown.length;
-    mission.innerHTML = '<span class="lbl">המשימה</span>' + (more ? `<span class="more">${more} שלבים הושלמו ·</span>` : '') + shown.map(d => `<span class="done">${d}</span>`).join('') + (next ? `<span class="next">הבא: ${next}</span>` : '<span class="next fin">הסקר פורסם!</span>');
+    mission.innerHTML = `<span class="lbl">${U.mission}</span>` + (more ? `<span class="more">${U.doneN(more)}</span>` : '') + shown.map(d => `<span class="done">${d}</span>`).join('') + nextHtml;
   };
   const dialog = (t) => {
     if (!S.say) return;
-    x.font = '600 6.6px Heebo, Arial';
+    x.font = `600 6.6px ${FF}`;
     const lines = wrapLines(S.say, 196), h = 14 + lines.length * 9.5, by = H - 6 - h, edge = S.refuse ? 'r' : 'k';
     R(edge, 6, by, 212, h); R('w', 8, by + 2, 208, h - 4); R('p', 8, by + h - 5, 208, 1);
-    if (S.who) plate(S.who, 196, by, 5.2, S.refuse ? 'r' : 'b', 'w');
-    let left = Math.floor(S.shown); x.font = '600 6.6px Heebo, Arial'; x.fillStyle = P.k; x.textAlign = 'right'; x.textBaseline = 'top';
-    lines.forEach((l, i) => { if (left <= 0) return; const part = l.slice(0, left); left -= l.length + 1; x.fillText(part, 210, by + 8 + i * 9.5); });
-    if (S.shown >= S.say.length && Math.floor(t / 380) % 2) { R(S.refuse ? 'r' : 'b', 14, by + h - 11, 5, 2); R(S.refuse ? 'r' : 'b', 15, by + h - 9, 3, 1); }
+    if (S.who) plate(whoName(S.who), RTL ? 196 : 28, by, 5.2, S.refuse ? 'r' : 'b', 'w', 120);
+    let left = Math.floor(S.shown); x.font = `600 6.6px ${FF}`; x.fillStyle = P.k; x.direction = RTL ? 'rtl' : 'ltr'; x.textAlign = RTL ? 'right' : 'left'; x.textBaseline = 'top';
+    lines.forEach((l, i) => { if (left <= 0) return; const part = l.slice(0, left); left -= l.length + 1; x.fillText(part, RTL ? 210 : 14, by + 8 + i * 9.5); });
+    const mk = RTL ? 14 : 205;
+    if (S.shown >= S.say.length && Math.floor(t / 380) % 2) { R(S.refuse ? 'r' : 'b', mk, by + h - 11, 5, 2); R(S.refuse ? 'r' : 'b', mk + 1, by + h - 9, 3, 1); }
   };
   const confetti = (dt, t) => {
     if (!S.conf.length) return;
     S.conf.forEach(c => { c.vy += .06 * dt / 16; c.x += (c.vx + Math.sin(t / 160 + c.ph) * .3) * dt / 16; c.y += c.vy * dt / 16; c.vx *= .99; R(c.c, c.x, c.y, c.w, Math.sin(t / 90 + c.ph) > 0 ? 2 : 1); });
     S.conf = S.conf.filter(c => c.y < H + 4);
-    plate('הסקר פורסם!', W / 2, 12, 9, 'y', 'k');
+    plate(U.published, W / 2, 12, 9, 'y', 'k', W - 20);
   };
 
   /* ---------- play mode: you walk, rooms keep their order ---------- */
   let MODE = 'demo';
   const F = {};
-  const PLAY_STEPS = [['brief', 'קבלו בריף מהעורך'], ['manoStart', 'פגישת פתיחה עם מנו גבע'], ['design', 'בניית המחקר אצל החוקרים'], ['call', 'איסוף במוקד הטלפוני'], ['panel', 'איסוף אינטרנטי'], ['findings', 'בניית ממצאים אצל החוקרים'], ['manoEnd', 'אישור סופי של מנו גבע'], ['submitted', 'הגשה לעורך']];
+  const PLAY_STEPS = ['brief', 'manoStart', 'design', 'call', 'panel', 'findings', 'manoEnd', 'submitted'];
   const keys = new Set();
   const bx = (x0, y0, w, h) => ({ x: x0, y: y0, w, h });
   const hit = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
@@ -540,7 +716,6 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     bx(18, 15, 28, 22), bx(48, 16, 30, 21), bx(40, 44, 24, 14), bx(66, 48, 12, 8), bx(32, 52, 12, 8),
     bx(114, 17, 28, 20), bx(122, 46, 12, 8),
     bx(182, 16, 26, 15), bx(178, 46, 22, 14), bx(184, 38, 8, 8),
-    ...[84, 148].map(X => bx(X + 1, 84, 8, 8)), ...[44, 74, 160].map(X => bx(X + 1, 104, 8, 8)),
     bx(96, 105, 18, 7), bx(3, 98, 14, 6), bx(202, 78, 22, 18),
     ...CALL_DESKS.map(([dx, dy]) => bx(dx, dy - 10, 22, 22)),
     bx(130, 160, 12, 12), bx(140, 146, 18, 18), bx(194, 160, 12, 12), bx(176, 146, 18, 18));
@@ -549,44 +724,45 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     const f = feet(X, Y);
     if (f.x < 0 || f.y < 0 || f.x + f.w > W || f.y + f.h > H) return true;
     const list = BLOCK[S.scene].slice();
-    if (S.scene === 'street' && !F.brief) list.push(bx(140, 90, 8, 6));
+    if (S.scene === 'street' && !F.brief) list.push(bx(S.ed.x + 4, S.ed.y + 10, 8, 6));
     if (S.scene === 'street') list.push(bx(164, 135, 8, 6));
     if (S.scene === 'news' && F.brief) list.push(bx(110, 42, 8, 6));
     return list.some(b => hit(f, b));
   };
-  const talk = (who, key, refuse) => { S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(who + ': ' + TEXT[key]); };
+  const whoName = w => w === 'vp' ? TEXT.vp_title : (U.names[w] || w);
+  const talk = (who, key, refuse) => { S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(whoName(who) + ': ' + TEXT[key]); };
   const live = document.getElementById('live');
   const announce = text => { live.textContent = ''; setTimeout(() => { live.textContent = text; }, 30); };
   const researchers = () => {
-    if (!F.manoStart) return talk('חוקרים', 'gate_research_early', true);
-    if (!F.design) { F.design = true; return talk('חוקרים', 'researcher_design'); }
-    if (!(F.call && F.panel)) return talk('חוקרים', 'gate_findings_early', true);
+    if (!F.manoStart) return talk('res', 'gate_research_early', true);
+    if (!F.design) { F.design = true; return talk('res', 'researcher_design'); }
+    if (!(F.call && F.panel)) return talk('res', 'gate_findings_early', true);
     if (!F.findings) F.findings = true;
-    talk('חוקרים', 'researcher_findings');
+    talk('res', 'researcher_findings');
   };
-  const callCenter = () => { if (!F.design) return talk('מוקד טלפוני', 'gate_call_early', true); F.call = true; talk('מוקד טלפוני', 'call_center'); };
+  const callCenter = () => { if (!F.design) return talk('call', 'gate_call_early', true); F.call = true; talk('call', 'call_center'); };
   const TARGETS = () => {
-    if (S.scene === 'street') return [{ x: 168, y: 132, act: () => { if (F.asked) return talk('סוקר של מדגם', 'field_thanks'); F.asked = true; talk('סוקר של מדגם', 'field_ask'); } }].concat(F.brief ? [] : [{ x: 144, y: 88, act: () => { F.brief = true; talk('העורך', 'editor_brief'); } }]);
+    if (S.scene === 'street') return [{ x: 168, y: 132, act: () => { if (F.asked) return talk('field', 'field_thanks'); F.asked = true; talk('field', 'field_ask'); } }].concat(F.brief ? [] : [{ x: S.ed.x + 8, y: S.ed.y + 8, act: briefNow }]);
     if (S.scene === 'news') return F.brief ? [{ x: 114, y: 42, act: () => {
-      if (!F.manoEnd) return talk('העורך', 'gate_editor_early', true);
+      if (!F.manoEnd) return talk('editor', 'gate_editor_early', true);
       if (!F.submitted) { F.submitted = true; S.partyT = 0; S.partyPending = true; }
-      talk('העורך', 'editor_final'); S.onClose = () => { S.finaleAt = 2000; };
+      talk('editor', 'editor_final'); S.onClose = () => { S.finaleAt = 2000; };
     } }] : [];
     return [
-      { x: 214, y: 84, act: () => talk('המזכירה', 'secretary_line') },
+      { x: 214, y: 84, act: () => talk('sec', 'secretary_line') },
       { x: 188, y: 40, act: () => {
-        if (!F.brief) return talk('מנו גבע', 'gate_mano_nobrief', true);
-        if (!F.manoStart) { F.manoStart = true; return talk('מנו גבע', 'mano_start'); }
-        if (!F.findings) return talk('מנו גבע', 'gate_mano_early', true);
-        F.manoEnd = true; talk('מנו גבע', 'mano_end');
+        if (!F.brief) return talk('mano', 'gate_mano_nobrief', true);
+        if (!F.manoStart) { F.manoStart = true; return talk('mano', 'mano_start'); }
+        if (!F.findings) return talk('mano', 'gate_mano_early', true);
+        F.manoEnd = true; talk('mano', 'mano_end');
       } },
       { x: 38, y: 52, act: researchers }, { x: 52, y: 44, act: researchers }, { x: 72, y: 50, act: researchers },
       ...CALL_DESKS.map(([dx, dy]) => ({ x: dx + 4, y: dy - 2, act: callCenter })),
-      { x: 124, y: 46, act: () => { if (!F.design) return talk('איסוף אינטרנטי', 'gate_panel_early', true); F.panel = true; talk('איסוף אינטרנטי', 'panel'); } },
-      { x: 150, y: 146, act: () => talk(TEXT.vp_title, 'vp1_line') },
-      { x: 186, y: 146, act: () => talk(TEXT.vp_title, 'vp2_line') },
+      { x: 124, y: 46, act: () => { if (!F.design) return talk('panel', 'gate_panel_early', true); F.panel = true; talk('panel', 'panel'); } },
+      { x: 150, y: 146, act: () => talk('vp', 'vp1_line') },
+      { x: 186, y: 146, act: () => talk('vp', 'vp2_line') },
       { x: 105, y: 98, act: () => { S.photo = true; S.photoP = 0; announce(TEXT.printer_caption); } },
-      { x: 11, y: 100, act: () => { S.barkT = 1600; talk('הכלב', 'dog_line'); } }
+      { x: 11, y: 100, act: () => { S.barkT = 1600; talk('dog', 'dog_line'); } }
     ];
   };
   const FACE = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
@@ -599,24 +775,50 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const finale = document.getElementById('finale');
   const overlayOpen = () => !finale.hidden;
   const act = () => {
-    if (MODE !== 'play' || S.fadeDir !== 0 || overlayOpen()) return;
+    if (MODE !== 'play' || S.fadeDir !== 0 || overlayOpen() || edBusy()) return;
     if (S.say) { if (S.shown < S.say.length) { S.shown = S.say.length; return; } S.say = ''; S.refuse = false; const cb = S.onClose; S.onClose = null; if (cb) cb(); return; }
     if (S.photo) { S.photo = false; return; }
     const t2 = nearest(); if (t2) t2.act();
   };
   const faceTo = (tx, ty) => { const vx = tx - (S.me.x + 8), vy = ty - (S.me.y + 10); S.me.face = Math.abs(vx) > Math.abs(vy) ? (vx < 0 ? 'left' : 'right') : (vy < 0 ? 'up' : 'down'); };
   cv.addEventListener('pointerdown', e => {
-    if (MODE !== 'play' || overlayOpen() || S.fadeDir !== 0) return;
-    e.preventDefault(); mhint.hidden = true;
+    if (MODE !== 'play' || overlayOpen() || S.fadeDir !== 0 || edBusy()) return;
+    e.preventDefault(); mhint.hidden = true; keys.clear(); held.clear();
     if (S.say || S.photo) return act();
     const r = cv.getBoundingClientRect(), wx = (e.clientX - r.left) / r.width * W, wy = (e.clientY - r.top) / r.height * H;
     const t2 = TARGETS().find(o => Math.hypot(o.x - wx, o.y - wy) < 16);
     if (t2 && Math.hypot(t2.x - (S.me.x + 8), t2.y - (S.me.y + 10)) < 26) { faceTo(t2.x, t2.y); return t2.act(); }
     S.tap = { x: wx - 8, y: wy - 13, target: t2 || null, stuck: 0 };
   });
+  // the editor spots you, a "!" pops over his head, and he crosses to you, like a challenger in an old handheld RPG
+  const briefNow = () => { S.ed.phase = 'talk'; F.brief = true; faceTo(S.ed.x + 8, S.ed.y + 10); talk('editor', 'editor_brief'); S.onClose = () => { S.ed.phase = 'leave'; }; };
+  const edStep = (dt) => {
+    const e = S.ed; if (S.scene !== 'street' || MODE !== 'play') return;
+    if (!e.phase && !F.brief && S.fadeDir === 0 && !S.say && Math.hypot(S.me.x - e.x, S.me.y - e.y) < 96) { e.phase = 'spot'; e.t = 750; S.tap = null; keys.clear(); e.face = S.me.x < e.x ? 'left' : 'right'; }
+    if (e.phase === 'spot') {
+      e.t -= dt; if (e.t > 0) return;
+      // down the zebra crossing to your row, then along the sidewalk until he stands next to you
+      const side = S.me.x < e.x ? 15 : -15; e.phase = 'walk'; e.path = [[e.x, S.me.y], [S.me.x + side, S.me.y]];
+    }
+    if (e.phase === 'leave' && !e.path) e.path = [[136, e.y], [136, 80], [172, 80]];
+    if (!e.path || !e.path.length) return;
+    let step = (e.phase === 'leave' ? .9 : 1.3) * dt / 16;
+    while (step > 0 && e.path.length) {
+      const [tx, ty] = e.path[0], vx = tx - e.x, vy = ty - e.y, d = Math.hypot(vx, vy);
+      if (d <= step) { e.x = tx; e.y = ty; e.path.shift(); step -= d; continue; }
+      e.x += vx / d * step; e.y += vy / d * step; e.face = Math.abs(vx) > Math.abs(vy) ? (vx < 0 ? 'left' : 'right') : (vy < 0 ? 'up' : 'down'); step = 0;
+    }
+    e.leg += dt;
+    if (!e.path.length) {
+      e.path = null;
+      if (e.phase === 'walk') { e.face = S.me.x < e.x ? 'left' : 'right'; briefNow(); }
+      else if (e.phase === 'leave') e.phase = 'gone';
+    }
+  };
+  const edBusy = () => S.scene === 'street' && (S.ed.phase === 'spot' || S.ed.phase === 'walk');
   const go = (scene, title, pos, face) => { S.fadeDir = 1; S.next = [scene, title, pos]; S.nextFace = face; keys.clear(); };
   const playStep = (dt) => {
-    if (S.fadeDir !== 0 || S.say || S.photo || overlayOpen()) return false;
+    if (S.fadeDir !== 0 || S.say || S.photo || overlayOpen() || edBusy()) return false;
     let dx = 0, dy = 0;
     if (keys.has('left')) dx -= 1; if (keys.has('right')) dx += 1; if (keys.has('up')) dy -= 1; if (keys.has('down')) dy += 1;
     if (dx || dy) S.tap = null;
@@ -625,28 +827,30 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       const tp = S.tap;
       if (tp.target && Math.hypot(tp.target.x - (S.me.x + 8), tp.target.y - (S.me.y + 10)) < 24) { S.tap = null; faceTo(tp.target.x, tp.target.y); tp.target.act(); return false; }
       const ex = tp.x - S.me.x, ey = tp.y - S.me.y;
-      if (Math.abs(ex) < 1.5 && Math.abs(ey) < 1.5) { S.tap = null; return false; }
-      dx = Math.abs(ex) >= 1.5 ? Math.sign(ex) : 0; dy = Math.abs(ey) >= 1.5 ? Math.sign(ey) : 0;
+      if (Math.abs(ex) < .5 && Math.abs(ey) < .5) { S.tap = null; return false; }
+      dx = Math.abs(ex) >= .5 ? Math.sign(ex) : 0; dy = Math.abs(ey) >= .5 ? Math.sign(ey) : 0;
     }
     if (!dx && !dy) return false;
     const bx0 = S.me.x, by0 = S.me.y;
     const sp = 1.15 * dt / 16;
+    // a tapped spot is reached exactly: never step past it
+    const spx = S.tap ? Math.min(sp, Math.abs(S.tap.x - S.me.x)) : sp, spy = S.tap ? Math.min(sp, Math.abs(S.tap.y - S.me.y)) : sp;
     S.me.face = dx ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down');
-    if (dx && !blocked(S.me.x + dx * sp, S.me.y)) S.me.x += dx * sp;
-    if (dy && !blocked(S.me.x, S.me.y + dy * sp)) S.me.y += dy * sp;
+    if (dx && !blocked(S.me.x + dx * spx, S.me.y)) S.me.x += dx * spx;
+    if (dy && !blocked(S.me.x, S.me.y + dy * spy)) S.me.y += dy * spy;
     S.leg += dt;
     if (S.tap && !keys.size) { if (Math.abs(S.me.x - bx0) + Math.abs(S.me.y - by0) < .05) { if (++S.tap.stuck > 8) S.tap = null; } else S.tap.stuck = 0; }
     const f = feet(S.me.x, S.me.y);
-    if (S.scene === 'street' && dy < 0 && hit(f, bx(56, 79, 16, 4))) go('office', 'משרדי מדגם', [206, 88], 'left');
-    else if (S.scene === 'street' && dy < 0 && hit(f, bx(166, 79, 18, 4))) go('news', 'חדר החדשות', [104, 170], 'up');
+    if (S.scene === 'street' && dy < 0 && hit(f, bx(56, 79, 16, 4))) go('office', 'office', [206, 88], 'left');
+    else if (S.scene === 'street' && dy < 0 && hit(f, bx(166, 79, 18, 4))) go('news', 'newsroom', [104, 170], 'up');
     else if (S.scene === 'office' && dx > 0 && S.me.x > 209) go('street', '', [56, 82], 'down');
     else if (S.scene === 'news' && dy > 0 && S.me.y > 174) go('street', '', [172, 82], 'down');
     return true;
   };
   const resetPlay = () => {
-    PLAY_STEPS.forEach(([k]) => F[k] = false); F.asked = false;
+    PLAY_STEPS.forEach(k => F[k] = false); F.asked = false;
     Object.assign(S, { scene: 'street', say: '', who: '', key: '', refuse: false, shown: 0, conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, card: '', barkT: 0, partyPending: false, finaleAt: 0, onClose: null, wps: [], wait: 0, egg: null });
-    S.me = { x: 6, y: 128, face: 'right' }; finale.hidden = true; lastHud = '';
+    S.me = { x: 6, y: 128, face: 'right' }; S.ed = { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null }; finale.hidden = true; lastHud = '';
   };
   const stage = document.getElementById('stage');
   const mplay = document.getElementById('mplay'), mtop = document.getElementById('mtop'), mctl = document.getElementById('mctl'), mhint = document.getElementById('mhint');
@@ -654,21 +858,22 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const isMobile = () => matchMedia('(pointer:coarse)').matches || innerWidth < 900;
   const padEl = document.querySelector('.pad'), talkEl = document.getElementById('talk'), exitEl = document.getElementById('exit');
   // remember where each piece lives, so leaving play puts it back exactly
-  const MOVED = [mission, cv, padEl, talkEl, exitEl, finale].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
+  const glang = document.getElementById('glang');
+  const MOVED = [mission, glang, cv, padEl, talkEl, exitEl, finale].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
   const toMobile = () => {
-    mtop.append(mission, exitEl); mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale);
+    mtop.append(mission, glang, exitEl); lastHud = ''; mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale);
     document.documentElement.classList.add('mobile-play'); mhint.hidden = false;
     try { const p = mplay.requestFullscreen && mplay.requestFullscreen({ navigationUI: 'hide' }); if (p && p.catch) p.catch(() => {}); } catch (_) {}
   };
   const fromMobile = () => {
     MOVED.forEach(({ el, c }) => c.parentNode.insertBefore(el, c.nextSibling));
-    document.documentElement.classList.remove('mobile-play');
+    document.documentElement.classList.remove('mobile-play'); lastHud = '';
     try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (_) {}
   };
   const enterPlay = () => {
     MODE = 'play'; resetPlay(); keys.clear();
     if (isMobile()) toMobile(); else stage.classList.add('playing');
-    cv.focus({ preventScroll: true }); announce('המשחק התחיל. חצים להליכה, רווח לדיבור, Escape ליציאה. העורך מחכה ברחוב.');
+    cv.focus({ preventScroll: true }); announce(U.start);
   };
   const exitPlay = () => {
     MODE = 'demo'; keys.clear(); finale.hidden = true; stage.classList.remove('playing'); S.tap = null;
@@ -678,13 +883,13 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   };
   function showFinale() {
     finale.hidden = false; document.getElementById('fin-q').hidden = false; document.getElementById('fin-r').hidden = true;
-    finale.querySelector('button').focus(); announce('ומה אתם חושבים? בחרו תשובה.');
+    finale.querySelector('button').focus(); announce(U.askQ);
   }
   finale.querySelectorAll('[data-ans]').forEach(b => b.addEventListener('click', () => {
-    const v = FAKE[+b.dataset.ans][1];
+    const v = FAKE[+b.dataset.ans][0];
     document.getElementById('fin-pct').textContent = v + '%';
     document.getElementById('fin-q').hidden = true; document.getElementById('fin-r').hidden = false;
-    document.getElementById('again').focus(); announce(v + ' אחוז מהמשיבים בסקר שלכם חושבים כמוכם.');
+    document.getElementById('again').focus(); announce(U.pctSay(v));
   }));
   document.getElementById('again').addEventListener('click', () => { resetPlay(); cv.focus({ preventScroll: true }); });
   document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); enterPlay(); }));
@@ -699,10 +904,17 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   });
   addEventListener('keyup', e => { if (KEYMAP[e.key]) keys.delete(KEYMAP[e.key]); });
   addEventListener('blur', () => keys.clear());
+  // pad buttons: each finger holds one direction until it lifts; a long press never opens the phone's menu
+  const held = new Map();
+  const release = e => { const k = held.get(e.pointerId); if (k) { held.delete(e.pointerId); if (![...held.values()].includes(k)) keys.delete(k); } };
   document.querySelectorAll('[data-dir]').forEach(b => {
-    const k = b.dataset.dir, on = e => { e.preventDefault(); keys.add(k); }, off = () => keys.delete(k);
-    b.addEventListener('pointerdown', on); ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, off));
+    const k = b.dataset.dir;
+    b.addEventListener('pointerdown', e => { e.preventDefault(); try { b.setPointerCapture(e.pointerId); } catch (_) {} held.set(e.pointerId, k); keys.add(k); S.tap = null; });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, release));
   });
+  ['pointerup', 'pointercancel'].forEach(ev => addEventListener(ev, release));
+  document.addEventListener('visibilitychange', () => { keys.clear(); held.clear(); });
+  [mplay, document.querySelector('.game')].forEach(el => el.addEventListener('contextmenu', e => e.preventDefault()));
   document.getElementById('talk').addEventListener('click', act);
   const promptAt = (t) => {
     if (MODE !== 'play' || S.say || S.photo || S.fadeDir || overlayOpen()) return;
@@ -711,6 +923,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     R('k', t2.x - 4, yy, 9, 10); R('w', t2.x - 3, yy + 1, 7, 8); txt('!', t2.x + .5, yy + 5, 7, 'b', 800);
   };
 
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { setLang(b.dataset.lang, true); if (MODE === 'play') cv.focus({ preventScroll: true }); }));
+  { let l0 = new URLSearchParams(location.search).get('lang'); if (!l0) try { l0 = localStorage.getItem('midgam-lang'); } catch (_) {} if (l0 && l0 !== 'he') setLang(l0); }
   if (new URLSearchParams(location.search).has('debug')) window.__midgam = { S, F, TARGETS, BLOCK, feet, hit, nearest };
 
   /* ---------- loop ---------- */
@@ -720,8 +934,14 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     const dt = Math.min(50, t - last); last = t;
     if (S.scene === 'street') drawStreet(); else if (S.scene === 'office') drawOffice(t); else drawNews(t);
     // people standing in the scene
-    if (S.scene === 'street' && (MODE === 'demo' ? S.i <= 1 : !F.brief)) person(PEOPLE.editor, 136, 80, 'left');
-    if (S.scene === 'street') { person(PEOPLE.field, 160, 124, 'down'); R('k', 162, 116, 13, 6); R('b', 163, 117, 11, 4); txt('מדגם', 168.5, 119.2, 3.6, 'w', 800); }
+    if (S.scene === 'street' && MODE === 'demo' && S.i <= 1) person(PEOPLE.editor, 136, 80, 'left');
+    if (MODE === 'play') edStep(dt);
+    if (S.scene === 'street' && MODE === 'play' && S.ed.phase !== 'gone') {
+      const e = S.ed, moving = e.phase === 'walk' || e.phase === 'leave';
+      person(PEOPLE.editor, e.x, e.y, e.face, moving && Math.floor(e.leg / 140) % 2);
+      if (e.phase === 'spot') { const yy = e.y - 13; R('k', e.x + 4, yy, 9, 11); R('w', e.x + 5, yy + 1, 7, 9); R('r', e.x + 8, yy + 2, 1, 5); R('r', e.x + 8, yy + 8, 1, 1); }
+    }
+    if (S.scene === 'street') { person(PEOPLE.field, 160, 124, 'down'); R('k', 162, 116, 13, 6); R('b', 163, 117, 11, 4); txt(U.badge, 168.5, 119.2, 3.6, 'w', 800); }
     if (S.scene === 'street') { person(PEOPLE.a, 186 - (t / 30 % 220), 112 + 18, 'left', Math.floor(t / 200) % 2); }
     if (S.scene === 'news' && (MODE === 'demo' || F.brief)) person(PEOPLE.editor, 106, 32, 'down');
     // the player
@@ -744,6 +964,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.photo) { S.photoP = Math.min(1, S.photoP + dt / 700); photo(S.photoP); }
     confetti(dt, t);
     promptAt(t); hud(); dialog(t);
+    if (MODE === 'play') talkEl.classList.toggle('off', !(S.fadeDir === 0 && !overlayOpen() && !edBusy() && !S.paper && (S.say || S.photo || nearest())));
     // scene transitions: fade out, title card, fade in
     if (S.fadeDir !== 0) {
       S.fade += S.fadeDir * dt / 320;
@@ -756,11 +977,11 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       if (S.fadeDir === 2) { S.cardT -= dt; if (S.cardT <= 0) S.fadeDir = -1; }
       if (S.fade <= 0 && S.fadeDir === -1) { S.fade = 0; S.fadeDir = 0; S.card = ''; }
       x.fillStyle = `rgba(11,34,56,${Math.min(1, Math.max(0, S.fade))})`; x.fillRect(0, 0, W, H);
-      if (S.card && S.fadeDir === 2) { txt(S.card, W / 2, H / 2, 11, 'w', 800); R('s', W / 2 - 20, H / 2 + 10, 40, 1); }
+      if (S.card && S.fadeDir === 2) { txt(U[S.card] || S.card, W / 2, H / 2, 11, 'w', 800); R('s', W / 2 - 20, H / 2 + 10, 40, 1); }
     }
     requestAnimationFrame(frame);
   };
-  if (reduce) { S.scene = 'news'; S.done = 8; S.key = 'editor_final'; S.say = TEXT.editor_final; S.paper = true; S.paperP = 1; S.who = 'העורך'; S.shown = 999; S.wait = 1e12; S.me = { x: 104, y: 62, face: 'up' }; S.wps = []; }
+  if (reduce) { S.scene = 'news'; S.done = 8; S.key = 'editor_final'; S.say = TEXT.editor_final; S.paper = true; S.paperP = 1; S.who = 'editor'; S.shown = 999; S.wait = 1e12; S.me = { x: 104, y: 62, face: 'up' }; S.wps = []; }
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { requestAnimationFrame(frame); if (new URLSearchParams(location.search).has('play') && !reduce) enterPlay(); });
 })();
 </script>
