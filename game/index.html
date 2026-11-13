@@ -107,6 +107,17 @@ canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering
 .fin .cta .row{margin-top:14px}
 .fin .row.sm{margin-top:12px}
 .fin .row.sm a,.fin .row.sm button{height:40px;font-size:14.5px;padding:0 16px;background:transparent;box-shadow:inset 0 0 0 1px rgba(29,86,137,.25)}
+/* a person's card: placeholder portrait, name, role, a line */
+.fin .pc{text-align:start;padding:24px 24px 20px}
+.pc-top{display:flex;align-items:center;gap:16px}
+#pc-img{flex:none;width:104px;height:88px;border-radius:18px;background:#cfe8f7;image-rendering:pixelated;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(29,86,137,.15)}
+#pc-img.logo{object-fit:contain;image-rendering:auto;background:#fff;padding:12px;box-shadow:0 0 0 1px rgba(14,18,22,.1)}
+#pc-role{display:block;margin:0;color:#229ad6;font-size:14px;font-weight:700}
+.pc h2{margin-top:2px}
+#pc-line{margin:16px 0 0;color:#2a3540;font-size:16px;line-height:1.6;text-wrap:pretty}
+.fin .pc-note{margin-top:10px;color:#8a95a1;font-size:12.5px}
+.fin .pc-note[hidden]{display:none}
+.pc .row{justify-content:flex-start;margin-top:18px}
 /* mobile play: the game takes the whole screen */
 #mplay{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;position:fixed;inset:0;z-index:100;display:none;background:#0b2238;color:#fff;touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;
   padding:max(10px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));
@@ -123,8 +134,9 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 #mplay .ctl.talk{width:100px;height:100px;padding:0;border-radius:50%;font-size:20px;box-shadow:0 0 0 6px rgba(242,193,78,.18),inset 0 -3px 0 rgba(0,0,0,.25)}
 #mplay .mhint{grid-area:hint;font-size:13px;color:#bfe6fa;pointer-events:none}
 #mplay #finale{position:fixed;inset:0;height:auto;border-radius:0;overflow:auto;padding:16px}
-#mplay #finale{grid-template-columns:minmax(0,1fr)}
-#mplay #finale .card{width:100%;max-width:440px;margin:0 auto;padding:24px 20px 20px}
+#mplay #finale,#mplay #pcard{grid-template-columns:minmax(0,1fr)}
+#mplay #pcard{position:fixed;inset:0;height:auto;border-radius:0;overflow:auto;padding:16px}
+#mplay #finale .card,#mplay #pcard .card{width:100%;max-width:440px;margin:0 auto;padding:24px 20px 20px}
 #mplay .glang{flex:none}
 #mplay .mission{flex:1;min-width:0;height:auto;min-height:34px;white-space:normal;overflow:visible}
 #mplay .mission .lbl{font-size:13px;color:#bfe6fa;font-weight:600}
@@ -186,6 +198,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       <div class="card" id="fin-q"><h2 data-i18n="finQ">ומה אתם חושבים?</h2><p data-i18n="finQ2">להישאר בשעון קיץ כל השנה?</p><div class="row"><button type="button" data-ans="0" data-i18n="a0">בעד</button><button type="button" data-ans="1" data-i18n="a1">נגד</button><button type="button" data-ans="2" data-i18n="a2">לא יודע/ת</button></div></div>
       <div class="card" id="fin-r" hidden><h2 data-i18n="finR">אנשים כמוכם</h2><div class="pct" id="fin-pct"></div><p data-i18n="finR2">מהמשיבים בסקר שלכם חושבים כמוכם.</p><small data-i18n="finR3">נתונים בדיוניים מתוך המשחק</small><div class="cta"><h3 data-i18n="next1">ועכשיו, מה הסקר שלך?</h3><p data-i18n="next2">ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.</p><div class="row"><a class="pri" href="#contact" id="contact" data-i18n="contact">דברו איתנו</a></div></div><div class="row sm"><a href="#findings" data-i18n="findings">לממצאים של מדגם</a><button type="button" id="again" data-i18n="again">לשחק שוב</button></div></div>
     </div>
+    <div class="fin" id="pcard" hidden><div class="card pc" role="dialog" aria-labelledby="pc-name"><div class="pc-top"><img id="pc-img" alt=""><div><small id="pc-role"></small><h2 id="pc-name"></h2></div></div><p id="pc-line"></p><small class="pc-note" id="pc-note" data-i18n="phNote">תמונה וטקסט זמניים</small><div class="row"><button type="button" class="pri" id="pc-close" data-i18n="cont">המשך</button></div></div></div>
     <p class="sr" id="live" aria-live="polite"></p>
     <div id="mplay" role="dialog" aria-modal="true" data-i18n-aria="title" aria-label="יום אחד במדגם"><div class="mtop" id="mtop"></div><div class="mctl" id="mctl"></div><span class="mhint" id="mhint" data-i18n="mhint">הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר</span></div>
   </div>
@@ -200,7 +213,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 
   /* ---------- palette: Midgam blues, one warm gold for the celebration, red only for "live" ---------- */
   const P = { k: '#0b2238', d: '#123a5e', b: '#1d5689', s: '#229ad6', l: '#8fd3f5', p: '#cfe8f7', g: '#e3eef8', w: '#ffffff', n: '#9fb4c8', a: '#2a4b6c', y: '#f2c14e', r: '#d1453b', o: '#e8f1f8' };
-  const cv = document.getElementById('cv'), x = cv.getContext('2d');
+  const cv = document.getElementById('cv'); let x = cv.getContext('2d');
   x.setTransform(3, 0, 0, 3, 0, 0); x.imageSmoothingEnabled = false;
   const W = 224, H = 192, T = 16, FF = 'Heebo, "Noto Sans Arabic", Arial';
   let LANG = 'he', RTL = true;
@@ -245,7 +258,11 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     sec: { c: { H: 'd', h: 'b', S: 'g', s: 'p', P: 'd' }, longHair: true },
     field: { c: { H: 'k', h: 'd', S: 'b', s: 'd', P: 'k' }, pad: true },
     vp1: { c: { H: 'n', h: 'g', S: 'd', s: 'k', P: 'k' } },
-    vp2: { c: { H: 'd', h: 'k', S: 'b', s: 'd', P: 'k' }, glasses: true },
+    vp2: { c: { H: 'd', h: 'k', S: 'l', s: 's', P: 'k' }, longHair: true },
+    qual1: { c: { H: 'd', h: 'k', S: 'l', s: 's', P: 'd' }, longHair: true },
+    qual2: { c: { H: 'b', h: 'd', S: 'w', s: 'p', P: 'k' }, longHair: true, glasses: true },
+    ihab: { c: { H: 'k', h: 'd', S: 'p', s: 'l', P: 'k' } },
+    mina: { c: { H: 'n', h: 'g', S: 'd', s: 'k', P: 'k' }, longHair: true, glasses: true },
     a: { c: { H: 'b', h: 'd', S: 'p', s: 'l', P: 'd' } },
     b: { c: { H: 'k', h: 'd', S: 'w', s: 'p', P: 'b' } },
     c: { c: { H: 'd', h: 'k', S: 'b', s: 'd', P: 'k' }, headset: true },
@@ -320,8 +337,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 
   /* ---------- Midgam offices: four departments along one corridor ---------- */
   const OFF = ['##############', '#....#...#...#', '#....#...#...#', '#....#...#...#', '#.####.###.###', '..............', '..............', '#.######.###.#', '#......#..#..#', '#......#..#..#', '#......#..#..#', '##############'];
-  const wallTile = (i, j) => {
-    const X = i * T, Y = j * T, below = OFF[j + 1] && OFF[j + 1][i] === '.';
+  const wallTile = (i, j, m = OFF) => {
+    const X = i * T, Y = j * T, below = m[j + 1] && m[j + 1][i] === '.';
     R('d', X, Y, T, T); R('b', X, Y, T, below ? 10 : T); R('s', X, Y, T, 1);
     if (below) { R('p', X, Y + 10, T, 6); R('l', X, Y + 10, T, 1); R('n', X, Y + 15, T, 1); }
   };
@@ -339,7 +356,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const pot = (X, Y) => { R('b', X + 4, Y, 2, 3); R('s', X + 1, Y + 2, 3, 2); R('s', X + 6, Y + 1, 3, 2); R('b', X + 2, Y + 3, 6, 3); R('s', X, Y + 4, 3, 2); R('s', X + 7, Y + 4, 3, 2); R('l', X + 4, Y + 2, 1, 1); R('k', X + 2, Y + 7, 6, 1); R('k', X + 2, Y + 8, 1, 5); R('k', X + 7, Y + 8, 1, 5); R('k', X + 3, Y + 12, 4, 1); R('w', X + 3, Y + 8, 4, 4); R('p', X + 3, Y + 10, 4, 2); };
   const printer = (X, Y) => { R('k', X + 3, Y - 4, 12, 5); R('w', X + 4, Y - 3, 10, 4); R('n', X + 5, Y - 2, 7, 1); R('k', X, Y, 18, 13); R('w', X + 1, Y + 1, 16, 6); R('g', X + 1, Y + 7, 16, 5); R('k', X + 3, Y + 3, 12, 2); R('l', X + 3, Y + 9, 10, 1); R('s', X + 14, Y + 8, 2, 2); };
   const DOG = ['................', '..kk............', '.kwwk...........', 'kwkwwk......kk..', 'kwwwwwkkkkkkwwk.', '.kbbwwwwwwwwwwk.', '..kwwwwgwwwwwk..', '..kwwkkkkkkwwk..', '..kwk......kwk..', '..kk........kk..'];
-  const dog = (X, Y, t) => { const hop = S.barkT > 0 ? Math.round(Math.abs(Math.sin(t / 70)) * 2) : 0; x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 2, Y + 10, 12, 2); DOG.forEach((r, j) => { for (let i = 0; i < 16; i++) { const ch = r[15 - i]; if (ch !== '.') R(ch, X + i, Y + j - hop); } }); if (S.barkT > 0 && Math.floor(t / 160) % 2) { R('k', X + 15, Y - 9, 3, 6); R('y', X + 16, Y - 8, 1, 4); R('k', X + 15, Y - 2, 3, 2); } };
+  const dog = (X, Y, t, left) => { const hop = S.barkT > 0 ? Math.round(Math.abs(Math.sin(t / 70)) * 2) : 0; x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 2, Y + 10, 12, 2); DOG.forEach((r, j) => { for (let i = 0; i < 16; i++) { const ch = r[left ? i : 15 - i]; if (ch !== '.') R(ch, X + i, Y + j - hop); } }); if (S.barkT > 0 && Math.floor(t / 160) % 2) { R('k', X + 15, Y - 9, 3, 6); R('y', X + 16, Y - 8, 1, 4); R('k', X + 15, Y - 2, 3, 2); } };
   const CALL_DESKS = [[38, 142], [62, 142], [86, 142], [38, 164], [62, 164], [86, 164]];
   const aiDevice = (X, Y, t) => {
     const pulse = Math.floor(t / 420) % 2;
@@ -374,7 +391,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     shelf(182, 16); person(PEOPLE.mano, 180, 30, 'left'); desk(178, 48, 22); monitor(184, 40);
     // the hallway: plants, the printer by the entrance, the dog at the far end, the secretary behind her counter
     [84, 148].forEach(X => pot(X, 79)); [44, 74, 160].forEach(X => pot(X, 100));
-    printer(96, 99); dog(3, 94, t);
+    midgamPic(100, 113);
     // the secretary: in the hallway by the top wall near the entrance, behind her counter
     person(PEOPLE.sec, 206, 70, 'down');
     R('k', 202, 83, 22, 11); R('w', 203, 84, 20, 4); R('p', 203, 88, 20, 5); R('n', 203, 92, 20, 1);
@@ -383,6 +400,56 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     CALL_DESKS.forEach(([dx, dy], i) => { person(i % 2 ? PEOPLE.c : PEOPLE.e, dx + 3, dy - 12, 'down'); desk(dx, dy, 20); monitor(dx + 5, dy - 4, 'l'); });
     // two VP offices, same size
     vpRoom(128, PEOPLE.vp1, 'right'); vpRoom(176, PEOPLE.vp2, 'left');
+  };
+
+  /* ---------- the rest of the office: the hallway continues to the left ---------- */
+  const OFF2 = ['##############', '#......#.....#', '#......#.....#', '#......#.....#', '#.######.#####', '#.............', '#.............', '#.####.#######', '#....#.......#', '#....#.......#', '#....#.......#', '##############'];
+  const midgamPic = (X, Y) => {
+    R('k', X, Y, 24, 14); R('y', X + 1, Y + 1, 22, 12); R('l', X + 2, Y + 2, 20, 10); R('p', X + 2, Y + 8, 20, 4);
+    R('k', X + 6, Y + 4, 12, 8); R('b', X + 7, Y + 5, 10, 7); R('s', X + 8, Y + 6, 2, 2); R('s', X + 11, Y + 6, 2, 2); R('s', X + 14, Y + 6, 2, 2); R('w', X + 11, Y + 9, 2, 3); R('d', X + 5, Y + 3, 14, 1);
+  };
+  const secretShelf = (X, Y, p) => {
+    if (p > 0) { R('k', X, Y + 2, 24, 18); [0, 1, 2, 3].forEach(k => R(['n', 'a', 'd', 'k'][k], X + 2, Y + 15 - k * 4, 20, 3)); }
+    const sw = Math.round(24 - 19 * p), sx = X + 24 - sw;
+    R('k', sx, Y, sw, 20); R('d', sx + 1, Y + 1, sw - 2, 18); R('k', sx + 1, Y + 7, sw - 2, 1); R('k', sx + 1, Y + 13, sw - 2, 1);
+    if (sw > 10) { const c = ['s', 'l', 'w', 'b', 'p', 'g', 's', 'l']; for (let i = 0; i < sw - 4; i += 3) { R(c[(i / 3) % 8], sx + 2 + i, Y + 2, 2, 5); R(c[(i / 3 + 3) % 8], sx + 2 + i, Y + 8, 2, 5); R(c[(i / 3 + 5) % 8], sx + 2 + i, Y + 14, 2, 5); } if (!p) { R('r', X + 17, Y + 1, 2, 6); R('y', X + 17, Y + 3, 2, 1); } }
+  };
+  const drawOffice2 = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) (OFF2[j][i] === '#' ? (a, b) => wallTile(a, b, OFF2) : floorTile)(i, j);
+    R('p', 16, 86, W - 16, 20); R('l', 16, 86, W - 16, 1); R('l', 16, 105, W - 16, 1);
+    plate(U.rooms.qual, 60, 71, 5, 'w', 'b', 52); plate(U.rooms.arab, 184, 71, 5, 'w', 'b', 72);
+    plate(U.rooms.meet, 60, 119, 4.8, 'w', 'b', 56); plate(TEXT.mina_role, 162, 119, 5, 'w', 'b', 96);
+    // qualitative research: two researchers at a focus-group table
+    board(84, 17, 24, 15, 'grid'); person(PEOPLE.qual1, 34, 18, 'down'); person(PEOPLE.qual2, 58, 18, 'down'); desk(30, 32, 48); papers(40, 34); papers(62, 34); plant(94, 44);
+    // the Arabic department
+    board(132, 17, 26, 15, 'bars'); person(PEOPLE.ihab, 166, 20, 'down'); desk(162, 36, 24); monitor(168, 28); plant(194, 44);
+    // meeting room
+    [30, 42, 54].forEach(cx => { R('k', cx, 139, 7, 6); R('s', cx + 1, 140, 5, 4); R('k', cx, 159, 7, 6); R('s', cx + 1, 160, 5, 4); }); desk(24, 146, 46); papers(36, 148);
+    // Mina Tzemach: legal expert opinions
+    shelf(118, 132); person(PEOPLE.mina, 166, 132, 'down'); desk(160, 148, 30); monitor(174, 140); R('y', 167, 149, 1, 4); R('y', 164, 149, 7, 1); R('y', 164, 151, 2, 1); R('y', 169, 151, 2, 1); plant(192, 150);
+    // the hallway: a bookshelf with a secret, the printer, a pot, and the dog at the far end
+    secretShelf(100, 64, F.shelf ? S.shelfP : 0); printer(186, 99); pot(64, 100);
+    if (!F.dog || MODE !== 'play') dog(20, 94, t);
+  };
+  const VAULT = ['##############', '##############', '##############', '##.....#.....#', '##.....#.....#', '##.....#.....#', '##...........#', '##.....#.....#', '##.....#.....#', '##.....#.....#', '##############', '##############'];
+  const drawVault = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) {
+      const X = i * T, Y = j * T;
+      if (VAULT[j][i] === '#') { R('k', X, Y, T, T); R('a', X + 1, Y + 1, 6, 3); R('a', X + 9, Y + 1, 6, 3); R('a', X + 4, Y + 6, 7, 3); R('a', X + 1, Y + 11, 6, 3); R('a', X + 9, Y + 11, 6, 3); if (VAULT[j + 1] && VAULT[j + 1][i] === '.') { R('n', X, Y + 10, T, 6); R('a', X, Y + 15, T, 1); } }
+      else { R((i + j) % 2 ? 'd' : 'a', X, Y, T, T); R('k', X, Y, T, 1); }
+    }
+    // the stairs back up, lit from the office above
+    ['w', 'g', 'p', 'n', 'a'].forEach((c, k) => { R(c, 36, 50 + k * 5, 24, 4); R('k', 36, 54 + k * 5, 24, 1); });
+    [[34, 104], [100, 52], [130, 52], [204, 120]].forEach(([tx, ty]) => { R('k', tx, ty, 3, 6); R(Math.floor(t / 140 + tx) % 2 ? 'y' : 'r', tx, ty - 3, 3, 3); });
+    // the treasure: the election model, glowing on its pedestal
+    const g = .18 + .08 * Math.sin(t / 300); x.fillStyle = `rgba(242,193,78,${g})`; x.beginPath(); x.ellipse(168, 84, 30, 24, 0, 0, Math.PI * 2); x.fill();
+    R('k', 156, 96, 24, 14); R('n', 157, 97, 22, 12); R('g', 157, 97, 22, 2);
+    R('k', 162, 90, 12, 6); R('y', 163, 91, 10, 4); R('k', 165, 83, 6, 8); R('y', 166, 84, 4, 7);
+    R('k', 157, 69, 22, 16); R('y', 158, 70, 20, 14); R('w', 160, 72, 3, 7); R('k', 154, 72, 4, 7); R('y', 155, 73, 2, 5); R('k', 178, 72, 4, 7); R('y', 179, 73, 2, 5);
+    for (let i = 0; i < 4; i++) { const a = t / 500 + i * 1.57, sx = 168 + Math.cos(a) * 22, sy = 80 + Math.sin(a) * 14; R('w', sx, sy - 1, 1, 3); R('w', sx - 1, sy, 3, 1); }
+    plate(TEXT.vault_trophy, 168, 124, 5, 'y', 'k', 80);
+    // the bars, dropping when you come close
+    if (F.locked) { const h = Math.round(16 * S.barsP); R('k', 112, 95, 16, 2); for (let i = 0; i < 5; i++) { R('k', 113 + i * 3, 96, 2, h); R('n', 113 + i * 3, 96, 1, h); } }
   };
 
   /* ---------- newsroom ---------- */
@@ -423,7 +490,18 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     field_thanks: 'תודה על שיתוף הפעולה!',
     vp_title: 'ניהול בכיר',
     vp1_line: 'הסקר שלך בידיים טובות. אצלנו כל לקוח מקבל בדיוק את מה שהוא צריך.',
-    vp2_line: 'כל סקר של מדגם עובר אותה בדיקה, גדול או קטן. ככה בונים אמון.'
+    vp2_line: 'כל סקר של מדגם עובר אותה בדיקה, גדול או קטן. ככה בונים אמון.',
+    qual_role: 'מחקר איכותני',
+    qual1_line: 'מובילה קבוצות מיקוד וראיונות עומק, ומביאה את הקולות שמאחורי המספרים.',
+    qual2_line: 'מתכננת מחקרים איכותניים ומנתחת אותם, משאלת המחקר ועד הדוח.',
+    ihab_role: 'המחלקה הערבית',
+    ihab_line: 'מוביל את המחקר בחברה הערבית: שאלונים בערבית, סוקרים דוברי ערבית ומדגם מותאם.',
+    mina_role: 'חוות דעת משפטית',
+    mina_line: 'מכינה חוות דעת מבוססות סקר לבתי משפט, בשיטה שעומדת גם בחקירה נגדית.',
+    midgam_about: 'מדגם ייעוץ ומחקר עוסקת מאז 1988 בסקרי דעת קהל, מחקר שווקים, מחקר חברתי וחוות דעת לבתי משפט. כל סקר עובר אצלנו את אותה דרך: חוקרים, שטח, ממצאים ואישור.',
+    shelf_line: 'קליק! אחד הספרים זז, והמדף מסתובב...',
+    vault_trophy: 'מודל הבחירות',
+    vault_locked: 'קלאנג! הסורגים ננעלו. מודל הבחירות של מדגם נשאר סוד.'
   };
 
   /* ---------- languages: Hebrew (default), English, Arabic ---------- */
@@ -453,7 +531,18 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       field_thanks: 'Thanks for your cooperation!',
       vp_title: 'Senior management',
       vp1_line: 'Your survey is in good hands. Every client here gets exactly what they need.',
-      vp2_line: "Every Midgam survey goes through the same check, big or small. That's how trust is built."
+      vp2_line: "Every Midgam survey goes through the same check, big or small. That's how trust is built.",
+      qual_role: 'Qualitative research',
+      qual1_line: 'Leads focus groups and in-depth interviews, and brings out the voices behind the numbers.',
+      qual2_line: 'Designs and analyzes qualitative studies, from the research question to the report.',
+      ihab_role: 'Arabic department',
+      ihab_line: 'Leads research in Arab society: questionnaires in Arabic, Arabic-speaking interviewers and a tailored sample.',
+      mina_role: 'Legal expert opinions',
+      mina_line: 'Prepares survey-based expert opinions for courts, with a method that holds up under cross-examination.',
+      midgam_about: 'Since 1988, Midgam Consulting & Research has run public opinion polls, market research, social research and expert opinions for courts. Every survey takes the same path: researchers, field, findings and sign-off.',
+      shelf_line: 'Click! One of the books moves, and the shelf swings open...',
+      vault_trophy: 'The Election Model',
+      vault_locked: "Clang! The bars slammed shut. Midgam's election model stays a secret."
     },
     ar: {
       editor_brief: 'مرحبًا! أحتاج استطلاعًا حتى يوم الخميس: هل نُبقي التوقيت الصيفي طوال السنة؟ سأنتظرك في مبنى الأخبار عندما تنتهي.',
@@ -479,14 +568,26 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       field_thanks: 'شكرًا على تعاونكم!',
       vp_title: 'الإدارة العليا',
       vp1_line: 'استطلاعك في أيدٍ أمينة. عندنا يحصل كل زبون على ما يحتاجه بالضبط.',
-      vp2_line: 'كل استطلاع لمدجام يمرّ بنفس الفحص، كبيرًا كان أم صغيرًا. هكذا تُبنى الثقة.'
+      vp2_line: 'كل استطلاع لمدجام يمرّ بنفس الفحص، كبيرًا كان أم صغيرًا. هكذا تُبنى الثقة.',
+      qual_role: 'البحث النوعي',
+      qual1_line: 'تقود مجموعات التركيز والمقابلات المعمّقة، وتُبرز الأصوات التي وراء الأرقام.',
+      qual2_line: 'تخطط الأبحاث النوعية وتحللها، من سؤال البحث حتى التقرير.',
+      ihab_role: 'القسم العربي',
+      ihab_line: 'يقود البحث في المجتمع العربي: استبيانات بالعربية، باحثون ميدانيون يتحدثون العربية وعيّنة ملائمة.',
+      mina_role: 'آراء خبراء قانونية',
+      mina_line: 'تُعدّ آراء خبراء مبنية على استطلاعات للمحاكم، بمنهجية تصمد أمام الاستجواب المضاد.',
+      midgam_about: 'منذ 1988 تعمل مدجام للاستشارات والأبحاث في استطلاعات الرأي العام وأبحاث السوق والبحث الاجتماعي وآراء الخبراء للمحاكم. كل استطلاع يمرّ بنفس المسار: باحثون، ميدان، نتائج وموافقة.',
+      shelf_line: 'كليك! أحد الكتب تحرّك، والرف يدور...',
+      vault_trophy: 'نموذج الانتخابات',
+      vault_locked: 'كلانغ! أُغلقت القضبان. نموذج الانتخابات لمدجام يبقى سرًّا.'
     }
   };
   const UI = {
     he: {
       dir: 'rtl', mission: 'המשימה', doneN: n => `${n} שלבים הושלמו ·`, next: 'הבא:', published: 'הסקר פורסם!', office: 'משרדי מדגם', newsroom: 'חדר החדשות',
       hq: 'מדגם · ייעוץ ומחקר', newsSign: 'חדשות', badge: 'מדגם',
-      rooms: { res: 'חוקרים', p1: 'איסוף', p2: 'אינטרנטי', mano: 'מנו גבע', call: 'מוקד טלפוני' },
+      rooms: { res: 'חוקרים', p1: 'איסוף', p2: 'אינטרנטי', mano: 'מנו גבע', call: 'מוקד טלפוני', qual: 'מחקר איכותני', arab: 'המחלקה הערבית', meet: 'חדר ישיבות' },
+      people: { qual1: 'מיכל שפירא', qual2: 'מיכל אבנד', ihab: 'איהאב קדאח', mina: 'מינה צמח', vp1: 'עדי סידי', vp2: 'עדי גבע' }, midgamName: 'מדגם ייעוץ ומחקר', aboutUs: 'קצת עלינו', vault: 'המדרגות הסודיות',
       paper: { name: 'החדשות', date: 'יום חמישי · מהדורת בוקר', fict: 'נתונים בדיוניים', by: 'סקר מדגם ייעוץ ומחקר עבור החדשות', method: 'מדגם 1,000 · טעות דגימה ±3.1% · שוקלל לפי גיל ואזור' },
       fake: ['בעד', 'נגד', 'לא יודעים'],
       names: { editor: 'העורך', mano: 'מנו גבע', res: 'חוקרים', call: 'מוקד טלפוני', panel: 'איסוף אינטרנטי', sec: 'המזכירה', dog: 'הכלב', printer: 'המדפסת', field: 'סוקר של מדגם' },
@@ -497,7 +598,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
         nav1: 'תחומי פעילות', nav2: 'ממצאים', nav3: 'מקרי בוחן', nav4: 'אודות', cta: 'פנייה למחקר', badge1: 'משחק · 3 דקות', title: 'יום אחד במדגם',
         h1: 'תצליחו להגיש<span>סקר תקין?</span>', sub: 'פוגשים ברחוב עורך שצריך סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. הוא יקבל את הסקר רק אם הוא תקין.',
         playNow: 'שחקו עכשיו', fields: 'מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b>',
-        demo: '<b>יום אחד במדגם</b> · מצב הדגמה', play: 'שחקו', talk: 'דברו', cont: 'המשך', walk: 'להליכה', space: 'מקש רווח לדיבור', exit: 'יציאה',
+        demo: '<b>יום אחד במדגם</b> · מצב הדגמה', play: 'שחקו', talk: 'דברו', cont: 'המשך', phNote: 'תמונה וטקסט זמניים', walk: 'להליכה', space: 'מקש רווח לדיבור', exit: 'יציאה',
         finQ: 'ומה אתם חושבים?', finQ2: 'להישאר בשעון קיץ כל השנה?', a0: 'בעד', a1: 'נגד', a2: 'לא יודע/ת',
         finR: 'אנשים כמוכם', finR2: 'מהמשיבים בסקר שלכם חושבים כמוכם.', finR3: 'נתונים בדיוניים מתוך המשחק',
         next1: 'ועכשיו, מה הסקר שלך?', next2: 'ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.', contact: 'דברו איתנו', findings: 'לממצאים של מדגם', again: 'לשחק שוב',
@@ -509,7 +610,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     en: {
       dir: 'ltr', mission: 'Mission', doneN: n => `${n} steps done ·`, next: 'Next:', published: 'Survey published!', office: 'Midgam offices', newsroom: 'The newsroom',
       hq: 'Midgam · Research', newsSign: 'NEWS', badge: 'Midgam',
-      rooms: { res: 'Researchers', p1: 'Online', p2: 'collection', mano: 'Mano Geva', call: 'Call center' },
+      rooms: { res: 'Researchers', p1: 'Online', p2: 'collection', mano: 'Mano Geva', call: 'Call center', qual: 'Qualitative research', arab: 'Arabic department', meet: 'Meeting room' },
+      people: { qual1: 'Michal Shapira', qual2: 'Michal Avned', ihab: 'Ihab Kadah', mina: 'Mina Tzemach', vp1: 'Adi Sidi', vp2: 'Adi Geva' }, midgamName: 'Midgam Consulting & Research', aboutUs: 'About us', vault: 'The secret stairs',
       paper: { name: 'The News', date: 'Thursday · Morning edition', fict: 'Fictional data', by: 'A Midgam Research survey for The News', method: 'Sample 1,000 · margin of error ±3.1% · weighted by age and region' },
       fake: ['For', 'Against', "Don't know"],
       names: { editor: 'The editor', mano: 'Mano Geva', res: 'Researchers', call: 'Call center', panel: 'Online collection', sec: 'Secretary', dog: 'The dog', printer: 'Printer', field: 'Midgam interviewer' },
@@ -520,7 +622,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
         nav1: 'Services', nav2: 'Findings', nav3: 'Case studies', nav4: 'About', cta: 'Start a study', badge1: 'Game · 3 min', title: 'A day at Midgam',
         h1: 'Can you deliver<span>a valid survey?</span>', sub: 'Meet an editor on the street who needs a survey, go through every Midgam department with Mano Geva, and head back to the newsroom. He only accepts a valid survey.',
         playNow: 'Play now', fields: 'Midgam Consulting &amp; Research, since 1988: <b>Public opinion polls</b> · <b>Market research</b> · <b>Social research</b> · <b>Expert opinions for courts</b>',
-        demo: '<b>A day at Midgam</b> · demo', play: 'Play', talk: 'Talk', cont: 'Next', walk: 'to walk', space: 'Space to talk', exit: 'Exit',
+        demo: '<b>A day at Midgam</b> · demo', play: 'Play', talk: 'Talk', cont: 'Next', phNote: 'Placeholder photo and text', walk: 'to walk', space: 'Space to talk', exit: 'Exit',
         finQ: 'And what do you think?', finQ2: 'Keep daylight saving time all year?', a0: 'For', a1: 'Against', a2: 'Not sure',
         finR: 'People like you', finR2: 'of respondents in your survey think like you.', finR3: 'Fictional data from the game',
         next1: "Now, what's your survey?", next2: "Tell us what you want to find out, and we'll come back with a research proposal.", contact: 'Talk to us', findings: "Midgam's findings", again: 'Play again',
@@ -532,7 +634,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     ar: {
       dir: 'rtl', mission: 'المهمة', doneN: n => `أُنجزت ${n} مراحل ·`, next: 'التالي:', published: 'نُشر الاستطلاع!', office: 'مكاتب مدجام', newsroom: 'غرفة الأخبار',
       hq: 'مدجام · أبحاث', newsSign: 'أخبار', badge: 'مدجام',
-      rooms: { res: 'الباحثون', p1: 'الجمع عبر', p2: 'الإنترنت', mano: 'مانو جيفع', call: 'مركز الاتصال' },
+      rooms: { res: 'الباحثون', p1: 'الجمع عبر', p2: 'الإنترنت', mano: 'مانو جيفع', call: 'مركز الاتصال', qual: 'البحث النوعي', arab: 'القسم العربي', meet: 'غرفة الاجتماعات' },
+      people: { qual1: 'ميخال شابيرا', qual2: 'ميخال أفنيد', ihab: 'إيهاب قداح', mina: 'مينا تسيماح', vp1: 'عدي سيدي', vp2: 'عدي جيفع' }, midgamName: 'مدجام للاستشارات والأبحاث', aboutUs: 'من نحن', vault: 'الدرج السري',
       paper: { name: 'الأخبار', date: 'الخميس · طبعة الصباح', fict: 'بيانات خيالية', by: 'استطلاع مدجام للاستشارات والأبحاث لصالح الأخبار', method: 'عيّنة 1,000 · هامش خطأ ±3.1% · موزونة حسب العمر والمنطقة' },
       fake: ['مع', 'ضد', 'لا أعرف'],
       names: { editor: 'المحرّر', mano: 'مانو جيفع', res: 'الباحثون', call: 'مركز الاتصال', panel: 'الجمع عبر الإنترنت', sec: 'السكرتيرة', dog: 'الكلب', printer: 'الطابعة', field: 'باحث ميداني من مدجام' },
@@ -543,7 +646,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
         nav1: 'مجالات النشاط', nav2: 'النتائج', nav3: 'دراسات حالة', nav4: 'من نحن', cta: 'اطلبوا بحثًا', badge1: 'لعبة · 3 دقائق', title: 'يوم في مدجام',
         h1: 'هل تنجحون في تقديم<span>استطلاع سليم؟</span>', sub: 'تلتقون في الشارع بمحرّر يحتاج استطلاعًا، تمرّون بكل أقسام مدجام مع مانو جيفع، وتعودون إلى غرفة الأخبار. لن يقبل إلا استطلاعًا سليمًا.',
         playNow: 'العبوا الآن', fields: 'مدجام للاستشارات والأبحاث، منذ 1988: <b>استطلاعات الرأي العام</b> · <b>أبحاث السوق</b> · <b>البحث الاجتماعي</b> · <b>آراء خبراء للمحاكم</b>',
-        demo: '<b>يوم في مدجام</b> · عرض تجريبي', play: 'العبوا', talk: 'تحدّث', cont: 'متابعة', walk: 'للمشي', space: 'مفتاح المسافة للتحدث', exit: 'خروج',
+        demo: '<b>يوم في مدجام</b> · عرض تجريبي', play: 'العبوا', talk: 'تحدّث', cont: 'متابعة', phNote: 'صورة ونص مؤقتان', walk: 'للمشي', space: 'مفتاح المسافة للتحدث', exit: 'خروج',
         finQ: 'وما رأيكم؟', finQ2: 'إبقاء التوقيت الصيفي طوال السنة؟', a0: 'مع', a1: 'ضد', a2: 'لا أعرف',
         finR: 'أشخاص مثلكم', finR2: 'من المشاركين في استطلاعكم يفكرون مثلكم.', finR3: 'بيانات خيالية من اللعبة',
         next1: 'والآن، ما هو استطلاعك؟', next2: 'أخبرونا ماذا تريدون أن تعرفوا، وسنعود إليكم باقتراح بحث.', contact: 'تواصلوا معنا', findings: 'نتائج مدجام', again: 'العب مرة أخرى',
@@ -611,13 +714,13 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   /* ---------- easter eggs: the design page can ask for one ---------- */
   const EGGS = {
     secretary: { pos: [200, 86], face: 'up', who: 'sec', key: 'secretary_line', wait: 3400 },
-    dog: { pos: [20, 96], face: 'left', who: 'dog', key: 'dog_line', wait: 2600, bark: true },
-    printer: { pos: [80, 86], face: 'right', who: 'printer', key: 'printer_caption', wait: 7000, photo: true }
+    dog: { scene: 'office2', pos: [38, 88], face: 'left', who: 'dog', key: 'dog_line', wait: 2600, bark: true },
+    printer: { scene: 'office2', pos: [168, 88], face: 'right', who: 'printer', key: 'printer_caption', wait: 7000, photo: true }
   };
   addEventListener('message', e => {
     if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-egg' || !EGGS[e.data.egg] || reduce || MODE === 'play') return;
     const g = EGGS[e.data.egg];
-    S.scene = 'office'; S.fadeDir = 0; S.fade = 0; S.card = ''; S.conf = []; S.paper = false; S.wps = [];
+    S.scene = g.scene || 'office'; S.fadeDir = 0; S.fade = 0; S.card = ''; S.conf = []; S.paper = false; S.wps = [];
     S.me.x = g.pos[0]; S.me.y = g.pos[1]; S.me.face = g.face; S.egg = e.data.egg;
     S.key = g.photo ? '' : g.key; S.say = g.photo ? '' : TEXT[g.key]; S.who = g.who; S.refuse = false; S.shown = 0; S.wait = g.wait;
     S.barkT = g.bark ? g.wait : 0; S.photo = !!g.photo; S.photoP = 0;
@@ -719,9 +822,15 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     bx(18, 15, 28, 22), bx(48, 16, 30, 21), bx(40, 44, 24, 14), bx(66, 48, 12, 8), bx(32, 52, 12, 8),
     bx(114, 17, 28, 20), bx(122, 46, 12, 8),
     bx(182, 16, 26, 15), bx(178, 46, 22, 14), bx(184, 38, 8, 8),
-    bx(96, 105, 18, 7), bx(3, 98, 14, 6), bx(202, 78, 22, 18),
+    bx(202, 78, 22, 18),
     ...CALL_DESKS.map(([dx, dy]) => bx(dx, dy - 10, 22, 22)),
     bx(130, 160, 12, 12), bx(140, 146, 18, 18), bx(194, 160, 12, 12), bx(176, 146, 18, 18));
+  BLOCK.office2 = []; BLOCK.vault = [];
+  OFF2.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.office2.push(bx(i * T, j * T, T, T)); }));
+  VAULT.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.vault.push(bx(i * T, j * T, T, T)); }));
+  BLOCK.office2.push(bx(84, 17, 24, 18), bx(30, 30, 48, 14), bx(36, 18, 12, 14), bx(60, 18, 12, 14), bx(94, 44, 12, 14),
+    bx(132, 17, 26, 18), bx(162, 34, 24, 14), bx(168, 20, 12, 14), bx(194, 44, 12, 14),
+    bx(24, 139, 46, 26), bx(118, 130, 26, 17), bx(160, 146, 30, 14), bx(168, 132, 12, 14), bx(192, 150, 12, 15), bx(186, 105, 18, 7));
   const feet = (X, Y) => bx(X + 4, Y + 11, 8, 5);
   const blocked = (X, Y) => {
     const f = feet(X, Y);
@@ -730,10 +839,12 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.scene === 'street' && !F.brief) list.push(bx(S.ed.x + 4, S.ed.y + 10, 8, 6));
     if (S.scene === 'street') list.push(bx(164, 135, 8, 6));
     if (S.scene === 'news' && F.brief) list.push(bx(110, 42, 8, 6));
+    if (S.scene === 'office2') list.push(F.shelf ? bx(119, 78, 5, 6) : bx(100, 78, 24, 6));
+    if (S.scene === 'vault' && F.locked) list.push(bx(112, 96, 16, 16));
     return list.some(b => hit(f, b));
   };
   const whoName = w => w === 'vp' ? TEXT.vp_title : (U.names[w] || w);
-  const talk = (who, key, refuse) => { S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(whoName(who) + ': ' + TEXT[key]); };
+  const talk = (who, key, refuse) => { wake(); S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(whoName(who) + ': ' + TEXT[key]); };
   const live = document.getElementById('live');
   const announce = text => { live.textContent = ''; setTimeout(() => { live.textContent = text; }, 30); };
   const researchers = () => {
@@ -746,6 +857,13 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const callCenter = () => { if (!F.design) return talk('call', 'gate_call_early', true); F.call = true; talk('call', 'call_center'); };
   const TARGETS = () => {
     if (S.scene === 'street') return [{ x: 168, y: 132, act: () => { if (F.asked) return talk('field', 'field_thanks'); F.asked = true; talk('field', 'field_ask'); } }].concat(F.brief ? [] : [{ x: S.ed.x + 8, y: S.ed.y + 8, act: briefNow }]);
+    if (S.scene === 'vault') return [];
+    if (S.scene === 'office2') return [
+      { x: 42, y: 26, act: () => showCard('qual1') }, { x: 66, y: 26, act: () => showCard('qual2') },
+      { x: 174, y: 30, act: () => showCard('ihab') }, { x: 174, y: 142, act: () => showCard('mina') },
+      { x: 195, y: 98, act: () => { wake(); S.photo = true; S.photoP = 0; announce(TEXT.printer_caption); } }
+    ].concat(F.shelf ? [] : [{ x: 112, y: 82, act: () => { F.shelf = true; S.shelfP = 0; S.shake = 200; talk('', 'shelf_line'); } }])
+     .concat(F.dog ? [] : [{ x: 28, y: 100, act: () => { S.barkT = 1600; talk('dog', 'dog_line'); S.onClose = () => { F.dog = true; S.trail = [{ x: 20, y: 88 }]; S.dogP = { x: 20, y: 88, left: false }; }; } }]);
     if (S.scene === 'news') return F.brief ? [{ x: 114, y: 42, act: () => {
       if (!F.manoEnd) return talk('editor', 'gate_editor_early', true);
       if (!F.submitted) { F.submitted = true; S.partyT = 0; S.partyPending = true; }
@@ -762,10 +880,9 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       { x: 38, y: 52, act: researchers }, { x: 52, y: 44, act: researchers }, { x: 72, y: 50, act: researchers },
       ...CALL_DESKS.map(([dx, dy]) => ({ x: dx + 4, y: dy - 2, act: callCenter })),
       { x: 124, y: 46, act: () => { if (!F.design) return talk('panel', 'gate_panel_early', true); F.panel = true; talk('panel', 'panel'); } },
-      { x: 150, y: 146, act: () => talk('vp', 'vp1_line') },
-      { x: 186, y: 146, act: () => talk('vp', 'vp2_line') },
-      { x: 105, y: 98, act: () => { S.photo = true; S.photoP = 0; announce(TEXT.printer_caption); } },
-      { x: 11, y: 100, act: () => { S.barkT = 1600; talk('dog', 'dog_line'); } }
+      { x: 150, y: 146, act: () => showCard('vp1') },
+      { x: 186, y: 146, act: () => showCard('vp2') },
+      { x: 112, y: 110, act: () => showCard('midgam') }
     ];
   };
   const FACE = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
@@ -776,9 +893,31 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     return best;
   };
   const finale = document.getElementById('finale');
-  const overlayOpen = () => !finale.hidden;
+  const pcard = document.getElementById('pcard');
+  const overlayOpen = () => !finale.hidden || !pcard.hidden;
+  const CARDS = { qual1: ['qual1', 'qual_role', 'qual1_line'], qual2: ['qual2', 'qual_role', 'qual2_line'], ihab: ['ihab', 'ihab_role', 'ihab_line'], mina: ['mina', 'mina_role', 'mina_line'], vp1: ['vp1', 'vp_title', 'vp1_line'], vp2: ['vp2', 'vp_title', 'vp2_line'] };
+  const portraits = {};
+  // a placeholder portrait: the character's own sprite, head and shoulders, until real photos arrive
+  const portrait = k => {
+    if (portraits[k]) return portraits[k];
+    const c = document.createElement('canvas'); c.width = 18; c.height = 15; const old = x; x = c.getContext('2d');
+    R('p', 0, 0, 18, 15); R('l', 0, 11, 18, 4); person(PEOPLE[k], 1, 2, 'down'); x = old;
+    return (portraits[k] = c.toDataURL());
+  };
+  const showCard = id => {
+    wake(); const img = document.getElementById('pc-img'), mid = id === 'midgam';
+    img.className = mid ? 'logo' : ''; img.src = mid ? 'assets/midgam-logo.png' : portrait(CARDS[id][0]);
+    document.getElementById('pc-role').textContent = mid ? U.aboutUs : TEXT[CARDS[id][1]];
+    document.getElementById('pc-name').textContent = mid ? U.midgamName : U.people[id];
+    document.getElementById('pc-line').textContent = TEXT[mid ? 'midgam_about' : CARDS[id][2]];
+    document.getElementById('pc-note').hidden = mid;
+    pcard.hidden = false; keys.clear(); S.tap = null; document.getElementById('pc-close').focus({ preventScroll: true });
+    announce(document.getElementById('pc-name').textContent + ', ' + document.getElementById('pc-role').textContent + '. ' + document.getElementById('pc-line').textContent);
+  };
+  const closeCard = () => { pcard.hidden = true; cv.focus({ preventScroll: true }); };
+  document.getElementById('pc-close').addEventListener('click', closeCard);
+  pcard.addEventListener('pointerdown', e => { if (e.target === pcard) closeCard(); });
   const wake = () => { S.idle = 0; S.hintOn = false; };
-  addEventListener('keydown', wake, true); addEventListener('pointerdown', wake, true);
   const act = () => {
     if (MODE !== 'play' || S.fadeDir !== 0 || overlayOpen() || edBusy()) return;
     if (S.say) { if (S.shown < S.say.length) { S.shown = S.say.length; return; } S.say = ''; S.refuse = false; const cb = S.onClose; S.onClose = null; if (cb) cb(); return; }
@@ -821,9 +960,15 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     }
   };
   const edBusy = () => S.scene === 'street' && (S.ed.phase === 'spot' || S.ed.phase === 'walk');
+  const snapC = document.createElement('canvas'), bufC = document.createElement('canvas'); snapC.width = bufC.width = cv.width; snapC.height = bufC.height = cv.height;
+  const slideTo = (scene, pos, dir) => {
+    snapC.getContext('2d').drawImage(cv, 0, 0);
+    S.scene = scene; S.me.x = pos[0]; S.me.y = pos[1]; S.tap = null; S.slide = { dir, t: 0 };
+    S.trail = [{ x: pos[0], y: pos[1] }]; S.dogP = { x: pos[0] - dir * 12, y: pos[1], left: dir < 0 };
+  };
   const go = (scene, title, pos, face) => { S.fadeDir = 1; S.next = [scene, title, pos]; S.nextFace = face; keys.clear(); };
   const playStep = (dt) => {
-    if (S.fadeDir !== 0 || S.say || S.photo || overlayOpen() || edBusy()) return false;
+    if (S.fadeDir !== 0 || S.say || S.photo || S.slide || overlayOpen() || edBusy()) return false;
     let dx = 0, dy = 0;
     if (keys.has('left')) dx -= 1; if (keys.has('right')) dx += 1; if (keys.has('up')) dy -= 1; if (keys.has('down')) dy += 1;
     if (dx || dy) S.tap = null;
@@ -850,10 +995,15 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     else if (S.scene === 'street' && dy < 0 && hit(f, bx(166, 79, 18, 4))) go('news', 'newsroom', [104, 170], 'up');
     else if (S.scene === 'office' && dx > 0 && S.me.x > 209) go('street', '', [56, 82], 'down');
     else if (S.scene === 'news' && dy > 0 && S.me.y > 174) go('street', '', [172, 82], 'down');
+    else if (S.scene === 'office' && dx < 0 && S.me.x < -3) slideTo('office2', [207, S.me.y], -1);
+    else if (S.scene === 'office2' && dx > 0 && S.me.x > 209) slideTo('office', [-2, S.me.y], 1);
+    else if (S.scene === 'office2' && dy < 0 && F.shelf && S.shelfP >= 1 && hit(f, bx(102, 79, 18, 4))) go('vault', 'vault', [40, 74], 'down');
+    else if (S.scene === 'vault' && dy < 0 && hit(f, bx(36, 62, 24, 4))) go('office2', '', [104, 84], 'down');
+    if (S.scene === 'vault' && !F.locked && f.x + f.w > 96) { F.locked = true; S.barsP = 0; S.shake = 300; S.tap = null; keys.clear(); talk('', 'vault_locked', true); }
     return true;
   };
   const resetPlay = () => {
-    PLAY_STEPS.forEach(k => F[k] = false); F.asked = false;
+    PLAY_STEPS.forEach(k => F[k] = false); F.asked = false; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; S.trail = []; S.shelfP = 0; S.barsP = 0; S.shake = 0;
     Object.assign(S, { scene: 'street', say: '', who: '', key: '', refuse: false, shown: 0, conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, card: '', barkT: 0, partyPending: false, finaleAt: 0, onClose: null, wps: [], wait: 0, egg: null });
     S.idle = 0; S.hintOn = false; S.me = { x: 6, y: 128, face: 'right' }; S.ed = { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null }; finale.hidden = true; lastHud = '';
   };
@@ -864,9 +1014,9 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const padEl = document.querySelector('.pad'), talkEl = document.getElementById('talk'), exitEl = document.getElementById('exit');
   // remember where each piece lives, so leaving play puts it back exactly
   const glang = document.getElementById('glang');
-  const MOVED = [mission, glang, cv, padEl, talkEl, exitEl, finale].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
+  const MOVED = [mission, glang, cv, padEl, talkEl, exitEl, finale, pcard].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
   const toMobile = () => {
-    mtop.append(mission, glang, exitEl); lastHud = ''; mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale);
+    mtop.append(mission, glang, exitEl); lastHud = ''; mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale, pcard);
     document.documentElement.classList.add('mobile-play'); mhint.hidden = false;
     try { const p = mplay.requestFullscreen && mplay.requestFullscreen({ navigationUI: 'hide' }); if (p && p.catch) p.catch(() => {}); } catch (_) {}
   };
@@ -881,7 +1031,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     cv.focus({ preventScroll: true }); announce(U.start);
   };
   const exitPlay = () => {
-    MODE = 'demo'; keys.clear(); finale.hidden = true; stage.classList.remove('playing'); S.tap = null;
+    MODE = 'demo'; keys.clear(); finale.hidden = true; pcard.hidden = true; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; stage.classList.remove('playing'); S.tap = null;
     if (document.documentElement.classList.contains('mobile-play')) fromMobile();
     Object.assign(S, { scene: 'street', i: 0, done: 0, say: '', conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, wait: 0, egg: null, onClose: null });
     S.me = { x: 0, y: 128, face: 'right' }; lastHud = ''; startAction();
@@ -902,6 +1052,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const KEYMAP = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down', A: 'left', D: 'right', W: 'up', S: 'down' };
   addEventListener('keydown', e => {
     if (MODE !== 'play') return;
+    if (!pcard.hidden) { if (e.key === ' ' || e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); if (!e.repeat) closeCard(); } return; }
     if (e.key === 'Escape') { e.preventDefault(); return exitPlay(); }
     if (overlayOpen()) return;
     if (KEYMAP[e.key]) { e.preventDefault(); keys.add(KEYMAP[e.key]); }
@@ -924,6 +1075,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   // stuck for 20 seconds? a bouncing arrow marks where to go next (the person, or the door that leads there)
   const hintSpot = () => {
     const sc = S.scene;
+    if (sc === 'office2') return [216, 96];
+    if (sc === 'vault') return [48, 60];
     if (!F.brief) return sc === 'street' ? [S.ed.x + 8, S.ed.y + 4] : sc === 'office' ? [216, 96] : [112, 184];
     let room = null;
     if (!F.manoStart) room = [188, 36];
@@ -932,15 +1085,18 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     else if (!F.panel) room = [124, 42];
     else if (!F.findings) room = [52, 40];
     else if (!F.manoEnd) room = [188, 36];
+    if (sc === 'office2') return [216, 96];
+    if (sc === 'vault') return [48, 60];
     if (room) return sc === 'office' ? room : sc === 'street' ? [64, 74] : [112, 184];
     return sc === 'news' ? [114, 38] : sc === 'office' ? [216, 96] : [175, 74];
   };
   const hintAt = (dt, t) => {
     if (MODE !== 'play') return;
-    const free = !S.say && !S.photo && !S.paper && S.fadeDir === 0 && !overlayOpen() && !edBusy();
-    if (!free) { S.idle = 0; S.hintOn = false; return; }
+    // walking does not count as progress: only talking to someone resets the clock
+    const free = !S.say && !S.photo && !S.paper && !S.slide && S.fadeDir === 0 && !overlayOpen() && !edBusy();
+    if (!free) return;
     S.idle = (S.idle || 0) + dt;
-    if (S.idle < 20000) return;
+    if (S.idle < 7000) return;
     const [hx, hy] = hintSpot();
     if (!S.hintOn) { S.hintOn = true; const n = PLAY_STEPS.findIndex(k => !F[k]); if (n >= 0) announce(U.hint + ' ' + U.steps[n]); }
     // a ring pulsing on the floor, a gold arrow hopping above it, and sparkles circling
@@ -969,7 +1125,10 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   startAction();
   const frame = (t) => {
     const dt = Math.min(50, t - last); last = t;
-    if (S.scene === 'street') drawStreet(); else if (S.scene === 'office') drawOffice(t); else drawNews(t);
+    const sh = S.shake > 0 ? Math.round((Math.random() - .5) * 2) : 0; if (S.shake > 0) S.shake -= dt; x.setTransform(3, 0, 0, 3, sh * 3, 0);
+    if (F.shelf && S.shelfP < 1) S.shelfP = Math.min(1, S.shelfP + dt / 600);
+    if (F.locked && S.barsP < 1) S.barsP = Math.min(1, S.barsP + dt / 220);
+    if (S.scene === 'street') drawStreet(); else if (S.scene === 'office') drawOffice(t); else if (S.scene === 'office2') drawOffice2(t); else if (S.scene === 'vault') drawVault(t); else drawNews(t);
     // people standing in the scene
     if (S.scene === 'street' && MODE === 'demo' && S.i <= 1) person(PEOPLE.editor, 136, 80, 'left');
     if (MODE === 'play') edStep(dt);
@@ -983,13 +1142,21 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.scene === 'news' && (MODE === 'demo' || F.brief)) person(PEOPLE.editor, 106, 32, 'down');
     // the player
     let playMoving = false;
-    if (MODE === 'play') { playMoving = playStep(dt); if (playMoving) { S.idle = 0; S.hintOn = false; } }
+    if (MODE === 'play') playMoving = playStep(dt);
     else if (S.fadeDir === 0 && S.wait <= 0 && S.wps.length && !reduce) {
       const [gx, gy] = S.wps[0], dx = gx - S.me.x, dy = gy - S.me.y, d = Math.hypot(dx, dy), sp = .95 * dt / 16;
       if (d <= sp) { S.me.x = gx; S.me.y = gy; S.wps.shift(); if (!S.wps.length) finishWalk(); }
       else { S.me.x += dx / d * sp; S.me.y += dy / d * sp; S.me.face = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down'); S.leg += dt; }
     }
     const walking = MODE === 'play' ? playMoving : S.wps.length > 0 && S.wait <= 0 && S.fadeDir === 0;
+    // the dog, once befriended, trots behind you everywhere and never blocks the way
+    if (MODE === 'play' && F.dog) {
+      const tr = S.trail, last2 = tr[tr.length - 1];
+      if (!last2 || Math.hypot(last2.x - S.me.x, last2.y - S.me.y) > .8) { tr.push({ x: S.me.x, y: S.me.y }); if (tr.length > 60) tr.shift(); }
+      const goal = tr[Math.max(0, tr.length - 19)], d = S.dogP, k = Math.min(1, dt / 110), ox = d.x;
+      d.x += (goal.x - d.x) * k; d.y += (goal.y - d.y) * k; if (Math.abs(d.x - ox) > .05) d.left = d.x < ox;
+      dog(Math.round(d.x), Math.round(d.y + 6), t, d.left);
+    }
     person(PEOPLE.me, S.me.x, S.me.y, S.me.face, walking && Math.floor(S.leg / 150) % 2);
     if (MODE === 'demo' && !walking && Math.floor(t / 500) % 2) { R('k', S.me.x + 6, S.me.y - 7, 4, 4); R('y', S.me.x + 7, S.me.y - 6, 2, 2); }
     if (S.barkT > 0) S.barkT -= dt;
@@ -1008,7 +1175,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.fadeDir !== 0) {
       S.fade += S.fadeDir * dt / 320;
       if (S.fade >= 1 && S.fadeDir === 1) {
-        S.fade = 1; const [scene, title, pos] = S.next; S.scene = scene; S.me.x = pos[0]; S.me.y = pos[1]; S.card = title; S.cardT = title ? 800 : 0;
+        S.fade = 1; const [scene, title, pos] = S.next; S.scene = scene; S.me.x = pos[0]; S.me.y = pos[1]; S.trail = [{ x: pos[0], y: pos[1] }]; S.dogP = { x: pos[0], y: pos[1], left: false }; S.card = title; S.cardT = title ? 800 : 0;
         if (MODE === 'play') { S.me.face = S.nextFace || 'down'; }
         else if (S.reset) { S.reset = false; S.i = 0; S.done = 0; S.conf = []; S.paper = false; S.me.face = 'right'; startAction(); } else if (!SCRIPT[S.i].party) { S.i++; startAction(); }
         S.fadeDir = 2;
@@ -1017,6 +1184,13 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       if (S.fade <= 0 && S.fadeDir === -1) { S.fade = 0; S.fadeDir = 0; S.card = ''; }
       x.fillStyle = `rgba(11,34,56,${Math.min(1, Math.max(0, S.fade))})`; x.fillRect(0, 0, W, H);
       if (S.card && S.fadeDir === 2) { txt(U[S.card] || S.card, W / 2, H / 2, 11, 'w', 800); R('s', W / 2 - 20, H / 2 + 10, 40, 1); }
+    }
+    // sliding between the two office screens: the old view moves out as the new one moves in, no fade
+    if (S.slide) {
+      S.slide.t += dt; const p = Math.min(1, S.slide.t / 380), off = Math.round(cv.width * (1 - Math.pow(1 - p, 3))), dir = S.slide.dir;
+      const b = bufC.getContext('2d'); b.clearRect(0, 0, bufC.width, bufC.height); b.drawImage(cv, 0, 0);
+      x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.imageSmoothingEnabled = false; x.drawImage(snapC, -dir * off, 0); x.drawImage(bufC, dir * (cv.width - off), 0); x.restore();
+      if (p >= 1) S.slide = null;
     }
     requestAnimationFrame(frame);
   };
