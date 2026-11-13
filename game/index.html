@@ -491,6 +491,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       fake: ['בעד', 'נגד', 'לא יודעים'],
       names: { editor: 'העורך', mano: 'מנו גבע', res: 'חוקרים', call: 'מוקד טלפוני', panel: 'איסוף אינטרנטי', sec: 'המזכירה', dog: 'הכלב', printer: 'המדפסת', field: 'סוקר של מדגם' },
       steps: ['קבלו בריף מהעורך', 'פגישת פתיחה עם מנו גבע', 'בניית המחקר אצל החוקרים', 'איסוף במוקד הטלפוני', 'איסוף אינטרנטי', 'בניית ממצאים אצל החוקרים', 'אישור סופי של מנו גבע', 'הגשה לעורך'],
+      hint: 'רמז, הבא:',
       start: 'המשחק התחיל. חצים להליכה, רווח לדיבור, Escape ליציאה. העורך מחכה ברחוב.', askQ: 'ומה אתם חושבים? בחרו תשובה.', pctSay: v => v + ' אחוז מהמשיבים בסקר שלכם חושבים כמוכם.',
       html: {
         nav1: 'תחומי פעילות', nav2: 'ממצאים', nav3: 'מקרי בוחן', nav4: 'אודות', cta: 'פנייה למחקר', badge1: 'משחק · 3 דקות', title: 'יום אחד במדגם',
@@ -513,6 +514,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       fake: ['For', 'Against', "Don't know"],
       names: { editor: 'The editor', mano: 'Mano Geva', res: 'Researchers', call: 'Call center', panel: 'Online collection', sec: 'Secretary', dog: 'The dog', printer: 'Printer', field: 'Midgam interviewer' },
       steps: ['Get a brief from the editor', 'Kickoff with Mano Geva', 'Build the study with the researchers', 'Collect at the call center', 'Collect online', 'Build the findings with the researchers', 'Final sign-off from Mano Geva', 'Hand it to the editor'],
+      hint: 'Hint, next:',
       start: 'The game has started. Arrows to walk, Space to talk, Escape to exit. The editor is waiting on the street.', askQ: 'And what do you think? Choose an answer.', pctSay: v => v + ' percent of respondents in your survey think like you.',
       html: {
         nav1: 'Services', nav2: 'Findings', nav3: 'Case studies', nav4: 'About', cta: 'Start a study', badge1: 'Game · 3 min', title: 'A day at Midgam',
@@ -535,6 +537,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
       fake: ['مع', 'ضد', 'لا أعرف'],
       names: { editor: 'المحرّر', mano: 'مانو جيفع', res: 'الباحثون', call: 'مركز الاتصال', panel: 'الجمع عبر الإنترنت', sec: 'السكرتيرة', dog: 'الكلب', printer: 'الطابعة', field: 'باحث ميداني من مدجام' },
       steps: ['احصل على الطلب من المحرّر', 'اجتماع افتتاحي مع مانو جيفع', 'بناء البحث عند الباحثين', 'الجمع في مركز الاتصال', 'الجمع عبر الإنترنت', 'بناء النتائج عند الباحثين', 'موافقة نهائية من مانو جيفع', 'التسليم للمحرّر'],
+      hint: 'تلميح، التالي:',
       start: 'بدأت اللعبة. الأسهم للمشي، المسافة للتحدث، Escape للخروج. المحرّر ينتظر في الشارع.', askQ: 'وما رأيكم؟ اختاروا إجابة.', pctSay: v => v + ' بالمئة من المشاركين في استطلاعكم يفكرون مثلكم.',
       html: {
         nav1: 'مجالات النشاط', nav2: 'النتائج', nav3: 'دراسات حالة', nav4: 'من نحن', cta: 'اطلبوا بحثًا', badge1: 'لعبة · 3 دقائق', title: 'يوم في مدجام',
@@ -774,6 +777,8 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   };
   const finale = document.getElementById('finale');
   const overlayOpen = () => !finale.hidden;
+  const wake = () => { S.idle = 0; S.hintOn = false; };
+  addEventListener('keydown', wake, true); addEventListener('pointerdown', wake, true);
   const act = () => {
     if (MODE !== 'play' || S.fadeDir !== 0 || overlayOpen() || edBusy()) return;
     if (S.say) { if (S.shown < S.say.length) { S.shown = S.say.length; return; } S.say = ''; S.refuse = false; const cb = S.onClose; S.onClose = null; if (cb) cb(); return; }
@@ -850,7 +855,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const resetPlay = () => {
     PLAY_STEPS.forEach(k => F[k] = false); F.asked = false;
     Object.assign(S, { scene: 'street', say: '', who: '', key: '', refuse: false, shown: 0, conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, card: '', barkT: 0, partyPending: false, finaleAt: 0, onClose: null, wps: [], wait: 0, egg: null });
-    S.me = { x: 6, y: 128, face: 'right' }; S.ed = { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null }; finale.hidden = true; lastHud = '';
+    S.idle = 0; S.hintOn = false; S.me = { x: 6, y: 128, face: 'right' }; S.ed = { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null }; finale.hidden = true; lastHud = '';
   };
   const stage = document.getElementById('stage');
   const mplay = document.getElementById('mplay'), mtop = document.getElementById('mtop'), mctl = document.getElementById('mctl'), mhint = document.getElementById('mhint');
@@ -916,6 +921,38 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   document.addEventListener('visibilitychange', () => { keys.clear(); held.clear(); });
   [mplay, document.querySelector('.game')].forEach(el => el.addEventListener('contextmenu', e => e.preventDefault()));
   document.getElementById('talk').addEventListener('click', act);
+  // stuck for 20 seconds? a bouncing arrow marks where to go next (the person, or the door that leads there)
+  const hintSpot = () => {
+    const sc = S.scene;
+    if (!F.brief) return sc === 'street' ? [S.ed.x + 8, S.ed.y + 4] : sc === 'office' ? [216, 96] : [112, 184];
+    let room = null;
+    if (!F.manoStart) room = [188, 36];
+    else if (!F.design) room = [52, 40];
+    else if (!F.call) room = [62, 128];
+    else if (!F.panel) room = [124, 42];
+    else if (!F.findings) room = [52, 40];
+    else if (!F.manoEnd) room = [188, 36];
+    if (room) return sc === 'office' ? room : sc === 'street' ? [64, 74] : [112, 184];
+    return sc === 'news' ? [114, 38] : sc === 'office' ? [216, 96] : [175, 74];
+  };
+  const hintAt = (dt, t) => {
+    if (MODE !== 'play') return;
+    const free = !S.say && !S.photo && !S.paper && S.fadeDir === 0 && !overlayOpen() && !edBusy();
+    if (!free) { S.idle = 0; S.hintOn = false; return; }
+    S.idle = (S.idle || 0) + dt;
+    if (S.idle < 20000) return;
+    const [hx, hy] = hintSpot();
+    if (!S.hintOn) { S.hintOn = true; const n = PLAY_STEPS.findIndex(k => !F[k]); if (n >= 0) announce(U.hint + ' ' + U.steps[n]); }
+    // a ring pulsing on the floor, a gold arrow hopping above it, and sparkles circling
+    const ph = (t % 1100) / 1100, rr = 4 + ph * 9;
+    x.strokeStyle = `rgba(242,193,78,${1 - ph})`; x.lineWidth = 1.2; x.beginPath(); x.ellipse(hx, hy + 12, rr, rr * .45, 0, 0, Math.PI * 2); x.stroke();
+    const hop = Math.round(Math.abs(Math.sin(t / 180)) * 5), ay = hy - 14 - hop;
+    R('k', hx - 5, ay - 1, 11, 6); R('k', hx - 4, ay + 5, 9, 2); R('k', hx - 3, ay + 7, 7, 2); R('k', hx - 2, ay + 9, 5, 2); R('k', hx - 1, ay + 11, 3, 1);
+    R('y', hx - 4, ay, 9, 5); R('y', hx - 3, ay + 5, 7, 2); R('y', hx - 2, ay + 7, 5, 2); R('y', hx - 1, ay + 9, 3, 2); R('w', hx - 3, ay + 1, 2, 2);
+    for (let i = 0; i < 3; i++) { const a = t / 400 + i * 2.09; const sx = hx + Math.cos(a) * 12, sy = hy - 2 + Math.sin(a) * 6; R('y', sx, sy - 1, 1, 3); R('y', sx - 1, sy, 3, 1); }
+    // the player wonders: a small thought bubble with a question mark
+    if (Math.floor(t / 900) % 3 !== 2) { const bx2 = S.me.x + 11, by2 = S.me.y - 11; R('k', bx2, by2, 9, 9); R('w', bx2 + 1, by2 + 1, 7, 7); R('k', bx2 - 1, by2 + 9, 2, 2); R('k', bx2 - 3, by2 + 12, 1, 1); txt('?', bx2 + 4.5, by2 + 4.7, 6.5, 'b', 800); }
+  };
   const promptAt = (t) => {
     if (MODE !== 'play' || S.say || S.photo || S.fadeDir || overlayOpen()) return;
     const t2 = nearest(); if (!t2) return;
@@ -946,7 +983,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.scene === 'news' && (MODE === 'demo' || F.brief)) person(PEOPLE.editor, 106, 32, 'down');
     // the player
     let playMoving = false;
-    if (MODE === 'play') playMoving = playStep(dt);
+    if (MODE === 'play') { playMoving = playStep(dt); if (playMoving) { S.idle = 0; S.hintOn = false; } }
     else if (S.fadeDir === 0 && S.wait <= 0 && S.wps.length && !reduce) {
       const [gx, gy] = S.wps[0], dx = gx - S.me.x, dy = gy - S.me.y, d = Math.hypot(dx, dy), sp = .95 * dt / 16;
       if (d <= sp) { S.me.x = gx; S.me.y = gy; S.wps.shift(); if (!S.wps.length) finishWalk(); }
@@ -963,7 +1000,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
     if (S.paper) { S.paperP = Math.min(1, S.paperP + dt / 700); newspaper(S.paperP); }
     if (S.photo) { S.photoP = Math.min(1, S.photoP + dt / 700); photo(S.photoP); }
     confetti(dt, t);
-    promptAt(t); hud(); dialog(t);
+    hintAt(dt, t); promptAt(t); hud(); dialog(t);
     if (MODE === 'play') talkEl.classList.toggle('off', !(S.fadeDir === 0 && !overlayOpen() && !edBusy() && !S.paper && (S.say || S.photo || nearest())));
     // scene transitions: fade out, title card, fade in
     if (S.fadeDir !== 0) {
