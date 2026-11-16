@@ -844,6 +844,11 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     for (const f of FAR) { const X = (f.u * W + Math.sin(t / 7000 + f.ph) * 20) % W, Y = ((f.v * H - sy * f.d) % H + H) % H; x.globalAlpha = .18 + .12 * Math.sin(t / 1400 + f.ph); x.fillStyle = FARC; x.fillRect(X, Y, f.r, f.r); }
     // the near field: drift toward the active section's shape
     const s = active(); let place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
+    // every section lets go the way the hero does: as its end rises past the bottom of the screen, its dots break off one by one and fall,
+    // still in view, before the next section gathers them; scrolling back reassembles it
+    if (place && s.dataset.form !== 'wave' && !reduce) { const sr = s.getBoundingClientRect(), lv = Math.min(1.5, Math.max(0, (H - sr.bottom) / (H * .45)));
+      if (lv > 0) { const base = place; place = p => { const tg = base(p); if (!tg) return tg; const th = ((p.i * .7548776662) % 1) * .85, d = lv - th; if (d <= 0) return tg;
+        return [tg[0] + (p.u - .5) * d * W * .3, tg[1] + d * d * H * .8 + d * 40 * p.s, tg[2] * Math.max(.12, 1 - d * .8), (tg[3] || 1.5) * Math.max(.6, 1 - d * .3)]; }; } }
     if (special && t < special.until) { const box = { x: W * .1, y: H * .18, w: W * .8, h: H * .64 }, base = place, k0 = special.kind; place = p => p.i % 5 === 4 && base ? base(p) : shaped(box, k0, p, t, 1); }
     // after sending: the swarm writes the thank-you where the form was
     if (sendFx) { const tb = document.querySelector('[data-anchor=thanks]').getBoundingClientRect(), box3 = { x: tb.left, y: tb.top, w: tb.width, h: tb.height };
