@@ -249,6 +249,16 @@ html[data-look=light] .f select{background-image:url("data:image/svg+xml,%3Csvg 
 .f input:focus,.f select:focus,.f textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sky)}
 #form .btn{grid-column:1/-1;justify-self:start}
 .sent{grid-column:1/-1;margin:0;color:var(--glow);font-size:15px}
+/* sending: the form dissolves into the swarm, which then writes the thank-you in its place */
+#form{transition:opacity .45s var(--ease),filter .45s var(--ease),transform .45s var(--ease)}
+#form.gone{opacity:0;filter:blur(6px);transform:scale(.97);pointer-events:none}
+.contact .wrap{position:relative}
+.thanks{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;grid-column:2;grid-row:1;align-self:center;animation:enter .7s .9s var(--ease) both}
+.thanks-word{width:100%;height:220px}
+.thanks p{margin:0;font-size:20px;font-weight:600}
+.thanks small{color:var(--dim);font-size:13px;max-width:34ch}
+.thanks .btn{margin-top:8px}
+@media (max-width:1100px){.thanks{grid-column:1;grid-row:auto}}
 footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--foot)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 28px;padding-block:28px;color:var(--dim);font-size:14px}
 footer nav{display:flex;flex-wrap:wrap;gap:6px 18px}
@@ -256,7 +266,8 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 
 @media (max-width:1100px){
   .hero .wrap,.cred .wrap,.contact .wrap{grid-template-columns:minmax(0,1fr)}
-  .hero .wrap{gap:20px}.play{order:-1}
+  .hero .wrap{gap:20px}.play{order:-1;width:100%;max-width:520px;margin-inline:auto}
+  .swarm{max-height:30vh}
   .slot{min-height:180px;order:-1}
   .qs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .caps,.team{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -436,6 +447,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
         <button class="btn" type="submit">שליחת פנייה</button>
         <p class="sent" id="sent" hidden></p>
       </form>
+      <div class="thanks" id="thanks" hidden><div class="thanks-word" data-anchor="thanks"></div><p>הפנייה התקבלה. נחזור אליכם בהקדם.</p><small>בתצוגה המקדימה הזו הפנייה לא נשלחת באמת; באתר החי היא תגיע ישירות לצוות מדגם.</small><button type="button" class="btn line" id="again">שליחת פנייה נוספת</button></div>
     </div>
   </section>
 </main>
@@ -833,14 +845,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     // the near field: drift toward the active section's shape
     const s = active(); let place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
     if (special && t < special.until) { const box = { x: W * .1, y: H * .18, w: W * .8, h: H * .64 }, base = place, k0 = special.kind; place = p => p.i % 5 === 4 && base ? base(p) : shaped(box, k0, p, t, 1); }
-    if (sendFx) { const e3 = (t - sendFx.t0) / 1000;
-      if (e3 > 3.2) sendFx = null;
-      else { const f = sendFx.r, fly = Math.max(0, e3 - 1.4), k3 = fly * fly * 1.6, sc = Math.max(.15, 1 - fly * .55);
-        const w0 = Math.min(f.w * .7, 340), h0 = w0 * .68, cx3 = f.x + f.w / 2 - k3 * W * .35, cy3 = f.y + f.h / 2 - k3 * H * .9;
-        const box3 = { x: cx3 - w0 * sc / 2, y: cy3 - h0 * sc / 2, w: w0 * sc, h: h0 * sc };
-        if (fly > 0 && !sendFx.burst) { sendFx.burst = true; waves.push({ x: cx3, y: cy3, t: t, k: 3.5 }); }
-        place = p => { const sp = shaped(box3, 'envelope', p, t, 1); if (!sp) return null; // a trail behind it while it flies
-          return fly > 0 && p.i % 4 === 0 ? [sp[0] + (p.u - .5) * 30 + k3 * W * .35 * p.v * .4, sp[1] + k3 * H * .9 * p.v * .5, sp[2] * .6, 1] : sp; }; } }
+    // after sending: the swarm writes the thank-you where the form was
+    if (sendFx) { const tb = document.querySelector('[data-anchor=thanks]').getBoundingClientRect(), box3 = { x: tb.left, y: tb.top, w: tb.width, h: tb.height };
+      if (tb.width) { const k3 = wordShape('תודה!'); place = p => p.i % 6 === 5 ? null : shaped(box3, k3, p, t, 1); } }
     const orb = hold && t - hold.t0 > (hold.touch ? TOUCH_HOLD : 260);
     // the follow point eases toward the mouse, or toward the last place a finger touched
     if (mx > -500) { fx += (mx - fx) * .08; fy += (my - fy) * .08; } else if (lastTouch) { fx += (lastTouch.x - fx) * .08; fy += (lastTouch.y - fy) * .08; }
@@ -874,15 +881,18 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   if (/[?&]debug/.test(location.search)) window.__air = { P: () => P, SHAPES, run(n) { manual = true; let t = last; for (let i = 0; i < n; i++) { t += 16; frame(t); } manual = false; } };
 
   /* ---------- the form: a design preview, nothing is sent ---------- */
+  document.getElementById('again').addEventListener('click', () => { sendFx = null; const f = document.getElementById('form'); document.getElementById('thanks').hidden = true; f.hidden = false; f.reset(); requestAnimationFrame(() => f.classList.remove('gone')); document.getElementById('fn').focus(); });
   document.getElementById('form').addEventListener('submit', e => {
     e.preventDefault(); const f = e.target, sent = document.getElementById('sent');
     const nameEl = document.getElementById('fn'), mailEl = document.getElementById('em');
     if (!nameEl.value.trim()) { sent.hidden = false; sent.textContent = 'כתבו את שמכם, כדי שנדע למי לחזור.'; nameEl.focus(); return; }
     if (!/^\S+@\S+\.\S+$/.test(mailEl.value)) { sent.hidden = false; sent.textContent = 'כתבו כתובת דוא״ל מלאה, כמו name@company.co.il.'; mailEl.focus(); return; }
-    // the delight: the swarm folds into an envelope over the form and flies off with it
-    const r = f.getBoundingClientRect(); sendFx = { t0: performance.now(), r: { x: r.left, y: r.top, w: r.width, h: r.height } };
-    const btn = f.querySelector('button[type=submit]'); btn.disabled = true;
-    setTimeout(() => { sent.hidden = false; sent.textContent = 'הפנייה בדרך לצוות מדגם. (בתצוגה המקדימה הזו היא לא נשלחת באמת; באתר החי היא תגיע ישירות לצוות.)'; btn.disabled = false; }, 2200);
+    // the delight: the form turns into dots (its outline, every field, the button), fades away, and the dots write the thank-you
+    const outlines = [f, ...f.querySelectorAll('input, select, textarea, button')].map(el => { const q = el.getBoundingClientRect(); return { x: q.left, y: q.top, w: q.width, h: q.height }; });
+    P.forEach((p, i) => { if (i % 6 === 5) return; const q = outlines[i % outlines.length], [X, Y] = perim(q, (i * .618) % 1, 0); p.x = X; p.y = Y; p.a = .95; p.r = 1.6; p.anch = true; });
+    for (let k4 = 0; k4 < 3; k4++) waves.push({ x: outlines[0].x + outlines[0].w / 2, y: outlines[0].y + outlines[0].h / 2, t: performance.now() + k4 * 160, k: 2.2 });
+    f.classList.add('gone'); sent.hidden = true;
+    setTimeout(() => { f.hidden = true; const th = document.getElementById('thanks'); th.hidden = false; sendFx = { t0: performance.now() }; }, 420);
   });
 })();
 </script>
