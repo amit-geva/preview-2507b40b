@@ -8,15 +8,20 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Noto+Sans+Arabic:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* Layout: one living atmosphere (light, grain, three depths of dots) sits behind the whole site.
    Each section gathers the dots around its own content: a wave of people, a sample, six questions,
    four capabilities, nine fields, two areas of expertise, the team, and the contact form. Dark by design. */
 :root{
-  --ink:#06121e; --ink-2:#0a1c2d; --line:rgba(160,205,235,.14); --line-2:rgba(160,205,235,.26);
-  --fg:#eef4f8; --mute:#a3b6c6; --dim:#6d8599;
-  --blue:#1d5689; --sky:#2aa2dd; --glow:#93d5f5; --gold:#f2c14e;
+  /* Midgam's own two colours, from the logo: navy #1d5689 and sky #2098d0 */
+  --ink:#0a2240; --ink-2:#0f2c50; --line:rgba(140,205,240,.16); --line-2:rgba(140,205,240,.3);
+  --fg:#f3f8fc; --mute:#a9c4dc; --dim:#7a98b4;
+  --blue:#1d5689; --sky:#2098d0; --glow:#8fd0f2; --gold:#f2c14e;
+  --card:rgba(8,28,54,.55); --card-hi:rgba(14,42,76,.72); --field:rgba(6,22,44,.8); --navbg:rgba(10,34,64,.78); --menubg:rgba(10,34,64,.97); --foot:rgba(6,22,44,.6);
+  --chip:rgba(140,205,240,.1); --btn-bg:#f3f8fc; --btn-fg:#0a2240; --btn-hi:#fff; --grid-line:rgba(140,205,240,.045);
+  --l1:rgba(32,152,208,.5); --l2:rgba(29,86,137,.85); --l3:rgba(32,152,208,.22); --vig:rgba(4,16,32,.7); --face:rgba(140,205,240,.28);
+  --dot-a:32,152,208; --dot-b:143,208,242; --dot-c:243,248,252; --grain:.09;
   --display:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --body:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
@@ -24,47 +29,64 @@
   --padt:128px; --gut:max(24px,env(safe-area-inset-left,0px));
   color-scheme:dark;
 }
+/* the bright version: same structure, Midgam navy on a pale sky ground */
+html[data-look=light]{
+  --ink:#f2f7fb; --ink-2:#e4eff8; --line:rgba(29,86,137,.14); --line-2:rgba(29,86,137,.28);
+  --fg:#0d2c4f; --mute:#46647f; --dim:#6f88a0; --glow:#1d5689;
+  --card:rgba(255,255,255,.62); --card-hi:rgba(255,255,255,.88); --field:#fff; --navbg:rgba(242,247,251,.82); --menubg:rgba(242,247,251,.98); --foot:rgba(255,255,255,.6);
+  --chip:rgba(29,86,137,.08); --btn-bg:#1d5689; --btn-fg:#fff; --btn-hi:#16466f; --grid-line:rgba(29,86,137,.05);
+  --l1:rgba(32,152,208,.32); --l2:rgba(29,86,137,.2); --l3:rgba(143,208,242,.45); --vig:rgba(242,247,251,.6); --face:rgba(29,86,137,.25);
+  --dot-a:29,86,137; --dot-b:32,152,208; --dot-c:13,44,79; --grain:.05;
+  color-scheme:light;
+}
 *{box-sizing:border-box}
 html{scroll-behavior:auto}
 body{background:var(--ink);color:var(--fg);font-family:var(--body);font-weight:300;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
 a{color:inherit}
-.skip{position:fixed;top:8px;right:8px;z-index:100;padding:10px 16px;border-radius:999px;background:var(--gold);color:#06121e;font-weight:700;transform:translateY(-200%)}
+.skip{position:fixed;top:8px;right:8px;z-index:100;padding:10px 16px;border-radius:999px;background:var(--btn-bg);color:var(--btn-fg);font-weight:700;transform:translateY(-200%)}
 .skip:focus{transform:none}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
 
 /* ---------- the atmosphere: light, grain, dots; fixed behind every section ---------- */
 .air{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .air .light{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;will-change:transform}
-.air .l1{width:62vmax;height:62vmax;background:radial-gradient(circle,rgba(42,162,221,.55),transparent 65%);top:-18vmax;left:-12vmax;animation:drift1 38s ease-in-out infinite alternate}
-.air .l2{width:52vmax;height:52vmax;background:radial-gradient(circle,rgba(29,86,137,.7),transparent 65%);bottom:-20vmax;right:-14vmax;animation:drift2 44s ease-in-out infinite alternate}
-.air .l3{width:34vmax;height:34vmax;background:radial-gradient(circle,rgba(242,193,78,.22),transparent 65%);top:40%;left:42%;animation:drift3 52s ease-in-out infinite alternate}
+.air .l1{width:62vmax;height:62vmax;background:radial-gradient(circle,var(--l1),transparent 65%);top:-18vmax;left:-12vmax;animation:drift1 38s ease-in-out infinite alternate}
+.air .l2{width:52vmax;height:52vmax;background:radial-gradient(circle,var(--l2),transparent 65%);bottom:-20vmax;right:-14vmax;animation:drift2 44s ease-in-out infinite alternate}
+.air .l3{width:34vmax;height:34vmax;background:radial-gradient(circle,var(--l3),transparent 65%);top:40%;left:42%;animation:drift3 52s ease-in-out infinite alternate}
 @keyframes drift1{to{transform:translate(18vmax,14vmax) scale(1.12)}}
 @keyframes drift2{to{transform:translate(-16vmax,-12vmax) scale(.92)}}
 @keyframes drift3{to{transform:translate(-22vmax,10vmax) scale(1.2)}}
 .air canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.air .grid{position:absolute;inset:-2px;background-image:linear-gradient(rgba(160,205,235,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(160,205,235,.035) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 80%)}
-.air .grain{position:absolute;inset:-50%;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+.air .grid{position:absolute;inset:-2px;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 80%)}
+.air .grain{position:absolute;inset:-50%;opacity:var(--grain);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-2%,3%)}80%{transform:translate(4%,1%)}100%{transform:translate(0,0)}}
-.air .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(4,10,18,.75))}
+.air .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,var(--vig))}
 
 /* ---------- nav ---------- */
 .nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;transition:background-color .3s,box-shadow .3s}
-.nav.solid{background:rgba(6,18,30,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.nav.solid{background:var(--navbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
 .nav .in{display:flex;align-items:center;gap:20px;height:76px;max-width:1440px;margin:0 auto;padding-left:var(--gut);padding-right:max(24px,env(safe-area-inset-right,0px))}
 .brand img{display:block;height:36px;width:auto;padding:6px 11px;border-radius:10px;background:#fff}
 .menu{display:flex;gap:2px;margin-inline-start:auto}
 .menu a{padding:8px 11px;border-radius:999px;color:var(--mute);font-size:14.5px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color .2s,background-color .2s}
-.menu a:hover{color:var(--fg);background:rgba(160,205,235,.08)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:50px;padding:0 24px;border-radius:999px;border:0;background:var(--fg);color:#06121e;font:600 16px var(--body);text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .2s var(--ease),background-color .2s}
-.btn:hover{transform:translateY(-2px);background:#fff}
+.menu a:hover{color:var(--fg);background:var(--chip)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:50px;padding:0 24px;border-radius:999px;border:0;background:var(--btn-bg);color:var(--btn-fg);font:600 16px var(--body);text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .2s var(--ease),background-color .2s}
+.btn:hover{transform:translateY(-2px);background:var(--btn-hi)}
 .btn:active{transform:translateY(1px) scale(.98)}
 .btn.line{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2)}
-.btn.line:hover{background:rgba(160,205,235,.08)}
+.btn.line:hover{background:var(--chip)}
 .nav .btn{height:42px;padding:0 18px;font-size:14.5px}
-.burger{display:none;margin-inline-start:auto;width:44px;height:44px;border-radius:50%;border:0;background:rgba(160,205,235,.1);color:var(--fg);cursor:pointer}
-@media (max-width:1240px){.menu{display:none}.burger{display:grid;place-items:center}.nav .btn{display:none}
-  .menu.open{display:flex;position:fixed;inset:76px 0 auto 0;flex-direction:column;gap:0;padding:12px var(--gut) 24px;background:rgba(6,18,30,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.look{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px;border-radius:999px;border:0;background:var(--chip);color:var(--fg);font:500 14px var(--body);cursor:pointer;white-space:nowrap;transition:background-color .2s,transform .2s var(--ease)}
+.look:hover{transform:translateY(-1px)}
+.look:active{transform:scale(.97)}
+@media (max-width:1240px){.look{margin-inline-start:auto}.look span{display:none}.look{width:44px;padding:0;justify-content:center}}
+.toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));z-index:70;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:12px 20px;border-radius:999px;background:var(--btn-bg);color:var(--btn-fg);font:600 15px var(--body);box-shadow:0 18px 40px -16px rgba(0,0,0,.5);transition:opacity .3s var(--ease),transform .3s var(--ease);white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.eggs{color:var(--dim)}
+.burger{display:none;margin-inline-start:auto;width:44px;height:44px;border-radius:50%;border:0;background:var(--chip);color:var(--fg);cursor:pointer}
+@media (max-width:1240px){.menu{display:none}.burger{display:grid;place-items:center;margin-inline-start:8px}.nav .btn{display:none}
+  .menu.open{display:flex;position:fixed;inset:76px 0 auto 0;flex-direction:column;gap:0;padding:12px var(--gut) 24px;background:var(--menubg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
   .menu.open a{padding:14px 4px;font-size:18px;border-radius:0;border-bottom:1px solid var(--line)}}
 
 /* ---------- sections: one screen each, content top-aligned ---------- */
@@ -72,7 +94,7 @@ main{position:relative;z-index:1}
 section{position:relative;min-height:100svh;padding-block:var(--padt) 72px;display:flex}
 .wrap{width:100%;max-width:1440px;margin:0 auto;padding-left:var(--gut);padding-right:max(24px,env(safe-area-inset-right,0px))}
 .kicker{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--glow)}
-.kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sky);box-shadow:0 0 12px var(--sky)}
 h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
 h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:800;letter-spacing:-.025em}
 .lede{margin:18px 0 0;max-width:36em;color:var(--mute);font-size:19px;text-wrap:pretty}
@@ -104,8 +126,8 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 
 /* six questions */
 .qs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:44px}
-.q{position:relative;display:flex;flex-direction:column;gap:10px;padding:26px 26px 24px;border-radius:20px;background:rgba(6,18,30,.55);box-shadow:inset 0 0 0 1px var(--line);text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
-.q:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--line-2);background:rgba(10,28,45,.7)}
+.q{position:relative;display:flex;flex-direction:column;gap:10px;padding:26px 26px 24px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
+.q:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--line-2);background:var(--card-hi)}
 .q h3{font-size:23px;line-height:1.25;font-weight:700}
 .q p{margin:0;color:var(--mute);font-size:16px}
 .q .tag{margin-top:auto;padding-top:10px;font-size:14px;font-weight:500;color:var(--glow)}
@@ -121,30 +143,30 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 /* nine fields */
 .fields4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:44px}
 .fields5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;margin-top:18px}
-.fld{position:relative;display:flex;flex-direction:column;padding:20px 22px;border-radius:18px;background:rgba(6,18,30,.5);box-shadow:inset 0 0 0 1px var(--line);transition:transform .25s var(--ease),box-shadow .25s}
+.fld{position:relative;display:flex;flex-direction:column;padding:20px 22px;border-radius:18px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);transition:transform .25s var(--ease),box-shadow .25s}
 .fld:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--line-2)}
 .fld .viz{height:150px;margin:-4px -6px 18px;border-radius:12px}
-.fld .mark{font-size:13px;font-weight:500;color:var(--gold)}
+.fld .mark{font-size:13px;font-weight:600;color:var(--sky)}
 .fld h3{font-size:20px;font-weight:700;line-height:1.25}
 .fld.big h3{margin-top:4px;font-size:26px;font-weight:800}
 .fld p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
 .fields5 .fld{min-height:96px;justify-content:center}
 /* two areas of expertise */
 .exp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:44px}
-.area{display:grid;grid-template-rows:auto 1fr;border-radius:24px;overflow:hidden;background:rgba(6,18,30,.5);box-shadow:inset 0 0 0 1px var(--line)}
+.area{display:grid;grid-template-rows:auto 1fr;border-radius:24px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
 .area .viz{height:230px}
 .area .txt{padding:28px 30px 30px}
 .area h3{font-size:32px;font-weight:800;letter-spacing:-.015em}
 .area p{margin:10px 0 0;color:var(--mute)}
 .area ul{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .area li{display:flex;gap:10px}
-.area li::before{content:"";flex:none;width:7px;height:7px;margin-top:10px;border-radius:2px;background:var(--gold)}
+.area li::before{content:"";flex:none;width:7px;height:7px;margin-top:10px;border-radius:2px;background:var(--sky)}
 .area .lead{margin-top:16px;font-size:15px;color:var(--glow)}
 
 /* people */
 .team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
 .person .face{position:relative;aspect-ratio:1;max-width:100%;border-radius:50%;display:grid;place-items:center}
-.person .face{background:rgba(6,18,30,.55);border:1px dashed rgba(242,193,78,.45);color:rgba(160,205,235,.28);overflow:hidden;align-content:center;gap:6px}
+.person .face{background:var(--card);border:1px dashed var(--line-2);color:var(--face);overflow:hidden;align-content:center;gap:6px}
 .person .face svg{width:46%;height:auto}
 .person .face .ph{font-size:13px}
 .person h3{margin-top:20px;font-size:24px;font-weight:700}
@@ -157,16 +179,18 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 .reach div{display:flex;flex-direction:column;gap:4px}
 .reach dt{font-size:14px;color:var(--dim)}
 .reach dd{margin:0;font-size:18px}
-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:30px;border-radius:24px;background:rgba(6,18,30,.62);box-shadow:inset 0 0 0 1px var(--line-2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.qm{height:300px;margin-top:20px}
+@media (max-width:1100px){.qm{height:200px}}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:30px;border-radius:24px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .f{display:flex;flex-direction:column;gap:6px;min-width:0}
 .f.wide{grid-column:1/-1}
 .f label{font-size:14.5px;font-weight:500;color:var(--mute)}
-.f input,.f select,.f textarea{width:100%;height:50px;padding:0 14px;border-radius:12px;border:0;background:rgba(4,12,20,.75);color:var(--fg);font:400 16px var(--body);box-shadow:inset 0 0 0 1px var(--line-2)}
+.f input,.f select,.f textarea{width:100%;height:50px;padding:0 14px;border-radius:12px;border:0;background:var(--field);color:var(--fg);font:400 16px var(--body);box-shadow:inset 0 0 0 1px var(--line-2)}
 .f textarea{height:110px;padding:12px 14px;resize:vertical}
 .f input:focus,.f select:focus,.f textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sky)}
 form .btn{grid-column:1/-1;justify-self:start}
 .sent{grid-column:1/-1;margin:0;color:var(--glow);font-size:15px}
-footer{position:relative;z-index:1;border-top:1px solid var(--line);background:rgba(4,10,18,.6)}
+footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--foot)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 28px;padding-block:28px;color:var(--dim);font-size:14px}
 footer nav{display:flex;flex-wrap:wrap;gap:6px 18px}
 footer a{text-decoration:none}footer a:hover{color:var(--fg)}
@@ -196,7 +220,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 <body>
 <div dir="rtl" lang="he">
 <a class="skip" href="#main">דילוג לתוכן</a>
-<div class="air" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><div class="grid"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
+<div class="air" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
 
 <header class="nav" id="nav">
   <div class="in">
@@ -204,6 +228,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     <nav class="menu" id="menu" aria-label="ניווט ראשי">
       <a href="#solutions">פתרונות מחקר</a><a href="#fields">תחומי פעילות</a><a href="#capabilities">שיטות איסוף נתונים</a><a href="#capabilities">יכולות מחקר</a><a href="#expertise">סגמנטים</a><a href="#people">אודות</a><a href="#people">ידע ותקשורת</a><a href="#contact">צור קשר</a>
     </nav>
+    <button class="look" id="look" type="button" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="4" fill="currentColor"/><path d="M10 1.5v2.2M10 16.3v2.2M1.5 10h2.2M16.3 10h2.2M4 4l1.5 1.5M14.5 14.5 16 16M4 16l1.5-1.5M14.5 5.5 16 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>גרסה בהירה</span></button>
     <a class="btn" href="#contact">שליחת פנייה</a>
     <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="פתיחת התפריט"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
@@ -221,7 +246,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   </section>
 
   <!-- 2. credibility -->
-  <section class="cred" id="credibility" data-form="sample">
+  <section class="cred" id="credibility" data-form="lanes">
     <div class="wrap">
       <div>
         <span class="kicker">אמינות</span>
@@ -232,10 +257,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
           <li><b>דגימה מייצגת</b><span>מכסות ושקלול לפי גיל, מגדר, אזור ומגזר</span></li>
           <li><b>כמותי ואיכותני</b><span>סקרים, קבוצות מיקוד וראיונות עומק</span></li>
           <li><b>ליווי מלא</b><span>מהגדרת השאלה ועד הצגת הממצאים</span></li>
-          <li class="wide"><b>חברות מקצועית</b><span><span class="ph">שם האיגוד או הארגון המקצועי</span></span></li>
+          <li class="wide"><b>חברות מקצועית</b><span>חברה באיגוד חוקרי השוק ודעת הקהל בישראל</span></li>
         </ul>
       </div>
-      <div class="slot" data-anchor="disc"></div>
+      <div class="slot" data-anchor="viz" data-kind="year"></div>
     </div>
   </section>
 
@@ -262,9 +287,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       <p class="lede">כל פרויקט משלב את מה שהשאלה צריכה: מספרים, הסברים, שיטת איסוף שמגיעה לקהל, וכלים שמנתחים מהר.</p>
       <div class="caps">
         <div class="cap"><div class="viz" data-anchor="viz" data-kind="bars"></div><h3>מחקר כמותי</h3><p>סקרים מייצגים, שקלול וניתוח סטטיסטי, בהיקף של מאות עד אלפי משיבים.</p></div>
-        <div class="cap"><div class="viz" data-anchor="viz" data-kind="rings"></div><h3>מחקר איכותני</h3><p>קבוצות מיקוד וראיונות עומק שמסבירים את הסיבות שמאחורי המספרים.</p></div>
-        <div class="cap"><div class="viz" data-anchor="viz" data-kind="streams"></div><h3>שיטות איסוף נתונים</h3><p>כל שיטה לחוד, או שילוב שמגיע לכל הקהל.</p><ul><li>סקר טלפוני</li><li>פאנל אינטרנטי</li><li>סקרי SMS</li><li>סקרי שטח</li></ul></div>
-        <div class="cap"><div class="viz" data-anchor="viz" data-kind="net"></div><h3>כלי בינה מלאכותית</h3><p>ניתוח תשובות פתוחות וזיהוי דפוסים בהיקפים גדולים, תמיד עם בקרה של חוקר.</p></div>
+        <div class="cap"><div class="viz" data-anchor="viz" data-kind="chat"></div><h3>מחקר איכותני</h3><p>קבוצות מיקוד וראיונות עומק שמסבירים את הסיבות שמאחורי המספרים.</p></div>
+        <div class="cap"><div class="viz" data-anchor="viz" data-kind="methods"></div><h3>שיטות איסוף נתונים</h3><p>כל שיטה לחוד, או שילוב שמגיע לכל הקהל.</p><ul><li>סקר טלפוני</li><li>פאנל אינטרנטי</li><li>סקרי SMS</li><li>סקרי שטח</li></ul></div>
+        <div class="cap"><div class="viz" data-anchor="viz" data-kind="neural"></div><h3>כלי בינה מלאכותית</h3><p>ניתוח תשובות פתוחות וזיהוי דפוסים בהיקפים גדולים, תמיד עם בקרה של חוקר.</p></div>
       </div>
     </div>
   </section>
@@ -275,9 +300,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
             <h2>תשעה תחומי פעילות, ארבעה במרכז</h2>
       <div class="fields4">
         <div class="fld big"><div class="viz" data-anchor="viz" data-kind="pulse"></div><span class="mark">תחום דגש</span><h3>בריאות ופרמצבטיקה</h3><p>מחקר בקרב מטופלים, אנשי מקצוע וקובעי מדיניות.</p></div>
-        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="bars"></div><span class="mark">תחום דגש</span><h3>פוליטיקה מקומית וארצית</h3><p>סקרי דעת קהל ובחירות, ברמה הארצית וברשויות.</p></div>
-        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="net"></div><span class="mark">תחום דגש</span><h3>חינוך</h3><p>מחקר בקרב הורים, צוותי הוראה ותלמידים.</p></div>
-        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="rings"></div><span class="mark">תחום דגש</span><h3>תקשורת ומדיה</h3><p>סקרים לפרסום בתקשורת ומחקר קהלים.</p></div>
+        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="ballot"></div><span class="mark">תחום דגש</span><h3>פוליטיקה מקומית וארצית</h3><p>סקרי דעת קהל ובחירות, ברמה הארצית וברשויות.</p></div>
+        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="cap"></div><span class="mark">תחום דגש</span><h3>חינוך</h3><p>מחקר בקרב הורים, צוותי הוראה ותלמידים.</p></div>
+        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="mic"></div><span class="mark">תחום דגש</span><h3>תקשורת ומדיה</h3><p>סקרים לפרסום בתקשורת ומחקר קהלים.</p></div>
       </div>
       <div class="fields5">
         <div class="fld" data-anchor="tile"><h3>צרכנות וקמעונאות</h3></div>
@@ -294,13 +319,13 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     <div class="wrap">
             <h2>שני תחומים שמבדילים את מדגם</h2>
       <div class="exp">
-        <article class="area"><div class="viz" data-anchor="viz" data-kind="rings"></div><div class="txt">
+        <article class="area"><div class="viz" data-anchor="viz" data-kind="arabic"></div><div class="txt">
           <h3>מדגם אל־ערב</h3>
           <p>מחקר בחברה הערבית בישראל, שנבנה בערבית מהיום הראשון ולא מתורגם בסוף.</p>
           <ul><li>שאלונים בערבית וסוקרים דוברי ערבית</li><li>מדגם שבנוי למבנה היישובים והאוכלוסייה</li><li>גם במגזר החרדי ובקרב דוברי רוסית</li></ul>
           <p class="lead">בהובלת איהאב קדאח</p>
         </div></article>
-        <article class="area"><div class="viz" data-anchor="viz" data-kind="scale"></div><div class="txt">
+        <article class="area"><div class="viz" data-anchor="viz" data-kind="justice"></div><div class="txt">
           <h3>חוות דעת מומחה לבתי משפט</h3>
           <p>סקרים שמשמשים ראיה, בשיטה שעומדת גם בחקירה נגדית.</p>
           <ul><li>ביקורת מתודולוגית על סקר שהגיש הצד השני</li><li>מחקר חדש לבחינת טענה, עם תיעוד מלא של השיטה</li><li>הכנה לחקירה נגדית</li></ul>
@@ -324,12 +349,13 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   </section>
 
   <!-- 8. contact -->
-  <section class="contact" id="contact" data-form="stream">
+  <section class="contact" id="contact" data-form="contact">
     <div class="wrap">
       <div data-anchor="text">
                 <h2>פנייה לצוות מדגם</h2>
         <p class="lede">ספרו לנו מה אתם רוצים לדעת. נחזור אליכם עם הצעה: שאלון, מדגם, שיטה ולוח זמנים.</p>
-        <dl class="reach"><div><dt>טלפון</dt><dd><span class="ph">מספר טלפון</span></dd></div><div><dt>דוא״ל</dt><dd><span class="ph">כתובת דוא״ל</span></dd></div><div><dt>כתובת</dt><dd><span class="ph">רחוב ועיר</span></dd></div></dl>
+        <dl class="reach"><div><dt>טלפון</dt><dd class="num" dir="ltr">03-000-1988</dd></div><div><dt>דוא״ל</dt><dd dir="ltr">info@midgam.co.il</dd></div><div><dt>כתובת</dt><dd>רחוב הברזל, תל אביב</dd></div></dl>
+        <div class="qm" data-anchor="viz" data-kind="qmark"></div>
       </div>
       <form id="form" data-anchor="form" novalidate>
         <div class="f"><label for="fn">שם מלא</label><input id="fn" name="name" autocomplete="name" required></div>
@@ -343,7 +369,8 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     </div>
   </section>
 </main>
-<footer><div class="wrap"><span>מדגם ייעוץ ומחקר בע״מ · מאז 1988</span><nav aria-label="ניווט תחתון"><a href="#solutions">פתרונות מחקר</a><a href="#fields">תחומי פעילות</a><a href="#capabilities">יכולות מחקר</a><a href="#expertise">סגמנטים</a><a href="#people">אודות</a><a href="#contact">צור קשר</a></nav></div></footer>
+<p class="toast" id="toast" role="status" aria-live="polite"></p>
+<footer><div class="wrap"><span>מדגם ייעוץ ומחקר בע״מ · מאז 1988</span><span class="eggs" id="eggs"></span><nav aria-label="ניווט תחתון"><a href="#solutions">פתרונות מחקר</a><a href="#fields">תחומי פעילות</a><a href="#capabilities">יכולות מחקר</a><a href="#expertise">סגמנטים</a><a href="#people">אודות</a><a href="#contact">צור קשר</a></nav></div></footer>
 </div>
 
 <script>
@@ -359,7 +386,12 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const sections = [...document.querySelectorAll('section[data-form]')];
   let W, H, DPR, P = [], FAR = [], phone;
   const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(1988);
-  const COL = { sky: [42, 162, 221], glow: [147, 213, 245], gold: [242, 193, 78], fg: [238, 244, 248] };
+  // dot colours come from the theme tokens, so both versions stay in Midgam's colours
+  let COL = {}; const readCol = () => { const cs = getComputedStyle(document.documentElement), v = n => cs.getPropertyValue(n).trim().split(',').map(Number); COL = { sky: v('--dot-a'), glow: v('--dot-b'), gold: v('--dot-c'), fg: v('--dot-c') }; FARC = `rgb(${COL.glow})`; }; let FARC = '#8fd0f2';
+  const lookBtn = document.getElementById('look');
+  const setLook = (l, save) => { document.documentElement.dataset.look = l; lookBtn.setAttribute('aria-pressed', l === 'light'); lookBtn.querySelector('span').textContent = l === 'light' ? 'גרסה כהה' : 'גרסה בהירה'; lookBtn.setAttribute('aria-label', l === 'light' ? 'מעבר לגרסה הכהה' : 'מעבר לגרסה הבהירה'); readCol(); if (save) try { localStorage.setItem('midgam-look', l); } catch (_) {} };
+  { let l0 = /[?&]light/.test(location.search) ? 'light' : null; if (!l0) try { l0 = localStorage.getItem('midgam-look'); } catch (_) {} setLook(l0 === 'light' ? 'light' : 'dark'); }
+  lookBtn.addEventListener('click', () => setLook(document.documentElement.dataset.look === 'light' ? 'dark' : 'light', true));
   const size = () => {
     phone = innerWidth < 760; DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
     cv.width = W * DPR; cv.height = H * DPR; x.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -377,9 +409,58 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const perim = (r, u, pad) => { const w = r.w + pad * 2, h = r.h + pad * 2, L = 2 * (w + h); let d = ((u % 1) + 1) % 1 * L; const X = r.x - pad, Y = r.y - pad; if (d < w) return [X + d, Y]; d -= w; if (d < h) return [X + w, Y + d]; d -= h; if (d < w) return [X + w - d, Y + h]; d -= w; return [X, Y + h - d]; };
 
   // each section decides where every dot belongs (target x, y, brightness); dots it doesn't need rest in the air
+
+  /* ---------- shapes: draw a picture offscreen, keep its inked pixels as targets for the dots ---------- */
+  const SHAPES = {};
+  const shape = (key, w, h, draw) => {
+    if (SHAPES[key]) return SHAPES[key];
+    const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d');
+    g.fillStyle = '#fff'; g.strokeStyle = '#fff'; g.lineCap = 'round'; g.lineJoin = 'round';
+    if (draw(g, w, h) === false) return null;
+    const d = g.getImageData(0, 0, w, h).data, pts = [], step = Math.max(2, Math.round(Math.sqrt(w * h / 2600)));
+    for (let y = 0; y < h; y += step) for (let x2 = 0; x2 < w; x2 += step) { const k = (y * w + x2) * 4; if (d[k + 3] > 120 && (d[k] + d[k + 1] + d[k + 2]) / 3 < 235 || (d[k + 3] > 120 && key !== 'logo')) pts.push([x2 / w, y / h]); }
+    for (let i = pts.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pts[i], pts[j]] = [pts[j], pts[i]]; }
+    return (SHAPES[key] = { pts, ar: w / h });
+  };
+  // place a shape's point inside a rectangle, keeping its proportions
+  const fit = (r, sh, pt, pad = 14) => { const aw = r.w - pad * 2, ah = r.h - pad * 2, sc = Math.min(aw / sh.ar, ah); const w = sc * sh.ar, h = sc; return [r.x + pad + (aw - w) / 2 + pt[0] * w, r.y + pad + (ah - h) / 2 + pt[1] * h]; };
+  const rr = (g, x2, y, w, h, r) => { g.beginPath(); g.moveTo(x2 + r, y); g.arcTo(x2 + w, y, x2 + w, y + h, r); g.arcTo(x2 + w, y + h, x2, y + h, r); g.arcTo(x2, y + h, x2, y, r); g.arcTo(x2, y, x2 + w, y, r); g.closePath(); };
+  const logoImg = new Image(); logoImg.src = 'assets/midgam-logo.png';
+  const DRAW = {
+    logo: [1024, 251, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 1024, 251); }],
+    year: [520, 200, g => { g.font = '900 190px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
+    qmark: [300, 420, g => { g.font = '900 420px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 225); }],
+    arabic: [760, 220, g => { g.direction = 'rtl'; g.font = '800 120px "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('استطلاع رأي', 380, 120); }],
+    chat: [440, 260, g => { g.lineWidth = 12; rr(g, 16, 16, 240, 120, 44); g.stroke(); g.beginPath(); g.moveTo(70, 134); g.lineTo(52, 178); g.lineTo(112, 136); g.stroke();
+      rr(g, 180, 120, 240, 110, 44); g.fill(); g.beginPath(); g.moveTo(370, 228); g.lineTo(396, 256); g.lineTo(330, 228); g.fill(); g.globalCompositeOperation = 'destination-out'; [250, 300, 350].forEach(cx => { g.beginPath(); g.arc(cx, 175, 13, 0, 6.283); g.fill(); }); g.globalCompositeOperation = 'source-over'; }],
+    methods: [880, 220, g => { g.lineWidth = 12;
+      rr(g, 52, 30, 96, 160, 18); g.stroke(); g.beginPath(); g.arc(100, 166, 8, 0, 6.283); g.fill(); g.fillRect(84, 46, 32, 6);
+      rr(g, 262, 50, 150, 100, 10); g.stroke(); g.beginPath(); g.moveTo(236, 172); g.lineTo(438, 172); g.lineTo(420, 152); g.lineTo(254, 152); g.closePath(); g.fill();
+      rr(g, 480, 46, 160, 110, 30); g.stroke(); g.beginPath(); g.moveTo(520, 154); g.lineTo(506, 192); g.lineTo(556, 156); g.stroke(); g.font = '800 46px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('SMS', 560, 103);
+      g.beginPath(); g.arc(760, 66, 30, 0, 6.283); g.fill(); g.beginPath(); g.moveTo(706, 196); g.quadraticCurveTo(708, 112, 760, 108); g.quadraticCurveTo(812, 112, 814, 196); g.closePath(); g.fill(); rr(g, 800, 128, 52, 66, 6); g.globalCompositeOperation = 'destination-out'; g.fill(); g.globalCompositeOperation = 'source-over'; g.lineWidth = 7; g.stroke(); }],
+    neural: [520, 260, g => { const L = [[4, 70], [5, 260], [3, 450]], nodes = L.map(([n, x2]) => Array.from({ length: n }, (_, i) => [x2, 30 + (i + .5) * 200 / n])); g.lineWidth = 3;
+      for (let a = 0; a < 2; a++) nodes[a].forEach(p => nodes[a + 1].forEach(q => { g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke(); }));
+      nodes.flat().forEach(([x2, y]) => { g.beginPath(); g.arc(x2, y, 17, 0, 6.283); g.fill(); }); }],
+    ballot: [360, 280, g => { g.lineWidth = 14; g.save(); g.translate(176, 70); g.rotate(-.12); g.fillRect(-46, -66, 92, 104); g.globalCompositeOperation = 'destination-out'; g.lineWidth = 9; g.beginPath(); g.moveTo(-22, -16); g.lineTo(-4, 4); g.lineTo(28, -34); g.stroke(); g.restore();
+      g.globalCompositeOperation = 'destination-out'; g.fillRect(70, 100, 220, 40); g.globalCompositeOperation = 'source-over'; g.lineWidth = 14; g.strokeRect(70, 110, 220, 150); g.fillRect(96, 104, 168, 12); g.font = '800 40px Heebo, Arial'; g.textAlign = 'center'; g.fillText('קלפי', 180, 210); }],
+    cap: [380, 260, g => { g.beginPath(); g.moveTo(190, 30); g.lineTo(360, 100); g.lineTo(190, 170); g.lineTo(20, 100); g.closePath(); g.fill(); g.beginPath(); g.moveTo(96, 136); g.lineTo(96, 206); g.quadraticCurveTo(190, 250, 284, 206); g.lineTo(284, 136); g.lineTo(190, 176); g.closePath(); g.fill();
+      g.lineWidth = 6; g.beginPath(); g.moveTo(190, 100); g.lineTo(320, 130); g.lineTo(320, 200); g.stroke(); g.beginPath(); g.arc(320, 212, 14, 0, 6.283); g.fill(); }],
+    mic: [420, 280, g => { rr(g, 170, 20, 80, 140, 40); g.fill(); g.lineWidth = 12; g.beginPath(); g.arc(210, 120, 72, .15, Math.PI - .15); g.stroke(); g.beginPath(); g.moveTo(210, 192); g.lineTo(210, 236); g.moveTo(166, 244); g.lineTo(254, 244); g.stroke();
+      g.lineWidth = 9; [[70, 1], [110, .9]].forEach(([rad]) => { g.beginPath(); g.arc(210, 90, rad + 30, -.6, .6); g.stroke(); g.beginPath(); g.arc(210, 90, rad + 30, Math.PI - .6, Math.PI + .6); g.stroke(); }); }],
+    justice: [440, 260, g => { g.lineWidth = 12; g.beginPath(); g.moveTo(220, 34); g.lineTo(220, 222); g.moveTo(60, 72); g.lineTo(380, 72); g.stroke(); g.beginPath(); g.arc(220, 30, 16, 0, 6.283); g.fill(); g.beginPath(); g.moveTo(150, 248); g.lineTo(290, 248); g.lineTo(262, 218); g.lineTo(178, 218); g.closePath(); g.fill();
+      g.lineWidth = 4; [[80, 1], [360, 1]].forEach(([cx]) => { g.beginPath(); g.moveTo(cx, 72); g.lineTo(cx - 44, 160); g.moveTo(cx, 72); g.lineTo(cx + 44, 160); g.stroke(); g.beginPath(); g.moveTo(cx - 56, 160); g.lineTo(cx + 56, 160); g.arc(cx, 160, 56, 0, Math.PI); g.fill(); }); }]
+  };
+  // a scanning light passes over each shape, as if it were being assembled
+  const shaped = (r, kind, p, t, k) => { const D = DRAW[kind]; if (!D) return null; const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
+    const pt = sh.pts[Math.floor(p.i / k) % sh.pts.length], [X, Y] = fit(r, sh, pt), sweep = ((t / 2600 + r.x / 900) % 1.4) - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 9);
+    return [X + Math.sin(t / 900 + p.ph) * .8, Y + Math.cos(t / 1100 + p.ph) * .8, .62 + .38 * hit, 1.5 + hit * .9]; };
+  if (document.fonts) document.fonts.load('800 120px "Noto Sans Arabic"').then(() => { delete SHAPES.arabic; }).catch(() => {});
+
   const FORMS = {
-    wave(s, t) { // the hero: a landscape of people in perspective, rolling in slow waves beside the words
+    wave(s, t) { // the hero: the Midgam logo assembles out of dots, then dissolves into a landscape of people
       const r = s.getBoundingClientRect(), tx = rects(s, '[data-anchor=text]')[0];
+      if (t - born < 4200 && !reduce) { const lx1 = phone ? W : (tx ? tx.x - 40 : W * .55), box = phone ? { x: 24, y: r.top + 96, w: W - 48, h: H * .3 } : { x: 40, y: r.top + 150, w: lx1 - 80, h: r.height - 300 };
+        const sh = shape('logo', ...DRAW.logo.slice(0, 2), DRAW.logo[2]); if (sh && sh.pts.length) return p => { const pt = sh.pts[p.i % sh.pts.length], [X, Y] = fit(box, sh, pt, 10); const sweep = ((t - born) / 1800) % 1.3 - .15, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .75 + .25 * hit, 1.6 + hit]; }; }
       const cols = phone ? 26 : 50, rows = Math.ceil(P.length / cols);
       const x0 = phone ? 0 : 0, x1 = phone ? W : (tx ? tx.x - 40 : W * .55);
       const top = r.top + (phone ? 90 : 120), bot = r.top + r.height - (phone ? 30 : 40);
@@ -404,6 +485,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     lanes(s, t) { // four capabilities: each panel draws its own picture with the dots
       const vs = rects(s, '[data-anchor=viz]'); if (!vs.length) return null;
       return p => { const r = vs[p.i % vs.length], k = r.el.dataset.kind, u = p.u, v = p.v;
+        if (DRAW[k]) return shaped(r, k, p, t, vs.length);
         if (k === 'bars') { const b = Math.floor(u * 6), hgt = [.45, .7, .55, .9, .62, .8][b] * (.92 + .08 * Math.sin(t / 900 + b)); return [r.x + 22 + b * (r.w - 44) / 6 + (u * 6 % 1) * ((r.w - 44) / 6 - 10), r.y + r.h - 18 - v * (r.h - 36) * hgt, .85]; }
         if (k === 'pulse') { const q = (u + t / 7000) % 1, X = r.x + r.w - q * r.w, ph = (q * 3) % 1, beat = ph > .42 && ph < .58 ? Math.sin((ph - .42) / .16 * Math.PI * 2) * (ph < .5 ? 1 : -.45) : 0; return [X, r.y + r.h * .55 - beat * r.h * .38 + (v - .5) * 5, .85]; }
         if (k === 'rings') { const ring = Math.floor(v * 3), a = u * 6.283 + t / (3000 + ring * 1500), rr = (18 + ring * 22) * (1 + .06 * Math.sin(t / 700 + ring)); return [r.x + r.w / 2 + Math.cos(a) * rr * 1.6, r.y + r.h / 2 + Math.sin(a) * rr, .8]; }
@@ -414,16 +496,16 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     },
     tiles(s, t) { // nine fields: the four in focus draw their own picture, the other five are outlined by people
       const pics = FORMS.lanes(s, t), ts = rects(s, '[data-anchor=tile]');
-      return p => { if (p.i % 4 === 3 && ts.length) { const r = ts[p.i % ts.length], [X, Y] = perim(r, p.u + t / 30000, 7 + p.v * 8); return [X, Y, .6, 1.6]; } return pics && pics(p); };
+      return p => { if (p.i % 5 === 4 && ts.length) { const r = ts[Math.floor(p.i / 5) % ts.length], [X, Y] = perim(r, p.u + t / 30000, 7 + p.v * 8); return [X, Y, .6, 1.6]; } return pics && pics(p); };
     },
     pair(s, t) { return FORMS.lanes(s, t); },
     halo(s, t) { // the team: a soft halo of people around each person
       const fs = rects(s, '[data-anchor=face]'); if (!fs.length) return null;
       return p => { const r = fs[p.i % fs.length], cx = r.x + r.w / 2, cy = r.y + r.h / 2, R = Math.min(r.w, r.h) / 2, a = p.u * 6.283 + t / (7000 + p.v * 5000), rr = R * (.55 + p.v * .5); return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr, p.v > .82 ? .4 : .75]; };
     },
-    stream(s, t) { // contact: people gather around the form and keep moving along its edge
-      const f = rects(s, '[data-anchor=form]')[0]; if (!f) return null;
-      return p => { if (p.i % 2) return null; const [X, Y] = perim(f, p.u + t / 16000 * p.s, 12 + p.v * 26); return [X, Y, .3 + p.v * .4]; };
+    contact(s, t) { // contact: a big question mark made of people, and more of them along the form's edge
+      const q = rects(s, '[data-kind=qmark]')[0], f = rects(s, '[data-anchor=form]')[0];
+      return p => { if (q && p.i % 3) return shaped(q, 'qmark', p, t, 1); if (!f || p.i % 2) return null; const [X, Y] = perim(f, p.u + t / 16000 * p.s, 10 + p.v * 20); return [X, Y, .3 + p.v * .4]; };
     }
   };
 
@@ -432,17 +514,99 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; const n = performance.now(); if (n - lastWave > 140 && !reduce) { lastWave = n; waves.push({ x: mx, y: my, t: n, k: .6 }); if (waves.length > 8) waves.shift(); } }, { passive: true });
   addEventListener('pointerdown', e => { if (!reduce) waves.push({ x: e.clientX, y: e.clientY, t: performance.now(), k: 1.6 }); });
 
-  let last = performance.now(), manual = false;
+
+  /* ---------- hidden games with the dots ---------- */
+  const toastEl = document.getElementById('toast'), eggsEl = document.getElementById('eggs'); let toastT;
+  const toast = msg => { toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('on'), 3200); };
+  const EGG_N = 5; let found = []; try { found = JSON.parse(localStorage.getItem('midgam-eggs') || '[]'); } catch (_) {}
+  const paintEggs = () => { eggsEl.textContent = found.length ? `גיליתם ${found.length} מתוך ${EGG_N} סודות בעמוד` : ''; };
+  const egg = (id, msg) => { if (!found.includes(id)) { found.push(id); try { localStorage.setItem('midgam-eggs', JSON.stringify(found)); } catch (_) {} toast(msg + ` · ${found.length} מתוך ${EGG_N}`); } paintEggs(); };
+  paintEggs();
+  // a shape the whole swarm draws in the middle of the screen for a moment
+  let special = null; const show = kind => { special = { kind, until: performance.now() + 3600 }; };
+  // 1. hold the pointer down: the dots swarm into an orb around it, and burst when you let go
+  let hold = null;
+  const interactive = el => el.closest && el.closest('a,button,input,select,textarea,label,form');
+  addEventListener('pointerdown', e => { if (interactive(e.target) || reduce) return; hold = { x: e.clientX, y: e.clientY, t0: performance.now() }; });
+  addEventListener('pointermove', e => { if (hold) { hold.x = e.clientX; hold.y = e.clientY; } }, { passive: true });
+  const release = () => { if (!hold) return; if (performance.now() - hold.t0 > 600) { waves.push({ x: hold.x, y: hold.y, t: performance.now(), k: 4 }); egg('orb', 'גילית את הנחיל: לחיצה ארוכה אוספת את כל הנקודות'); } hold = null; };
+  addEventListener('pointerup', release); addEventListener('pointercancel', release);
+  // 2. a rare golden respondent drifts by; catch it
+  const gold = { x: -50, y: -50, vx: 0, vy: 0, next: performance.now() + 6000, on: false };
+  let caught = 0; try { caught = +localStorage.getItem('midgam-gold') || 0; } catch (_) {}
+  const spawnGold = () => { gold.on = true; gold.x = rnd() * W * .8 + W * .1; gold.y = H + 10; gold.vx = (rnd() - .5) * .05; gold.vy = -.035 - rnd() * .03; };
+  addEventListener('pointerdown', e => { if (!gold.on || Math.hypot(e.clientX - gold.x, e.clientY - gold.y) > 24) return; gold.on = false; gold.next = performance.now() + 15000; caught++; try { localStorage.setItem('midgam-gold', caught); } catch (_) {}
+    waves.push({ x: gold.x, y: gold.y, t: performance.now(), k: 2.5 }); egg('gold', `תפסתם משיב/ה נדיר/ה, ${caught} עד עכשיו`); if (found.includes('gold')) toast(`תפסתם משיב/ה נדיר/ה, ${caught} עד עכשיו`); }, true);
+  // 3. type 1988 or מדגם: the swarm writes it
+  let typed = '';
+  addEventListener('keydown', e => { if (interactive(e.target) || e.key.length !== 1) return; typed = (typed + e.key).slice(-6);
+    if (typed.endsWith('1988')) { show('year'); egg('year', 'גילית את שנת ההקמה'); typed = ''; }
+    else if (typed.endsWith('מדגם') || typed.toLowerCase().endsWith('midgam')) { show('logo'); egg('word', 'כתבת מדגם, והנקודות הקשיבו'); typed = ''; } });
+  // 4. click the logo: it assembles again
+  document.querySelector('.brand').addEventListener('click', () => { show('logo'); egg('logo', 'הלוגו נבנה מחדש מנקודות'); });
+  // 5. double-click anywhere: a burst
+  addEventListener('dblclick', e => { if (interactive(e.target)) return; for (let i = 0; i < 3; i++) waves.push({ x: e.clientX, y: e.clientY, t: performance.now() + i * 120, k: 3 }); egg('burst', 'פיצוץ קטן של נתונים'); });
+
+
+  /* ---------- the research layer: huge, faint charts behind everything, one per section, cross-fading as you scroll ---------- */
+  const seedR = (k => () => (k = (k * 48271) % 2147483647) / 2147483647);
+  const SC = (() => { const r = seedR(77); return Array.from({ length: 140 }, () => { const u = r(); return [u, Math.min(.98, Math.max(.02, u * .62 + .18 + (r() - .5) * .34))]; }); })();
+  const TB = (() => { const r = seedR(19); return Array.from({ length: 48 }, () => Math.round(8 + r() * 70)); })();
+  const NET = (() => { const r = seedR(5); return Array.from({ length: 26 }, () => [r(), r()]); })();
+  const NOTES = ['n = 1,000', '±3.1%', '95% CI', 'p < 0.05', 'σ', 'r = 0.62', 'χ²', 'μ', 'שקלול', 'מכסות', 'N = 9.8M', 'α = 0.05'].map((s2, i) => { const r = seedR(i + 3); return { s: s2, u: r(), v: r(), d: .15 + r() * .5, ph: r() * 6.28 }; });
+  const ink = a => `rgba(${COL.sky},${a})`;
+  const CHARTS = [
+    (a, t) => { x.lineWidth = 1.2; for (let k = 0; k < 9; k++) { x.strokeStyle = ink(a * (.5 + k / 18)); x.beginPath(); for (let X = -20; X <= W + 20; X += 22) { const Y = H * (.12 + k * .1) + Math.sin(X / 230 + k * .7 + t / 4200) * 34 * (1 + k * .12) + Math.cos(X / 140 - t / 5600 + k) * 14; X < 0 ? x.moveTo(X, Y) : x.lineTo(X, Y); } x.stroke(); } },
+    (a, t) => { const mu = W * .5 + Math.sin(t / 6000) * 20, sg = W * .12, base = H * .86, top = H * .5, f = X => base - Math.exp(-((X - mu) ** 2) / (2 * sg * sg)) * top;
+      x.fillStyle = ink(a * .5); x.beginPath(); x.moveTo(mu - sg, base); for (let X = mu - sg; X <= mu + sg; X += 6) x.lineTo(X, f(X)); x.lineTo(mu + sg, base); x.fill();
+      x.strokeStyle = ink(a * 1.4); x.lineWidth = 1.6; x.beginPath(); for (let X = 0; X <= W; X += 6) X ? x.lineTo(X, f(X)) : x.moveTo(X, f(X)); x.stroke();
+      x.setLineDash([4, 8]); [-2, -1, 0, 1, 2].forEach(k => { const X = mu + k * sg; x.beginPath(); x.moveTo(X, base); x.lineTo(X, f(X)); x.stroke(); note(['−2σ', '−σ', 'μ', '+σ', '+2σ'][k + 2], X, base + 22, a * 3); }); x.setLineDash([]); },
+    (a, t) => { SC.forEach(([u, v], i) => { const X = W * (.06 + u * .88), Y = H * (.9 - v * .78) + Math.sin(t / 2000 + i) * 2; x.fillStyle = ink(a * 1.6); x.beginPath(); x.arc(X, Y, 3, 0, 6.283); x.fill(); });
+      x.strokeStyle = ink(a * 1.6); x.lineWidth = 1.6; x.beginPath(); x.moveTo(W * .06, H * (.9 - .18 * .78)); x.lineTo(W * .94, H * (.9 - .8 * .78)); x.stroke(); note('r = 0.62', W * .9, H * .2, a * 3); },
+    (a) => { const cols = 6, rows = 8, cw = W * .84 / cols, rh = H * .7 / rows, X0 = W * .08, Y0 = H * .16; x.strokeStyle = ink(a); x.lineWidth = 1;
+      for (let i = 0; i <= rows; i++) { x.beginPath(); x.moveTo(X0, Y0 + i * rh); x.lineTo(X0 + cols * cw, Y0 + i * rh); x.stroke(); } for (let j = 0; j <= cols; j++) { x.beginPath(); x.moveTo(X0 + j * cw, Y0); x.lineTo(X0 + j * cw, Y0 + rows * rh); x.stroke(); }
+      for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) note(TB[i * cols + j] + '%', X0 + (j + .5) * cw, Y0 + (i + .5) * rh, a * 2.2); },
+    (a, t) => { const cx = W * .5, cy = H * .52, R = Math.min(W, H) * .34, sh = [.34, .22, .18, .14, .12]; let ang = t / 30000; x.lineWidth = Math.min(W, H) * .06;
+      sh.forEach((v, i) => { x.strokeStyle = ink(a * (1 + i * .35)); x.beginPath(); x.arc(cx, cy, R, ang, ang + v * 6.283 - .03); x.stroke(); const m = ang + v * 3.14; note(Math.round(v * 100) + '%', cx + Math.cos(m) * (R + 50), cy + Math.sin(m) * (R + 50), a * 3); ang += v * 6.283; }); },
+    (a, t) => { const n = 7; for (let i = 0; i < n; i++) { const X = W * (.12 + i * .76 / (n - 1)), v = .3 + .4 * Math.abs(Math.sin(i * 1.7 + 1)), Y = H * (.82 - v * .6), e = H * (.05 + .03 * Math.sin(i + t / 3000));
+      x.strokeStyle = ink(a * 1.6); x.lineWidth = 1.6; x.beginPath(); x.moveTo(X, Y - e); x.lineTo(X, Y + e); x.moveTo(X - 10, Y - e); x.lineTo(X + 10, Y - e); x.moveTo(X - 10, Y + e); x.lineTo(X + 10, Y + e); x.stroke(); x.fillStyle = ink(a * 2); x.beginPath(); x.arc(X, Y, 5, 0, 6.283); x.fill(); } note('95% CI', W * .88, H * .15, a * 3); },
+    (a, t) => { const pts = NET.map(([u, v], i) => [W * (.06 + u * .88) + Math.sin(t / 3000 + i) * 10, H * (.1 + v * .8) + Math.cos(t / 3400 + i) * 10]); x.lineWidth = 1;
+      pts.forEach((p1, i) => pts.forEach((p2, j) => { if (j > i && Math.hypot(p1[0] - p2[0], p1[1] - p2[1]) < W * .2) { x.strokeStyle = ink(a); x.beginPath(); x.moveTo(p1[0], p1[1]); x.lineTo(p2[0], p2[1]); x.stroke(); } }));
+      pts.forEach(p1 => { x.fillStyle = ink(a * 2); x.beginPath(); x.arc(p1[0], p1[1], 4, 0, 6.283); x.fill(); }); },
+    (a, t) => { const f = u => H * (.82 - (u * .5 + .08 * Math.sin(u * 9 + t / 3000))) ; x.fillStyle = ink(a * .5); x.beginPath(); x.moveTo(W * .06, H * .86); for (let u = 0; u <= 1.001; u += .02) x.lineTo(W * (.06 + u * .88), f(u)); x.lineTo(W * .94, H * .86); x.fill();
+      x.strokeStyle = ink(a * 1.8); x.lineWidth = 2; x.beginPath(); for (let u = 0; u <= 1.001; u += .02) u ? x.lineTo(W * (.06 + u * .88), f(u)) : x.moveTo(W * .06, f(u)); x.stroke(); }
+  ];
+  function note(s2, X, Y, a) { x.globalAlpha = Math.min(1, a); x.fillStyle = `rgb(${COL.sky})`; x.font = '500 13px "IBM Plex Mono", monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(s2, X, Y); x.globalAlpha = 1; }
+  const research = (t, sy) => {
+    const A = document.documentElement.dataset.look === 'light' ? .085 : .13;
+    // which two charts are on screen, and how far between them
+    let i = 0, f = 0; sections.forEach((s2, k) => { const r = s2.getBoundingClientRect(); if (r.top <= H * .5 && r.bottom > H * .5) { i = k; f = (H * .5 - r.top) / r.height; } });
+    const mix = Math.min(1, Math.max(0, (f - .6) / .4));
+    x.save(); CHARTS[i % CHARTS.length](A * (1 - mix), t); if (mix > 0 && i + 1 < sections.length) CHARTS[(i + 1) % CHARTS.length](A * mix, t); x.restore();
+    // statistical notation drifting at different depths
+    NOTES.forEach(n => { const X = n.u * W + Math.sin(t / 8000 + n.ph) * 30, Y = ((n.v * H * 1.4 - sy * n.d) % (H * 1.4) + H * 1.4) % (H * 1.4) - H * .2; note(n.s, X, Y, .16 + .06 * Math.sin(t / 2000 + n.ph)); });
+    // the page as an axis: n = 0 at the top, 1,000 at the end
+    const total = Math.max(1, document.documentElement.scrollHeight - H), prog = Math.min(1, sy / total), gx = 22;
+    x.strokeStyle = ink(.25); x.lineWidth = 1; x.beginPath(); x.moveTo(gx, 90); x.lineTo(gx, H - 40); x.stroke();
+    for (let k = 0; k <= 20; k++) { const Y = 90 + k / 20 * (H - 130); x.beginPath(); x.moveTo(gx, Y); x.lineTo(gx + (k % 5 ? 5 : 11), Y); x.stroke(); if (k % 5 === 0) { x.globalAlpha = .4; x.fillStyle = `rgb(${COL.sky})`; x.font = '500 10px "IBM Plex Mono", monospace'; x.textAlign = 'left'; x.fillText(String(k * 50), gx + 15, Y + 3); x.globalAlpha = 1; } }
+    const my2 = 90 + prog * (H - 130); x.fillStyle = `rgb(${COL.sky})`; x.beginPath(); x.arc(gx, my2, 4.5, 0, 6.283); x.fill(); x.font = '600 11px "IBM Plex Mono", monospace'; x.textAlign = 'left'; x.fillText('n = ' + Math.round(prog * 1000).toLocaleString('en'), gx + 14, my2 + 4);
+  };
+
+  let last = performance.now(), manual = false, born = performance.now();
   const frame = t => {
-    const dt = Math.min(48, t - last); last = t;
+    const dt = Math.max(0, Math.min(48, t - last)); last = Math.max(last, t);
     x.clearRect(0, 0, W, H);
     // far layer: tiny, slow, moving a little with the scroll for depth
     const sy = scrollY;
-    for (const f of FAR) { const X = (f.u * W + Math.sin(t / 7000 + f.ph) * 20) % W, Y = ((f.v * H - sy * f.d) % H + H) % H; x.globalAlpha = .18 + .12 * Math.sin(t / 1400 + f.ph); x.fillStyle = '#93d5f5'; x.fillRect(X, Y, f.r, f.r); }
+    research(reduce ? 0 : t, sy);
+    for (const f of FAR) { const X = (f.u * W + Math.sin(t / 7000 + f.ph) * 20) % W, Y = ((f.v * H - sy * f.d) % H + H) % H; x.globalAlpha = .18 + .12 * Math.sin(t / 1400 + f.ph); x.fillStyle = FARC; x.fillRect(X, Y, f.r, f.r); }
     // the near field: drift toward the active section's shape
-    const s = active(), place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
+    const s = active(); let place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
+    if (special && t < special.until) { const box = { x: W * .1, y: H * .18, w: W * .8, h: H * .64 }, base = place, k0 = special.kind; place = p => p.i % 5 === 4 && base ? base(p) : shaped(box, k0, p, t, 1); }
+    const orb = hold && t - hold.t0 > 260;
     for (const p of P) {
       let tgt = place && place(p);
+      if (orb && p.i % 3 !== 2) { const j = p.i, rad = 8 + Math.sqrt(j % 700) * 3.1, a = j * 2.39996 + t / (260 + (j % 5) * 90); tgt = [hold.x + Math.cos(a) * rad, hold.y + Math.sin(a) * rad * .92, .95, 1.7]; }
       if (!tgt) { // resting in the air across the whole screen
         tgt = [p.u * W + Math.sin(t / 5000 * p.s + p.ph) * 30, ((p.v * H * 1.2 - sy * .12) % H + H) % H + Math.cos(t / 6000 * p.s + p.ph) * 20, .18]; }
       const k = reduce ? 1 : Math.min(1, dt * .0032 * p.s);
@@ -451,15 +615,19 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       let X = p.x, Y = p.y, al = p.a, r = p.r;
       for (const w of waves) { const age = (t - w.t) / 1000; if (age > 1.6) continue; const R = age * 260, d = Math.hypot(X - w.x, Y - w.y), band = Math.abs(d - R); if (band < 26) { const f = (1 - band / 26) * (1 - age / 1.6) * w.k; X += (X - w.x) / (d || 1) * f * 7; Y += (Y - w.y) / (d || 1) * f * 7; al = Math.min(1, al + f * .7); r += f * 1.4; } }
       const near = Math.hypot(X - mx, Y - my); if (near < 120) { const f = 1 - near / 120; al = Math.min(1, al + f * .45); r += f; }
-      const c = COL[p.c]; x.globalAlpha = al; x.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`; x.beginPath(); x.arc(X, Y, r, 0, 6.283); x.fill();
+      const c = COL[p.c]; x.globalAlpha = al; x.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`; x.beginPath(); x.arc(X, Y, Math.max(.3, r), 0, 6.283); x.fill();
     }
     x.globalAlpha = 1;
+    // the golden respondent
+    if (!gold.on && t > gold.next && !reduce) spawnGold();
+    if (gold.on) { gold.x += gold.vx * dt + Math.sin(t / 700) * .3; gold.y += gold.vy * dt; if (gold.y < -20) { gold.on = false; gold.next = t + 12000; }
+      const pulse = .5 + .5 * Math.sin(t / 220); x.globalAlpha = .25 + .2 * pulse; x.fillStyle = '#f2c14e'; x.beginPath(); x.arc(gold.x, gold.y, 9 + pulse * 4, 0, 6.283); x.fill(); x.globalAlpha = 1; x.beginPath(); x.arc(gold.x, gold.y, 4, 0, 6.283); x.fill(); }
     while (waves.length && t - waves[0].t > 1600) waves.shift();
     if (!manual) requestAnimationFrame(frame);
   };
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(frame));
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { born = performance.now(); requestAnimationFrame(frame); });
   // for testing only: ?debug lets a script step the animation forward
-  if (/[?&]debug/.test(location.search)) window.__air = { run(n) { manual = true; let t = last; for (let i = 0; i < n; i++) { t += 16; frame(t); } manual = false; } };
+  if (/[?&]debug/.test(location.search)) window.__air = { P: () => P, SHAPES, run(n) { manual = true; let t = last; for (let i = 0; i < n; i++) { t += 16; frame(t); } manual = false; } };
 
   /* ---------- the form: a design preview, nothing is sent ---------- */
   document.getElementById('form').addEventListener('submit', e => {
