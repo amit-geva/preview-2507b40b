@@ -255,13 +255,13 @@ html[data-look=light] .f select{background-image:url("data:image/svg+xml,%3Csvg 
 #form{transition:opacity .45s var(--ease),filter .45s var(--ease),transform .45s var(--ease)}
 #form.gone{opacity:0;filter:blur(6px);transform:scale(.97);pointer-events:none}
 .contact .wrap{position:relative}
-.thanks{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;grid-column:2;grid-row:1;align-self:center;animation:enter .7s .9s var(--ease) both}
+.thanks{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.thanks > :not(.thanks-word){animation:enter .7s 1.75s var(--ease) both}
 .thanks[hidden],#form[hidden]{display:none}
 .thanks-word{width:100%;height:220px}
 .thanks p{margin:0;font-size:20px;font-weight:600}
 .thanks small{color:var(--dim);font-size:13px;max-width:34ch}
 .thanks .btn{margin-top:8px}
-@media (max-width:1100px){.thanks{grid-column:1;grid-row:auto}}
 footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--foot)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 28px;padding-block:28px;color:var(--dim);font-size:14px}
 footer nav{display:flex;flex-wrap:wrap;gap:6px 18px}
@@ -601,9 +601,17 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const TONE = [], toneOf = (k, cols, rows) => { const key = cols + 'x' + rows, T = TONE[k] || (TONE[k] = {}); if (T[key] !== undefined) return T[key]; const im = FACES[k] && FACES[k].querySelector('img'); if (!im || !im.complete || !im.naturalWidth) return null;
     try { const c = document.createElement('canvas'); c.width = cols; c.height = rows; const g = c.getContext('2d'); g.drawImage(im, 0, 0, cols, rows); const d = g.getImageData(0, 0, cols, rows).data, out = new Float32Array(cols * rows); for (let i = 0; i < out.length; i++) out[i] = (d[i * 4] * .3 + d[i * 4 + 1] * .59 + d[i * 4 + 2] * .11) / 255; let lo = 1, hi = 0; for (const v of out) { lo = Math.min(lo, v); hi = Math.max(hi, v); } for (let i = 0; i < out.length; i++) out[i] = Math.pow((out[i] - lo) / Math.max(.05, hi - lo), 1.3); T[key] = out; } catch (_) { T[key] = null; } return T[key]; };
   FACES.forEach(f => { const im = f.querySelector('img'); if (im) im.loading = 'eager'; });
-  const teamProg = (k, t) => reduce ? 1 : teamT0 == null ? 0 : Math.min(1, Math.max(0, (t - teamT0 - 900 - k * 260) / (TEAM_MODE === 'fly' ? 2000 : 1900)));
+  // where each of a portrait's dots sits: drawn in proportion to the photo's brightness, so the crowd itself carries the face
+  const STIP = {}, stipple = (k, n) => { if (STIP[k + ':' + n]) return STIP[k + ':' + n]; const C = 40, R = 50, tone = toneOf(k, C, R); if (!tone) return null;
+    const cdf = new Float32Array(tone.length); let acc = 0; for (let i = 0; i < tone.length; i++) { acc += .025 + Math.pow(1 - tone[i], 1.5); cdf[i] = acc; }
+    const out = { n, x: new Float32Array(n), y: new Float32Array(n), l: new Float32Array(n) };
+    for (let j = 0; j < n; j++) { const u = ((j * .6180339887 + .137) % 1) * acc; let lo = 0, hi = cdf.length - 1; while (lo < hi) { const m = (lo + hi) >> 1; if (cdf[m] < u) lo = m + 1; else hi = m; }
+      const jx = (j * .7548776662) % 1, jy = (j * .5698402910) % 1; out.x[j] = (lo % C + jx) / C; out.y[j] = (Math.floor(lo / C) + jy) / R; out.l[j] = tone[lo]; }
+    return (STIP[k + ':' + n] = out); };
+  const teamProg = (k, t) => reduce ? 1 : teamT0 == null ? 0 : Math.min(1, Math.max(0, (t - teamT0 - 300 - k * 520) / (TEAM_MODE === 'fly' ? 1800 : 1900)));
   const teamPaint = (t, act) => { if (reduce) return; const r = peopleSec.getBoundingClientRect();
-    if (act && teamT0 == null) teamT0 = t; else if (!act && teamT0 != null && (r.bottom < 0 || r.top > H)) teamT0 = null;
+    const seen = r.top < H * .9 && r.bottom > H * .1;
+    if (teamT0 == null && scrollDir < 0 && seen) teamT0 = t - 1e6; else if (act && teamT0 == null) teamT0 = t; else if (!act && teamT0 != null && (r.bottom < 0 || r.top > H)) teamT0 = null;
     FACES.forEach((f, k) => { const q = teamProg(k, t), key = q.toFixed(3); if (f._q === key) return; f._q = key;
       if (TEAM_MODE === 'print') { f.style.clipPath = q >= 1 ? '' : `inset(0 0 ${((1 - q) * 100).toFixed(2)}% 0)`; return; }
       if (q >= 1) { f.style.transform = ''; f.style.opacity = ''; return; }
@@ -668,16 +676,19 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     pair(s, t) { return FORMS.lanes(s, t); },
     halo(s, t) { // the team: each portrait arrives through the swarm (printed line by line, or flown in from far away), then people move along its edge
       const fs = FACES.map(el => { const q2 = el.getBoundingClientRect(); return { x: q2.left, y: q2.top, w: q2.width, h: q2.height, el }; }); if (!fs.some(r => r.w > 0 && r.y < H + 60 && r.y + r.h > -60)) return null;
-      return p => { const k = p.i % fs.length, r = fs[k], q = teamProg(k, t), j = Math.floor(p.i / fs.length); if (!r.w || r.y > H + 200 || r.y + r.h < -200) return null;
+      const fly = TEAM_MODE === 'fly' && !reduce ? FACES.map((f, k) => k).filter(k => { const q = teamProg(k, t); return q > 0 && q < 1; }) : [];
+      return p => { const k = fly.length ? fly[p.i % fly.length] : p.i % fs.length, r = fs[k], q = teamProg(k, t), j = Math.floor(p.i / (fly.length || fs.length)); if (!r.w || r.y > H + 200 || r.y + r.h < -200) return null;
+        if (TEAM_MODE === 'fly' && !reduce && q <= 0) return null;
         if (q < 1 && !reduce) {
           if (TEAM_MODE === 'print') { // a print head: a bar of dots lays the picture down, a bright carriage runs back and forth along it
             if (j % 3 === 2) return null; const Y = r.y + q * r.h;
             if (p.v < .22) { const scan = .5 + .5 * Math.sin(t / 110 + k); return [r.x + (scan + (p.u - .5) * .12) * r.w, Y + (p.s - 1) * 6, 1, 2.1]; }
             return [r.x + p.u * r.w, Y + (p.v - .5) * 7, q > 0 ? .95 : .55, 1.6]; }
-          // flying in: every dot of this portrait holds one pixel of it, so a small picture made of the swarm comes close and grows, then the photo takes its place
-          const n = Math.floor(P.length / FACES.length); if (j >= n) return null; const cols = Math.max(8, Math.round(Math.sqrt(n * .8))), rows = Math.floor(n / cols); if (j >= cols * rows) return null;
-          const cx = j % cols, cy = Math.floor(j / cols), tone = toneOf(k, cols, rows), lum = tone ? tone[j] : .7, gap = r.w / cols, fade = Math.max(0, (q - .78) / .22);
-          return [r.x + (cx + .5) * gap, r.y + (cy + .5) * r.h / rows, (.1 + .9 * lum) * (1 - fade * .9), Math.max(.5, Math.min(3, gap * (.2 + .32 * lum))), q > 0 ? 7 : 1.6]; }
+          // flying in: the portrait's own dots gather as a loose crowd in the shape of the photo (thicker where it is bright, a band of them
+          // tracing the frame) and fly in together, still moving like a swarm; as it lands the photo shows through and the crowd lets go
+          const n = Math.floor(P.length / (fly.length || 1)); if (j >= n) return null; const st = stipple(k, n); const lum = st ? 1 - st.l[j] * .7 : .6, fade = Math.max(0, (q - .74) / .26), wob = 1 + (1 - Math.min(1, q * 1.4)) * 2.5;
+          let X, Y; if (j % 5 === 0 || !st) { [X, Y] = perim(r, (j / n * 5) % 1, 2 + p.v * 3); } else { X = r.x + st.x[j] * r.w; Y = r.y + st.y[j] * r.h; }
+          return [X + Math.sin(t / 640 + p.ph) * wob, Y + Math.cos(t / 760 + p.ph) * wob, (.45 + .55 * lum) * (1 - fade * .85), 1.15 + lum * .9, q > 0 ? 3.2 : 1.4]; }
         if (phone) return null; const [X, Y] = perim(r, p.u + t / (24000 + p.v * 9000), 6 + p.v * 16); return [X, Y, p.v > .6 ? .35 : .75, 1.4 + (1 - p.v)]; };
     },
     contact(s, t) { // contact: a big question mark made of people, and more of them along the form's edge
@@ -890,8 +901,18 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
         return [tg[0] + (p.u - .5) * d * W * .3, tg[1] + d * d * H * .8 + d * 40 * p.s, tg[2] * Math.max(.12, 1 - d * .8), (tg[3] || 1.5) * Math.max(.6, 1 - d * .3)]; }; } }
     if (special && t < special.until) { const box = { x: W * .1, y: H * .18, w: W * .8, h: H * .64 }, base = place, k0 = special.kind; place = p => p.i % 5 === 4 && base ? base(p) : shaped(box, k0, p, t, 1); }
     // after sending: the swarm writes the thank-you where the form was
-    if (sendFx) { const tb = document.querySelector('[data-anchor=thanks]').getBoundingClientRect(), box3 = { x: tb.left, y: tb.top, w: tb.width, h: tb.height };
-      if (tb.width) { const k3 = wordShape('תודה!'); place = p => p.i % 6 === 5 ? null : shaped(box3, k3, p, t, 1); } }
+    // after sending: the dots that were the form flow, in one sweep from the right, into the word, then the word glints
+    if (sendFx && s.id !== 'contact') sendFx.live = false;
+    if (sendFx && s.id === 'contact') { const F = sendFx, th = document.getElementById('thanks').getBoundingClientRect(), wb0 = document.querySelector('[data-anchor=thanks]').getBoundingClientRect(), wb = { x: wb0.left, y: wb0.top, w: wb0.width, h: wb0.height };
+      const k3 = wordShape('תודה!'), D3 = DRAW[k3], sh = shape(k3, D3[0], D3[1], D3[2]);
+      if (th.width && sh && sh.pts.length) {
+        if (!F.wi) { const ids = F.ids.slice().sort((a2, b2) => (F.gx[b2] - F.gx[a2]) || (F.gy[a2] - F.gy[b2])), order = sh.pts.map((q2, i2) => i2).sort((a2, b2) => (sh.pts[b2][0] - sh.pts[a2][0]) || (sh.pts[a2][1] - sh.pts[b2][1]));
+          F.wi = new Int32Array(P.length); ids.forEach((id, r2) => { F.wi[id] = order[Math.floor(r2 * order.length / ids.length)]; }); }
+        const el = t - F.t0, sweep = ((el - 1900) / 2400) % 1.4 - .2;
+        place = p => { if (!F.on[p.i]) return null; const gx = F.gx[p.i], gy = F.gy[p.i], X0 = th.left + gx * th.width, Y0 = th.top + gy * th.height, pt = sh.pts[F.wi[p.i]], [X1, Y1] = fit(wb, sh, pt);
+          const q = Math.min(1, Math.max(0, (el - 520 - (1 - gx) * 420) / 1150)), e = q < .5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2, lift = Math.sin(q * Math.PI) * (24 + p.v * 30);
+          if (q >= 1 || !F.live) { const hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 9); return [X1 + Math.sin(t / 900 + p.ph) * .5, Y1 + Math.cos(t / 1100 + p.ph) * .5, .78 + .22 * hit, 1.35 + hit * .6, F.live ? 20 : 2]; }
+          return [X0 + (X1 - X0) * e, Y0 + (Y1 - Y0) * e - lift, .85, 1.25 + e * .15, 20]; }; } }
     const orb = hold && t - hold.t0 > (hold.touch ? TOUCH_HOLD : 260);
     // the follow point eases toward the mouse, or toward the last place a finger touched
     if (mx > -500) { fx += (mx - fx) * .08; fy += (my - fy) * .08; } else if (lastTouch) { fx += (lastTouch.x - fx) * .08; fy += (lastTouch.y - fy) * .08; }
@@ -913,12 +934,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       const c = rvNow > .5 ? (p.i % 2 ? [255, 255, 255] : [196, 233, 252]) : COL[p.c]; xd.globalAlpha = al; xd.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`; xd.beginPath(); xd.arc(X, Y, Math.max(.3, r), 0, 6.283); xd.fill();
     }
     xd.globalAlpha = 1;
-    // the team flying in: once the swarm holds a portrait's frame, a finer grain of the same dots develops the face inside it, just before the photo takes over
-    if (TEAM_MODE === 'fly' && teamT0 != null && !reduce) FACES.forEach((f, k) => { const q = teamProg(k, t); if (q <= .12 || q >= 1) return; const R = f.getBoundingClientRect(); if (R.bottom < 0 || R.top > H || R.width < 6) return;
-      const cols = phone ? 26 : 34, rows = Math.round(cols * 1.25), tone = toneOf(k, cols, rows); if (!tone) return; const dev = Math.min(1, (q - .12) / .3) * (1 - Math.max(0, (q - .82) / .18)), gx = R.width / cols, gy = R.height / rows;
-      xd.fillStyle = rvNow > .5 ? '#fff' : `rgb(${COL.glow})`;
-      for (let i = 0; i < tone.length; i++) { const v = tone[i]; if (v < .06) continue; const rr = Math.max(.35, gx * (.12 + .36 * v)); xd.globalAlpha = dev * (.25 + .75 * v); xd.beginPath(); xd.arc(R.left + (i % cols + .5) * gx, R.top + (Math.floor(i / cols) + .5) * gy, rr, 0, 6.283); xd.fill(); }
-      xd.globalAlpha = 1; });
     // the golden respondent
     if (!gold.on && t > gold.next && !reduce) spawnGold();
     if (gold.on) { gold.x += gold.vx * dt + Math.sin(t / 700) * .3; gold.y += gold.vy * dt; if (gold.y < -20) { gold.on = false; gold.next = t + 12000; }
@@ -931,18 +946,19 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   if (/[?&]debug/.test(location.search)) window.__air = { P: () => P, SHAPES, toneOf, run(n) { manual = true; let t = last; for (let i = 0; i < n; i++) { t += 16; frame(t); } manual = false; } };
 
   /* ---------- the form: a design preview, nothing is sent ---------- */
-  document.getElementById('again').addEventListener('click', () => { sendFx = null; const f = document.getElementById('form'); document.getElementById('thanks').hidden = true; f.hidden = false; f.reset(); requestAnimationFrame(() => f.classList.remove('gone')); document.getElementById('fn').focus(); });
+  document.getElementById('again').addEventListener('click', () => { sendFx = null; const f = document.getElementById('form'), th = document.getElementById('thanks'); th.hidden = true; th.style.cssText = ''; f.inert = false; f.reset(); requestAnimationFrame(() => f.classList.remove('gone')); document.getElementById('fn').focus(); });
   document.getElementById('form').addEventListener('submit', e => {
     e.preventDefault(); const f = e.target, sent = document.getElementById('sent');
     const nameEl = document.getElementById('fn'), mailEl = document.getElementById('em');
     if (!nameEl.value.trim()) { sent.hidden = false; sent.textContent = 'כתבו את שמכם, כדי שנדע למי לחזור.'; nameEl.focus(); return; }
     if (!/^\S+@\S+\.\S+$/.test(mailEl.value)) { sent.hidden = false; sent.textContent = 'כתבו כתובת דוא״ל מלאה, כמו name@company.co.il.'; mailEl.focus(); return; }
     // the delight: the form turns into dots (its outline, every field, the button), fades away, and the dots write the thank-you
-    const outlines = [f, ...f.querySelectorAll('input, select, textarea, button')].map(el => { const q = el.getBoundingClientRect(); return { x: q.left, y: q.top, w: q.width, h: q.height }; });
-    P.forEach((p, i) => { if (i % 6 === 5) return; const q = outlines[i % outlines.length], [X, Y] = perim(q, (i * .618) % 1, 0); p.x = X; p.y = Y; p.a = .95; p.r = 1.6; p.anch = true; });
-    for (let k4 = 0; k4 < 3; k4++) waves.push({ x: outlines[0].x + outlines[0].w / 2, y: outlines[0].y + outlines[0].h / 2, t: performance.now() + k4 * 160, k: 2.2 });
-    f.classList.add('gone'); sent.hidden = true;
-    setTimeout(() => { f.hidden = true; const th = document.getElementById('thanks'); th.hidden = false; sendFx = { t0: performance.now() }; }, 420);
+    const fr = f.getBoundingClientRect(), wr = f.closest('.wrap').getBoundingClientRect(), th = document.getElementById('thanks');
+    th.style.cssText = `top:${fr.top - wr.top}px;left:${fr.left - wr.left}px;width:${fr.width}px;height:${fr.height}px`; th.hidden = false;
+    const ids = P.filter(p => p.i % 6 !== 5).map(p => p.i), N = ids.length, cols = Math.max(4, Math.round(Math.sqrt(N * fr.width / fr.height))), rows = Math.ceil(N / cols);
+    const F = { t0: last, live: true, ids, on: new Uint8Array(P.length), gx: new Float32Array(P.length), gy: new Float32Array(P.length) };
+    ids.forEach((id, m) => { F.on[id] = 1; F.gx[id] = (m % cols + .5) / cols; F.gy[id] = (Math.floor(m / cols) + .5) / rows; const p = P[id]; p.x = fr.left + F.gx[id] * fr.width; p.y = fr.top + F.gy[id] * fr.height; p.a = 0; p.r = 1.25; p.anch = true; });
+    f.classList.add('gone'); f.inert = true; sent.hidden = true; sendFx = F;
   });
 })();
 </script>
