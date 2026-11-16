@@ -58,6 +58,13 @@ a{color:inherit}
 .air .l4{width:30vmax;height:30vmax;background:radial-gradient(circle,var(--m2,var(--l2)),transparent 62%);top:10%;right:8%;animation:drift4 27s ease-in-out infinite alternate}
 .air .l5{width:26vmax;height:26vmax;background:radial-gradient(circle,var(--m3,var(--l3)),transparent 62%);bottom:6%;left:20%;animation:drift5 33s ease-in-out infinite alternate}
 .air .grid{position:absolute;inset:-2px;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px),linear-gradient(rgba(140,205,240,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(140,205,240,.05) 1px,transparent 1px);background-size:64px 64px,64px 64px,320px 320px,320px 320px;mask-image:radial-gradient(ellipse at 50% 40%,#000 35%,transparent 85%);-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 35%,transparent 85%)}
+.air .flood{position:absolute;inset:0;clip-path:circle(var(--rv,0%) at 50% 55%);background:radial-gradient(120% 90% at 50% 40%,#3aa9de,#2098d0 45%,#1a7fb3);will-change:clip-path}
+.air .flood::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.2px,transparent 1.6px);background-size:18px 18px;mask-image:radial-gradient(ellipse at 50% 50%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 20%,transparent 75%)}
+.air .flood span{position:absolute;inset:0;display:grid;place-items:center;font:400 38vw/1 var(--display);color:rgba(255,255,255,.07);letter-spacing:-.02em;transform:translateY(calc((1 - var(--rv-n,0)) * 8vh))}
+html[data-look=light] .air .flood{background:radial-gradient(120% 90% at 50% 40%,#2a68a0,#1d5689 45%,#143f66)}
+/* while the flood covers the fields in the bright version, that section's text turns white */
+html[data-look=light] #fields.flip{--fg:#fff;--mute:#d6ebf8;--dim:#a9cde6;--sky:#8fd0f2;--card:rgba(10,40,72,.42);--line:rgba(190,228,250,.22);--line-2:rgba(190,228,250,.38)}
+#fields h2,#fields h3,#fields p{transition:color .5s var(--ease)}
 @keyframes drift4{to{transform:translate(-24vmax,22vmax) scale(1.25)}}
 @keyframes drift5{to{transform:translate(26vmax,-18vmax) scale(.85)}}
 @keyframes drift1{to{transform:translate(18vmax,14vmax) scale(1.12)}}
@@ -187,12 +194,13 @@ html.holding,html.holding *{-webkit-user-select:none;user-select:none;-webkit-to
 .fields5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;margin-top:18px}
 .fld{position:relative;display:flex;flex-direction:column;padding:20px 22px;border-radius:18px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);transition:transform .25s var(--ease),box-shadow .25s}
 .fld:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--line-2)}
-.fld .viz{height:150px;margin:-4px -6px 18px;border-radius:12px}
+.fld .viz{height:190px;margin:-4px -6px 16px;border-radius:12px}
 .fld .mark{font-size:13px;font-weight:600;color:var(--sky)}
 .fld h3{font-size:20px;font-weight:700;line-height:1.25}
 .fld.big h3{margin-top:4px;font-size:34px;line-height:1.05;font-weight:400}
 .fld p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
-.fields5 .fld{min-height:96px;justify-content:center}
+.fields5 .fld{min-height:96px;flex-direction:row;align-items:center;gap:14px}
+.fields5 .ico{flex:none;width:64px;height:56px}
 /* two areas of expertise */
 .exp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:44px}
 .area{display:grid;grid-template-rows:auto 1fr;border-radius:24px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
@@ -263,7 +271,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 <body>
 <div dir="rtl" lang="he">
 <a class="skip" href="#main">דילוג לתוכן</a>
-<div class="air" id="airbox" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><div class="light l4"></div><div class="light l5"></div><div class="grid"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
+<div class="air" id="airbox" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><div class="light l4"></div><div class="light l5"></div><div class="grid"></div><div class="flood" id="flood"><span>מדגם</span></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
 
 <header class="nav" id="nav">
   <div class="in">
@@ -350,17 +358,17 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     <div class="wrap">
             <h2>תשעה תחומי פעילות, ארבעה במרכז</h2>
       <div class="fields4">
-        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="pulse"></div><span class="mark">תחום דגש</span><h3>בריאות ופרמצבטיקה</h3><p>מחקר בקרב מטופלים, אנשי מקצוע וקובעי מדיניות.</p></div>
+        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="health"></div><span class="mark">תחום דגש</span><h3>בריאות ופרמצבטיקה</h3><p>מחקר בקרב מטופלים, אנשי מקצוע וקובעי מדיניות.</p></div>
         <div class="fld big"><div class="viz" data-anchor="viz" data-kind="ballot"></div><span class="mark">תחום דגש</span><h3>פוליטיקה מקומית וארצית</h3><p>סקרי דעת קהל ובחירות, ברמה הארצית וברשויות.</p></div>
         <div class="fld big"><div class="viz" data-anchor="viz" data-kind="cap"></div><span class="mark">תחום דגש</span><h3>חינוך</h3><p>מחקר בקרב הורים, צוותי הוראה ותלמידים.</p></div>
         <div class="fld big"><div class="viz" data-anchor="viz" data-kind="mic"></div><span class="mark">תחום דגש</span><h3>תקשורת ומדיה</h3><p>סקרים לפרסום בתקשורת ומחקר קהלים.</p></div>
       </div>
       <div class="fields5">
-        <div class="fld" data-anchor="tile"><h3>צרכנות וקמעונאות</h3></div>
-        <div class="fld" data-anchor="tile"><h3>רשויות וממשל</h3></div>
-        <div class="fld" data-anchor="tile"><h3>תחבורה</h3></div>
-        <div class="fld" data-anchor="tile"><h3>מזון</h3></div>
-        <div class="fld" data-anchor="tile"><h3>בנקאות ופיננסים</h3></div>
+        <div class="fld"><div class="ico" data-anchor="viz" data-kind="cart"></div><h3>צרכנות וקמעונאות</h3></div>
+        <div class="fld"><div class="ico" data-anchor="viz" data-kind="gov"></div><h3>רשויות וממשל</h3></div>
+        <div class="fld"><div class="ico" data-anchor="viz" data-kind="bus"></div><h3>תחבורה</h3></div>
+        <div class="fld"><div class="ico" data-anchor="viz" data-kind="food"></div><h3>מזון</h3></div>
+        <div class="fld"><div class="ico" data-anchor="viz" data-kind="bank"></div><h3>בנקאות ופיננסים</h3></div>
       </div>
     </div>
   </section>
@@ -450,7 +458,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     if (P.length !== n) P = Array.from({ length: n }, (_, i) => ({ x: rnd() * W, y: rnd() * H, vx: 0, vy: 0, u: rnd(), v: rnd(), ph: rnd() * 6.283, s: .6 + rnd() * .8, i, c: (q => q < .08 ? 'amber' : q < .26 ? 'teal' : q < .36 ? 'gold' : q < .66 ? 'glow' : 'sky')(rnd()), a: .5 }));
     if (FAR.length !== nf) FAR = Array.from({ length: nf }, () => ({ u: rnd(), v: rnd(), ph: rnd() * 6.283, r: .5 + rnd() * .9, d: .08 + rnd() * .25 }));
   };
-  size(); addEventListener('resize', size);
+  size(); let lastW = innerWidth, lastH = innerHeight;
+  // on phones the address bar shows and hides while scrolling; that height-only change must not reset the field
+  addEventListener('resize', () => { if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 160) return; lastW = innerWidth; lastH = innerHeight; size(); });
 
   // which section owns the screen right now, and its anchors in screen coordinates
   const active = () => { const mid = H * .5; return sections.find(s => { const r = s.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }) || sections[0]; };
@@ -471,6 +481,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     const d = g.getImageData(0, 0, w, h).data, pts = [], step = Math.max(2, Math.round(Math.sqrt(w * h / 2600)));
     for (let y = 0; y < h; y += step) for (let x2 = 0; x2 < w; x2 += step) { const k = (y * w + x2) * 4; if (d[k + 3] > 120 && (d[k] + d[k + 1] + d[k + 2]) / 3 < 235 || (d[k + 3] > 120 && key !== 'logo')) pts.push([x2 / w, y / h]); }
     for (let i = pts.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pts[i], pts[j]] = [pts[j], pts[i]]; }
+    // trim to the drawing's own outline: every shape then centres and fills its box the same way
+    if (pts.length) { let x0 = 1, y0 = 1, x1 = 0, y1 = 0; pts.forEach(([a2, b2]) => { x0 = Math.min(x0, a2); y0 = Math.min(y0, b2); x1 = Math.max(x1, a2); y1 = Math.max(y1, b2); });
+      const sw = Math.max(.01, x1 - x0), sh2 = Math.max(.01, y1 - y0); pts.forEach(q => { q[0] = (q[0] - x0) / sw; q[1] = (q[1] - y0) / sh2; }); return (SHAPES[key] = { pts, ar: (sw * w) / (sh2 * h) }); }
     return (SHAPES[key] = { pts, ar: w / h });
   };
   // place a shape's point inside a rectangle, keeping its proportions
@@ -480,6 +493,14 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const DRAW = {
     logo: [530, 153, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 530, 153, 0, 0, 530, 153); }],
     year: [520, 200, g => { g.font = '900 190px "Secular One", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
+    health: [420, 300, g => { // a heart with a heartbeat running through it
+      g.beginPath(); g.moveTo(210, 280); g.bezierCurveTo(30, 170, 20, 40, 110, 30); g.bezierCurveTo(160, 24, 195, 60, 210, 90); g.bezierCurveTo(225, 60, 260, 24, 310, 30); g.bezierCurveTo(400, 40, 390, 170, 210, 280); g.closePath(); g.lineWidth = 16; g.stroke();
+      g.lineWidth = 12; g.beginPath(); g.moveTo(20, 150); g.lineTo(140, 150); g.lineTo(170, 100); g.lineTo(205, 210); g.lineTo(240, 120); g.lineTo(262, 150); g.lineTo(400, 150); g.stroke(); }],
+    cart: [300, 240, g => { g.lineWidth = 16; g.beginPath(); g.moveTo(20, 30); g.lineTo(70, 30); g.lineTo(105, 160); g.lineTo(250, 160); g.lineTo(280, 70); g.lineTo(85, 70); g.stroke(); [[120, 205], [235, 205]].forEach(([a2, b2]) => { g.beginPath(); g.arc(a2, b2, 20, 0, 6.283); g.fill(); }); }],
+    gov: [300, 260, g => { g.beginPath(); g.moveTo(150, 15); g.lineTo(285, 80); g.lineTo(15, 80); g.closePath(); g.fill(); [55, 115, 185, 245].forEach(a2 => g.fillRect(a2 - 13, 100, 26, 110)); g.fillRect(10, 222, 280, 26); }],
+    bus: [300, 260, g => { g.lineWidth = 16; rr(g, 30, 20, 240, 180, 30); g.stroke(); g.fillRect(50, 50, 200, 70); g.beginPath(); g.arc(85, 160, 15, 0, 6.283); g.arc(215, 160, 15, 0, 6.283); g.fill(); g.fillRect(60, 200, 36, 40); g.fillRect(204, 200, 36, 40); }],
+    food: [280, 280, g => { g.lineWidth = 16; g.beginPath(); g.moveTo(80, 20); g.lineTo(80, 260); g.moveTo(45, 20); g.lineTo(45, 100); g.quadraticCurveTo(80, 140, 115, 100); g.lineTo(115, 20); g.stroke(); g.beginPath(); g.moveTo(200, 260); g.lineTo(200, 20); g.quadraticCurveTo(255, 60, 245, 150); g.lineTo(200, 150); g.stroke(); }],
+    bank: [300, 260, g => { [[150, 220], [150, 170], [150, 120], [150, 70]].forEach(([cx2, cy2], i) => { g.beginPath(); g.ellipse(cx2 + (i % 2 ? 12 : -8), cy2, 110, 28, 0, 0, 6.283); g.lineWidth = 14; g.stroke(); }); g.font = '900 64px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('₪', 150, 70); }],
     lens: [420, 320, g => { // research: a magnifying glass over a few data points
       g.lineWidth = 26; g.beginPath(); g.arc(170, 140, 100, 0, 6.283); g.stroke(); g.lineWidth = 34; g.beginPath(); g.moveTo(245, 215); g.lineTo(330, 300); g.stroke();
       [[130, 170, 18], [170, 120, 18], [210, 150, 18]].forEach(([cx2, cy2, r2]) => { g.beginPath(); g.arc(cx2, cy2, r2, 0, 6.283); g.fill(); }); }],
@@ -573,7 +594,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     },
     tiles(s, t) { // nine fields: the four in focus draw their own picture, the other five are outlined by people
       const pics = FORMS.lanes(s, t), ts = rects(s, '[data-anchor=tile]');
-      return p => { if (p.i % 5 === 4 && ts.length && !phone) { const r = ts[Math.floor(p.i / 5) % ts.length], [X, Y] = perim(r, p.u + t / 30000, 7 + p.v * 8); return [X, Y, .6, 1.6]; } return pics && pics(p); };
+      return p => { if (false) { const r = ts[Math.floor(p.i / 5) % ts.length], [X, Y] = perim(r, p.u + t / 30000, 7 + p.v * 8); return [X, Y, .6, 1.6]; } return pics && pics(p); };
     },
     pair(s, t) { return FORMS.lanes(s, t); },
     halo(s, t) { // the team: people moving along the edge of each portrait
@@ -736,7 +757,13 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       x.strokeStyle = ink(a * 1.8); x.lineWidth = 2; x.beginPath(); for (let u = 0; u <= 1.001; u += .02) u ? x.lineTo(W * (.06 + u * .88), f(u)) : x.moveTo(W * .06, f(u)); x.stroke(); }
   ];
   function note(s2, X, Y, a) { x.globalAlpha = Math.min(1, a); x.fillStyle = `rgb(${inkC})`; x.font = '500 13px "IBM Plex Mono", monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(s2, X, Y); x.globalAlpha = 1; }
+  // the flood: opens as the nine fields arrive, closes as they leave; the swarm bursts out as it opens
+  const flood = document.getElementById('flood'), fieldsSec = document.getElementById('fields'); let floodOpen = false, rvNow = -1;
+  const floodStep = () => { const r = fieldsSec.getBoundingClientRect(), enter = Math.min(1, Math.max(0, (H * .95 - r.top) / (H * .55))), leave = Math.min(1, Math.max(0, (r.bottom - H * .05) / (H * .55))), rv = Math.min(enter, leave);
+    if (Math.abs(rv - rvNow) > .002) { rvNow = rv; const e2 = rv * rv * (3 - 2 * rv); flood.style.setProperty('--rv', (e2 * 150).toFixed(2) + '%'); flood.style.setProperty('--rv-n', e2.toFixed(3)); fieldsSec.classList.toggle('flip', rv > .5); }
+    if (rv > .5 && !floodOpen) { floodOpen = true; if (!reduce) for (let k2 = 0; k2 < 3; k2++) waves.push({ x: W / 2, y: H * .55, t: performance.now() + k2 * 140, k: 3 }); } else if (rv < .2) floodOpen = false; };
   const research = (t, sy) => {
+    floodStep();
     mood();
     const A = (document.documentElement.dataset.look === 'light' ? .1 : .16) * (phone ? .6 : 1);
     // which two charts are on screen, and how far between them
@@ -764,7 +791,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     x.clearRect(0, 0, W, H);
     // far layer: tiny, slow, moving a little with the scroll for depth
     const sy = scrollY, dsy = sy - (frame.lastSy ?? sy); frame.lastSy = sy;
-    if (dsy) for (const p of P) p.y -= dsy;
+    if (dsy) for (const p of P) if (p.anch) p.y -= dsy;
     research(reduce ? 0 : t, sy);
     for (const f of FAR) { const X = (f.u * W + Math.sin(t / 7000 + f.ph) * 20) % W, Y = ((f.v * H - sy * f.d) % H + H) % H; x.globalAlpha = .18 + .12 * Math.sin(t / 1400 + f.ph); x.fillStyle = FARC; x.fillRect(X, Y, f.r, f.r); }
     // the near field: drift toward the active section's shape
@@ -774,19 +801,20 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     // the follow point eases toward the mouse, or toward the last place a finger touched
     if (mx > -500) { fx += (mx - fx) * .08; fy += (my - fy) * .08; } else if (lastTouch) { fx += (lastTouch.x - fx) * .08; fy += (lastTouch.y - fy) * .08; }
     for (const p of P) {
-      let tgt = place && place(p);
+      let tgt = place && place(p); p.anch = !!tgt;
       if (orb && p.i % 3 !== 2) { const j = p.i, rad = 8 + Math.sqrt(j % 700) * 3.1, a = j * 2.39996 + t / (260 + (j % 5) * 90); tgt = [hold.x + Math.cos(a) * rad, hold.y + Math.sin(a) * rad * .92, .95, 1.7]; }
       if (!tgt && fx > -500 && p.i % 3 === 0 && !reduce) { // idle dots follow the pointer as a loose cloud, until a shape needs them
         const a = p.u * 6.283 + t / (2600 + p.v * 3000), rad = 26 + p.v * 110; tgt = [fx + Math.cos(a) * rad, fy + Math.sin(a) * rad * .8, .5 - p.v * .25, 1.3]; }
       if (!tgt) { // resting in the air across the whole screen
-        tgt = [p.u * W + Math.sin(t / 5000 * p.s + p.ph) * 30, ((p.v * H * 1.2 - sy * .12) % H + H) % H + Math.cos(t / 6000 * p.s + p.ph) * 20, .18]; }
+        tgt = [p.u * W + Math.sin(t / 5000 * p.s + p.ph) * 30, ((p.v * H * 1.2 - (phone ? 0 : sy * .12)) % H + H) % H + Math.cos(t / 6000 * p.s + p.ph) * 20, .18]; }
       const k = reduce ? 1 : Math.min(1, dt * .0032 * p.s);
       p.x += (tgt[0] - p.x) * k; p.y += (tgt[1] - p.y) * k; p.a += (tgt[2] - p.a) * Math.min(1, dt * .004);
       p.r = (p.r || 1.5) + ((tgt[3] || 1.5) - (p.r || 1.5)) * Math.min(1, dt * .004);
       let X = p.x, Y = p.y, al = p.a, r = p.r;
       for (const w of waves) { const age = (t - w.t) / 1000; if (age > 1.6) continue; const R = age * 260, d = Math.hypot(X - w.x, Y - w.y), band = Math.abs(d - R); if (band < 26) { const f = (1 - band / 26) * (1 - age / 1.6) * w.k; X += (X - w.x) / (d || 1) * f * 7; Y += (Y - w.y) / (d || 1) * f * 7; al = Math.min(1, al + f * .7); r += f * 1.4; } }
       const near = Math.hypot(X - mx, Y - my); if (near < 120) { const f = 1 - near / 120; al = Math.min(1, al + f * .45); r += f; }
-      const c = COL[p.c]; x.globalAlpha = al; x.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`; x.beginPath(); x.arc(X, Y, Math.max(.3, r), 0, 6.283); x.fill();
+      // over the flood the dots switch to white and deep navy, so they stay visible on the sky
+      const c = rvNow > .5 ? (p.i % 2 ? [255, 255, 255] : [196, 233, 252]) : COL[p.c]; x.globalAlpha = al; x.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`; x.beginPath(); x.arc(X, Y, Math.max(.3, r), 0, 6.283); x.fill();
     }
     x.globalAlpha = 1;
     // the golden respondent
