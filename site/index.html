@@ -108,7 +108,16 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 
 /* hero */
 .hero{align-items:flex-end;padding-bottom:88px}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:end}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:end}
+.play{display:flex;flex-direction:column;align-items:center;gap:14px;align-self:center;min-width:0}
+.swarm{width:100%;height:min(46vh,420px)}
+.say{position:relative;width:min(420px,100%)}
+.say input{width:100%;height:54px;padding:0 22px;border-radius:999px;border:0;background:var(--card);color:var(--fg);font:500 17px var(--body);text-align:center;box-shadow:inset 0 0 0 1px var(--line-2);transition:box-shadow .2s}
+.say input::placeholder{color:var(--dim)}
+.say input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sky)}
+.say-x{position:absolute;top:9px;inset-inline-start:9px;width:36px;height:36px;border-radius:50%;border:0;background:var(--chip);color:var(--fg);font:400 20px/1 var(--body);cursor:pointer}
+.secrets{margin:0;min-height:22px;font-size:14px;color:var(--dim);text-align:center}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .hero-text{max-width:720px}
 .hero h1{margin-top:18px;font-size:clamp(46px,6.4vw,104px);line-height:.98;font-weight:900;letter-spacing:-.035em}
 .hero h1 span{display:block;color:var(--glow);font-weight:300}
@@ -200,6 +209,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 
 @media (max-width:1100px){
   .hero .wrap,.cred .wrap,.contact .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero .wrap{gap:20px}.play{order:-1}.swarm{height:30vh}
   .slot{display:none}
   .qs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .caps,.team{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -244,7 +254,14 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       <h1>מכון מחקר וסקרים <span>לציבור, לעסקים ולמשפט</span></h1>
       <p class="lede">מדגם מתכננת ומבצעת מחקרים כמותיים ואיכותניים: מהשאלה שעל השולחן, דרך הדגימה והאיסוף, ועד ממצא שאפשר לקבל לפיו החלטה.</p>
       <div class="acts"><a class="btn" href="#contact">שליחת פנייה</a><a class="btn line" href="#capabilities">צפייה ביכולות המחקר</a></div>
-    </div></div>
+    </div>
+      <div class="play" data-enter>
+        <div class="swarm" data-anchor="swarm" aria-hidden="true"></div>
+        <label class="sr" for="word">מילה שהנחיל יכתוב</label>
+        <div class="say"><input id="word" maxlength="14" autocomplete="off" placeholder="הקלידו מילה, והנחיל יכתוב אותה"><button type="button" id="word-clear" class="say-x" aria-label="חזרה ללוגו" hidden>×</button></div>
+        <p class="secrets" id="secrets"></p>
+      </div>
+    </div>
   </section>
 
   <!-- 2. credibility -->
@@ -452,6 +469,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     justice: [440, 260, g => { g.lineWidth = 12; g.beginPath(); g.moveTo(220, 34); g.lineTo(220, 222); g.moveTo(60, 72); g.lineTo(380, 72); g.stroke(); g.beginPath(); g.arc(220, 30, 16, 0, 6.283); g.fill(); g.beginPath(); g.moveTo(150, 248); g.lineTo(290, 248); g.lineTo(262, 218); g.lineTo(178, 218); g.closePath(); g.fill();
       g.lineWidth = 4; [[80, 1], [360, 1]].forEach(([cx]) => { g.beginPath(); g.moveTo(cx, 72); g.lineTo(cx - 44, 160); g.moveTo(cx, 72); g.lineTo(cx + 44, 160); g.stroke(); g.beginPath(); g.moveTo(cx - 56, 160); g.lineTo(cx + 56, 160); g.arc(cx, 160, 56, 0, Math.PI); g.fill(); }); }]
   };
+  // any word becomes a shape: measured first, then drawn wide enough to hold it
+  let heroWord = '';
+  const wordShape = w => { const key = 'w:' + w; if (DRAW[key]) return key; const m = document.createElement('canvas').getContext('2d'); m.font = '900 170px Heebo, "Noto Sans Arabic", Arial'; m.direction = 'rtl';
+    const width = Math.max(200, Math.ceil(m.measureText(w).width) + 40); DRAW[key] = [width, 230, g => { g.direction = 'rtl'; g.font = '900 170px Heebo, "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(w, width / 2, 125); }]; return key; };
   // a scanning light passes over each shape, as if it were being assembled
   const shaped = (r, kind, p, t, k) => { const D = DRAW[kind]; if (!D) return null; const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
     const pt = sh.pts[Math.floor(p.i / k) % sh.pts.length], [X, Y] = fit(r, sh, pt), sweep = ((t / 2600 + r.x / 900) % 1.4) - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 9);
@@ -459,20 +480,15 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   if (document.fonts) document.fonts.load('800 120px "Noto Sans Arabic"').then(() => { delete SHAPES.arabic; }).catch(() => {});
 
   const FORMS = {
-    wave(s, t) { // the hero: the Midgam logo assembles out of dots, then dissolves into a landscape of people
-      const r = s.getBoundingClientRect(), tx = rects(s, '[data-anchor=text]')[0];
-      if (t - born < 4200 && !reduce) { const lx1 = phone ? W : (tx ? tx.x - 40 : W * .55), box = phone ? { x: 24, y: r.top + 96, w: W - 48, h: H * .3 } : { x: 40, y: r.top + 150, w: lx1 - 80, h: r.height - 300 };
-        const sh = shape('logo', ...DRAW.logo.slice(0, 2), DRAW.logo[2]); if (sh && sh.pts.length) return p => { const pt = sh.pts[p.i % sh.pts.length], [X, Y] = fit(box, sh, pt, 10); const sweep = ((t - born) / 1800) % 1.3 - .15, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .75 + .25 * hit, 1.6 + hit]; }; }
-      const cols = phone ? 26 : 50, rows = Math.ceil(P.length / cols);
-      const x0 = phone ? 0 : 0, x1 = phone ? W : (tx ? tx.x - 40 : W * .55);
-      const top = r.top + (phone ? 90 : 120), bot = r.top + r.height - (phone ? 30 : 40);
-      return p => { const c = p.i % cols, row = Math.floor(p.i / cols), d = row / (rows - 1); // d: 0 far, 1 near
-        const depth = Math.pow(d, 1.6), cx = x0 + (x1 - x0) / 2, spread = (.45 + .55 * depth) * (x1 - x0) * .62;
-        const X = cx + ((c + .5) / cols - .5) * 2 * spread;
-        const z = Math.sin(c * .32 + t / 1500) * Math.cos(row * .27 + t / 2300) * (8 + 26 * depth) + Math.sin((c + row) * .15 - t / 1900) * 10 * depth;
-        const Y = top + depth * (bot - top) - z;
-        const lift = .5 + .5 * Math.sin(c * .32 + t / 1500);
-        return [X, Y, (.18 + .62 * depth) * (.55 + .45 * lift) * (phone ? .55 : 1), .7 + 2.1 * depth]; };
+    wave(s, t) { // the hero: the Midgam swarm; it writes whatever word you type in the field below it
+      const box = rects(s, '[data-anchor=swarm]')[0]; if (!box) return null;
+      const kind = heroWord ? wordShape(heroWord) : 'logo', D = DRAW[kind]; if (!D) return null;
+      const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
+      const breathe = 1 + .012 * Math.sin(t / 1400);
+      return p => { const pt = sh.pts[p.i % sh.pts.length], [X0, Y0] = fit(box, sh, pt, 6), cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+        const X = cx + (X0 - cx) * breathe + Math.sin(t / 900 + p.ph) * .7, Y = cy + (Y0 - cy) * breathe + Math.cos(t / 1100 + p.ph) * .7;
+        const sweep = (t / 2400) % 1.4 - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8);
+        return [X, Y, .7 + .3 * hit, 1.5 + hit]; };
     },
     sample(s, t) { // credibility: a sample gathers into a disc, rings marking the population around it
       const d = rects(s, '[data-anchor=disc]')[0]; if (!d || d.w < 10) return null;
@@ -520,8 +536,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   /* ---------- hidden games with the dots ---------- */
   const toastEl = document.getElementById('toast'), eggsEl = document.getElementById('eggs'); let toastT;
   const toast = msg => { toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('on'), 3200); };
-  const EGG_N = 5; let found = []; try { found = JSON.parse(localStorage.getItem('midgam-eggs') || '[]'); } catch (_) {}
-  const paintEggs = () => { eggsEl.textContent = found.length ? `גיליתם ${found.length} מתוך ${EGG_N} סודות בעמוד` : ''; };
+  const EGG_N = 6; let found = []; try { found = JSON.parse(localStorage.getItem('midgam-eggs') || '[]'); } catch (_) {}
+  const secretsEl = document.getElementById('secrets');
+  const paintEggs = () => { eggsEl.textContent = found.length ? `גיליתם ${found.length} מתוך ${EGG_N} סודות בעמוד` : ''; secretsEl.textContent = found.length >= EGG_N ? 'מצאתם את כל הסודות בעמוד. כל הכבוד.' : found.length ? `גיליתם ${found.length} מתוך ${EGG_N} סודות שמסתתרים בעמוד` : `${EGG_N} סודות מסתתרים בעמוד. נסו למשל 1988`; };
   const egg = (id, msg) => { if (!found.includes(id)) { found.push(id); try { localStorage.setItem('midgam-eggs', JSON.stringify(found)); } catch (_) {} toast(msg + ` · ${found.length} מתוך ${EGG_N}`); } paintEggs(); };
   paintEggs();
   // a shape the whole swarm draws in the middle of the screen for a moment
@@ -544,6 +561,11 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   addEventListener('keydown', e => { if (interactive(e.target) || e.key.length !== 1) return; typed = (typed + e.key).slice(-6);
     if (typed.endsWith('1988')) { show('year'); egg('year', 'גילית את שנת ההקמה'); typed = ''; }
     else if (typed.endsWith('מדגם') || typed.toLowerCase().endsWith('midgam')) { show('logo'); egg('word', 'כתבת מדגם, והנקודות הקשיבו'); typed = ''; } });
+  // the field under the swarm: whatever you type, the swarm writes; 1988 and מדגם are also secrets
+  const wordEl = document.getElementById('word'), clearEl = document.getElementById('word-clear');
+  const setWord = v => { heroWord = v.trim().slice(0, 14); clearEl.hidden = !heroWord; if (heroWord === '1988') egg('year', 'גילית את שנת ההקמה'); else if (/^(מדגם|midgam)$/i.test(heroWord)) egg('word', 'כתבת מדגם, והנקודות הקשיבו'); };
+  let wt; wordEl.addEventListener('input', () => { clearTimeout(wt); wt = setTimeout(() => setWord(wordEl.value), 260); });
+  clearEl.addEventListener('click', () => { wordEl.value = ''; setWord(''); wordEl.focus(); });
   // 4. click the logo: it assembles again
   document.querySelector('.brand').addEventListener('click', () => { show('logo'); egg('logo', 'הלוגו נבנה מחדש מנקודות'); });
   // 5. double-click anywhere: a burst
@@ -587,7 +609,8 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     x.save(); CHARTS[i % CHARTS.length](A * (1 - mix), t); if (mix > 0 && i + 1 < sections.length) CHARTS[(i + 1) % CHARTS.length](A * mix, t); x.restore();
     // statistical notation drifting at different depths
     NOTES.forEach(n => { const X = n.u * W + Math.sin(t / 8000 + n.ph) * 30, Y = ((n.v * H * 1.4 - sy * n.d) % (H * 1.4) + H * 1.4) % (H * 1.4) - H * .2; note(n.s, X, Y, .16 + .06 * Math.sin(t / 2000 + n.ph)); });
-    // the page as an axis: n = 0 at the top, 1,000 at the end
+    // the page as an axis: n = 0 at the top, 1,000 at the end (desktop only; on a phone it would crowd the swarm)
+    if (phone) return;
     const total = Math.max(1, document.documentElement.scrollHeight - H), prog = Math.min(1, sy / total), gx = 22;
     x.strokeStyle = ink(.25); x.lineWidth = 1; x.beginPath(); x.moveTo(gx, 90); x.lineTo(gx, H - 40); x.stroke();
     for (let k = 0; k <= 20; k++) { const Y = 90 + k / 20 * (H - 130); x.beginPath(); x.moveTo(gx, Y); x.lineTo(gx + (k % 5 ? 5 : 11), Y); x.stroke(); if (k % 5 === 0) { x.globalAlpha = .4; x.fillStyle = `rgb(${COL.sky})`; x.font = '500 10px "IBM Plex Mono", monospace'; x.textAlign = 'left'; x.fillText(String(k * 50), gx + 15, Y + 3); x.globalAlpha = 1; } }
