@@ -8,7 +8,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Karantina:wght@700&family=Frank+Ruhl+Libre:wght@700;900&family=Heebo:wght@300;400;500;700;800&family=Assistant:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* Layout: one living atmosphere (light, grain, three depths of dots) sits behind the whole site.
    Each section gathers the dots around its own content: a wave of people, a sample, six questions,
@@ -19,12 +19,13 @@
   --fg:#f3f8fc; --mute:#a9c4dc; --dim:#7a98b4;
   --blue:#1d5689; --sky:#2098d0; --glow:#8fd0f2; --gold:#f2c14e;
   --card:rgba(8,28,54,.55); --card-hi:rgba(14,42,76,.72); --field:rgba(6,22,44,.8); --navbg:rgba(10,34,64,.78); --menubg:rgba(10,34,64,.97); --foot:rgba(6,22,44,.6);
-  --chip:rgba(140,205,240,.1); --btn-bg:#f3f8fc; --btn-fg:#0a2240; --btn-hi:#fff; --grid-line:rgba(140,205,240,.045);
+  --chip:rgba(140,205,240,.1); --btn-bg:#f3f8fc; --btn-fg:#0a2240; --btn-hi:#fff; --grid-line:rgba(140,205,240,.06);
   --l1:rgba(32,152,208,.5); --l2:rgba(29,86,137,.85); --l3:rgba(32,152,208,.22); --vig:rgba(4,16,32,.7); --face:rgba(140,205,240,.28);
   --dot-a:32,152,208; --dot-b:143,208,242; --dot-c:243,248,252; --dot-d:38,196,180; --dot-e:242,169,59; --grain:.08;
   --teal:#26c4b4; --amber:#f2a93b;
-  --display:"Rubik","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
-  --body:"IBM Plex Sans Hebrew","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --display:"Secular One","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --body:"Assistant","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --dw:400; --fs:1;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --ease:cubic-bezier(.23,1,.32,1);
   --padt:128px; --gut:max(24px,env(safe-area-inset-left,0px));
@@ -59,6 +60,7 @@ a{color:inherit}
 .air .l3{width:40vmax;height:40vmax;background:radial-gradient(circle,var(--m3,var(--l3)),transparent 62%);top:40%;left:42%;animation:drift3 52s ease-in-out infinite alternate}
 .air .l4{width:30vmax;height:30vmax;background:radial-gradient(circle,var(--m2,var(--l2)),transparent 62%);top:10%;right:8%;animation:drift4 27s ease-in-out infinite alternate}
 .air .l5{width:26vmax;height:26vmax;background:radial-gradient(circle,var(--m3,var(--l3)),transparent 62%);bottom:6%;left:20%;animation:drift5 33s ease-in-out infinite alternate}
+.air .grid{position:absolute;inset:-2px;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px),linear-gradient(rgba(140,205,240,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(140,205,240,.05) 1px,transparent 1px);background-size:64px 64px,64px 64px,320px 320px,320px 320px;mask-image:radial-gradient(ellipse at 50% 40%,#000 35%,transparent 85%);-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 35%,transparent 85%)}
 @keyframes drift4{to{transform:translate(-24vmax,22vmax) scale(1.25)}}
 @keyframes drift5{to{transform:translate(26vmax,-18vmax) scale(.85)}}
 @keyframes drift1{to{transform:translate(18vmax,14vmax) scale(1.12)}}
@@ -106,18 +108,26 @@ section{position:relative;min-height:100svh;padding-block:var(--padt) 72px;displ
 .kicker{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--glow)}
 .kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sky);box-shadow:0 0 12px var(--sky)}
 h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
-h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:700;letter-spacing:-.02em}
+h2{margin-top:0;font-size:calc(clamp(34px,4.3vw,60px) * var(--fs));line-height:1.08;font-weight:var(--dw);letter-spacing:-.01em}
 .lede{margin:18px 0 0;max-width:36em;color:var(--mute);font-size:19px;text-wrap:pretty}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
 /* placeholders: anything still to come from Midgam, easy to spot */
 .ph{display:inline-block;padding:1px 10px;border-radius:8px;border:1px dashed rgba(242,193,78,.7);background:rgba(242,193,78,.1);color:var(--gold);font-weight:500}
 
+/* the four pairings on review */
+html[data-font=karantina]{--display:"Karantina","Heebo",Arial,sans-serif;--dw:700;--fs:1.32}
+html[data-font=frank]{--display:"Frank Ruhl Libre","Heebo",Georgia,serif;--dw:900;--fs:1}
+html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sans-serif;--dw:800;--fs:1}
+.fontpick{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:65;display:flex;align-items:center;gap:4px;padding:5px 6px 5px 12px;border-radius:999px;background:var(--navbg);box-shadow:inset 0 0 0 1px var(--line-2),0 14px 30px -16px rgba(0,0,0,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:500 13px var(--body);color:var(--dim)}
+.fontpick button{height:32px;padding:0 12px;border-radius:999px;border:0;background:transparent;color:var(--fg);cursor:pointer;font-size:15px}
+.fontpick button[aria-pressed=true]{background:var(--btn-bg);color:var(--btn-fg)}
+
 /* hero */
 .hero{align-items:flex-end;padding-bottom:88px}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:end}
 .play{display:flex;flex-direction:column;align-items:center;gap:14px;align-self:center;min-width:0}
-.swarm{width:100%;aspect-ratio:3.1/1;max-height:44vh}
+.swarm{width:100%;aspect-ratio:2.35/1;max-height:46vh}
 .tagline{margin:-6px 0 6px;font:500 clamp(17px,2vw,28px)/1 var(--body);letter-spacing:.34em;color:var(--fg);opacity:.9;transition:opacity .4s var(--ease)}
 .tagline.off{opacity:0}
 .ask{position:relative;width:min(520px,100%)}
@@ -141,7 +151,8 @@ h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:70
 .secrets{margin:0;min-height:22px;font-size:14px;color:var(--dim);text-align:center}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .hero-text{max-width:720px}
-.hero h1{margin-top:18px;font-size:clamp(44px,5.8vw,94px);line-height:1;font-weight:800;letter-spacing:-.03em}
+.hero h1{margin-top:18px;font-size:calc(clamp(44px,5.8vw,94px) * var(--fs));line-height:1.02;font-weight:var(--dw);letter-spacing:-.015em}
+.hero h1 span{font-family:var(--body)}
 .hero h1 span{display:block;color:var(--glow);font-weight:300}
 .hero .lede{font-size:20.5px;max-width:31em}
 .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
@@ -153,7 +164,7 @@ h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:70
 .cred .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
 .facts{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 40px}
 .facts li{padding-top:18px;border-top:1px solid var(--line-2)}
-.facts b{display:block;font-family:var(--display);font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.facts b{display:block;font-family:var(--display);font-size:40px;font-weight:var(--dw);letter-spacing:-.02em;line-height:1.1}
 .facts span{display:block;margin-top:6px;color:var(--mute);font-size:16px}
 .facts .wide{grid-column:1/-1}
 .slot{min-height:420px}
@@ -162,14 +173,14 @@ h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:70
 .qs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:44px}
 .q{position:relative;display:flex;flex-direction:column;gap:10px;padding:26px 26px 24px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
 .q:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--line-2);background:var(--card-hi)}
-.q h3{font-size:23px;line-height:1.25;font-weight:700}
+.q h3{font-size:23px;line-height:1.25;font-weight:var(--dw)}
 .q p{margin:0;color:var(--mute);font-size:16px}
 .q .tag{margin-top:auto;padding-top:10px;font-size:14px;font-weight:500;color:var(--glow)}
 
 /* capabilities */
 .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
 .cap .viz{height:190px;border-radius:18px;box-shadow:inset 0 0 0 1px var(--line)}
-.cap h3{margin-top:22px;font-size:25px;font-weight:700}
+.cap h3{margin-top:22px;font-size:25px;font-weight:var(--dw)}
 .cap p{margin:8px 0 0;color:var(--mute);font-size:16px}
 .cap ul{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .cap li{padding:4px 11px;border-radius:999px;font-size:13.5px;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2)}
@@ -182,7 +193,7 @@ h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:70
 .fld .viz{height:150px;margin:-4px -6px 18px;border-radius:12px}
 .fld .mark{font-size:13px;font-weight:600;color:var(--sky)}
 .fld h3{font-size:20px;font-weight:700;line-height:1.25}
-.fld.big h3{margin-top:4px;font-size:26px;font-weight:800}
+.fld.big h3{margin-top:4px;font-size:26px;font-weight:var(--dw)}
 .fld p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
 .fields5 .fld{min-height:96px;justify-content:center}
 /* two areas of expertise */
@@ -190,7 +201,7 @@ h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:70
 .area{display:grid;grid-template-rows:auto 1fr;border-radius:24px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
 .area .viz{height:230px}
 .area .txt{padding:28px 30px 30px}
-.area h3{font-size:32px;font-weight:800;letter-spacing:-.015em}
+.area h3{font-size:32px;font-weight:var(--dw);letter-spacing:-.01em}
 .area p{margin:10px 0 0;color:var(--mute)}
 .area ul{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .area li{display:flex;gap:10px}
@@ -199,11 +210,13 @@ h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:70
 
 /* people */
 .team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
-.person .face{position:relative;aspect-ratio:1;max-width:100%;border-radius:50%;display:grid;place-items:center}
-.person .face{overflow:hidden;box-shadow:0 0 0 1px var(--line-2),0 24px 50px -30px rgba(0,0,0,.6)}
-.person .face img{width:100%;height:100%;object-fit:cover;border-radius:50%;transition:transform .5s var(--ease)}
-.person:hover .face img{transform:scale(1.03)}
-.person h3{margin-top:20px;font-size:24px;font-weight:700}
+.person .face{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:22px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px var(--line),0 30px 60px -36px rgba(0,0,0,.65)}
+.person .face::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 45% at 50% 34%,rgba(242,169,59,.16),transparent 70%),radial-gradient(80% 60% at 50% 40%,rgba(32,152,208,.22),transparent 75%)}
+.person .face .ht{position:absolute;inset:0;width:100%;height:100%;display:block}
+.person .face .src{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.person{cursor:default}
+.person:hover .face{box-shadow:inset 0 0 0 1px var(--line-2),0 34px 70px -36px rgba(0,0,0,.7)}
+.person h3{margin-top:20px;font-size:24px;font-weight:var(--dw)}
 .person .role{margin:2px 0 0;color:var(--glow);font-size:15.5px;font-weight:500}
 .person p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
 
@@ -242,7 +255,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   section{padding-bottom:56px}
   .qs,.caps,.team,.exp,.fields4,.facts{grid-template-columns:minmax(0,1fr)}
   .fields5{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .person{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 18px;align-items:center}
+  .person{display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 18px;align-items:center}
   .person h3{margin-top:0}
   #form{grid-template-columns:minmax(0,1fr);padding:22px}
   .acts .btn{flex:1 1 100%}
@@ -254,7 +267,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 <body>
 <div dir="rtl" lang="he">
 <a class="skip" href="#main">דילוג לתוכן</a>
-<div class="air" id="airbox" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><div class="light l4"></div><div class="light l5"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
+<div class="air" id="airbox" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><div class="light l4"></div><div class="light l5"></div><div class="grid"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
 
 <header class="nav" id="nav">
   <div class="in">
@@ -279,7 +292,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     </div>
       <div class="play" data-enter>
         <div class="swarm" data-anchor="swarm" aria-hidden="true"></div>
-        <p class="tagline" id="tagline">ייעוץ ומחקר בע״מ</p>
+        <p class="sr">ייעוץ ומחקר בע״מ</p>
         <form class="ask" id="ask"><label class="sr" for="q">שאלה לצוות מדגם</label><input id="q" maxlength="200" autocomplete="off" placeholder="שאלו את מדגם, למשל: איזה מחקר מתאים לי?"><button type="submit" class="ask-go" aria-label="שליחת השאלה"><svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></form>
         <div class="answer" id="answer" aria-live="polite" hidden><p id="answer-t"></p><div class="answer-foot"><a id="answer-go" href="#solutions" hidden>לקריאה בעמוד</a><span id="answer-src"></span></div></div>
         <p class="secrets" id="secrets"></p>
@@ -382,10 +395,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     <div class="wrap">
             <h2>הצוות שמלווה את המחקר שלכם</h2>
       <div class="team">
-        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/mano.jpg" alt="מנו גבע" loading="lazy"></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/mina.jpg" alt="ד״ר מינה צמח" loading="lazy"></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/ihab.jpg" alt="איהאב קדאח" loading="lazy"></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/michal.jpg" alt="מיכל שפירא" loading="lazy"></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/mano.jpg" alt="מנו גבע"></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/mina.jpg" alt="ד״ר מינה צמח"></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/ihab.jpg" alt="איהאב קדאח"></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/michal.jpg" alt="מיכל שפירא"></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
       </div>
     </div>
   </section>
@@ -411,6 +424,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     </div>
   </section>
 </main>
+<div class="fontpick" role="group" aria-label="בחירת גופן לבדיקה"><span>גופן לבדיקה:</span><button type="button" data-font="secular" style="font-family:'Secular One'">א</button><button type="button" data-font="karantina" style="font-family:Karantina;font-size:19px">ב</button><button type="button" data-font="frank" style="font-family:'Frank Ruhl Libre';font-weight:900">ג</button><button type="button" data-font="heebo" style="font-family:Heebo;font-weight:800">ד</button></div>
 <p class="toast" id="toast" role="status" aria-live="polite"></p>
 <footer><div class="wrap"><span>מדגם ייעוץ ומחקר בע״מ · מאז 1988</span><span class="eggs" id="eggs"></span><nav aria-label="ניווט תחתון"><a href="#solutions">פתרונות מחקר</a><a href="#fields">תחומי פעילות</a><a href="#capabilities">יכולות מחקר</a><a href="#expertise">סגמנטים</a><a href="#people">אודות</a><a href="#contact">צור קשר</a></nav></div></footer>
 </div>
@@ -433,11 +447,15 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const lookBtn = document.getElementById('look');
   const setLook = (l, save) => { document.documentElement.dataset.look = l; lookBtn.setAttribute('aria-pressed', l === 'light'); lookBtn.querySelector('span').textContent = l === 'light' ? 'גרסה כהה' : 'גרסה בהירה'; lookBtn.setAttribute('aria-label', l === 'light' ? 'מעבר לגרסה הכהה' : 'מעבר לגרסה הבהירה'); readCol(); if (save) try { localStorage.setItem('midgam-look', l); } catch (_) {} };
   { let l0 = /[?&]light/.test(location.search) ? 'light' : null; if (!l0) try { l0 = localStorage.getItem('midgam-look'); } catch (_) {} setLook(l0 === 'light' ? 'light' : 'dark'); }
+  // font pairings on review: remembered in this browser
+  const setFont = f => { document.documentElement.dataset.font = f; document.querySelectorAll('.fontpick button').forEach(b => b.setAttribute('aria-pressed', b.dataset.font === f)); try { localStorage.setItem('midgam-font', f); } catch (_) {} };
+  { let f0 = 'secular'; try { f0 = localStorage.getItem('midgam-font') || 'secular'; } catch (_) {} setFont(f0); }
+  document.querySelectorAll('.fontpick button').forEach(b => b.addEventListener('click', () => setFont(b.dataset.font)));
   lookBtn.addEventListener('click', () => setLook(document.documentElement.dataset.look === 'light' ? 'dark' : 'light', true));
   const size = () => {
     phone = innerWidth < 760; DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
     cv.width = W * DPR; cv.height = H * DPR; x.setTransform(DPR, 0, 0, DPR, 0, 0);
-    const n = phone ? 650 : 1500, nf = phone ? 220 : 520;
+    const n = phone ? 1100 : 2300, nf = phone ? 220 : 520;
     if (P.length !== n) P = Array.from({ length: n }, (_, i) => ({ x: rnd() * W, y: rnd() * H, vx: 0, vy: 0, u: rnd(), v: rnd(), ph: rnd() * 6.283, s: .6 + rnd() * .8, i, c: (q => q < .08 ? 'amber' : q < .26 ? 'teal' : q < .36 ? 'gold' : q < .66 ? 'glow' : 'sky')(rnd()), a: .5 }));
     if (FAR.length !== nf) FAR = Array.from({ length: nf }, () => ({ u: rnd(), v: rnd(), ph: rnd() * 6.283, r: .5 + rnd() * .9, d: .08 + rnd() * .25 }));
   };
@@ -470,21 +488,21 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const logoImg = new Image(); logoImg.src = 'assets/midgam-mark.png';
   const DRAW = {
     logo: [530, 153, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 530, 153, 0, 0, 530, 153); }],
-    year: [520, 200, g => { g.font = '900 190px Rubik, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
-    qmark: [300, 420, g => { g.font = '900 420px Rubik, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 225); }],
+    year: [520, 200, g => { g.font = '900 190px "Secular One", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
+    qmark: [300, 420, g => { g.font = '900 420px "Secular One", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 225); }],
     arabic: [760, 220, g => { g.direction = 'rtl'; g.font = '800 120px "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('استطلاع رأي', 380, 120); }],
     chat: [440, 260, g => { g.lineWidth = 12; rr(g, 16, 16, 240, 120, 44); g.stroke(); g.beginPath(); g.moveTo(70, 134); g.lineTo(52, 178); g.lineTo(112, 136); g.stroke();
       rr(g, 180, 120, 240, 110, 44); g.fill(); g.beginPath(); g.moveTo(370, 228); g.lineTo(396, 256); g.lineTo(330, 228); g.fill(); g.globalCompositeOperation = 'destination-out'; [250, 300, 350].forEach(cx => { g.beginPath(); g.arc(cx, 175, 13, 0, 6.283); g.fill(); }); g.globalCompositeOperation = 'source-over'; }],
     methods: [880, 220, g => { g.lineWidth = 12;
       rr(g, 52, 30, 96, 160, 18); g.stroke(); g.beginPath(); g.arc(100, 166, 8, 0, 6.283); g.fill(); g.fillRect(84, 46, 32, 6);
       rr(g, 262, 50, 150, 100, 10); g.stroke(); g.beginPath(); g.moveTo(236, 172); g.lineTo(438, 172); g.lineTo(420, 152); g.lineTo(254, 152); g.closePath(); g.fill();
-      rr(g, 480, 46, 160, 110, 30); g.stroke(); g.beginPath(); g.moveTo(520, 154); g.lineTo(506, 192); g.lineTo(556, 156); g.stroke(); g.font = '800 46px Rubik, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('SMS', 560, 103);
+      rr(g, 480, 46, 160, 110, 30); g.stroke(); g.beginPath(); g.moveTo(520, 154); g.lineTo(506, 192); g.lineTo(556, 156); g.stroke(); g.font = '800 46px "Secular One", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('SMS', 560, 103);
       g.beginPath(); g.arc(760, 66, 30, 0, 6.283); g.fill(); g.beginPath(); g.moveTo(706, 196); g.quadraticCurveTo(708, 112, 760, 108); g.quadraticCurveTo(812, 112, 814, 196); g.closePath(); g.fill(); rr(g, 800, 128, 52, 66, 6); g.globalCompositeOperation = 'destination-out'; g.fill(); g.globalCompositeOperation = 'source-over'; g.lineWidth = 7; g.stroke(); }],
     neural: [520, 260, g => { const L = [[4, 70], [5, 260], [3, 450]], nodes = L.map(([n, x2]) => Array.from({ length: n }, (_, i) => [x2, 30 + (i + .5) * 200 / n])); g.lineWidth = 3;
       for (let a = 0; a < 2; a++) nodes[a].forEach(p => nodes[a + 1].forEach(q => { g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke(); }));
       nodes.flat().forEach(([x2, y]) => { g.beginPath(); g.arc(x2, y, 17, 0, 6.283); g.fill(); }); }],
     ballot: [360, 280, g => { g.lineWidth = 14; g.save(); g.translate(176, 70); g.rotate(-.12); g.fillRect(-46, -66, 92, 104); g.globalCompositeOperation = 'destination-out'; g.lineWidth = 9; g.beginPath(); g.moveTo(-22, -16); g.lineTo(-4, 4); g.lineTo(28, -34); g.stroke(); g.restore();
-      g.globalCompositeOperation = 'destination-out'; g.fillRect(70, 100, 220, 40); g.globalCompositeOperation = 'source-over'; g.lineWidth = 14; g.strokeRect(70, 110, 220, 150); g.fillRect(96, 104, 168, 12); g.font = '800 40px Rubik, Arial'; g.textAlign = 'center'; g.fillText('קלפי', 180, 210); }],
+      g.globalCompositeOperation = 'destination-out'; g.fillRect(70, 100, 220, 40); g.globalCompositeOperation = 'source-over'; g.lineWidth = 14; g.strokeRect(70, 110, 220, 150); g.fillRect(96, 104, 168, 12); g.font = '800 40px "Secular One", Arial'; g.textAlign = 'center'; g.fillText('קלפי', 180, 210); }],
     cap: [380, 260, g => { g.beginPath(); g.moveTo(190, 30); g.lineTo(360, 100); g.lineTo(190, 170); g.lineTo(20, 100); g.closePath(); g.fill(); g.beginPath(); g.moveTo(96, 136); g.lineTo(96, 206); g.quadraticCurveTo(190, 250, 284, 206); g.lineTo(284, 136); g.lineTo(190, 176); g.closePath(); g.fill();
       g.lineWidth = 6; g.beginPath(); g.moveTo(190, 100); g.lineTo(320, 130); g.lineTo(320, 200); g.stroke(); g.beginPath(); g.arc(320, 212, 14, 0, 6.283); g.fill(); }],
     mic: [420, 280, g => { rr(g, 170, 20, 80, 140, 40); g.fill(); g.lineWidth = 12; g.beginPath(); g.arc(210, 120, 72, .15, Math.PI - .15); g.stroke(); g.beginPath(); g.moveTo(210, 192); g.lineTo(210, 236); g.moveTo(166, 244); g.lineTo(254, 244); g.stroke();
@@ -494,8 +512,21 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   };
   // any word becomes a shape: measured first, then drawn wide enough to hold it
   let heroWord = '', heroKind = '';
-  const wordShape = w => { const key = 'w:' + w; if (DRAW[key]) return key; const m = document.createElement('canvas').getContext('2d'); m.font = '900 170px Rubik, "Noto Sans Arabic", Arial'; m.direction = 'rtl';
-    const width = Math.max(200, Math.ceil(m.measureText(w).width) + 40); DRAW[key] = [width, 230, g => { g.direction = 'rtl'; g.font = '900 170px Rubik, "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(w, width / 2, 125); }]; return key; };
+  const wordShape = w => { const key = 'w:' + w; if (DRAW[key]) return key; const m = document.createElement('canvas').getContext('2d'); m.font = '900 170px "Secular One", "Noto Sans Arabic", Arial'; m.direction = 'rtl';
+    const width = Math.max(200, Math.ceil(m.measureText(w).width) + 40); DRAW[key] = [width, 230, g => { g.direction = 'rtl'; g.font = '900 170px "Secular One", "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(w, width / 2, 125); }]; return key; };
+  // the tagline, drawn at its real size on screen; the sampling grid is tuned so points and dots roughly match
+  const TAGS = {};
+  const tagline = (w, h) => { if (w < 60 || h < 8) return null; const key = w + 'x' + h; if (TAGS[key]) return TAGS[key];
+    const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.direction = 'rtl';
+    let fs = h * .9; g.font = `700 ${fs}px "Assistant", "Heebo", Arial`; const text = 'ייעוץ ומחקר בע״מ';
+    // spread the letters to the mark's width, the way the logo does
+    const natural = g.measureText(text).width, gap = Math.max(0, (w - natural) / (text.length - 1)); try { g.letterSpacing = gap + 'px'; } catch (_) {}
+    if (g.measureText(text).width > w) { fs *= w / g.measureText(text).width; g.font = `700 ${fs}px "Assistant", "Heebo", Arial`; }
+    g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, w / 2, h * .55);
+    const d = g.getImageData(0, 0, w, h).data, want = Math.ceil(P.length / 3); let pts = [];
+    for (let step = 1.6; step < 6; step += .2) { pts = []; for (let y = step / 2; y < h; y += step) for (let X = step / 2; X < w; X += step) if (d[((y | 0) * w + (X | 0)) * 4 + 3] > 140) pts.push([X / w, y / h]); if (pts.length <= want * 1.05) break; }
+    for (let i = pts.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pts[i], pts[j]] = [pts[j], pts[i]]; }
+    return (TAGS[key] = pts.length ? { pts } : null); };
   // a scanning light passes over each shape, as if it were being assembled
   const shaped = (r, kind, p, t, k) => { const D = DRAW[kind]; if (!D) return null; const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
     const pt = sh.pts[Math.floor(p.i / k) % sh.pts.length], [X, Y] = fit(r, sh, pt), sweep = ((t / 2600 + r.x / 900) % 1.4) - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 9);
@@ -503,15 +534,19 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   if (document.fonts) document.fonts.load('800 120px "Noto Sans Arabic"').then(() => { delete SHAPES.arabic; }).catch(() => {});
 
   const FORMS = {
-    wave(s, t) { // the hero: the Midgam swarm; it writes whatever word you type in the field below it
+    wave(s, t) { // the hero: the Midgam swarm draws the mark and its tagline; a question turns it into the topic's shape
       const box = rects(s, '[data-anchor=swarm]')[0]; if (!box) return null;
-      const kind = heroKind || 'logo', D = DRAW[kind]; if (!D) return null;
-      const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
-      const breathe = 1 + .012 * Math.sin(t / 1400);
-      return p => { const pt = sh.pts[p.i % sh.pts.length], [X0, Y0] = fit(box, sh, pt, 2), cx = box.x + box.w / 2, cy = box.y + box.h / 2;
-        const X = cx + (X0 - cx) * breathe + Math.sin(t / 900 + p.ph) * .7, Y = cy + (Y0 - cy) * breathe + Math.cos(t / 1100 + p.ph) * .7;
-        const sweep = (t / 2400) % 1.4 - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8);
-        return [X, Y, .7 + .3 * hit, 1.5 + hit]; };
+      const breathe = 1 + .012 * Math.sin(t / 1400), sweep = (t / 2400) % 1.4 - .2, cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+      const live = (X0, Y0, p) => [cx + (X0 - cx) * breathe + Math.sin(t / 900 + p.ph) * .6, cy + (Y0 - cy) * breathe + Math.cos(t / 1100 + p.ph) * .6];
+      if (heroKind) { const D = DRAW[heroKind]; if (!D) return null; const sh = shape(heroKind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
+        return p => { const pt = sh.pts[p.i % sh.pts.length], [X, Y] = live(...fit(box, sh, pt, 4), p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .7 + .3 * hit, 1.5 + hit]; }; }
+      const D = DRAW.logo, sh = shape('logo', D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
+      // the mark fills the top of the box; the tagline gets its own strip, as wide as the mark
+      const markBox = { x: box.x, y: box.y, w: box.w, h: box.h * .74 }, mw = Math.min(markBox.w - 8, (markBox.h - 8) * sh.ar), tagBox = { x: cx - mw / 2, y: box.y + box.h * .79, w: mw, h: box.h * .17 };
+      const tag = tagline(Math.round(tagBox.w), Math.round(tagBox.h));
+      return p => {
+        if (p.i % 3 === 2 && tag) { const j = Math.floor(p.i / 3), pt = tag.pts[j % tag.pts.length], X0 = tagBox.x + pt[0] * tagBox.w, Y0 = tagBox.y + pt[1] * tagBox.h, [X, Y] = live(X0, Y0, p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .85 + .15 * hit, 1.05 + hit * .4]; }
+        const pt = sh.pts[p.i % sh.pts.length], [X, Y] = live(...fit(markBox, sh, pt, 4), p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .7 + .3 * hit, 1.5 + hit]; };
     },
     sample(s, t) { // credibility: a sample gathers into a disc, rings marking the population around it
       const d = rects(s, '[data-anchor=disc]')[0]; if (!d || d.w < 10) return null;
@@ -540,9 +575,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       return p => { if (p.i % 5 === 4 && ts.length) { const r = ts[Math.floor(p.i / 5) % ts.length], [X, Y] = perim(r, p.u + t / 30000, 7 + p.v * 8); return [X, Y, .6, 1.6]; } return pics && pics(p); };
     },
     pair(s, t) { return FORMS.lanes(s, t); },
-    halo(s, t) { // the team: a soft halo of people around each person
+    halo(s, t) { // the team: people moving along the edge of each portrait
       const fs = rects(s, '[data-anchor=face]'); if (!fs.length) return null;
-      return p => { const r = fs[p.i % fs.length], cx = r.x + r.w / 2, cy = r.y + r.h / 2, R = Math.min(r.w, r.h) / 2, a = p.u * 6.283 + t / (7000 + p.v * 5000), rr = R * (1.06 + p.v * .3); return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr, p.v > .7 ? .35 : .8]; };
+      return p => { const r = fs[p.i % fs.length], [X, Y] = perim(r, p.u + t / (24000 + p.v * 9000), 6 + p.v * 16); return [X, Y, p.v > .6 ? .35 : .75, 1.4 + (1 - p.v)]; };
     },
     contact(s, t) { // contact: a big question mark made of people, and more of them along the form's edge
       const q = rects(s, '[data-kind=qmark]')[0], f = rects(s, '[data-anchor=form]')[0];
@@ -585,8 +620,8 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     if (typed.endsWith('1988')) { show('year'); egg('year', 'גילית את שנת ההקמה'); typed = ''; }
     else if (typed.endsWith('מדגם') || typed.toLowerCase().endsWith('midgam')) { show('logo'); egg('word', 'כתבת מדגם, והנקודות הקשיבו'); typed = ''; } });
   // ask Midgam: a question about the site; the answer comes from the site's own text
-  const askF = document.getElementById('ask'), qEl = document.getElementById('q'), ansBox = document.getElementById('answer'), ansT = document.getElementById('answer-t'), ansGo = document.getElementById('answer-go'), ansSrc = document.getElementById('answer-src'), tagEl = document.getElementById('tagline');
-  const setKind = k => { heroKind = k; tagEl.classList.toggle('off', !!k); };
+  const askF = document.getElementById('ask'), qEl = document.getElementById('q'), ansBox = document.getElementById('answer'), ansT = document.getElementById('answer-t'), ansGo = document.getElementById('answer-go'), ansSrc = document.getElementById('answer-src');
+  const setKind = k => { heroKind = k; };
   // topics: which shape the swarm draws and which part of the page answers
   const TOPICS = [
     [/משפט|חוות דעת|ראיה|ראייה|תביע|ייצוגי|עורך דין|עו״ד|עו"ד|סימן מסחר|הטעיה/, 'justice', '#expertise'],
@@ -694,11 +729,15 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   function note(s2, X, Y, a) { x.globalAlpha = Math.min(1, a); x.fillStyle = `rgb(${inkC})`; x.font = '500 13px "IBM Plex Mono", monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(s2, X, Y); x.globalAlpha = 1; }
   const research = (t, sy) => {
     mood();
-    const A = document.documentElement.dataset.look === 'light' ? .085 : .13;
+    const A = document.documentElement.dataset.look === 'light' ? .1 : .16;
     // which two charts are on screen, and how far between them
     let i = 0, f = 0; sections.forEach((s2, k) => { const r = s2.getBoundingClientRect(); if (r.top <= H * .5 && r.bottom > H * .5) { i = k; f = (H * .5 - r.top) / r.height; } });
     const mix = Math.min(1, Math.max(0, (f - .6) / .4));
+    // a second, fainter chart from further along the page drifts behind at its own speed, for depth
+    const ghost = CHARTS[(i + 3) % CHARTS.length]; x.save(); x.translate(-W * .08 + Math.sin(t / 9000) * 30, -((sy * .18) % (H * .6)) + H * .12); x.scale(1.18, 1.18); ghost(A * .45, t * .7); x.restore();
     x.save(); CHARTS[i % CHARTS.length](A * (1 - mix), t); if (mix > 0 && i + 1 < sections.length) CHARTS[(i + 1) % CHARTS.length](A * mix, t); x.restore();
+    // a slow scan line sweeps down the screen, like an instrument reading the page
+    const scan = ((t / 7000) % 1) * (H + 200) - 100; const sg = x.createLinearGradient(0, scan - 60, 0, scan + 2); sg.addColorStop(0, `rgba(${inkC},0)`); sg.addColorStop(1, `rgba(${inkC},${A * .9})`); x.fillStyle = sg; x.fillRect(0, scan - 60, W, 62); x.fillStyle = `rgba(${inkC},${A * 2})`; x.fillRect(0, scan, W, 1);
     // statistical notation drifting at different depths
     NOTES.forEach(n => { const X = n.u * W + Math.sin(t / 8000 + n.ph) * 30, Y = ((n.v * H * 1.4 - sy * n.d) % (H * 1.4) + H * 1.4) % (H * 1.4) - H * .2; note(n.s, X, Y, .16 + .06 * Math.sin(t / 2000 + n.ph)); });
     // the page as an axis: n = 0 at the top, 1,000 at the end (desktop only; on a phone it would crowd the swarm)
@@ -708,6 +747,51 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     for (let k = 0; k <= 20; k++) { const Y = 90 + k / 20 * (H - 130); x.beginPath(); x.moveTo(gx, Y); x.lineTo(gx + (k % 5 ? 5 : 11), Y); x.stroke(); if (k % 5 === 0) { x.globalAlpha = .4; x.fillStyle = `rgb(${COL.sky})`; x.font = '500 10px "IBM Plex Mono", monospace'; x.textAlign = 'left'; x.fillText(String(k * 50), gx + 15, Y + 3); x.globalAlpha = 1; } }
     const my2 = 90 + prog * (H - 130); x.fillStyle = `rgb(${COL.sky})`; x.beginPath(); x.arc(gx, my2, 4.5, 0, 6.283); x.fill(); x.font = '600 11px "IBM Plex Mono", monospace'; x.textAlign = 'left'; x.fillText('n = ' + Math.round(prog * 1000).toLocaleString('en'), gx + 14, my2 + 4);
   };
+
+
+  /* ---------- portraits as halftone: the person drawn in dots, dissolving downward into the swarm ---------- */
+  const portraits = [...document.querySelectorAll('.person .face')].map(face => ({ face, cv: face.querySelector('.ht'), img: face.querySelector('.src'), cells: null, hover: 0, want: 0 }));
+  const sampleImg = pr => { const { cv: c, img } = pr, w = c.clientWidth, h = c.clientHeight; if (!w || !img.naturalWidth) return;
+    const off = document.createElement('canvas'), cell = w < 200 ? 4 : 5; off.width = Math.ceil(w); off.height = Math.ceil(h); const g = off.getContext('2d');
+    // the head sits high in the card; shoulders are drawn under it, so the portrait reads as a bust
+    const sz = w * .9, ix = (w - sz) / 2, iy = h * .02; g.drawImage(img, ix, iy, sz, sz);
+    const hx = w / 2, hy = iy + sz * .46, rx = sz * .37, ry = sz * .47, neck = iy + sz * .9;
+    const torso = (X, y) => { if (y < neck - sz * .06) return 0; const half = w * (.16 + Math.min(.3, (y - neck) / h * 1.6)); const dx = Math.abs(X - hx) / half; return dx > 1 ? 0 : 1 - dx ** 6; };
+    const d = g.getImageData(0, 0, off.width, off.height).data, cells = [], rr = seedR(Math.round(w));
+    for (let y = cell / 2; y < h; y += cell) for (let X = cell / 2 + ((y / cell | 0) % 2) * cell / 2; X < w; X += cell) {
+      const head = Math.max(0, 1 - Math.pow(Math.hypot((X - hx) / rx, (y - hy) / ry), 4)), body = torso(X, y) * Math.min(1, Math.max(0, (h * .98 - y) / (h * .3)));
+      let lum, m;
+      if (head > .02 && y < neck + 4) { const k = ((y | 0) * off.width + (X | 0)) * 4; lum = (d[k] * .3 + d[k + 1] * .59 + d[k + 2] * .11) / 255; m = head; }
+      else if (body > .02) { lum = .62 + .12 * Math.sin(X / 9) * Math.cos(y / 13); m = body; }
+      else { if (rr() > .05) continue; lum = .5; m = .12; }
+      cells.push({ x: X, y, lum, m, ph: rr() * 6.283, head: head > .02 && y < neck + 4, z: head > .02 && y < neck + 4 ? head : body * .4 });
+    }
+    // stretch each face's own range, so every portrait has full contrast whatever the photo's lighting
+    const hl = cells.filter(q => q.head).map(q => q.lum).sort((a2, b2) => a2 - b2), lo = hl[Math.floor(hl.length * .04)] || 0, hi = hl[Math.floor(hl.length * .97)] || 1;
+    cells.forEach(q => { if (q.head) { q.lum = Math.min(1, Math.max(0, (q.lum - lo) / Math.max(.05, hi - lo))) ** .8; q.z = q.z * .7 + q.lum * .3; } });
+    pr.cells = cells; pr.cell = cell; pr.w = w; pr.h = h;
+  };
+  const drawPortrait = (pr, t) => {
+    const { cv: c } = pr; if (!pr.cells) return; const d2 = Math.min(2, devicePixelRatio || 1); if (c.width !== Math.round(pr.w * d2)) { c.width = Math.round(pr.w * d2); c.height = Math.round(pr.h * d2); }
+    const g = c.getContext('2d'); g.setTransform(d2, 0, 0, d2, 0, 0); g.clearRect(0, 0, pr.w, pr.h);
+    const light = document.documentElement.dataset.look === 'light', hv = pr.hover, mx = pr.mx || 0, my = pr.my || 0;
+    // shadows in Midgam blue, highlights in a warm white, so the faces look alive rather than ghostly
+    const A = light ? [29, 86, 137] : [52, 150, 206], B = light ? [13, 44, 79] : [255, 244, 228], T2 = light ? [20, 150, 138] : [38, 196, 180];
+    for (const q of pr.cells) {
+      const v = light ? 1 - q.lum : q.lum, tone = (.3 + .7 * v) * q.m;
+      let r = pr.cell * .56 * tone * (1 + hv * .12 * Math.sin(t / 300 + q.ph)); if (r < .35) continue;
+      const mix = Math.min(1, Math.max(0, (v - .25) * 1.4)), col = q.m < .2 ? T2 : A.map((a2, i) => Math.round(a2 + (B[i] - a2) * mix));
+      // parallax: nearer dots move further, so the face turns a little toward the pointer
+      const dz = (q.z - .35) * 7 * hv, X = q.x + mx * dz, Y = q.y + my * dz * .8;
+      g.globalAlpha = q.m < .2 ? .55 : .95; g.fillStyle = `rgb(${col})`; g.beginPath(); g.arc(X, Y, r, 0, 6.283); g.fill();
+    }
+  };
+  const portraitLoop = t => { portraits.forEach(pr => { pr.hover += (pr.want - pr.hover) * .12; pr.mx = (pr.mx || 0) + ((pr.tx || 0) - (pr.mx || 0)) * .15; pr.my = (pr.my || 0) + ((pr.ty || 0) - (pr.my || 0)) * .15; if (pr.hover > .01 || pr.dirty) { drawPortrait(pr, t); pr.dirty = pr.hover > .01; } }); requestAnimationFrame(portraitLoop); };
+  const setupPortraits = () => portraits.forEach(pr => { const go = () => { sampleImg(pr); drawPortrait(pr, 0); }; pr.img.complete && pr.img.naturalWidth ? go() : pr.img.addEventListener('load', go, { once: true }); });
+  portraits.forEach(pr => { const card = pr.face.closest('.person'); card.addEventListener('pointerenter', () => { pr.want = 1; }); card.addEventListener('pointerleave', () => { pr.want = 0; pr.tx = pr.ty = 0; pr.dirty = true; });
+    card.addEventListener('pointermove', e => { const r = pr.face.getBoundingClientRect(); pr.tx = Math.max(-1, Math.min(1, (e.clientX - r.left) / r.width * 2 - 1)); pr.ty = Math.max(-1, Math.min(1, (e.clientY - r.top) / r.height * 2 - 1)); }); });
+  setupPortraits(); addEventListener('resize', () => setupPortraits()); requestAnimationFrame(portraitLoop);
+  lookBtn.addEventListener('click', () => portraits.forEach(pr => drawPortrait(pr, 0)));
 
   let last = performance.now(), manual = false, born = performance.now();
   const frame = t => {
