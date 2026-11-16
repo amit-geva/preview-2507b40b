@@ -1,0 +1,1368 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>יום אחד במדגם</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Direction D: an original top-down pixel world in Midgam blues, running in demo mode beside the headline. */
+:root{
+  --bg:#f1f5f9; --ink:#0e1216; --ink-2:#545e69; --line:rgba(14,18,22,.08);
+  --blue:#1d5689; --blue-dd:#123a5e; --sky:#229ad6; --sky-soft:#eaf2f9; --grey-blue:#5d7d9c;
+  --font:"Heebo","Noto Sans Arabic",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --ease:cubic-bezier(.23,1,.32,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;top:0;left:0;width:1440px;height:900px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(760px 620px at 30% 56%,#fff 0%,rgba(255,255,255,0) 70%),radial-gradient(620px 460px at 98% -4%,rgba(34,154,214,.22),transparent 70%),radial-gradient(700px 520px at 4% 100%,rgba(29,86,137,.12),transparent 70%),var(--bg)}
+.nav{position:absolute;top:0;left:0;right:0;height:96px;display:flex;align-items:center;gap:22px;padding:0 72px}
+.logo{height:42px;width:auto;display:block}
+.links{display:flex;gap:4px;margin-inline-start:auto;padding:5px;border-radius:999px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--line)}
+.links a{height:38px;display:inline-flex;align-items:center;padding:0 16px;border-radius:999px;font-size:15px;color:var(--ink-2)}
+.lang{display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--line);font-size:14px;font-weight:600}
+.lang button{appearance:none;border:0;background:transparent;cursor:pointer;font:600 14px var(--font);height:32px;min-width:38px;display:inline-grid;place-items:center;padding:0 10px;border-radius:999px;color:var(--ink-2);transition:background-color .2s var(--ease),color .2s var(--ease)}
+.lang button.on{background:var(--blue);color:#fff}
+.lang button:focus-visible{outline:3px solid #8fd3f5;outline-offset:2px}
+.glang{flex:none;background:rgba(255,255,255,.08);box-shadow:none;padding:3px}
+.glang button{height:28px;min-width:34px;padding:0 8px;font-size:13px;color:#bfe6fa}
+.glang button.on{background:#229ad6;color:#fff}
+.snd{flex:none;width:34px;height:34px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);color:#bfe6fa;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.snd svg{width:18px;height:18px;pointer-events:none}
+.snd .x{display:none}.snd[aria-pressed=false] .x{display:block}.snd[aria-pressed=false] .w{display:none}
+.snd[aria-pressed=false]{color:#7f9bb5}
+.snd:focus-visible{outline:3px solid #8fd3f5;outline-offset:2px}
+#mplay .snd{width:40px;height:40px}
+@media (orientation:portrait){#mplay .mtop{flex-wrap:wrap;row-gap:8px}#mplay .mtop .mission{order:5;flex:1 1 100%}#mplay .mtop .ctl.exit{margin-inline-start:auto}}
+.gtop{display:flex;align-items:center;gap:10px;height:44px;padding:0 4px 10px}
+html[dir=ltr] .copy{right:auto;left:72px}
+html[dir=ltr] .game{left:auto;right:72px}
+html[dir=ltr] .stage.playing .game{right:auto}
+html[dir=ltr] .btn .ar svg,html[dir=ltr] .play i svg{transform:scaleX(-1)}
+html[lang=en] h1{font-size:64px;letter-spacing:-.035em}
+html[lang=ar] h1{font-size:54px;letter-spacing:0;line-height:1.15}
+html[lang=ar] .sub{font-size:18.5px}
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:12px;height:52px;padding-inline-start:24px;padding-inline-end:7px;border-radius:999px;background:var(--blue);color:#fff;font:500 16.5px/1 var(--font);box-shadow:0 14px 26px -14px rgba(29,86,137,.8)}
+.btn .ar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff;color:var(--blue)}
+.btn .ar svg{width:14px;height:14px}
+.btn--sm{height:46px;font-size:15px;padding-inline-start:20px;padding-inline-end:6px}.btn--sm .ar{width:34px;height:34px}
+.btn--lg{height:60px;font-size:17.5px;padding-inline-start:30px;padding-inline-end:9px}.btn--lg .ar{width:44px;height:44px}
+.btn--soft{background:#fff;color:var(--blue);padding-inline-end:26px;box-shadow:0 0 0 1px rgba(29,86,137,.18),0 8px 20px -14px rgba(29,86,137,.45)}
+.copy{position:absolute;top:176px;right:72px;width:560px}
+.badge{display:inline-flex;align-items:center;gap:10px;height:36px;padding-inline-start:5px;padding-inline-end:14px;border-radius:999px;background:#fff;box-shadow:0 0 0 1px var(--line);font-size:14.5px;font-weight:500;color:var(--ink-2)}
+.badge b{height:26px;display:inline-grid;place-items:center;padding:0 11px;border-radius:999px;background:var(--sky);color:#fff;font-size:13px;font-weight:700}
+h1{margin:22px 0 0;font-size:74px;line-height:1.02;font-weight:800;letter-spacing:-.04em}
+h1 span{display:block;color:var(--grey-blue);font-weight:700}
+.sub{margin:22px 0 0;font-size:19.5px;line-height:1.65;color:var(--ink-2)}
+.acts{display:flex;gap:12px;margin-top:30px}
+.fields{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2);line-height:1.7}
+.fields b{color:var(--ink);font-weight:700}
+/* the game frame */
+.game{position:absolute;left:72px;top:118px;width:704px;height:712px;border-radius:30px;background:#0b2238;padding:16px;box-shadow:0 40px 80px -36px rgba(11,34,56,.75),inset 0 0 0 2px rgba(143,211,245,.15)}
+canvas{display:block;width:672px;height:576px;border-radius:16px;image-rendering:pixelated;image-rendering:crisp-edges}
+.gbar{display:flex;align-items:center;justify-content:space-between;height:60px;padding:12px 4px 0;color:#bfe6fa;font-size:14px}
+.mission{flex:1;min-width:0;display:flex;align-items:center;gap:8px;height:34px;color:#bfe6fa;font-size:14px;overflow:hidden;white-space:nowrap}
+.mission .lbl{flex:none;font-weight:700;color:#fff}
+.mission .done{flex:none;color:#7f9bb5;text-decoration:line-through;text-decoration-thickness:1.5px}
+.mission .more{flex:none;color:#7f9bb5}
+.mission .next{flex:none;height:30px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border-radius:999px;background:#229ad6;color:#fff;font-weight:700}
+.mission .next.ok{background:#f2c14e;color:#0b2238}
+.gbar b{color:#fff;font-weight:700;letter-spacing:.02em}
+.gbar .keys{display:flex;gap:6px;align-items:center}
+.gbar kbd{min-width:28px;height:28px;display:inline-grid;place-items:center;border-radius:8px;background:#1d5689;color:#fff;font:700 13px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.play{text-decoration:none;display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px 0 8px;border-radius:999px;background:#fff;color:var(--blue);font:800 16px var(--font);box-shadow:0 0 0 4px rgba(255,255,255,.18)}
+.play i{width:32px;height:32px;border-radius:50%;background:var(--blue);display:grid;place-items:center}
+.play i svg{width:16px;height:16px}
+.play,.ctl,.fin button,.fin a{cursor:pointer;border:0}
+.play:focus-visible,.ctl:focus-visible,.fin button:focus-visible,.fin a:focus-visible,canvas:focus-visible{outline:3px solid #8fd3f5;outline-offset:3px}
+.copy,.game{transition:opacity .45s var(--ease),transform .55s var(--ease),left .55s var(--ease),top .55s var(--ease)}
+.stage.playing .copy{opacity:.12;pointer-events:none}
+.stage.playing .game{left:50%;top:50%;animation:none;opacity:1;transform:translate(-50%,-50%) scale(1.14);z-index:10}
+.controls{display:none;align-items:center;gap:8px}
+.stage.playing .controls{display:flex}
+.stage.playing .demo-only{display:none}
+.pad{direction:rtl;display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(2,26px);gap:3px}
+.ctl{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;display:grid;place-items:center;border-radius:10px;background:#1d5689;color:#fff;font:700 14px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3);touch-action:none;user-select:none;-webkit-user-select:none}
+.ctl:active{transform:translateY(1px);background:#229ad6}
+.ctl svg{width:14px;height:14px;pointer-events:none}
+.ctl,.ctl *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+html.mobile-play,html.mobile-play *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.pad [data-dir=up]{grid-column:2;grid-row:1}.pad [data-dir=left]{grid-column:3;grid-row:2}.pad [data-dir=down]{grid-column:2;grid-row:2}.pad [data-dir=right]{grid-column:1;grid-row:2}
+.ctl.talk{transition:opacity .18s var(--ease),transform .18s var(--ease);height:46px;padding:0 18px;border-radius:999px;background:#f2c14e;color:#0b2238;font-size:15px}
+.ctl.talk.off{opacity:0;transform:scale(.85);pointer-events:none}
+.ctl.exit{height:40px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.12);font-size:14px}
+.hint{font-size:13px;color:#bfe6fa;display:inline-flex;align-items:center;gap:6px}
+.hint .kb{display:inline-flex;gap:2px;direction:ltr}
+.hint kbd{min-width:20px;height:20px;display:inline-grid;place-items:center;padding:0 3px;border-radius:5px;background:#1d5689;color:#fff;font:700 11px var(--font);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.hint kbd.space{width:44px;position:relative}
+.hint kbd.space::after{content:"";position:absolute;left:10px;right:10px;bottom:6px;height:4px;border:1.5px solid #fff;border-top:0;border-radius:0 0 2px 2px}
+.fin{position:absolute;left:16px;right:16px;top:60px;height:576px;border-radius:16px;background:rgba(11,34,56,.86);display:grid;place-items:center;text-align:center;color:#fff;z-index:3}
+.fin[hidden]{display:none}
+.fin .card{width:440px;max-width:90%;padding:30px 30px 26px;border-radius:24px;background:#fff;color:#0e1216;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.fin h2{margin:0;font-size:26px;line-height:1.2;font-weight:800}
+.fin p{margin:8px 0 0;color:#545e69;font-size:16px}
+.fin .row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.fin button,.fin a{height:48px;padding:0 20px;border-radius:999px;background:#eaf2f9;color:#1d5689;font:700 16px var(--font);display:inline-flex;align-items:center;text-decoration:none}
+.fin .pri{background:#1d5689;color:#fff}
+.fin .pct{font-size:56px;font-weight:800;color:#1d5689;line-height:1;margin-top:6px}
+.fin small{display:block;margin-top:8px;color:#5f6975;font-size:13px}
+.fin .cta{margin-top:20px;padding-top:18px;border-top:1px solid rgba(14,18,22,.1)}
+.fin h3{margin:0;font-size:22px;line-height:1.25;font-weight:800;color:#1d5689}
+.fin .cta p{margin-top:6px;font-size:15px}
+.fin .cta .row{margin-top:14px}
+.fin .row.sm{margin-top:12px}
+.fin .row.sm .quiet{box-shadow:none;color:#5f6975;font-weight:600}
+.fin .row.sm .quiet:hover{color:#1d5689}
+.fin .row.sm a,.fin .row.sm button{height:40px;font-size:14.5px;padding:0 16px;background:transparent;box-shadow:inset 0 0 0 1px rgba(29,86,137,.25)}
+/* a person's card: placeholder portrait, name, role, a line */
+.fin .pc{text-align:start;padding:24px 24px 20px}
+.pc-top{display:flex;align-items:center;gap:16px}
+#pc-img{flex:none;width:104px;height:88px;border-radius:18px;background:#cfe8f7;image-rendering:pixelated;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(29,86,137,.15)}
+#pc-img.logo{object-fit:contain;image-rendering:auto;background:#fff;padding:12px;box-shadow:0 0 0 1px rgba(14,18,22,.1)}
+#pc-role{display:block;margin:0;color:#229ad6;font-size:14px;font-weight:700}
+.pc h2{margin-top:2px}
+#pc-line{margin:16px 0 0;color:#2a3540;font-size:16px;line-height:1.6;text-wrap:pretty}
+.fin .pc-note{margin-top:10px;color:#8a95a1;font-size:12.5px}
+.fin .pc-note[hidden]{display:none}
+.pc .row{justify-content:flex-start;margin-top:18px}
+/* mobile play: the game takes the whole screen */
+#mplay{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;position:fixed;inset:0;z-index:100;display:none;background:#0b2238;color:#fff;touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;
+  padding:max(10px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));
+  grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"top" "game" "hint" "ctl";gap:10px;align-items:start;justify-items:center}
+html.mobile-play #mplay{display:grid}
+html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
+#mplay .mtop{grid-area:top;width:100%;display:flex;align-items:center;gap:8px;min-width:0}
+#mplay .ctl.exit{flex:none;height:40px;padding:0 16px}
+#mplay canvas{grid-area:game;width:100%;max-width:min(100%,calc((100dvh - 250px) * 224 / 192));height:auto;aspect-ratio:224/192;border-radius:12px;touch-action:none}
+#mplay .mctl{grid-area:ctl;align-self:end;width:100%;max-width:560px;display:flex;align-items:center;justify-content:space-between;direction:ltr;padding:0 6px}
+#mplay .pad{direction:rtl;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(2,52px);gap:6px}
+#mplay .ctl{touch-action:none}
+#mplay .ctl svg{width:24px;height:24px}
+#mplay .ctl.talk{width:100px;height:100px;padding:0;border-radius:50%;font-size:20px;box-shadow:0 0 0 6px rgba(242,193,78,.18),inset 0 -3px 0 rgba(0,0,0,.25)}
+#mplay .mhint{grid-area:hint;font-size:13px;color:#bfe6fa;pointer-events:none}
+#mplay #finale{position:fixed;inset:0;height:auto;border-radius:0;overflow:auto;padding:16px}
+#mplay #finale,#mplay #pcard{grid-template-columns:minmax(0,1fr)}
+#mplay #pcard{position:fixed;inset:0;height:auto;border-radius:0;overflow:auto;padding:16px}
+#mplay #finale .card,#mplay #pcard .card{width:100%;max-width:440px;margin:0 auto;padding:24px 20px 20px}
+#mplay .glang{flex:none}
+#mplay .mission{flex:1;min-width:0;height:auto;min-height:34px;white-space:normal;overflow:visible}
+#mplay .mission .lbl{font-size:13px;color:#bfe6fa;font-weight:600}
+#mplay .mission .next{flex:1 1 auto;min-width:0;height:auto;min-height:30px;padding:5px 12px;line-height:1.3;white-space:normal}
+@media (orientation:landscape) and (max-height:560px){
+  #mplay{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"top top top" "pad game talk";gap:8px 16px;align-items:center;direction:ltr}
+  html[dir=rtl] #mplay .mtop{direction:rtl}
+  #mplay .mctl{display:contents}
+  #mplay .pad{grid-area:pad}
+  #mplay .ctl.talk{grid-area:talk}
+  #mplay canvas{max-width:none;width:auto;height:calc(100dvh - 76px);max-height:calc(100dvh - 76px)}
+  #mplay .mhint{display:none}
+}
+html.embed,html.embed body{background:#06111c}
+html.embed .stage{background:none}
+html.embed .nav,html.embed .copy{display:none}
+html.embed .game{animation:none;opacity:1;transform:none;box-shadow:none}
+html.embed .stage.playing .game{left:72px;top:118px;transform:none}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+[data-up]{opacity:0;transform:translateY(14px);animation:up .7s var(--ease) forwards;animation-delay:calc(var(--i,0)*90ms + 120ms)}
+@keyframes up{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){[data-up]{animation:none;opacity:1;transform:none}.play{animation:none}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <header class="nav">
+    <img class="logo" src="assets/midgam-logo.png" alt="מדגם — ייעוץ ומחקר בע״מ">
+    <nav class="links"><a data-i18n="nav1">תחומי פעילות</a><a data-i18n="nav2">ממצאים</a><a data-i18n="nav3">מקרי בוחן</a><a data-i18n="nav4">אודות</a></nav>
+    <div class="lang" role="group" data-i18n-aria="lang" aria-label="שפה"><button type="button" data-lang="he" lang="he" class="on" aria-pressed="true">עב</button><button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ar" lang="ar" aria-pressed="false">ع</button></div>
+    <a class="btn btn--sm"><span data-i18n="cta">פנייה למחקר</span><span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </header>
+
+  <div class="copy">
+    <span class="badge" data-up style="--i:0"><b data-i18n="badge1">משחק · 3 דקות</b><span data-i18n="title">יום אחד במדגם</span></span>
+    <h1 data-up style="--i:1" data-i18n="h1">תצליחו להגיש<span>סקר תקין?</span></h1>
+    <p class="sub" data-up style="--i:2" data-i18n="sub">פוגשים ברחוב עורך שצריך סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. הוא יקבל את הסקר רק אם הוא תקין.</p>
+    <div class="acts" data-up style="--i:3">
+      <a class="btn btn--lg" href="#" data-play><span data-i18n="playNow">שחקו עכשיו</span><span class="ar"><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="currentColor"/></svg></span></a>
+      <a class="btn btn--lg btn--soft" data-i18n="cta">פנייה למחקר</a>
+    </div>
+    <p class="fields" data-up style="--i:4" data-i18n="fields">מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b></p>
+  </div>
+
+  <div class="game" data-up style="--i:2">
+    <div class="gtop" id="gtop"><div class="mission" id="mission" aria-live="polite"></div><div class="lang glang" role="group" data-i18n-aria="lang" aria-label="שפה" id="glang"><button type="button" data-lang="he" lang="he" class="on" aria-pressed="true">עב</button><button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ar" lang="ar" aria-pressed="false">ع</button></div><button type="button" class="snd" id="snd" data-i18n-aria="music" aria-label="מוזיקה" aria-pressed="true"><svg viewBox="0 0 16 16" fill="none"><path d="M2.5 6h2.2L8 3.2v9.6L4.7 10H2.5z" fill="currentColor"/><path class="w" d="M10.5 5.5a3.5 3.5 0 0 1 0 5M12.3 3.8a6 6 0 0 1 0 8.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path class="x" d="m10.6 6 3.6 4M14.2 6l-3.6 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button></div>
+    <canvas id="cv" tabindex="0" width="672" height="576" role="img" data-i18n-aria="canvas" aria-label="משחק פיקסלים: חוקר צעיר פוגש ברחוב עורך שמבקש סקר, עובר במשרדי מדגם אצל מנו גבע, החוקרים, המוקד הטלפוני והאיסוף האינטרנטי, ומגיש לו בחדר החדשות סקר תקין שמתפרסם."></canvas>
+    <div class="gbar">
+      <span class="demo-only" data-i18n="demo"><b>יום אחד במדגם</b> · מצב הדגמה</span>
+      <a class="play demo-only" href="#" data-play><i><svg viewBox="0 0 16 16" fill="none"><path d="M11.6 3.9v8.2a.7.7 0 0 1-1.1.6L4.3 8.6a.7.7 0 0 1 0-1.2l6.2-4.1a.7.7 0 0 1 1.1.6z" fill="#fff"/></svg></i><span data-i18n="play">שחקו</span></a>
+      <div class="controls">
+        <div class="pad" data-i18n-aria="pad" aria-label="כפתורי הליכה">
+          <button class="ctl" type="button" data-dir="up" data-i18n-aria="up" aria-label="למעלה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 10 8 5.5l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="right" data-i18n-aria="right" aria-label="ימינה"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="down" data-i18n-aria="down" aria-label="למטה"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 6 8 10.5 12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="ctl" type="button" data-dir="left" data-i18n-aria="left" aria-label="שמאלה"><svg viewBox="0 0 16 16" fill="none"><path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <button class="ctl talk off" type="button" id="talk" data-i18n="talk">דברו</button>
+      </div>
+      <span class="controls"><span class="hint"><span class="kb"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd></span> <span data-i18n="walk">להליכה</span> · <kbd class="space"></kbd> <span data-i18n="space">מקש רווח לדיבור</span></span><button class="ctl exit" type="button" id="exit" data-i18n="exit">יציאה</button></span>
+    </div>
+    <div class="fin" id="finale" hidden>
+      <div class="card" id="fin-q"><h2 data-i18n="finQ">ומה אתם חושבים?</h2><p data-i18n="finQ2">להישאר בשעון קיץ כל השנה?</p><div class="row"><button type="button" data-ans="0" data-i18n="a0">בעד</button><button type="button" data-ans="1" data-i18n="a1">נגד</button><button type="button" data-ans="2" data-i18n="a2">לא יודע/ת</button></div></div>
+      <div class="card" id="fin-r" hidden><h2 data-i18n="finR">אנשים כמוכם</h2><div class="pct" id="fin-pct"></div><p data-i18n="finR2">מבין מי ששיחקו במשחק חושבים כמוכם.</p><small data-i18n="finR3">נתוני דוגמה, עד שנחבר מונה אמיתי באתר</small><div class="cta"><h3 data-i18n="next1">ועכשיו, מה הסקר שלך?</h3><p data-i18n="next2">ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.</p><div class="row"><a class="pri" href="#contact" id="contact" data-i18n="contact">דברו איתנו</a></div></div><div class="row sm"><button type="button" class="quiet" id="again" data-i18n="close">סגירה</button></div></div>
+    </div>
+    <div class="fin" id="pcard" hidden><div class="card pc" role="dialog" aria-labelledby="pc-name"><div class="pc-top"><img id="pc-img" alt=""><div><small id="pc-role"></small><h2 id="pc-name"></h2></div></div><p id="pc-line"></p><small class="pc-note" id="pc-note" data-i18n="phNote">תמונה וטקסט זמניים</small><div class="row"><button type="button" class="pri" id="pc-close" data-i18n="cont">המשך</button></div></div></div>
+    <p class="sr" id="live" aria-live="polite"></p>
+    <div id="mplay" role="dialog" aria-modal="true" data-i18n-aria="title" aria-label="יום אחד במדגם"><div class="mtop" id="mtop"></div><div class="mctl" id="mctl"></div><span class="mhint" id="mhint" data-i18n="mhint">הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר</span></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const st = document.getElementById('stage');
+  // ?embed shows only the game box, scaled to fill the frame, so another page can place it
+  const EMBED = /[?&]embed/.test(location.search); if (EMBED) document.documentElement.classList.add('embed');
+  const fit = () => {
+    if (EMBED) { const k = Math.min(innerWidth / 704, innerHeight / 712); st.style.transform = `translate(${(innerWidth - 704 * k) / 2 - 72 * k}px,${(innerHeight - 712 * k) / 2 - 118 * k}px) scale(${k})`; return; }
+    const k = Math.min(innerWidth / 1440, innerHeight / 900); st.style.transform = `translate(${(innerWidth - 1440 * k) / 2}px,${(innerHeight - 900 * k) / 2}px) scale(${k})`;
+  };
+  addEventListener('resize', fit); fit();
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- palette: Midgam blues, one warm gold for the celebration, red only for "live" ---------- */
+  const P = { k: '#0b2238', d: '#123a5e', b: '#1d5689', s: '#229ad6', l: '#8fd3f5', p: '#cfe8f7', g: '#e3eef8', w: '#ffffff', n: '#9fb4c8', a: '#2a4b6c', y: '#f2c14e', r: '#d1453b', o: '#e8f1f8' };
+  const cv = document.getElementById('cv'); let x = cv.getContext('2d');
+  x.setTransform(3, 0, 0, 3, 0, 0); x.imageSmoothingEnabled = false;
+  const W = 224, H = 192, T = 16, FF = 'Heebo, "Noto Sans Arabic", Arial';
+  let LANG = 'he', RTL = true;
+  const R = (c, X, Y, w = 1, h = 1) => { x.fillStyle = P[c] || c; x.fillRect(Math.round(X), Math.round(Y), w, h); };
+  const txt = (s, X, Y, size, c, weight = 700, align = 'center') => { x.font = `${weight} ${size}px ${FF}`; x.fillStyle = P[c] || c; x.direction = RTL ? 'rtl' : 'ltr'; x.textAlign = align; x.textBaseline = 'middle'; x.fillText(s, X, Y); };
+  const hash = (i, j) => (((i * 73856093) ^ (j * 19349663)) >>> 0) % 997;
+  const plate = (label, cx, cy, size = 5.5, fill = 'w', ink = 'b', maxW = 999) => {
+    x.font = `700 ${size}px ${FF}`; while (x.measureText(label).width + 10 > maxW && size > 3) { size -= .2; x.font = `700 ${size}px ${FF}`; }
+    const w = Math.ceil(x.measureText(label).width) + 10, h = Math.round(size + 5);
+    R('k', cx - w / 2, cy - h / 2, w, h); R(fill, cx - w / 2 + 1, cy - h / 2 + 1, w - 2, h - 2); R(fill === 'w' ? 'p' : 'k', cx - w / 2 + 1, cy + h / 2 - 2, w - 2, 1);
+    txt(label, cx, cy + .3, size, ink);
+    return w;
+  };
+
+  /* ---------- characters: outlined, shaded, three facings, two-frame walk ---------- */
+  const DOWN = ['................', '.....kkkkkk.....', '....kHHHHHHk....', '...kHHHHHHHHk...', '...kHhhhhhhHk...', '...kHwwwwwwHk...', '...kwwkwwkwwk...', '...kwwwwwwwwk...', '....kwwggwwk....', '...kkSSSSSSkk...', '..kwkSSSSSSkwk..', '..kwkSsSSsSkwk..', '...kkPPPPPPkk...', '....kPPkkPPk....', '....kkk..kkk....', '................'];
+  const DOWN2 = DOWN.slice(0, 13).concat(['...kPPk..kPPk...', '...kkk....kkk...', '................']);
+  const UP = DOWN.map((r, i) => i === 5 || i === 6 ? '...kHHHHHHHHk...' : i === 7 ? '...kHhhhhhhHk...' : i === 8 ? '....kggggggk....' : r);
+  const UP2 = UP.slice(0, 13).concat(['...kPPk..kPPk...', '...kkk....kkk...', '................']);
+  const SIDE = ['................', '......kkkkk.....', '.....kHHHHHk....', '....kHHHHHHHk...', '....kHHHhhHHk...', '....kwwwHHHHk...', '....kwkwwHHHk...', '....kwwwwwHHk...', '.....kwgwwwk....', '.....kSSSSSk....', '....kSSwSSSk....', '....kSSwSsSk....', '.....kPPPPPk....', '.....kPPkPPk....', '.....kkk.kkk....', '................'];
+  const SIDE2 = SIDE.slice(0, 13).concat(['....kPPk.kPPk...', '....kkk...kkk...', '................']);
+  const spr = (rows, X, Y, c, flip) => {
+    X = Math.round(X); Y = Math.round(Y);
+    x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 4, Y + 14, 8, 2);
+    rows.forEach((r, j) => { for (let i = 0; i < 16; i++) { const ch = r[flip ? 15 - i : i]; if (ch === '.') continue; R(c[ch] || ch, X + i, Y + j); } });
+  };
+  const person = (who, X, Y, face, step) => {
+    const rows = face === 'up' ? (step ? UP2 : UP) : face === 'down' ? (step ? DOWN2 : DOWN) : (step ? SIDE2 : SIDE);
+    spr(rows, X, Y, who.c, face === 'right');
+    if (who.glasses && face === 'down') { R('k', X + 4, Y + 6, 4, 1); R('k', X + 8, Y + 6, 4, 1); R('l', X + 5, Y + 6, 2, 1); R('l', X + 9, Y + 6, 2, 1); }
+    if (who.glasses && (face === 'left' || face === 'right')) { const gx = face === 'left' ? X + 4 : X + 8; R('k', gx, Y + 6, 4, 1); R('l', gx + 1, Y + 6, 2, 1); }
+    if (who.longHair && face !== 'up') { R(who.c.H, X + 3, Y + 6, 1, 4); R(who.c.H, X + 12, Y + 6, 1, 4); R('k', X + 2, Y + 6, 1, 4); R('k', X + 13, Y + 6, 1, 4); }
+    if (who.headset) { R('k', X + 3, Y + 3, 1, 5); R('k', X + 12, Y + 3, 1, 5); R('k', X + 4, Y + 2, 8, 1); R('k', X + 11, Y + 8, 2, 1); }
+    if (who.pad && face === 'down') { R('k', X + 10, Y + 9, 5, 6); R('w', X + 11, Y + 10, 3, 4); R('n', X + 11, Y + 11, 3, 1); }
+  };
+  const PEOPLE = {
+    me: { c: { H: 'k', h: 'd', S: 's', s: 'b', P: 'd' } },
+    mano: { c: { H: 'n', h: 'g', S: 'b', s: 'd', P: 'k' }, glasses: true },
+    editor: { c: { H: 'k', h: 'd', S: 'l', s: 's', P: 'd' }, pad: true },
+    res: { c: { H: 'b', h: 'd', S: 'w', s: 'p', P: 'd' }, glasses: true },
+    res2: { c: { H: 'k', h: 'd', S: 's', s: 'b', P: 'k' } },
+    res3: { c: { H: 'd', h: 'k', S: 'p', s: 'l', P: 'd' }, longHair: true },
+    sec: { c: { H: 'd', h: 'b', S: 'g', s: 'p', P: 'd' }, longHair: true },
+    field: { c: { H: 'k', h: 'd', S: 'b', s: 'd', P: 'k' }, pad: true },
+    vp1: { c: { H: 'n', h: 'g', S: 'd', s: 'k', P: 'k' } },
+    vp2: { c: { H: 'd', h: 'k', S: 'l', s: 's', P: 'k' }, longHair: true },
+    qual1: { c: { H: 'd', h: 'k', S: 'l', s: 's', P: 'd' }, longHair: true },
+    qual2: { c: { H: 'b', h: 'd', S: 'w', s: 'p', P: 'k' }, longHair: true, glasses: true },
+    ihab: { c: { H: 'k', h: 'd', S: 'p', s: 'l', P: 'k' } },
+    mina: { c: { H: 'n', h: 'g', S: 'd', s: 'k', P: 'k' }, longHair: true, glasses: true },
+    a: { c: { H: 'b', h: 'd', S: 'p', s: 'l', P: 'd' } },
+    b: { c: { H: 'k', h: 'd', S: 'w', s: 'p', P: 'b' } },
+    c: { c: { H: 'd', h: 'k', S: 'b', s: 'd', P: 'k' }, headset: true },
+    e: { c: { H: 'n', h: 'g', S: 'l', s: 's', P: 'd' }, headset: true },
+    f: { c: { H: 'b', h: 'd', S: 'g', s: 'p', P: 'd' }, glasses: true }
+  };
+
+  /* ---------- street scene ---------- */
+  const grass = (X, Y) => {
+    R('o', X, Y, T, T); const h = hash(X, Y);
+    if (h % 3 === 0) { R('p', X + 3, Y + 5, 1, 2); R('p', X + 4, Y + 4, 1, 2); }
+    if (h % 4 === 1) { R('p', X + 11, Y + 11, 1, 2); R('p', X + 12, Y + 10, 1, 2); }
+    if (h % 13 === 2) { R('w', X + 7, Y + 7, 1, 1); R('w', X + 9, Y + 7, 1, 1); R('w', X + 8, Y + 6, 1, 1); R('w', X + 8, Y + 8, 1, 1); R('s', X + 8, Y + 7, 1, 1); }
+  };
+  const sidewalk = (X, Y) => { R('w', X, Y, T, T); R('g', X, Y, T, 1); R('g', X, Y + 8, T, 1); R('g', X, Y, 1, 8); R('g', X + 8, Y + 8, 1, 8); };
+  const road = (X, Y) => { R('a', X, Y, T, T); if (hash(X, Y) % 5 === 0) R('d', X + 5, Y + 9, 2, 1); };
+  const tree = (X, Y) => {
+    x.fillStyle = 'rgba(11,34,56,.2)'; x.fillRect(X + 2, Y + 14, 12, 3);
+    R('k', X + 6, Y + 10, 4, 6); R('d', X + 7, Y + 10, 2, 5);
+    R('k', X + 2, Y + 1, 12, 11); R('k', X + 1, Y + 3, 14, 7);
+    R('b', X + 3, Y + 2, 10, 9); R('b', X + 2, Y + 4, 12, 5);
+    R('s', X + 4, Y + 3, 5, 3); R('l', X + 5, Y + 3, 2, 1);
+    R('d', X + 3, Y + 8, 10, 2); R('d', X + 10, Y + 5, 2, 3);
+  };
+  const lamp = (X, Y) => { R('k', X + 7, Y - 4, 2, 18); R('k', X + 5, Y - 7, 6, 4); R('y', X + 6, Y - 6, 4, 2); R('k', X + 5, Y + 13, 6, 2); };
+  const bush = (X, Y) => { R('k', X, Y + 2, 14, 7); R('b', X + 1, Y + 3, 12, 5); R('s', X + 2, Y + 3, 4, 2); R('d', X + 1, Y + 7, 12, 1); };
+  const windowAt = (X, Y) => {
+    R('k', X, Y, 12, 11); R('s', X + 1, Y + 1, 10, 9); R('b', X + 1, Y + 6, 10, 4);
+    R('l', X + 2, Y + 2, 3, 1); R('l', X + 2, Y + 3, 1, 2); R('k', X + 6, Y + 1, 1, 9);
+    R('k', X - 1, Y + 11, 14, 2); R('w', X, Y + 11, 12, 1);
+  };
+  const facade = (X, Y, w, h, roof, label, opts = {}) => {
+    x.fillStyle = 'rgba(11,34,56,.2)'; x.fillRect(X + 3, Y + h - 1, w, 4);
+    R('k', X, Y + 10, w, h - 10); R('w', X + 1, Y + 11, w - 2, h - 12);
+    for (let yy = Y + 15; yy < Y + h - 2; yy += 4) R('g', X + 1, yy, w - 2, 1);
+    R('k', X - 2, Y, w + 4, 13); R(roof, X - 1, Y + 1, w + 2, 11); R('l', X - 1, Y + 1, w + 2, 1); R('d', X - 1, Y + 10, w + 2, 2);
+    for (let i = X + 1; i < X + w - 1; i += 6) R('d', i, Y + 4, 3, 1);
+    // signboard on the parapet
+    plate(label, X + w / 2, Y + 6.5, 6, 'w', 'b', w - 6);
+    // windows: an upper row evenly spaced, a lower row clear of the door
+    const n = opts.cols || 4, m = 8, gap = (w - 2 * m - n * 12) / (n - 1);
+    for (let i = 0; i < n; i++) windowAt(X + m + i * (12 + gap), Y + 18);
+    const doorX = X + w / 2 - 8, doorY = Y + h - 21;
+    for (let i = 0; i < n; i++) { const wx = X + m + i * (12 + gap); if (wx + 12 <= doorX - 4 || wx >= doorX + 20) windowAt(wx, Y + h - 22); }
+    // awning, door frame, glass, panels, step
+    R('k', doorX - 4, doorY - 6, 24, 5); for (let i = 0; i < 22; i += 4) { R('s', doorX - 3 + i, doorY - 5, 2, 3); R('w', doorX - 1 + i, doorY - 5, 2, 3); }
+    R('k', doorX - 1, doorY, 18, 21); R('b', doorX, doorY + 1, 16, 20); R('l', doorX + 2, doorY + 3, 12, 5); R('w', doorX + 3, doorY + 4, 3, 1);
+    R('d', doorX + 7, doorY + 1, 2, 20); R('d', doorX + 2, doorY + 11, 4, 6); R('d', doorX + 10, doorY + 11, 4, 6); R('y', doorX + 6, doorY + 12, 1, 2); R('y', doorX + 9, doorY + 12, 1, 2);
+    R('k', doorX - 3, Y + h, 22, 2); R('g', doorX - 2, Y + h, 20, 1);
+    if (opts.dish) { R('k', X + w - 16, Y - 9, 12, 8); R('w', X + w - 15, Y - 8, 10, 6); R('p', X + w - 14, Y - 5, 8, 2); R('k', X + w - 11, Y - 1, 2, 2); R('r', X + w - 10, Y - 11, 2, 2); }
+    if (opts.logo) { R('k', X + w - 18, Y + 3, 12, 7); R('b', X + w - 17, Y + 4, 10, 5); R('s', X + w - 16, Y + 6, 8, 1); }
+  };
+  const house = (X, Y) => {
+    x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 3, Y + 27, 30, 3);
+    for (let i = 0; i < 9; i++) { R('k', X - 2 + i, Y + 9 - i, 36 - 2 * i, 1); R(i % 2 ? 'b' : 'd', X - 1 + i, Y + 10 - i, 34 - 2 * i, 1); }
+    R('k', X, Y + 10, 32, 18); R('w', X + 1, Y + 11, 30, 16); R('g', X + 1, Y + 15, 30, 1); R('g', X + 1, Y + 20, 30, 1);
+    windowAt(X + 4, Y + 13); R('k', X + 20, Y + 15, 8, 13); R('b', X + 21, Y + 16, 6, 12); R('y', X + 25, Y + 22, 1, 1);
+  };
+  const fence = (X, Y, w) => { for (let i = 0; i < w; i += 5) { R('k', X + i, Y, 3, 8); R('w', X + i + 1, Y + 1, 1, 6); } R('k', X, Y + 3, w, 1); };
+  const STREET_DOOR = { hq: [56, 80], news: [172, 80] };
+  const drawStreet = () => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) { const X = i * T, Y = j * T; (j === 5 || j === 8 ? sidewalk : j === 6 || j === 7 ? road : grass)(X, Y); }
+    R('n', 0, 95, W, 1); R('n', 0, 128, W, 1);
+    for (let i = 0; i < W; i += 14) if (i < 108 || i > 146) R('w', i, 111, 7, 1);
+    for (let k = 0; k < 5; k++) R('w', 112, 98 + k * 6, 32, 3);
+    facade(14, 6, 100, 74, 'b', U.hq, { cols: 5, logo: true });
+    facade(140, 16, 70, 64, 'd', U.newsSign, { cols: 3, dish: true });
+    tree(120, 30); tree(120, 54); lamp(110, 82); lamp(200, 130); lamp(26, 130);
+    house(18, 150); house(176, 150); fence(56, 168, 40); fence(130, 168, 40); tree(100, 152); tree(150, 156); bush(60, 156); bush(140, 150);
+    tree(-4, 40); tree(210, 0);
+  };
+
+  /* ---------- Midgam offices: four departments along one corridor ---------- */
+  const OFF = ['##############', '#....#...#...#', '#....#...#...#', '#....#...#...#', '#.####.###.###', '..............', '..............', '#.######.###.#', '#......#..#..#', '#......#..#..#', '#......#..#..#', '##############'];
+  const wallTile = (i, j, m = OFF) => {
+    const X = i * T, Y = j * T, below = m[j + 1] && m[j + 1][i] === '.';
+    R('d', X, Y, T, T); R('b', X, Y, T, below ? 10 : T); R('s', X, Y, T, 1);
+    if (below) { R('p', X, Y + 10, T, 6); R('l', X, Y + 10, T, 1); R('n', X, Y + 15, T, 1); }
+  };
+  const floorTile = (i, j) => { const X = i * T, Y = j * T; for (let a = 0; a < 2; a++) for (let b2 = 0; b2 < 2; b2++) R((a + b2) % 2 ? 'g' : 'w', X + a * 8, Y + b2 * 8, 8, 8); };
+  const desk = (X, Y, w) => { R('k', X, Y, w, 10); R('w', X + 1, Y + 1, w - 2, 5); R('p', X + 1, Y + 6, w - 2, 3); R('k', X + 2, Y + 10, 2, 2); R('k', X + w - 4, Y + 10, 2, 2); };
+  const monitor = (X, Y, glow = 's') => { R('k', X, Y, 11, 8); R(glow, X + 1, Y + 1, 9, 6); R('l', X + 2, Y + 2, 3, 1); R('k', X + 4, Y + 8, 3, 2); };
+  const plant = (X, Y) => { R('b', X + 5, Y, 3, 4); R('s', X + 2, Y + 2, 4, 3); R('s', X + 7, Y + 1, 4, 3); R('b', X + 1, Y + 4, 10, 4); R('s', X, Y + 6, 3, 3); R('s', X + 9, Y + 6, 3, 3); R('l', X + 5, Y + 3, 1, 1); R('d', X + 3, Y + 7, 6, 2); R('k', X + 2, Y + 9, 8, 1); R('k', X + 2, Y + 10, 1, 5); R('k', X + 9, Y + 10, 1, 5); R('k', X + 3, Y + 14, 6, 1); R('w', X + 3, Y + 10, 6, 4); R('p', X + 3, Y + 12, 6, 2); };
+  const board = (X, Y, w, h, kind) => {
+    R('k', X, Y, w, h); R('w', X + 1, Y + 1, w - 2, h - 2); R('k', X + 3, Y + h, 2, 4); R('k', X + w - 5, Y + h, 2, 4);
+    if (kind === 'bars') [5, 9, 6, 11, 8].forEach((v, i) => R(i === 3 ? 'b' : 's', X + 4 + i * 5, Y + h - 2 - v, 3, v));
+    if (kind === 'grid') { for (let i = 0; i < 4; i++) R('p', X + 3, Y + 3 + i * 3, w - 6, 1); R('b', X + 4, Y + 3, 6, 9); R('s', X + 12, Y + 6, 8, 6); }
+  };
+  const papers = (X, Y) => { R('k', X, Y, 9, 7); R('w', X + 1, Y + 1, 7, 5); R('n', X + 2, Y + 2, 5, 1); R('n', X + 2, Y + 4, 4, 1); };
+  const shelf = (X, Y) => { R('k', X, Y, 26, 15); R('d', X + 1, Y + 1, 24, 13); R('k', X + 1, Y + 7, 24, 1); [['s', 2], ['l', 5], ['w', 8], ['b', 11], ['p', 14], ['s', 18], ['w', 21]].forEach(([c, o], i) => { R(c, X + o, Y + 2, 2, 5); R(i % 2 ? 'l' : 'w', X + o + 1, Y + 8, 2, 5); }); };
+  const pot = (X, Y) => { R('b', X + 4, Y, 2, 3); R('s', X + 1, Y + 2, 3, 2); R('s', X + 6, Y + 1, 3, 2); R('b', X + 2, Y + 3, 6, 3); R('s', X, Y + 4, 3, 2); R('s', X + 7, Y + 4, 3, 2); R('l', X + 4, Y + 2, 1, 1); R('k', X + 2, Y + 7, 6, 1); R('k', X + 2, Y + 8, 1, 5); R('k', X + 7, Y + 8, 1, 5); R('k', X + 3, Y + 12, 4, 1); R('w', X + 3, Y + 8, 4, 4); R('p', X + 3, Y + 10, 4, 2); };
+  const printer = (X, Y) => { R('k', X + 3, Y - 4, 12, 5); R('w', X + 4, Y - 3, 10, 4); R('n', X + 5, Y - 2, 7, 1); R('k', X, Y, 18, 13); R('w', X + 1, Y + 1, 16, 6); R('g', X + 1, Y + 7, 16, 5); R('k', X + 3, Y + 3, 12, 2); R('l', X + 3, Y + 9, 10, 1); R('s', X + 14, Y + 8, 2, 2); };
+  const DOG = ['................', '..kk............', '.kwwk...........', 'kwkwwk......kk..', 'kwwwwwkkkkkkwwk.', '.kbbwwwwwwwwwwk.', '..kwwwwgwwwwwk..', '..kwwkkkkkkwwk..', '..kwk......kwk..', '..kk........kk..'];
+  const dog = (X, Y, t, left) => { const hop = S.barkT > 0 ? Math.round(Math.abs(Math.sin(t / 70)) * 2) : 0; x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 2, Y + 10, 12, 2); DOG.forEach((r, j) => { for (let i = 0; i < 16; i++) { const ch = r[left ? i : 15 - i]; if (ch !== '.') R(ch, X + i, Y + j - hop); } }); if (S.barkT > 0 && Math.floor(t / 160) % 2) { R('k', X + 15, Y - 9, 3, 6); R('y', X + 16, Y - 8, 1, 4); R('k', X + 15, Y - 2, 3, 2); } };
+  const CALL_DESKS = [[38, 142], [62, 142], [86, 142], [38, 164], [62, 164], [86, 164]];
+  const aiDevice = (X, Y, t) => {
+    const pulse = Math.floor(t / 420) % 2;
+    x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(X + 2, Y + 20, 24, 2);
+    R('k', X, Y, 28, 19); R('d', X + 1, Y + 1, 26, 17);
+    R(pulse ? 's' : 'b', X + 3, Y + 3, 22, 10); R('l', X + 4, Y + 4, 4, 1);
+    txt('AI', X + 14, Y + 8.6, 7.5, 'w', 800);
+    [0, 1, 2, 3].forEach(i => R((Math.floor(t / 260) + i) % 4 === 0 ? 'l' : 'b', X + 5 + i * 5, Y + 15, 3, 1));
+    R('k', X + 4, Y + 19, 2, 3); R('k', X + 22, Y + 19, 2, 3);
+  };
+  const vpRoom = (X, who, side) => side === 'right'
+    ? (plant(X + 2, 158), person(who, X + 14, 138, 'left'), desk(X + 12, 154, 18), monitor(X + 15, 146))
+    : (plant(X + 18, 158), person(who, X + 2, 138, 'right'), desk(X, 154, 18), monitor(X + 4, 146));
+  const plate2 = (l1, l2, cx, cy, size) => {
+    x.font = `700 ${size}px ${FF}`; const w = Math.ceil(Math.max(x.measureText(l1).width, x.measureText(l2).width)) + 8, h = Math.round(size * 2 + 6);
+    R('k', cx - w / 2, cy - h / 2, w, h); R('w', cx - w / 2 + 1, cy - h / 2 + 1, w - 2, h - 2); R('p', cx - w / 2 + 1, cy + h / 2 - 2, w - 2, 1);
+    txt(l1, cx, cy - size / 2 - .2, size, 'b'); txt(l2, cx, cy + size / 2 + .2, size, 'b');
+  };
+  const drawOffice = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) (OFF[j][i] === '#' ? wallTile : floorTile)(i, j);
+    R('p', 0, 86, W, 20); R('l', 0, 86, W, 1); R('l', 0, 105, W, 1); R('s', 212, 86, 12, 20);
+    // plaques: each one sits just left of its own door
+    // signs sit on each room's own wall, beside its door; one shared sign for senior management
+    plate(U.rooms.res, 56, 71, 5.5, 'w', 'b', 44); plate2(U.rooms.p1, U.rooms.p2, 128, 71, 4.6); plate(U.rooms.mano, 192, 71, 5, 'b', 'w', 34);
+    plate(U.rooms.call, 72, 119, 4.8, 'w', 'b', 76); plate(TEXT.vp_title, 168, 119, 5, 'w', 'b', 76);
+    // researchers: builds the study, later builds the findings
+    aiDevice(18, 15, t); board(48, 16, 30, 17, 'grid');
+    person(PEOPLE.res2, 44, 32, 'down'); desk(40, 46, 24); papers(44, 48); person(PEOPLE.res, 64, 40, 'left'); person(PEOPLE.res3, 30, 44, 'right');
+    // online collection
+    board(114, 17, 28, 16, 'bars'); person(PEOPLE.b, 120, 38, 'left');
+    // Mano Geva
+    shelf(182, 16); person(PEOPLE.mano, 180, 30, 'left'); desk(178, 48, 22); monitor(184, 40);
+    // the hallway: plants, the printer by the entrance, the dog at the far end, the secretary behind her counter
+    [84, 148].forEach(X => pot(X, 79)); [44, 74, 160].forEach(X => pot(X, 100));
+    printer(96, 99); wayArrow(3, -1);
+    // the secretary: in the hallway by the top wall near the entrance, behind her counter
+    person(PEOPLE.sec, 206, 70, 'down');
+    R('k', 202, 83, 22, 11); R('w', 203, 84, 20, 4); R('p', 203, 88, 20, 5); R('n', 203, 92, 20, 1);
+    R('k', 204, 80, 5, 3); R('y', 205, 80, 3, 2); R('k', 206, 79, 1, 1);
+    // call center: six interviewers with headsets
+    CALL_DESKS.forEach(([dx, dy], i) => { person(i % 2 ? PEOPLE.c : PEOPLE.e, dx + 3, dy - 12, 'down'); desk(dx, dy, 20); monitor(dx + 5, dy - 4, 'l'); });
+    // two VP offices, same size
+    vpRoom(128, PEOPLE.vp1, 'right'); vpRoom(176, PEOPLE.vp2, 'left');
+  };
+
+  /* ---------- the rest of the office: the hallway continues to the left ---------- */
+  const OFF2 = ['##############', '#....#...#...#', '#....#...#...#', '#....#...#...#', '#.####.###.###', '#.............', '#.............', '#.####.###.###', '#....#...#...#', '#....#...#...#', '#....#...#...#', '##############'];
+  const midgamPic = (X, Y) => {
+    R('k', X, Y, 24, 14); R('y', X + 1, Y + 1, 22, 12); R('l', X + 2, Y + 2, 20, 10); R('p', X + 2, Y + 8, 20, 4);
+    R('k', X + 6, Y + 4, 12, 8); R('b', X + 7, Y + 5, 10, 7); R('s', X + 8, Y + 6, 2, 2); R('s', X + 11, Y + 6, 2, 2); R('s', X + 14, Y + 6, 2, 2); R('w', X + 11, Y + 9, 2, 3); R('d', X + 5, Y + 3, 14, 1);
+  };
+  // the water cooler: talk to it and it slides aside, showing stairs going down under it
+  const coolerHatch = (X, Y, p, t) => {
+    if (p > 0) { R('k', X, Y + 8, 12, 14); ['n', 'a', 'd', 'k'].forEach((c, k) => R(c, X + 1, Y + 9 + k * 3, 10, 2)); }
+    const cx = Math.round(X - 13 * p);
+    x.fillStyle = 'rgba(11,34,56,.18)'; x.fillRect(cx + 1, Y + 21, 10, 2);
+    R('k', cx, Y + 8, 11, 14); R('w', cx + 1, Y + 9, 9, 12); R('g', cx + 1, Y + 17, 9, 4); R('r', cx + 2, Y + 12, 2, 2); R('s', cx + 7, Y + 12, 2, 2);
+    R('k', cx + 1, Y - 2, 9, 11); R('s', cx + 2, Y - 1, 7, 9); R('l', cx + 3, Y, 2, 6); R('b', cx + 2, Y + 6, 7, 2);
+    if (!p) R('w', cx + 6, Y + 6 - Math.floor(t / 220) % 7, 1, 1);
+  };
+  // a single still gold triangle on the floor, pointing to where the hallway goes on
+  const wayArrow = (X, dir) => { for (let k = 0; k < 6; k++) { const h = 1 + 2 * k; R('k', dir < 0 ? X + k : X + 5 - k, 96 - k - 1, 1, h + 2); } for (let k = 0; k < 5; k++) { const h = 1 + 2 * k; R('s', dir < 0 ? X + k + 1 : X + 4 - k, 96 - k, 1, h); } };
+  const drawOffice2 = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) (OFF2[j][i] === '#' ? (a, b) => wallTile(a, b, OFF2) : floorTile)(i, j);
+    R('p', 16, 86, W - 16, 20); R('l', 16, 86, W - 16, 1); R('l', 16, 105, W - 16, 1);
+    plate(U.rooms.qual, 62, 71, 5, 'w', 'b', 58); plate(U.rooms.archive, 136, 71, 5, 'w', 'b', 44); plate(U.rooms.arab, 198, 71, 5, 'w', 'b', 44);
+    plate(U.rooms.meet, 60, 119, 4.8, 'w', 'b', 56); plate(TEXT.mina_role, 136, 119, 5, 'w', 'b', 46); plate(U.rooms.kitchen, 200, 119, 5, 'w', 'b', 44);
+    // qualitative research: two researchers at a focus-group table
+    person(PEOPLE.qual1, 24, 18, 'down'); person(PEOPLE.qual2, 48, 18, 'down'); desk(20, 32, 48); papers(28, 34); papers(52, 34);
+    // the archive
+    shelf(97, 17); shelf(118, 17); papers(104, 44); papers(128, 50);
+    // the Arabic department: one person, a room no bigger than Mano's
+    person(PEOPLE.ihab, 172, 20, 'down'); desk(168, 36, 24); monitor(174, 28); plant(196, 46);
+    // meeting room
+    [30, 42, 54].forEach(cx => { R('k', cx, 139, 7, 6); R('s', cx + 1, 140, 5, 4); R('k', cx, 159, 7, 6); R('s', cx + 1, 160, 5, 4); }); desk(24, 146, 46); papers(36, 148);
+    // Mina Tzemach: legal expert opinions, a small room
+    person(PEOPLE.mina, 118, 132, 'down'); desk(112, 148, 26); monitor(126, 140); R('y', 117, 149, 1, 4); R('y', 114, 149, 7, 1); R('y', 114, 151, 2, 1); R('y', 119, 151, 2, 1);
+    // the kitchen: counter, coffee machine, fridge, and the water cooler with a secret
+    R('k', 178, 129, 30, 14); R('w', 179, 130, 28, 8); R('p', 179, 138, 28, 4); R('n', 182, 131, 8, 5); R('a', 183, 132, 6, 3);
+    R('k', 196, 126, 9, 10); R('d', 197, 127, 7, 8); R('r', 199, 129, 2, 1); R('w', 198, 133, 3, 2);
+    R('k', 161, 152, 12, 22); R('w', 162, 153, 10, 20); R('p', 162, 160, 10, 1); R('n', 170, 155, 1, 3); R('n', 170, 163, 1, 4);
+    coolerHatch(192, 150, F.shelf ? S.shelfP : 0, t);
+    // the hallway: a bookshelf with a secret, the printer, a pot, and the dog at the far end
+    pot(64, 100); pot(150, 100); wayArrow(214, 1);
+    if (!F.dog || MODE !== 'play') dog(20, 94, t);
+  };
+  const VAULT = ['##############', '##############', '##############', '##.....#.....#', '##.....#.....#', '##.....#.....#', '##...........#', '##.....#.....#', '##.....#.....#', '##.....#.....#', '##############', '##############'];
+  const drawVault = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) {
+      const X = i * T, Y = j * T;
+      if (VAULT[j][i] === '#') { R('k', X, Y, T, T); R('a', X + 1, Y + 1, 6, 3); R('a', X + 9, Y + 1, 6, 3); R('a', X + 4, Y + 6, 7, 3); R('a', X + 1, Y + 11, 6, 3); R('a', X + 9, Y + 11, 6, 3); if (VAULT[j + 1] && VAULT[j + 1][i] === '.') { R('n', X, Y + 10, T, 6); R('a', X, Y + 15, T, 1); } }
+      else { R((i + j) % 2 ? 'd' : 'a', X, Y, T, T); R('k', X, Y, T, 1); }
+    }
+    // the stairs back up, lit from the office above
+    ['w', 'g', 'p', 'n', 'a'].forEach((c, k) => { R(c, 36, 50 + k * 5, 24, 4); R('k', 36, 54 + k * 5, 24, 1); });
+    [[34, 104], [100, 52], [130, 52], [204, 120]].forEach(([tx, ty]) => { R('k', tx, ty, 3, 6); R(Math.floor(t / 140 + tx) % 2 ? 'y' : 'r', tx, ty - 3, 3, 3); });
+    // the treasure: the election model, glowing on its pedestal
+    const g = .18 + .08 * Math.sin(t / 300); x.fillStyle = `rgba(242,193,78,${g})`; x.beginPath(); x.ellipse(168, 84, 30, 24, 0, 0, Math.PI * 2); x.fill();
+    R('k', 156, 96, 24, 14); R('n', 157, 97, 22, 12); R('g', 157, 97, 22, 2);
+    R('k', 162, 90, 12, 6); R('y', 163, 91, 10, 4); R('k', 165, 83, 6, 8); R('y', 166, 84, 4, 7);
+    R('k', 157, 69, 22, 16); R('y', 158, 70, 20, 14); R('w', 160, 72, 3, 7); R('k', 154, 72, 4, 7); R('y', 155, 73, 2, 5); R('k', 178, 72, 4, 7); R('y', 179, 73, 2, 5);
+    for (let i = 0; i < 4; i++) { const a = t / 500 + i * 1.57, sx = 168 + Math.cos(a) * 22, sy = 80 + Math.sin(a) * 14; R('w', sx, sy - 1, 1, 3); R('w', sx - 1, sy, 3, 1); }
+    plate(TEXT.vault_trophy, 168, 124, 5, 'y', 'k', 80);
+    // the bars, dropping when you come close
+    if (F.locked) { const h = Math.round(16 * S.barsP); R('k', 112, 95, 16, 2); for (let i = 0; i < 5; i++) { R('k', 113 + i * 3, 96, 2, h); R('n', 113 + i * 3, 96, 1, h); } }
+  };
+
+  /* ---------- newsroom ---------- */
+  const drawNews = (t) => {
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 14; i++) { const X = i * T, Y = j * T; R((i + j) % 2 ? 'g' : 'o', X, Y, T, T); }
+    R('d', 0, 0, W, 26); R('b', 0, 0, W, 20); R('s', 0, 0, W, 1); R('p', 0, 20, W, 6); R('l', 0, 20, W, 1);
+    R('k', 64, 3, 96, 19); R('d', 65, 4, 94, 17); txt(U.newsSign, 120, 11, 8, 'w', 800); R('r', 74, 9, 4, 4);
+    R('s', 65, 17, 94, 4); for (let i = 0; i < 90; i += 8) R('w', 66 + ((i + Math.floor(t / 60)) % 92), 18, 4, 1);
+    R('d', 0, 26, 6, H); R('d', W - 6, 26, 6, H); R('b', 0, 26, 5, H); R('b', W - 5, 26, 5, H);
+    R('k', 96, H - 4, 32, 4); R('s', 97, H - 3, 30, 3);
+    const deskRow = (y, who) => [[18, who[0]], [62, who[1]], [146, who[2]], [190, who[3]]].forEach(([dx, p]) => { if (p) person(PEOPLE[p], dx - 2, y - 12, 'up'); desk(dx - 10, y, 28); monitor(dx - 3, y - 7); });
+    deskRow(84, ['a', 'b', 'f', 'a']); deskRow(134, ['b', null, 'a', 'f']);
+    desk(96, 46, 36); monitor(100, 38); papers(115, 39); plant(140, 40); plant(78, 40);
+  };
+
+  /* ---------- the texts: defaults here, edited live from the design page ---------- */
+  const TEXT = {
+    editor_brief: 'שלום! אני צריך סקר עד יום חמישי: להישאר בשעון קיץ כל השנה? אחכה לך בבניין החדשות כשתסיים.',
+    gate_editor_early: 'בלי אישור של מנו גבע אני לא מפרסם.',
+    editor_final: 'עבודה יפה! מפרסמים!',
+    secretary_line: 'שלום! מנו מוכן לקבל אותך, החדר שלו ממש כאן.',
+    secretary_done: 'כל הכבוד! מחכים לך בחדשות.',
+    gate_mano_nobrief: 'עוד אין לנו לקוח. מישהו ברחוב חיפש סקר, כדאי לבדוק.',
+    mano_start: 'הגעת למדגם. מתחילים אצל החוקרים: שאלון, מדגם ומכסות. רק אחר כך יוצאים לשטח.',
+    gate_mano_early: 'עוד לא ראיתי ממצאים. החוקרים מחכים לך!',
+    mano_end: 'בדקתי הכול, נראה טוב. מחכים לך בחדשות!',
+    gate_research_early: 'קודם תיפגש עם מנו גבע, הוא פותח כל מחקר.',
+    researcher_design: 'השאלון הוטמע, המדגם הוגדר עם מכסות. מחכים לך במוקד הטלפוני והפאנל',
+    gate_findings_early: 'אין עדיין נתונים מהשטח. קודם המוקד והאיסוף האינטרנטי.',
+    researcher_findings: 'הנתונים משוקללים ונקיים. הנה הממצאים.',
+    gate_call_early: 'עוד אין שאלון ומדגם. קודם לחוקרים, ואז נתחיל להתקשר.',
+    call_center: 'סיימנו עם הראיונות בטלפון, הנתונים נשלחו לחוקרים.',
+    gate_panel_early: 'עוד אין שאלון ומדגם. קודם לחוקרים.',
+    panel: 'האיסוף הסתיים דרך אייפאנל, הנתונים נשלחו לחוקרים.',
+    dog_line: 'הב! הב!',
+    printer_caption: 'צוות מדגם בטיול השנתי',
+    paper_headline: 'סקר מדגם: רוב הציבור בעד שעון קיץ כל השנה',
+    field_ask: 'היי, אני עובד במדגם. איך הייתם מדרגים את ראש העיר?',
+    field_thanks: 'תודה על שיתוף הפעולה!',
+    field_other: 'כבר עניתם לי! עכשיו לכו לצד השני של הרחוב, שם מחכים לכם.',
+    vp_title: 'ניהול בכיר',
+    vp1_line: 'הסקר שלך בידיים טובות. אצלנו כל לקוח מקבל בדיוק את מה שהוא צריך.',
+    vp2_line: 'כל סקר של מדגם עובר אותה בדיקה, גדול או קטן. ככה בונים אמון.',
+    qual_role: 'מחקר איכותני',
+    qual1_line: 'מובילה קבוצות מיקוד וראיונות עומק, ומביאה את הקולות שמאחורי המספרים.',
+    qual2_line: 'מתכננת מחקרים איכותניים ומנתחת אותם, משאלת המחקר ועד הדוח.',
+    ihab_role: 'המחלקה הערבית',
+    ihab_line: 'מוביל את המחקר בחברה הערבית: שאלונים בערבית, סוקרים דוברי ערבית ומדגם מותאם.',
+    mina_role: 'חוות דעת משפטית',
+    mina_line: 'מכינה חוות דעת מבוססות סקר לבתי משפט, בשיטה שעומדת גם בחקירה נגדית.',
+    midgam_about: 'מדגם ייעוץ ומחקר עוסקת מאז 1988 בסקרי דעת קהל, מחקר שווקים, מחקר חברתי וחוות דעת לבתי משפט. כל סקר עובר אצלנו את אותה דרך: חוקרים, שטח, ממצאים ואישור.',
+    shelf_line: 'גלוג גלוג... הקולר זז הצידה, ומתחתיו מדרגות!',
+    vault_trophy: 'מודל הבחירות',
+    vault_locked: 'קלאנג! הסורגים ננעלו. מודל הבחירות של מדגם נשאר סוד.'
+  };
+
+  /* ---------- languages: Hebrew (default), English, Arabic ---------- */
+  const TX = {
+    he: Object.assign({}, TEXT),
+    en: {
+      editor_brief: "Hi! I need a survey by Thursday: should we keep daylight saving time all year? I'll wait for you at the news building when you're done.",
+      gate_editor_early: "Without Mano Geva's sign-off, I'm not publishing.",
+      editor_final: "Great work! We're publishing!",
+      secretary_line: 'Hello! Mano is ready to see you, his room is right here.',
+      secretary_done: "Well done! They're waiting for you at the news.",
+      gate_mano_nobrief: "We don't have a client yet. Someone on the street was looking for a survey, worth a look.",
+      mano_start: 'Welcome to Midgam. We start with the researchers: questionnaire, sample and quotas. Only then do we go into the field.',
+      gate_mano_early: "I haven't seen any findings yet. The researchers are waiting for you!",
+      mano_end: "I checked everything, it looks good. They're waiting for you at the news!",
+      gate_research_early: 'First meet Mano Geva, he opens every study.',
+      researcher_design: 'The questionnaire is set up and the sample has its quotas. The call center and the online team are waiting for you.',
+      gate_findings_early: 'No field data yet. The call center and online collection come first.',
+      researcher_findings: 'The data is weighted and clean. Here are the findings.',
+      gate_call_early: 'No questionnaire or sample yet. Researchers first, then we start calling.',
+      call_center: 'We finished the phone interviews, the data went to the researchers.',
+      gate_panel_early: 'No questionnaire or sample yet. Researchers first.',
+      panel: 'Collection through iPanel is done, the data went to the researchers.',
+      dog_line: 'Woof! Woof!',
+      printer_caption: 'The Midgam team on the annual trip',
+      paper_headline: 'Midgam survey: most of the public backs daylight saving time all year',
+      field_ask: 'Hi, I work for Midgam. How would you rate the mayor of this city?',
+      field_thanks: 'Thanks for your cooperation!',
+      field_other: "You already answered! Now head to the other side of the street, they're waiting for you there.",
+      vp_title: 'Senior management',
+      vp1_line: 'Your survey is in good hands. Every client here gets exactly what they need.',
+      vp2_line: "Every Midgam survey goes through the same check, big or small. That's how trust is built.",
+      qual_role: 'Qualitative research',
+      qual1_line: 'Leads focus groups and in-depth interviews, and brings out the voices behind the numbers.',
+      qual2_line: 'Designs and analyzes qualitative studies, from the research question to the report.',
+      ihab_role: 'Arabic department',
+      ihab_line: 'Leads research in Arab society: questionnaires in Arabic, Arabic-speaking interviewers and a tailored sample.',
+      mina_role: 'Legal expert opinions',
+      mina_line: 'Prepares survey-based expert opinions for courts, with a method that holds up under cross-examination.',
+      midgam_about: 'Since 1988, Midgam Consulting & Research has run public opinion polls, market research, social research and expert opinions for courts. Every survey takes the same path: researchers, field, findings and sign-off.',
+      shelf_line: 'Glug glug... the water cooler slides aside, and there are stairs under it!',
+      vault_trophy: 'The Election Model',
+      vault_locked: "Clang! The bars slammed shut. Midgam's election model stays a secret."
+    },
+    ar: {
+      editor_brief: 'مرحبًا! أحتاج استطلاعًا حتى يوم الخميس: هل نُبقي التوقيت الصيفي طوال السنة؟ سأنتظرك في مبنى الأخبار عندما تنتهي.',
+      gate_editor_early: 'بدون موافقة مانو جيفع لن أنشر.',
+      editor_final: 'عمل رائع! ننشر!',
+      secretary_line: 'أهلًا! مانو جاهز لاستقبالك، غرفته هنا تمامًا.',
+      secretary_done: 'أحسنت! ينتظرونك في الأخبار.',
+      gate_mano_nobrief: 'ليس لدينا زبون بعد. شخص في الشارع كان يبحث عن استطلاع، من المفيد أن تتحقق.',
+      mano_start: 'وصلت إلى مدجام. نبدأ عند الباحثين: استبيان وعيّنة وحصص. بعدها فقط نخرج إلى الميدان.',
+      gate_mano_early: 'لم أرَ نتائج بعد. الباحثون بانتظارك!',
+      mano_end: 'فحصت كل شيء، يبدو جيدًا. ينتظرونك في الأخبار!',
+      gate_research_early: 'قابل مانو جيفع أولًا، فهو يفتتح كل بحث.',
+      researcher_design: 'الاستبيان جاهز والعيّنة محددة بالحصص. مركز الاتصال والجمع عبر الإنترنت بانتظارك.',
+      gate_findings_early: 'لا توجد بيانات من الميدان بعد. أولًا مركز الاتصال والجمع عبر الإنترنت.',
+      researcher_findings: 'البيانات موزونة ونظيفة. هذه هي النتائج.',
+      gate_call_early: 'لا يوجد استبيان وعيّنة بعد. أولًا إلى الباحثين، ثم نبدأ الاتصال.',
+      call_center: 'أنهينا المقابلات الهاتفية، وأُرسلت البيانات إلى الباحثين.',
+      gate_panel_early: 'لا يوجد استبيان وعيّنة بعد. أولًا إلى الباحثين.',
+      panel: 'انتهى الجمع عبر آي-بانل، وأُرسلت البيانات إلى الباحثين.',
+      dog_line: 'هاو! هاو!',
+      printer_caption: 'فريق مدجام في الرحلة السنوية',
+      paper_headline: 'استطلاع مدجام: أغلبية الجمهور تؤيد التوقيت الصيفي طوال السنة',
+      field_ask: 'مرحبًا، أنا أعمل في مدجام. كيف تقيّمون رئيس بلدية هذه المدينة؟',
+      field_thanks: 'شكرًا على تعاونكم!',
+      field_other: 'لقد أجبتم بالفعل! الآن اذهبوا إلى الجهة الأخرى من الشارع، هناك ينتظرونكم.',
+      vp_title: 'الإدارة العليا',
+      vp1_line: 'استطلاعك في أيدٍ أمينة. عندنا يحصل كل زبون على ما يحتاجه بالضبط.',
+      vp2_line: 'كل استطلاع لمدجام يمرّ بنفس الفحص، كبيرًا كان أم صغيرًا. هكذا تُبنى الثقة.',
+      qual_role: 'البحث النوعي',
+      qual1_line: 'تقود مجموعات التركيز والمقابلات المعمّقة، وتُبرز الأصوات التي وراء الأرقام.',
+      qual2_line: 'تخطط الأبحاث النوعية وتحللها، من سؤال البحث حتى التقرير.',
+      ihab_role: 'القسم العربي',
+      ihab_line: 'يقود البحث في المجتمع العربي: استبيانات بالعربية، باحثون ميدانيون يتحدثون العربية وعيّنة ملائمة.',
+      mina_role: 'آراء خبراء قانونية',
+      mina_line: 'تُعدّ آراء خبراء مبنية على استطلاعات للمحاكم، بمنهجية تصمد أمام الاستجواب المضاد.',
+      midgam_about: 'منذ 1988 تعمل مدجام للاستشارات والأبحاث في استطلاعات الرأي العام وأبحاث السوق والبحث الاجتماعي وآراء الخبراء للمحاكم. كل استطلاع يمرّ بنفس المسار: باحثون، ميدان، نتائج وموافقة.',
+      shelf_line: 'غلوغ غلوغ... مبرّد المياه ينزاح جانبًا، وتحته درج!',
+      vault_trophy: 'نموذج الانتخابات',
+      vault_locked: 'كلانغ! أُغلقت القضبان. نموذج الانتخابات لمدجام يبقى سرًّا.'
+    }
+  };
+  const UI = {
+    he: {
+      dir: 'rtl', mission: 'המשימה', doneN: n => `${n} שלבים הושלמו ·`, next: 'הבא:', published: 'הסקר פורסם!', office: 'משרדי מדגם', newsroom: 'חדר החדשות',
+      hq: 'מדגם · ייעוץ ומחקר', newsSign: 'חדשות', badge: 'מדגם',
+      rooms: { res: 'חוקרים', p1: 'איסוף', p2: 'אינטרנטי', mano: 'מנו גבע', call: 'מוקד טלפוני', qual: 'מחקר איכותני', arab: 'המחלקה הערבית', meet: 'חדר ישיבות', kitchen: 'מטבח', archive: 'ארכיון' },
+      people: { qual1: 'מיכל שפירא', qual2: 'מיכל אבנד', ihab: 'איהאב קדאח', mina: 'מינה צמח', vp1: 'עדי סידי', vp2: 'עדי גבע' }, midgamName: 'מדגם ייעוץ ומחקר', aboutUs: 'קצת עלינו', more: 'עוד משרדים', back: 'לכניסה', vault: 'המדרגות הסודיות',
+      paper: { name: 'החדשות', date: 'יום חמישי · מהדורת בוקר', fict: 'נתונים בדיוניים', by: 'סקר מדגם ייעוץ ומחקר עבור החדשות', method: 'מדגם 1,000 · טעות דגימה ±3.1% · שוקלל לפי גיל ואזור' },
+      fake: ['בעד', 'נגד', 'לא יודעים'],
+      names: { editor: 'העורך', mano: 'מנו גבע', res: 'חוקרים', call: 'מוקד טלפוני', panel: 'איסוף אינטרנטי', sec: 'המזכירה', dog: 'הכלב', printer: 'המדפסת', field: 'סוקר של מדגם' },
+      steps: ['קבלו בריף מהעורך', 'פגישת פתיחה עם מנו גבע', 'בניית המחקר אצל החוקרים', 'איסוף במוקד הטלפוני', 'איסוף אינטרנטי', 'בניית ממצאים אצל החוקרים', 'אישור סופי של מנו גבע', 'הגשה לעורך'],
+      hint: 'רמז, הבא:',
+      start: 'המשחק התחיל. חצים להליכה, רווח לדיבור, Escape ליציאה. העורך מחכה ברחוב.', askQ: 'ומה אתם חושבים? בחרו תשובה.', pctSay: v => v + ' אחוז ממי ששיחקו במשחק חושבים כמוכם.',
+      html: {
+        nav1: 'תחומי פעילות', nav2: 'ממצאים', nav3: 'מקרי בוחן', nav4: 'אודות', cta: 'פנייה למחקר', badge1: 'משחק · 3 דקות', title: 'יום אחד במדגם',
+        h1: 'תצליחו להגיש<span>סקר תקין?</span>', sub: 'פוגשים ברחוב עורך שצריך סקר, עוברים בכל מחלקות מדגם עם מנו גבע, וחוזרים לחדר החדשות. הוא יקבל את הסקר רק אם הוא תקין.',
+        playNow: 'שחקו עכשיו', fields: 'מדגם ייעוץ ומחקר, מאז 1988: <b>סקרי דעת קהל</b> · <b>מחקר שווקים</b> · <b>מחקר חברתי</b> · <b>חוות דעת לבתי משפט</b>',
+        demo: '<b>יום אחד במדגם</b> · מצב הדגמה', play: 'שחקו', talk: 'דברו', cont: 'המשך', phNote: 'תמונה וטקסט זמניים', walk: 'להליכה', space: 'מקש רווח לדיבור', exit: 'יציאה',
+        finQ: 'ומה אתם חושבים?', finQ2: 'להישאר בשעון קיץ כל השנה?', a0: 'בעד', a1: 'נגד', a2: 'לא יודע/ת',
+        finR: 'אנשים כמוכם', finR2: 'מבין מי ששיחקו במשחק חושבים כמוכם.', finR3: 'נתוני דוגמה, עד שנחבר מונה אמיתי באתר', close: 'סגירה',
+        next1: 'ועכשיו, מה הסקר שלך?', next2: 'ספרו לנו מה אתם רוצים לדעת, ונחזור אליכם עם הצעה למחקר.', contact: 'דברו איתנו', findings: 'לממצאים של מדגם', again: 'לשחק שוב',
+        mhint: 'הקישו על מקום כדי ללכת · ״דברו״ כדי לדבר'
+      },
+      aria: { music: 'מוזיקה', lang: 'שפה', title: 'יום אחד במדגם', pad: 'כפתורי הליכה', up: 'למעלה', right: 'ימינה', down: 'למטה', left: 'שמאלה',
+        canvas: 'משחק פיקסלים: חוקר צעיר פוגש ברחוב עורך שמבקש סקר, עובר במשרדי מדגם אצל מנו גבע, החוקרים, המוקד הטלפוני והאיסוף האינטרנטי, ומגיש לו בחדר החדשות סקר תקין שמתפרסם.' }
+    },
+    en: {
+      dir: 'ltr', mission: 'Mission', doneN: n => `${n} steps done ·`, next: 'Next:', published: 'Survey published!', office: 'Midgam offices', newsroom: 'The newsroom',
+      hq: 'Midgam · Research', newsSign: 'NEWS', badge: 'Midgam',
+      rooms: { res: 'Researchers', p1: 'Online', p2: 'collection', mano: 'Mano Geva', call: 'Call center', qual: 'Qualitative research', arab: 'Arabic department', meet: 'Meeting room', kitchen: 'Kitchen', archive: 'Archive' },
+      people: { qual1: 'Michal Shapira', qual2: 'Michal Avned', ihab: 'Ihab Kadah', mina: 'Mina Tzemach', vp1: 'Adi Sidi', vp2: 'Adi Geva' }, midgamName: 'Midgam Consulting & Research', aboutUs: 'About us', more: 'More offices', back: 'To the entrance', vault: 'The secret stairs',
+      paper: { name: 'The News', date: 'Thursday · Morning edition', fict: 'Fictional data', by: 'A Midgam Research survey for The News', method: 'Sample 1,000 · margin of error ±3.1% · weighted by age and region' },
+      fake: ['For', 'Against', "Don't know"],
+      names: { editor: 'The editor', mano: 'Mano Geva', res: 'Researchers', call: 'Call center', panel: 'Online collection', sec: 'Secretary', dog: 'The dog', printer: 'Printer', field: 'Midgam interviewer' },
+      steps: ['Get a brief from the editor', 'Kickoff with Mano Geva', 'Build the study with the researchers', 'Collect at the call center', 'Collect online', 'Build the findings with the researchers', 'Final sign-off from Mano Geva', 'Hand it to the editor'],
+      hint: 'Hint, next:',
+      start: 'The game has started. Arrows to walk, Space to talk, Escape to exit. The editor is waiting on the street.', askQ: 'And what do you think? Choose an answer.', pctSay: v => v + ' percent of people who played this game think like you.',
+      html: {
+        nav1: 'Services', nav2: 'Findings', nav3: 'Case studies', nav4: 'About', cta: 'Start a study', badge1: 'Game · 3 min', title: 'A day at Midgam',
+        h1: 'Can you deliver<span>a valid survey?</span>', sub: 'Meet an editor on the street who needs a survey, go through every Midgam department with Mano Geva, and head back to the newsroom. He only accepts a valid survey.',
+        playNow: 'Play now', fields: 'Midgam Consulting &amp; Research, since 1988: <b>Public opinion polls</b> · <b>Market research</b> · <b>Social research</b> · <b>Expert opinions for courts</b>',
+        demo: '<b>A day at Midgam</b> · demo', play: 'Play', talk: 'Talk', cont: 'Next', phNote: 'Placeholder photo and text', walk: 'to walk', space: 'Space to talk', exit: 'Exit',
+        finQ: 'And what do you think?', finQ2: 'Keep daylight saving time all year?', a0: 'For', a1: 'Against', a2: 'Not sure',
+        finR: 'People like you', finR2: 'of people who played this game think like you.', finR3: 'Sample data until a live counter is connected', close: 'Close',
+        next1: "Now, what's your survey?", next2: "Tell us what you want to find out, and we'll come back with a research proposal.", contact: 'Talk to us', findings: "Midgam's findings", again: 'Play again',
+        mhint: 'Tap a spot to walk · "Talk" to talk'
+      },
+      aria: { music: 'Music', lang: 'Language', title: 'A day at Midgam', pad: 'Walking buttons', up: 'Up', right: 'Right', down: 'Down', left: 'Left',
+        canvas: 'Pixel game: a young researcher meets an editor on the street who wants a survey, goes through the Midgam offices to Mano Geva, the researchers, the call center and online collection, and hands a valid survey over in the newsroom.' }
+    },
+    ar: {
+      dir: 'rtl', mission: 'المهمة', doneN: n => `أُنجزت ${n} مراحل ·`, next: 'التالي:', published: 'نُشر الاستطلاع!', office: 'مكاتب مدجام', newsroom: 'غرفة الأخبار',
+      hq: 'مدجام · أبحاث', newsSign: 'أخبار', badge: 'مدجام',
+      rooms: { res: 'الباحثون', p1: 'الجمع عبر', p2: 'الإنترنت', mano: 'مانو جيفع', call: 'مركز الاتصال', qual: 'البحث النوعي', arab: 'القسم العربي', meet: 'غرفة الاجتماعات', kitchen: 'المطبخ', archive: 'الأرشيف' },
+      people: { qual1: 'ميخال شابيرا', qual2: 'ميخال أفنيد', ihab: 'إيهاب قداح', mina: 'مينا تسيماح', vp1: 'عدي سيدي', vp2: 'عدي جيفع' }, midgamName: 'مدجام للاستشارات والأبحاث', aboutUs: 'من نحن', more: 'مكاتب أخرى', back: 'إلى المدخل', vault: 'الدرج السري',
+      paper: { name: 'الأخبار', date: 'الخميس · طبعة الصباح', fict: 'بيانات خيالية', by: 'استطلاع مدجام للاستشارات والأبحاث لصالح الأخبار', method: 'عيّنة 1,000 · هامش خطأ ±3.1% · موزونة حسب العمر والمنطقة' },
+      fake: ['مع', 'ضد', 'لا أعرف'],
+      names: { editor: 'المحرّر', mano: 'مانو جيفع', res: 'الباحثون', call: 'مركز الاتصال', panel: 'الجمع عبر الإنترنت', sec: 'السكرتيرة', dog: 'الكلب', printer: 'الطابعة', field: 'باحث ميداني من مدجام' },
+      steps: ['احصل على الطلب من المحرّر', 'اجتماع افتتاحي مع مانو جيفع', 'بناء البحث عند الباحثين', 'الجمع في مركز الاتصال', 'الجمع عبر الإنترنت', 'بناء النتائج عند الباحثين', 'موافقة نهائية من مانو جيفع', 'التسليم للمحرّر'],
+      hint: 'تلميح، التالي:',
+      start: 'بدأت اللعبة. الأسهم للمشي، المسافة للتحدث، Escape للخروج. المحرّر ينتظر في الشارع.', askQ: 'وما رأيكم؟ اختاروا إجابة.', pctSay: v => v + ' بالمئة ممن لعبوا هذه اللعبة يفكرون مثلكم.',
+      html: {
+        nav1: 'مجالات النشاط', nav2: 'النتائج', nav3: 'دراسات حالة', nav4: 'من نحن', cta: 'اطلبوا بحثًا', badge1: 'لعبة · 3 دقائق', title: 'يوم في مدجام',
+        h1: 'هل تنجحون في تقديم<span>استطلاع سليم؟</span>', sub: 'تلتقون في الشارع بمحرّر يحتاج استطلاعًا، تمرّون بكل أقسام مدجام مع مانو جيفع، وتعودون إلى غرفة الأخبار. لن يقبل إلا استطلاعًا سليمًا.',
+        playNow: 'العبوا الآن', fields: 'مدجام للاستشارات والأبحاث، منذ 1988: <b>استطلاعات الرأي العام</b> · <b>أبحاث السوق</b> · <b>البحث الاجتماعي</b> · <b>آراء خبراء للمحاكم</b>',
+        demo: '<b>يوم في مدجام</b> · عرض تجريبي', play: 'العبوا', talk: 'تحدّث', cont: 'متابعة', phNote: 'صورة ونص مؤقتان', walk: 'للمشي', space: 'مفتاح المسافة للتحدث', exit: 'خروج',
+        finQ: 'وما رأيكم؟', finQ2: 'إبقاء التوقيت الصيفي طوال السنة؟', a0: 'مع', a1: 'ضد', a2: 'لا أعرف',
+        finR: 'أشخاص مثلكم', finR2: 'ممن لعبوا هذه اللعبة يفكرون مثلكم.', finR3: 'بيانات نموذجية إلى حين ربط عدّاد حقيقي', close: 'إغلاق',
+        next1: 'والآن، ما هو استطلاعك؟', next2: 'أخبرونا ماذا تريدون أن تعرفوا، وسنعود إليكم باقتراح بحث.', contact: 'تواصلوا معنا', findings: 'نتائج مدجام', again: 'العب مرة أخرى',
+        mhint: 'اضغطوا على مكان للمشي · «تحدّث» للتحدث'
+      },
+      aria: { music: 'الموسيقى', lang: 'اللغة', title: 'يوم في مدجام', pad: 'أزرار المشي', up: 'أعلى', right: 'يمين', down: 'أسفل', left: 'يسار',
+        canvas: 'لعبة بكسل: باحث شاب يلتقي في الشارع بمحرّر يريد استطلاعًا، يمرّ في مكاتب مدجام عند مانو جيفع والباحثين ومركز الاتصال والجمع عبر الإنترنت، ويسلّم استطلاعًا سليمًا في غرفة الأخبار.' }
+    }
+  };
+  let U = UI.he;
+  const setLang = (l, save) => {
+    if (!UI[l]) l = 'he';
+    LANG = l; U = UI[l]; RTL = U.dir === 'rtl';
+    Object.assign(TEXT, TX[l]);
+    const de = document.documentElement; de.lang = l; de.dir = U.dir;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const v = U.html[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { const v = U.aria[el.dataset.i18nAria]; if (v != null) el.setAttribute('aria-label', v); });
+    document.querySelectorAll('[data-lang]').forEach(b => { const on = b.dataset.lang === l; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    lastHud = '';
+    if (S.say && S.key) { S.say = TEXT[S.key]; S.shown = Math.min(S.shown, S.say.length); }
+    if (l === 'ar' && document.fonts) document.fonts.load(`700 10px "Noto Sans Arabic"`).catch(() => {});
+    if (save) try { localStorage.setItem('midgam-lang', l); } catch (_) {}
+  };
+  addEventListener('message', e => {
+    if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-texts') return;
+    const t = e.data.texts || {};
+    // the design page edits the Hebrew texts; they show live when Hebrew is on
+    Object.keys(TX.he).forEach(k => { if (typeof t[k] === 'string' && t[k].trim()) TX.he[k] = t[k].slice(0, 400); });
+    if (LANG === 'he') { Object.assign(TEXT, TX.he); if (S.say && S.key) S.say = TEXT[S.key]; }
+  });
+  if (window.parent !== window) window.parent.postMessage({ type: 'midgam-game-ready' }, '*');
+
+  /* ---------- the story: order matters, rooms send you back ---------- */
+  const SCRIPT = [
+    { scene: 'street', path: [[120, 128], [120, 80]], face: 'right', who: 'editor', key: 'editor_brief', done: 1 },
+    { scene: 'street', path: [STREET_DOOR.hq], face: 'up', go: ['office', 'office', [206, 86]] },
+    { scene: 'office', path: [[200, 86]], face: 'up', who: 'sec', key: 'secretary_line' },
+    { scene: 'office', path: [[160, 92], [160, 34]], face: 'right', who: 'mano', key: 'mano_start', done: 2 },
+    { scene: 'office', path: [[160, 92], [16, 92], [16, 130]], face: 'right', who: 'call', key: 'gate_call_early', refuse: true },
+    { scene: 'office', path: [[16, 92], [16, 34]], face: 'right', who: 'res', key: 'researcher_design', done: 3 },
+    { scene: 'office', path: [[16, 92], [16, 130]], face: 'right', who: 'call', key: 'call_center', done: 4 },
+    { scene: 'office', path: [[16, 92], [96, 92], [96, 32]], face: 'right', who: 'panel', key: 'panel', done: 5 },
+    { scene: 'office', path: [[96, 92], [16, 92], [16, 34]], face: 'right', who: 'res', key: 'researcher_findings', done: 6 },
+    { scene: 'office', path: [[16, 92], [160, 92], [160, 34]], face: 'right', who: 'mano', key: 'mano_end', done: 7 },
+    { scene: 'office', path: [[160, 92], [218, 92]], face: 'right', go: ['street', '', STREET_DOOR.hq] },
+    { scene: 'street', path: [[56, 88], [172, 88], STREET_DOOR.news], face: 'up', go: ['news', 'newsroom', [104, 172]] },
+    { scene: 'news', path: [[104, 62]], face: 'up', who: 'editor', key: 'editor_final', done: 8, party: true }
+  ];
+  const S = { scene: 'street', me: { x: 0, y: 128, face: 'right' }, i: 0, wps: [], wait: 0, say: '', key: '', who: '', refuse: false, shown: 0, done: 0, fade: 0, fadeDir: 0, card: '', next: null, conf: [], leg: 0, cardT: 0, reset: false, partyT: 0, paper: false, paperP: 0, egg: null, photo: false, photoP: 0, barkT: 0, ed: { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null } };
+  const startAction = () => { const a = SCRIPT[S.i]; S.wps = a.path.map(p => p.slice()); };
+  const finishWalk = () => {
+    const a = SCRIPT[S.i]; S.me.face = a.face;
+    if (a.go) { S.fadeDir = 1; S.next = a.go; return; }
+    S.key = a.key; S.say = TEXT[a.key]; S.who = a.who; S.refuse = !!a.refuse; S.shown = 0; S.wait = a.party ? 9500 : a.refuse ? 3000 : 3800;
+    if (a.done) S.done = a.done;
+    if (a.party) S.partyT = 0;
+  };
+  const advance = () => {
+    S.say = ''; S.key = ''; S.refuse = false; S.i++;
+    if (S.i >= SCRIPT.length) { S.fadeDir = 1; S.next = ['street', '', [0, 128]]; S.reset = true; return; }
+    startAction();
+  };
+  const burst = () => { const cols = ['s', 'l', 'b', 'w', 'y', 'p']; S.conf = Array.from({ length: 160 }, () => ({ x: 112 + (Math.random() - .5) * 60, y: 40, vx: (Math.random() - .5) * 3.4, vy: -Math.random() * 3.4 - 1, c: cols[Math.floor(Math.random() * cols.length)], w: Math.random() < .5 ? 2 : 3, ph: Math.random() * 6 })); };
+
+  /* ---------- easter eggs: the design page can ask for one ---------- */
+  const EGGS = {
+    secretary: { pos: [200, 86], face: 'up', who: 'sec', key: 'secretary_line', wait: 3400 },
+    dog: { scene: 'office2', pos: [38, 88], face: 'left', who: 'dog', key: 'dog_line', wait: 2600, bark: true },
+    printer: { scene: 'office', pos: [86, 88], face: 'right', who: '', key: '', wait: 7000, card: 'midgam' }
+  };
+  addEventListener('message', e => {
+    if (e.source !== window.parent || !e.data || e.data.type !== 'midgam-egg' || !EGGS[e.data.egg] || reduce || MODE === 'play') return;
+    const g = EGGS[e.data.egg];
+    S.scene = g.scene || 'office'; S.fadeDir = 0; S.fade = 0; S.card = ''; S.conf = []; S.paper = false; S.wps = [];
+    S.me.x = g.pos[0]; S.me.y = g.pos[1]; S.me.face = g.face; S.egg = e.data.egg;
+    S.key = g.photo ? '' : g.key; S.say = g.photo ? '' : TEXT[g.key]; S.who = g.who; S.refuse = false; S.shown = 0; S.wait = g.wait;
+    S.barkT = g.bark ? g.wait : 0; S.photo = !!g.photo; S.photoP = 0; if (g.card) { S.say = ''; showCard(g.card); }
+  });
+
+  /* ---------- the printed photo: the team on a field trip (an illustration until a real photo arrives) ---------- */
+  const TEAM = ['res', 'mano', 'a', 'res3', 'b', 'sec', 'f', 'res2'];
+  const photo = (p) => {
+    const e = 1 - Math.pow(1 - p, 3), X = 42, w = 140, h = 116, y0 = 18 + (1 - e) * 180;
+    x.fillStyle = 'rgba(11,34,56,.35)'; x.fillRect(X + 4, y0 + 4, w, h);
+    R('k', X, y0, w, h); R('w', X + 1, y0 + 1, w - 2, h - 2);
+    const ix = X + 7, iy = y0 + 7, iw = w - 14, ih = 80;
+    R('l', ix, iy, iw, ih); R('p', ix, iy + 22, iw, 20);
+    R('y', ix + 18, iy + 8, 10, 10); R('w', ix + 20, iy + 9, 3, 2);
+    for (let i = 0; i < iw; i++) { const m1 = Math.round(14 + 12 * Math.abs(Math.sin(i / 22))); R('b', ix + i, iy + ih - 34 - m1, 1, m1); const m2 = Math.round(8 + 8 * Math.abs(Math.sin(i / 13 + 1))); R('d', ix + i, iy + ih - 30 - m2, 1, m2); }
+    R('o', ix, iy + ih - 30, iw, 30); for (let i = 0; i < iw; i += 9) R('p', ix + i, iy + ih - 26 + (i % 3), 2, 1);
+    [[ix + 4, iy + 34], [ix + iw - 18, iy + 32]].forEach(([tx, ty]) => tree(tx, ty));
+    TEAM.forEach((k, i) => person(PEOPLE[k], ix + 6 + i * 14.5, iy + ih - 22 - (i % 2) * 4, 'down'));
+    R('k', ix, iy, iw, 1); R('k', ix, iy + ih, iw, 1);
+    x.font = `700 7px ${FF}`; const cap = wrapLines(TEXT.printer_caption, w - 16).slice(0, 2);
+    cap.forEach((l, i) => txt(l, X + w / 2, y0 + 96 + i * 9, 7, 'k', 700));
+  };
+
+  /* ---------- the newspaper with the published survey (fictional results) ---------- */
+  const wrapLines = (str, maxW) => { const out = []; let line = ''; for (const w of str.split(' ')) { const t2 = line ? line + ' ' + w : w; if (x.measureText(t2).width > maxW && line) { out.push(line); line = w; } else line = t2; } if (line) out.push(line); return out; };
+  const FAKE = [[54, 'b'], [38, 's'], [8, 'n']];
+  const newspaper = (p) => {
+    const e = 1 - Math.pow(1 - p, 3), X = 36, w = 152, h = 128, y0 = 22 + (1 - e) * 180, Pp = U.paper;
+    // M mirrors an x position for left-to-right languages; A is the reading-start alignment
+    const M = v => RTL ? v : 2 * X + w - v, A = RTL ? 'right' : 'left';
+    x.fillStyle = 'rgba(11,34,56,.35)'; x.fillRect(X + 4, y0 + 4, w, h);
+    R('k', X, y0, w, h); R('w', X + 1, y0 + 1, w - 2, h - 2);
+    txt(Pp.name, X + w / 2, y0 + 10, 11, 'k', 800); R('k', X + 6, y0 + 18, w - 12, 1); R('k', X + 6, y0 + 20, w - 12, 1);
+    txt(Pp.date, M(X + w - 8), y0 + 26, 4.4, 'n', 500, A);
+    plate(Pp.fict, M(X + 26), y0 + 26, 4, 'y', 'k');
+    x.font = `800 7.6px ${FF}`; const hl = wrapLines(TEXT.paper_headline, w - 16).slice(0, 2);
+    hl.forEach((l, i) => txt(l, M(X + w - 8), y0 + 37 + i * 10, 7.6, 'k', 800, A));
+    const sy = y0 + 37 + hl.length * 10;
+    fitTxt(Pp.by, M(X + w - 8), sy, 4.8, 'b', 600, A, w - 16);
+    const L = w - 82, bx0 = RTL ? X + 30 : X + w - 30 - L;
+    FAKE.forEach(([v, c], i) => {
+      const y = sy + 10 + i * 11, fw = L * v / 100;
+      fitTxt(U.fake[i], M(X + w - 8), y, 5.2, 'k', 600, A, 42);
+      R('g', bx0, y - 2.5, L, 5); R(c, RTL ? bx0 + L - fw : bx0, y - 2.5, fw, 5);
+      txt(v + '%', M(X + 18), y, 5.6, 'k', 800);
+    });
+    R('o', X + 6, y0 + h - 18, w - 12, 12); R('p', X + 6, y0 + h - 18, w - 12, 1);
+    fitTxt(Pp.method, M(X + w - 10), y0 + h - 12, 4.3, 'k', 500, A, w - 20);
+  };
+  const fitTxt = (s2, X, Y, size, c, weight, align, maxW) => { x.font = `${weight} ${size}px ${FF}`; while (x.measureText(s2).width > maxW && size > 3) { size -= .2; x.font = `${weight} ${size}px ${FF}`; } txt(s2, X, Y, size, c, weight, align); };
+
+  /* ---------- HUD: the next step, and what is already done, crossed out ---------- */
+  const mission = document.getElementById('mission'); let lastHud = '';
+  const hud = () => {
+    let done, next; const steps = U.steps, mob = document.documentElement.classList.contains('mobile-play');
+    if (MODE === 'play') { done = PLAY_STEPS.map((k, i) => F[k] ? steps[i] : null).filter(Boolean); const n = PLAY_STEPS.findIndex(k => !F[k]); next = n >= 0 ? steps[n] : null; }
+    else { done = steps.slice(0, S.done); next = steps[S.done]; }
+    const key = LANG + mob + MODE + done.join('|') + next; if (key === lastHud) return; lastHud = key;
+    const nextHtml = next ? `<span class="next">${U.next} ${next}</span>` : `<span class="next ok">${U.published}</span>`;
+    // on a phone only the next step shows, in full, with a step count
+    if (mob) { mission.innerHTML = `<span class="lbl">${done.length}/${steps.length}</span>` + nextHtml; return; }
+    const shown = done.slice(-2), more = done.length - shown.length;
+    mission.innerHTML = `<span class="lbl">${U.mission}</span>` + (more ? `<span class="more">${U.doneN(more)}</span>` : '') + shown.map(d => `<span class="done">${d}</span>`).join('') + nextHtml;
+  };
+  const dialog = (t) => {
+    if (!S.say) return;
+    x.font = `600 6.6px ${FF}`;
+    const lines = wrapLines(S.say, 196), h = 14 + lines.length * 9.5, by = H - 6 - h, edge = S.refuse ? 'r' : 'k';
+    R(edge, 6, by, 212, h); R('w', 8, by + 2, 208, h - 4); R('p', 8, by + h - 5, 208, 1);
+    if (S.who) plate(whoName(S.who), RTL ? 196 : 28, by, 5.2, S.refuse ? 'r' : 'b', 'w', 120);
+    let left = Math.floor(S.shown); x.font = `600 6.6px ${FF}`; x.fillStyle = P.k; x.direction = RTL ? 'rtl' : 'ltr'; x.textAlign = RTL ? 'right' : 'left'; x.textBaseline = 'top';
+    lines.forEach((l, i) => { if (left <= 0) return; const part = l.slice(0, left); left -= l.length + 1; x.fillText(part, RTL ? 210 : 14, by + 8 + i * 9.5); });
+    const mk = RTL ? 14 : 205;
+    if (S.shown >= S.say.length && Math.floor(t / 380) % 2) { R(S.refuse ? 'r' : 'b', mk, by + h - 11, 5, 2); R(S.refuse ? 'r' : 'b', mk + 1, by + h - 9, 3, 1); }
+  };
+  const confetti = (dt, t) => {
+    if (!S.conf.length) return;
+    S.conf.forEach(c => { c.vy += .06 * dt / 16; c.x += (c.vx + Math.sin(t / 160 + c.ph) * .3) * dt / 16; c.y += c.vy * dt / 16; c.vx *= .99; R(c.c, c.x, c.y, c.w, Math.sin(t / 90 + c.ph) > 0 ? 2 : 1); });
+    S.conf = S.conf.filter(c => c.y < H + 4);
+    plate(U.published, W / 2, 12, 9, 'y', 'k', W - 20);
+  };
+
+
+  /* ---------- music: a tiny chiptune player with original loops (square lead, triangle bass, noise hats) ---------- */
+  const Music = (() => {
+    let ac = null, master = null, track = null, step = 0, nextT = 0, timer = null, holdUntil = 0, noiseBuf = null;
+    let on = true; try { on = localStorage.getItem('midgam-music') !== '0'; } catch (_) {}
+    const hz = n => { const m = /^([A-G])(#|b)?(\d)$/.exec(n), b = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0); return 440 * Math.pow(2, ((+m[3] + 1) * 12 + b - 69) / 12); };
+    // "E5:2 G5:2 -:4" -> events by 16th-note step; "-" is a rest
+    const seq = str => { const ev = {}; let t = 0; str.trim().split(/\s+/).forEach(tok => { const [n, l] = tok.split(':'); if (n !== '-') ev[t] = { f: hz(n), l: +l }; t += +l; }); return { ev, len: t }; };
+    // bass: one root per bar, played in a pattern of [semitones above root, length]
+    // chords used by the tunes (pads, arpeggios and the bass, which plays the chord's lowest note an octave down)
+    const CH = { C: ['C4', 'E4', 'G4'], Am: ['A3', 'C4', 'E4'], F: ['F3', 'A3', 'C4'], G: ['G3', 'B3', 'D4'], Dm: ['D4', 'F4', 'A4'], Em: ['E4', 'G4', 'B4'],
+      Bb: ['Bb3', 'D4', 'F4'], Gm: ['G3', 'Bb3', 'D4'], D: ['D4', 'F#4', 'A4'], Bm: ['B3', 'D4', 'F#4'], E: ['E4', 'G#4', 'B4'],
+      Dm7: ['D4', 'F4', 'A4', 'C5'], G7: ['G3', 'B3', 'D4', 'F4'], Cmaj7: ['C4', 'E4', 'G4', 'B4'], Am7: ['A3', 'C4', 'E4', 'G4'] };
+    const chords = str => str.trim().split(/\s+/).map(n => CH[n].map(hz));
+    // five tunes, each with its own instruments and groove; all soft, none harsh
+    const TRACKS = {
+      // the street: a sunny morning walk, flute over plucked arpeggios
+      street: { bpm: 104, lead: 'flute', arp: { inst: 'pluck', pat: [0, 1, 2, 1], every: 2 }, bassPat: [[0, 6], [7, 2], [0, 4], [7, 4]],
+        drums: { kick: 'x.......x.......', shaker: '..x...x...x...x.' },
+        chords: chords('C Am F G  C Am Dm G  F G Em Am  F G C C'),
+        seq: seq('G4:2 C5:2 E5:4 D5:2 C5:2 E5:4  A5:6 G5:2 E5:8  F5:2 E5:2 F5:2 A5:2 G5:4 F5:4  D5:12 -:4  G4:2 C5:2 E5:4 D5:2 C5:2 G5:4  A5:6 B5:2 C6:8  D6:2 C6:2 A5:4 F5:4 A5:4  G5:12 -:4  A5:3 G5:1 F5:4 C5:4 F5:4  G5:3 F5:1 E5:4 D5:4 B4:4  E5:3 D5:1 E5:4 G5:4 B5:4  A5:12 -:4  F5:2 A5:2 C6:4 A5:2 F5:2 A5:4  G5:2 B5:2 D6:4 B5:2 G5:2 D5:4  E5:4 G5:4 C6:8  C6:8 -:8') },
+      // the main office: busy desks, a bouncy marimba and a walking bass
+      office: { bpm: 112, lead: 'marimba', pad: true, bassPat: [[0, 4], [7, 4], [12, 4], [7, 4]],
+        drums: { kick: 'x.....x...x.....', shaker: '..x...x...x...x.' },
+        chords: chords('F Dm Bb C  F Dm Gm C  Bb C Am Dm  Gm C F F'),
+        seq: seq('C5:2 F5:2 A5:2 F5:2 C6:2 A5:2 F5:4  D5:2 F5:2 A5:2 D6:2 C6:4 A5:4  Bb4:2 D5:2 F5:2 Bb5:2 A5:2 G5:2 F5:4  E5:2 G5:2 C6:4 -:8  A5:2 C6:2 A5:2 F5:2 G5:2 A5:2 F5:4  F5:2 A5:2 D6:2 C6:2 A5:4 F5:4  G5:2 Bb5:2 D6:2 Bb5:2 A5:2 G5:2 E5:4  C5:4 E5:4 G5:4 -:4  D6:4 C6:2 Bb5:2 A5:4 F5:4  E5:4 G5:2 C6:2 Bb5:4 G5:4  C6:4 B5:2 A5:2 E5:4 C5:4  D5:2 E5:2 F5:2 A5:2 D6:8  Bb5:2 A5:2 G5:2 D5:2 G5:4 Bb5:4  A5:2 G5:2 E5:2 C5:2 E5:4 G5:4  F5:2 A5:2 C6:4 A5:2 C6:2 F5:4  F5:8 -:8') },
+      // the new wing: a relaxed lounge, bells with an echo over jazzy seventh chords and soft brushes
+      office2: { bpm: 90, lead: 'bell', pad: true, comp: [4, 10], bassPat: [[0, 4], [7, 4], [12, 4], [7, 4]],
+        drums: { brush: '....x.......x...', shaker: '..x.......x.....' },
+        chords: chords('Dm7 G7 Cmaj7 Am7  Dm7 G7 Cmaj7 Cmaj7  Dm7 G7 Cmaj7 Am7  Dm7 G7 Cmaj7 Cmaj7'),
+        seq: seq('A5:3 F5:3 D5:2 -:4 C5:2 D5:2  F5:6 D5:2 B4:4 -:4  E5:3 G5:3 B5:2 -:2 A5:2 G5:4  E5:12 -:4  A5:3 C6:3 A5:2 -:2 F5:2 A5:4  G5:3 F5:3 D5:2 -:2 B4:2 D5:4  C5:3 E5:3 G5:2 B5:8  C6:12 -:4  D6:4 C6:2 A5:2 -:4 F5:4  B5:4 A5:2 G5:2 -:4 D5:4  E5:2 G5:2 C6:2 E6:2 D6:8  C6:3 B5:3 A5:2 E5:8  F5:2 A5:2 C6:4 A5:4 F5:4  D5:2 F5:2 B5:4 A5:4 G5:4  E5:4 D5:4 C5:4 B4:4  C5:12 -:4') },
+      // the secret stairs: a slow heartbeat, echoing bells, a little suspense
+      vault: { bpm: 72, lead: 'bell', pad: true, arp: { inst: 'pluck', pat: [0, 1, 2, 1], every: 4 }, bassPat: [[0, 16]],
+        drums: { kick: 'x..x............' },
+        chords: chords('Am Am F F Dm Dm E E'),
+        seq: seq('E5:2 -:2 A5:2 -:2 C6:4 B5:4  A5:8 -:8  F5:2 -:2 A5:2 -:2 C6:4 A5:4  G5:8 -:8  D5:2 -:2 F5:2 -:2 A5:4 G5:4  F5:8 E5:8  E5:2 G#5:2 B5:4 D6:4 C6:2 B5:2  G#5:12 -:4') },
+      // the newsroom: on air, a proud little march with a warm organ
+      news: { bpm: 120, lead: 'organ', bassPat: [[0, 2], [12, 2], [0, 2], [12, 2], [0, 2], [12, 2], [0, 2], [12, 2]],
+        drums: { kick: 'x...x...x...x...', snare: '....x.......x...', shaker: '..x...x...x...x.' },
+        chords: chords('G C D G  Em C D D  C D Bm Em  C D G G'),
+        seq: seq('D5:2 G5:2 B5:2 D6:2 B5:4 G5:4  E5:2 G5:2 C6:4 B5:2 A5:2 G5:4  F#5:2 A5:2 D6:4 C6:2 B5:2 A5:4  G5:4 D5:4 G5:8  B5:2 A5:2 G5:2 E5:2 G5:4 B5:4  C6:2 B5:2 A5:2 G5:2 E5:4 G5:4  A5:2 B5:2 C6:2 D6:2 C6:4 A5:4  F#5:8 A5:8  G5:3 E5:1 C5:4 E5:4 G5:4  A5:3 F#5:1 D5:4 F#5:4 A5:4  B5:3 A5:1 F#5:4 D5:4 F#5:4  E5:12 -:4  E5:2 G5:2 C6:4 E5:2 G5:2 C6:4  F#5:2 A5:2 D6:4 C6:2 B5:2 A5:4  B5:4 A5:2 G5:2 D5:4 B4:4  G5:8 -:8') }
+    };
+    let bus = null, echo = null, organWave = null;
+    // a smooth envelope on every note, so nothing clicks or stabs
+    const env = (v, t, d, g, att, rel, decay) => {
+      v.gain.setValueAtTime(0, t); v.gain.linearRampToValueAtTime(g, t + Math.min(att, d / 3));
+      if (decay) v.gain.exponentialRampToValueAtTime(.0008, t + d);
+      else { const r = Math.min(rel, d * .6); v.gain.setValueAtTime(g, Math.max(t + att, t + d - r)); v.gain.linearRampToValueAtTime(0, t + d); }
+    };
+    const osc = (type, f, t, d, g, att, rel, decay, send) => {
+      const o = ac.createOscillator(), v = ac.createGain();
+      if (type === 'organ') o.setPeriodicWave(organWave); else o.type = type;
+      o.frequency.value = f; env(v, t, d, g, att, rel, decay); o.connect(v).connect(bus); if (send) v.connect(echo);
+      o.start(t); o.stop(t + d + .05); return o;
+    };
+    const tone = (type, f, t, d, g, att = .04, rel = .3) => osc(type, f, t, d, g, att, rel, false);
+    const INST = {
+      flute: (f, t, d) => { const o = osc('triangle', f, t, d, .1, .05, .25); const l = ac.createOscillator(), lg = ac.createGain(); l.frequency.value = 5; lg.gain.value = f * .004; l.connect(lg).connect(o.frequency); l.start(t + .15); l.stop(t + d + .05); },
+      marimba: (f, t) => { osc('sine', f, t, .45, .16, .004, 0, true); osc('sine', f * 4, t, .12, .025, .002, 0, true); },
+      bell: (f, t, d) => { osc('sine', f, t, Math.max(1, d), .1, .004, 0, true, true); osc('sine', f * 2.76, t, .5, .02, .002, 0, true, true); },
+      organ: (f, t, d) => osc('organ', f, t, d, .06, .02, .12),
+      pluck: (f, t, d) => osc('triangle', f, t, Math.max(.25, d), .06, .004, 0, true)
+    };
+    const noise = (t, d, g, freq = 2000, q = 1) => {
+      if (!noiseBuf) { noiseBuf = ac.createBuffer(1, ac.sampleRate * .5, ac.sampleRate); const a2 = noiseBuf.getChannelData(0); for (let i = 0; i < a2.length; i++) a2[i] = Math.random() * 2 - 1; }
+      const n = ac.createBufferSource(), f = ac.createBiquadFilter(), v = ac.createGain(); n.buffer = noiseBuf; f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = q;
+      v.gain.setValueAtTime(g, t); v.gain.exponentialRampToValueAtTime(.001, t + d); n.connect(f).connect(v).connect(bus); n.start(t); n.stop(t + d + .02);
+    };
+    const kick = (t, g = .16) => { const o = ac.createOscillator(), v = ac.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(110, t); o.frequency.exponentialRampToValueAtTime(42, t + .14); v.gain.setValueAtTime(g, t); v.gain.exponentialRampToValueAtTime(.001, t + .22); o.connect(v).connect(bus); o.start(t); o.stop(t + .25); };
+    const DRUM = { kick: t => kick(t), snare: t => noise(t, .12, .05, 1800, .8), shaker: t => noise(t, .05, .022, 5000, 1.5), brush: t => noise(t, .18, .03, 3000, .7) };
+    // bass offsets within a bar, precomputed per tune
+    Object.values(TRACKS).forEach(tr => { let o = 0; tr.bassEv = tr.bassPat.map(([st, l]) => { const e = { at: o, st, l }; o += l; return e; }); });
+    const tick = () => {
+      if (!ac || !track) return;
+      const tr = TRACKS[track], sp = 60 / tr.bpm / 4, len = tr.seq.len;
+      if (ac.currentTime < holdUntil) { nextT = holdUntil; step = 0; return; }
+      if (nextT < ac.currentTime - .05) nextT = ac.currentTime + .05;
+      while (nextT < ac.currentTime + .2) {
+        const i = step % len, s16 = i % 16, ch = tr.chords[Math.floor(i / 16) % tr.chords.length], t = nextT, L = tr.seq.ev[i];
+        if (L) INST[tr.lead](L.f, t, L.l * sp);
+        if (tr.pad && s16 === 0) ch.forEach(f => tone('sine', f, t, 16 * sp * 1.02, .022, .3, .5));
+        if (tr.arp && s16 % tr.arp.every === 0) INST[tr.arp.inst](ch[tr.arp.pat[(s16 / tr.arp.every) % tr.arp.pat.length] % ch.length], t, tr.arp.every * sp);
+        if (tr.comp && tr.comp.includes(s16)) ch.forEach(f => osc('triangle', f, t, .5, .03, .006, 0, true));
+        tr.bassEv.forEach(e => { if (e.at === s16) tone('triangle', ch[0] / 2 * Math.pow(2, e.st / 12), t, e.l * sp * .95, .13, .02, .12); });
+        Object.keys(tr.drums || {}).forEach(k => { if (tr.drums[k][s16] === 'x') DRUM[k](t); });
+        step++; nextT += sp;
+      }
+    };
+    const ensure = () => {
+      if (!ac) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return false; ac = new C(); master = ac.createGain(); master.gain.value = on ? .45 : 0; const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2600; lp.Q.value = .3; bus = ac.createGain(); bus.connect(lp).connect(master); master.connect(ac.destination);
+        echo = ac.createDelay(1); echo.delayTime.value = .33; const fb = ac.createGain(); fb.gain.value = .32; const elp = ac.createBiquadFilter(); elp.type = 'lowpass'; elp.frequency.value = 1500; echo.connect(fb).connect(echo); echo.connect(elp).connect(master);
+        organWave = ac.createPeriodicWave(new Float32Array([0, 1, .45, .2, .1, .04]), new Float32Array(6)); }
+      if (ac.state !== 'running') ac.resume().catch(() => {});
+      try { const b = ac.createBuffer(1, 1, 22050), src = ac.createBufferSource(); src.buffer = b; src.connect(ac.destination); src.start(0); } catch (_) {}
+      if (!timer) timer = setInterval(tick, 40);
+      return true;
+    };
+    return {
+      get on() { return on; },
+      start() { ensure(); },
+      stop() { track = null; if (timer) { clearInterval(timer); timer = null; } if (ac) ac.suspend().catch(() => {}); },
+      want(name) { if (!ac || name === track) return; track = name; step = 0; nextT = ac.currentTime + .08; },
+      toggle() { on = !on; try { localStorage.setItem('midgam-music', on ? '1' : '0'); } catch (_) {} if (ac) master.gain.setTargetAtTime(on ? .45 : 0, ac.currentTime, .08); return on; },
+      // the publish fanfare: the loop pauses for it, then comes back
+      fanfare() { if (!ac || !on) return; const t = ac.currentTime + .05, sp = .16; [['C5', 0, 3], ['E5', 3, 3], ['G5', 6, 3], ['C6', 9, 12]].forEach(([n, a2, l]) => tone('triangle', hz(n), t + a2 * sp, l * sp, .11, .04, .5)); ['C4', 'E4', 'G4'].forEach(n => tone('sine', hz(n), t, 22 * sp, .04, .4, .8)); tone('triangle', hz('C3'), t, 22 * sp, .12, .1, .6); holdUntil = t + 24 * sp; },
+      blip() { if (!ac || !on) return; const t = ac.currentTime; tone('sine', 660, t, .09, .03, .01, .06); tone('sine', 880, t + .07, .1, .025, .01, .07); },
+      clang() { if (!ac || !on) return; const t = ac.currentTime; noise(t, .4, .1, 900); tone('triangle', 110, t, .6, .12, .005, .5); },
+      glug() { if (!ac || !on) return; const t = ac.currentTime; [0, .14, .28].forEach((a2, i) => tone('sine', 280 + i * 80, t + a2, .12, .08, .01, .08)); },
+      suspend() { if (ac && ac.state === 'running') ac.suspend().catch(() => {}); if (timer) { clearInterval(timer); timer = null; } },
+      resume() { if (ac && track) { ac.resume().catch(() => {}); if (!timer) timer = setInterval(tick, 40); } },
+      ready() { return !!ac && ac.state === 'running'; }
+    };
+  })();
+  ['pointerdown', 'pointerup', 'touchend', 'keydown', 'click'].forEach(ev => addEventListener(ev, () => { if (MODE === 'play' && !Music.ready()) Music.start(); }, true));
+  addEventListener('pageshow', () => { if (MODE === 'play') Music.resume(); });
+  // both office screens share one hallway, so they share the lounge tune and it keeps playing as you walk between them
+  const SCENE_TUNE = { street: 'street', office: 'office2', office2: 'office2', vault: 'vault', news: 'news' };
+
+  /* ---------- play mode: you walk, rooms keep their order ---------- */
+  let MODE = 'demo';
+  const F = {};
+  const PLAY_STEPS = ['brief', 'manoStart', 'design', 'call', 'panel', 'findings', 'manoEnd', 'submitted'];
+  const keys = new Set();
+  const bx = (x0, y0, w, h) => ({ x: x0, y: y0, w, h });
+  const hit = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  const BLOCK = {
+    street: [bx(12, 4, 108, 76), bx(138, 10, 76, 70), ...[[120, 30], [120, 54], [-4, 40], [210, 0], [100, 152], [150, 156]].map(([X, Y]) => bx(X + 2, Y + 8, 12, 8)),
+      ...[[110, 82], [200, 130], [26, 130]].map(([X, Y]) => bx(X + 6, Y + 8, 4, 6)), bx(16, 152, 36, 28), bx(174, 152, 36, 28), bx(56, 168, 40, 8), bx(130, 168, 40, 8), bx(60, 158, 14, 7), bx(140, 152, 14, 7)],
+    office: [],
+    news: [bx(0, 0, W, 28), bx(0, 0, 6, H), bx(W - 6, 0, 6, H), bx(0, H - 4, 96, 4), bx(128, H - 4, 96, 4), bx(86, 44, 56, 14), bx(76, 38, 14, 16), bx(138, 38, 14, 16),
+      ...[18, 62, 146, 190].flatMap(dx => [bx(dx - 10, 76, 28, 20), bx(dx - 10, 126, 28, 20)])]
+  };
+  OFF.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.office.push(bx(i * T, j * T, T, T)); }));
+  BLOCK.office.push(
+    bx(18, 15, 28, 22), bx(48, 16, 30, 21), bx(40, 44, 24, 14), bx(66, 48, 12, 8), bx(32, 52, 12, 8),
+    bx(114, 17, 28, 20), bx(122, 46, 12, 8),
+    bx(182, 16, 26, 15), bx(178, 46, 22, 14), bx(184, 38, 8, 8),
+    bx(96, 105, 18, 7), bx(202, 78, 22, 18),
+    ...CALL_DESKS.map(([dx, dy]) => bx(dx, dy - 10, 22, 22)),
+    bx(130, 160, 12, 12), bx(140, 146, 18, 18), bx(194, 160, 12, 12), bx(176, 146, 18, 18));
+  BLOCK.office2 = []; BLOCK.vault = [];
+  OFF2.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.office2.push(bx(i * T, j * T, T, T)); }));
+  VAULT.forEach((row, j) => row.split('').forEach((c, i) => { if (c === '#') BLOCK.vault.push(bx(i * T, j * T, T, T)); }));
+  BLOCK.office2.push(bx(20, 30, 48, 14), bx(26, 18, 12, 14), bx(50, 18, 12, 14),
+    bx(97, 17, 47, 16), bx(168, 34, 24, 14), bx(174, 20, 12, 14), bx(196, 46, 12, 12),
+    bx(24, 139, 46, 26), bx(112, 146, 26, 14), bx(120, 132, 12, 14), bx(178, 126, 30, 18), bx(161, 152, 12, 22));
+  const feet = (X, Y) => bx(X + 4, Y + 11, 8, 5);
+  const blocked = (X, Y) => {
+    const f = feet(X, Y);
+    if (f.x < 0 || f.y < 0 || f.x + f.w > W || f.y + f.h > H) return true;
+    const list = BLOCK[S.scene].slice();
+    if (S.scene === 'street' && !F.brief) list.push(bx(S.ed.x + 4, S.ed.y + 10, 8, 6));
+    if (S.scene === 'street') list.push(bx(164, 135, 8, 6));
+    if (S.scene === 'news' && F.brief) list.push(bx(110, 42, 8, 6));
+    if (S.scene === 'office2' && !F.shelf) list.push(bx(192, 158, 11, 14));
+    if (S.scene === 'vault' && F.locked) list.push(bx(112, 96, 16, 16));
+    return list.some(b => hit(f, b));
+  };
+  const whoName = w => w === 'vp' ? TEXT.vp_title : (U.names[w] || w);
+  const talk = (who, key, refuse) => { wake(); if (MODE === 'play' && key !== 'vault_locked' && key !== 'shelf_line') Music.blip(); S.who = who; S.key = key; S.say = TEXT[key]; S.refuse = !!refuse; S.shown = 0; announce(whoName(who) + ': ' + TEXT[key]); };
+  const live = document.getElementById('live');
+  const announce = text => { live.textContent = ''; setTimeout(() => { live.textContent = text; }, 30); };
+  const researchers = () => {
+    if (!F.manoStart) return talk('res', 'gate_research_early', true);
+    if (!F.design) { F.design = true; return talk('res', 'researcher_design'); }
+    if (!(F.call && F.panel)) return talk('res', 'gate_findings_early', true);
+    if (!F.findings) F.findings = true;
+    talk('res', 'researcher_findings');
+  };
+  const callCenter = () => { if (!F.design) return talk('call', 'gate_call_early', true); F.call = true; talk('call', 'call_center'); };
+  const TARGETS = () => {
+    if (S.scene === 'street') return [{ x: 168, y: 132, act: () => { if (F.thanked) return talk('field', 'field_other'); if (F.asked) { F.thanked = true; return talk('field', 'field_thanks'); } F.asked = true; talk('field', 'field_ask'); } }].concat(F.brief ? [] : [{ x: S.ed.x + 8, y: S.ed.y + 8, act: briefNow }]);
+    if (S.scene === 'vault') return [];
+    if (S.scene === 'office2') return [
+      { x: 32, y: 26, act: () => showCard('qual1') }, { x: 56, y: 26, act: () => showCard('qual2') },
+      { x: 180, y: 30, act: () => showCard('ihab') }, { x: 126, y: 142, act: () => showCard('mina') }
+    ].concat(F.shelf ? [] : [{ x: 197, y: 156, act: () => { F.shelf = true; S.shelfP = 0; S.shake = 200; Music.glug(); talk('', 'shelf_line'); } }])
+     .concat(F.dog ? [] : [{ x: 28, y: 100, act: () => { S.barkT = 1600; talk('dog', 'dog_line'); S.onClose = () => { F.dog = true; S.trail = [{ x: 20, y: 88 }]; S.dogP = { x: 20, y: 88, left: false }; }; } }]);
+    if (S.scene === 'news') return F.brief ? [{ x: 114, y: 42, act: () => {
+      if (!F.manoEnd) return talk('editor', 'gate_editor_early', true);
+      if (!F.submitted) { F.submitted = true; S.partyT = 0; S.partyPending = true; }
+      talk('editor', 'editor_final'); S.onClose = () => { S.finaleAt = 2000; };
+    } }] : [];
+    return [
+      { x: 214, y: 84, act: () => talk('sec', F.manoEnd ? 'secretary_done' : 'secretary_line') },
+      { x: 188, y: 40, act: () => {
+        if (!F.brief) return talk('mano', 'gate_mano_nobrief', true);
+        if (!F.manoStart) { F.manoStart = true; return talk('mano', 'mano_start'); }
+        if (!F.findings) return talk('mano', 'gate_mano_early', true);
+        F.manoEnd = true; talk('mano', 'mano_end');
+      } },
+      { x: 38, y: 52, act: researchers }, { x: 52, y: 44, act: researchers }, { x: 72, y: 50, act: researchers },
+      ...CALL_DESKS.map(([dx, dy]) => ({ x: dx + 4, y: dy - 2, act: callCenter })),
+      { x: 124, y: 46, act: () => { if (!F.design) return talk('panel', 'gate_panel_early', true); F.panel = true; talk('panel', 'panel'); } },
+      { x: 150, y: 146, act: () => showCard('vp1') },
+      { x: 186, y: 146, act: () => showCard('vp2') },
+      { x: 105, y: 98, act: () => showCard('midgam') }
+    ];
+  };
+  const FACE = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+  const nearest = () => {
+    // talk to whoever is in front of you: targets behind your facing direction are skipped
+    const cx = S.me.x + 8, cy = S.me.y + 10, [fx, fy] = FACE[S.me.face] || [0, 0]; let best = null, bd = 26;
+    TARGETS().forEach(t2 => { const vx = t2.x - cx, vy = t2.y - cy, d = Math.hypot(vx, vy); if (d < bd && vx * fx + vy * fy > -3) { bd = d; best = t2; } });
+    return best;
+  };
+  const finale = document.getElementById('finale');
+  const pcard = document.getElementById('pcard');
+  const overlayOpen = () => !finale.hidden || !pcard.hidden;
+  const CARDS = { qual1: ['qual1', 'qual_role', 'qual1_line'], qual2: ['qual2', 'qual_role', 'qual2_line'], ihab: ['ihab', 'ihab_role', 'ihab_line'], mina: ['mina', 'mina_role', 'mina_line'], vp1: ['vp1', 'vp_title', 'vp1_line'], vp2: ['vp2', 'vp_title', 'vp2_line'] };
+  const portraits = {};
+  // a placeholder portrait: the character's own sprite, head and shoulders, until real photos arrive
+  const portrait = k => {
+    if (portraits[k]) return portraits[k];
+    const c = document.createElement('canvas'); c.width = 18; c.height = 15; const old = x; x = c.getContext('2d');
+    R('p', 0, 0, 18, 15); R('l', 0, 11, 18, 4); person(PEOPLE[k], 1, 2, 'down'); x = old;
+    return (portraits[k] = c.toDataURL());
+  };
+  const showCard = id => {
+    wake(); const img = document.getElementById('pc-img'), mid = id === 'midgam';
+    img.className = mid ? 'logo' : ''; img.src = mid ? 'assets/midgam-logo.png' : portrait(CARDS[id][0]);
+    document.getElementById('pc-role').textContent = mid ? U.aboutUs : TEXT[CARDS[id][1]];
+    document.getElementById('pc-name').textContent = mid ? U.midgamName : U.people[id];
+    document.getElementById('pc-line').textContent = TEXT[mid ? 'midgam_about' : CARDS[id][2]];
+    document.getElementById('pc-note').hidden = mid;
+    pcard.hidden = false; keys.clear(); S.tap = null; document.getElementById('pc-close').focus({ preventScroll: true });
+    announce(document.getElementById('pc-name').textContent + ', ' + document.getElementById('pc-role').textContent + '. ' + document.getElementById('pc-line').textContent);
+  };
+  const closeCard = () => { pcard.hidden = true; cv.focus({ preventScroll: true }); };
+  document.getElementById('pc-close').addEventListener('click', closeCard);
+  pcard.addEventListener('pointerdown', e => { if (e.target === pcard) closeCard(); });
+  const wake = () => { S.idle = 0; S.hintOn = false; };
+  const act = () => {
+    if (MODE !== 'play' || S.fadeDir !== 0 || overlayOpen() || edBusy()) return;
+    if (S.say) { if (S.shown < S.say.length) { S.shown = S.say.length; return; } S.say = ''; S.refuse = false; const cb = S.onClose; S.onClose = null; if (cb) cb(); return; }
+    if (S.photo) { S.photo = false; return; }
+    const t2 = nearest(); if (t2) t2.act();
+  };
+  const faceTo = (tx, ty) => { const vx = tx - (S.me.x + 8), vy = ty - (S.me.y + 10); S.me.face = Math.abs(vx) > Math.abs(vy) ? (vx < 0 ? 'left' : 'right') : (vy < 0 ? 'up' : 'down'); };
+  cv.addEventListener('pointerdown', e => {
+    if (MODE !== 'play' || overlayOpen() || S.fadeDir !== 0 || edBusy()) return;
+    e.preventDefault(); mhint.hidden = true; keys.clear(); held.clear();
+    if (S.say || S.photo) return act();
+    const r = cv.getBoundingClientRect(), wx = (e.clientX - r.left) / r.width * W, wy = (e.clientY - r.top) / r.height * H;
+    const t2 = TARGETS().find(o => Math.hypot(o.x - wx, o.y - wy) < 16);
+    if (t2 && Math.hypot(t2.x - (S.me.x + 8), t2.y - (S.me.y + 10)) < 26) { faceTo(t2.x, t2.y); return t2.act(); }
+    S.tap = { x: wx - 8, y: wy - 13, target: t2 || null, stuck: 0 };
+  });
+  // the editor spots you, a "!" pops over his head, and he crosses to you, like a challenger in an old handheld RPG
+  const briefNow = () => { S.ed.phase = 'talk'; F.brief = true; faceTo(S.ed.x + 8, S.ed.y + 10); talk('editor', 'editor_brief'); S.onClose = () => { S.ed.phase = 'leave'; }; };
+  const edStep = (dt) => {
+    const e = S.ed; if (S.scene !== 'street' || MODE !== 'play') return;
+    if (!e.phase && !F.brief && S.fadeDir === 0 && !S.say && Math.hypot(S.me.x - e.x, S.me.y - e.y) < 96) { e.phase = 'spot'; e.t = 750; S.tap = null; keys.clear(); e.face = S.me.x < e.x ? 'left' : 'right'; }
+    if (e.phase === 'spot') {
+      e.t -= dt; if (e.t > 0) return;
+      // down the zebra crossing to your row, then along the sidewalk until he stands next to you
+      const side = S.me.x < e.x ? 15 : -15; e.phase = 'walk'; e.path = [[e.x, S.me.y], [S.me.x + side, S.me.y]];
+    }
+    if (e.phase === 'leave' && !e.path) e.path = [[136, e.y], [136, 80], [172, 80]];
+    if (!e.path || !e.path.length) return;
+    let step = (e.phase === 'leave' ? .9 : 1.3) * dt / 16;
+    while (step > 0 && e.path.length) {
+      const [tx, ty] = e.path[0], vx = tx - e.x, vy = ty - e.y, d = Math.hypot(vx, vy);
+      if (d <= step) { e.x = tx; e.y = ty; e.path.shift(); step -= d; continue; }
+      e.x += vx / d * step; e.y += vy / d * step; e.face = Math.abs(vx) > Math.abs(vy) ? (vx < 0 ? 'left' : 'right') : (vy < 0 ? 'up' : 'down'); step = 0;
+    }
+    e.leg += dt;
+    if (!e.path.length) {
+      e.path = null;
+      if (e.phase === 'walk') { e.face = S.me.x < e.x ? 'left' : 'right'; briefNow(); }
+      else if (e.phase === 'leave') e.phase = 'gone';
+    }
+  };
+  const edBusy = () => S.scene === 'street' && (S.ed.phase === 'spot' || S.ed.phase === 'walk');
+  const snapC = document.createElement('canvas'), bufC = document.createElement('canvas'); snapC.width = bufC.width = cv.width; snapC.height = bufC.height = cv.height;
+  const slideTo = (scene, pos, dir) => {
+    snapC.getContext('2d').drawImage(cv, 0, 0);
+    S.scene = scene; S.me.x = pos[0]; S.me.y = pos[1]; S.tap = null; S.slide = { dir, t: 0 };
+    S.trail = [{ x: pos[0], y: pos[1] }]; S.dogP = { x: pos[0] - dir * 12, y: pos[1], left: dir < 0 };
+  };
+  const go = (scene, title, pos, face) => { S.fadeDir = 1; S.next = [scene, title, pos]; S.nextFace = face; keys.clear(); };
+  const playStep = (dt) => {
+    if (S.fadeDir !== 0 || S.say || S.photo || S.slide || overlayOpen() || edBusy()) return false;
+    let dx = 0, dy = 0;
+    if (keys.has('left')) dx -= 1; if (keys.has('right')) dx += 1; if (keys.has('up')) dy -= 1; if (keys.has('down')) dy += 1;
+    if (dx || dy) S.tap = null;
+    else if (S.tap) {
+      // walking to a tapped spot; arriving next to a tapped person starts the conversation
+      const tp = S.tap;
+      if (tp.target && Math.hypot(tp.target.x - (S.me.x + 8), tp.target.y - (S.me.y + 10)) < 24) { S.tap = null; faceTo(tp.target.x, tp.target.y); tp.target.act(); return false; }
+      const ex = tp.x - S.me.x, ey = tp.y - S.me.y;
+      if (Math.abs(ex) < .5 && Math.abs(ey) < .5) { S.tap = null; return false; }
+      dx = Math.abs(ex) >= .5 ? Math.sign(ex) : 0; dy = Math.abs(ey) >= .5 ? Math.sign(ey) : 0;
+    }
+    if (!dx && !dy) return false;
+    const bx0 = S.me.x, by0 = S.me.y;
+    const sp = 1.15 * dt / 16;
+    // a tapped spot is reached exactly: never step past it
+    const spx = S.tap ? Math.min(sp, Math.abs(S.tap.x - S.me.x)) : sp, spy = S.tap ? Math.min(sp, Math.abs(S.tap.y - S.me.y)) : sp;
+    S.me.face = dx ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down');
+    // if something ever ends up overlapping you, you can always walk out of it
+    const trapped = blocked(S.me.x, S.me.y);
+    if (dx && (trapped || !blocked(S.me.x + dx * spx, S.me.y))) S.me.x += dx * spx;
+    if (dy && (trapped || !blocked(S.me.x, S.me.y + dy * spy))) S.me.y += dy * spy;
+    S.leg += dt;
+    if (S.tap && !keys.size) { if (Math.abs(S.me.x - bx0) + Math.abs(S.me.y - by0) < .05) { if (++S.tap.stuck > 8) S.tap = null; } else S.tap.stuck = 0; }
+    const f = feet(S.me.x, S.me.y);
+    if (S.scene === 'street' && dy < 0 && hit(f, bx(56, 79, 16, 4))) go('office', 'office', [206, 88], 'left');
+    else if (S.scene === 'street' && dy < 0 && hit(f, bx(166, 79, 18, 4))) go('news', 'newsroom', [104, 170], 'up');
+    else if (S.scene === 'office' && dx > 0 && S.me.x > 209) go('street', '', [56, 82], 'down');
+    else if (S.scene === 'news' && dy > 0 && S.me.y > 174) go('street', '', [172, 82], 'down');
+    else if (S.scene === 'office' && dx < 0 && S.me.x < -3) slideTo('office2', [207, S.me.y], -1);
+    else if (S.scene === 'office2' && dx > 0 && S.me.x > 209) slideTo('office', [-2, S.me.y], 1);
+    else if (S.scene === 'office2' && (dx || dy) && F.shelf && S.shelfP >= 1 && hit(f, bx(194, 162, 7, 7))) go('vault', 'vault', [40, 74], 'down');
+    else if (S.scene === 'vault' && dy < 0 && hit(f, bx(36, 62, 24, 4))) go('office2', '', [164, 134], 'right');
+    if (S.scene === 'vault' && !F.locked && f.x + f.w > 96) { F.locked = true; S.barsP = 0; S.shake = 300; Music.clang(); S.tap = null; keys.clear(); talk('', 'vault_locked', true); }
+    return true;
+  };
+  const resetPlay = () => {
+    PLAY_STEPS.forEach(k => F[k] = false); F.asked = false; F.thanked = false; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; S.trail = []; S.shelfP = 0; S.barsP = 0; S.shake = 0;
+    Object.assign(S, { scene: 'street', say: '', who: '', key: '', refuse: false, shown: 0, conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, card: '', barkT: 0, partyPending: false, finaleAt: 0, onClose: null, wps: [], wait: 0, egg: null });
+    S.idle = 0; S.hintOn = false; S.me = { x: 6, y: 128, face: 'right' }; S.ed = { x: 136, y: 80, face: 'left', phase: '', t: 0, leg: 0, path: null }; finale.hidden = true; lastHud = '';
+  };
+  const stage = document.getElementById('stage');
+  const mplay = document.getElementById('mplay'), mtop = document.getElementById('mtop'), mctl = document.getElementById('mctl'), mhint = document.getElementById('mhint');
+  document.body.appendChild(mplay);
+  const isMobile = () => matchMedia('(pointer:coarse)').matches || (!EMBED && innerWidth < 900);
+  const padEl = document.querySelector('.pad'), talkEl = document.getElementById('talk'), exitEl = document.getElementById('exit');
+  // remember where each piece lives, so leaving play puts it back exactly
+  const glang = document.getElementById('glang');
+  const sndEl = document.getElementById('snd');
+  const MOVED = [mission, glang, sndEl, cv, padEl, talkEl, exitEl, finale, pcard].map(el => { const c = document.createComment('home'); el.parentNode.insertBefore(c, el); return { el, c }; });
+  const toMobile = () => {
+    mtop.append(mission, glang, sndEl, exitEl); lastHud = ''; mplay.insertBefore(cv, mctl); mctl.append(padEl, talkEl); mplay.append(finale, pcard);
+    document.documentElement.classList.add('mobile-play'); mhint.hidden = false;
+    try { const p = mplay.requestFullscreen && mplay.requestFullscreen({ navigationUI: 'hide' }); if (p && p.catch) p.catch(() => {}); } catch (_) {}
+  };
+  const fromMobile = () => {
+    MOVED.forEach(({ el, c }) => c.parentNode.insertBefore(el, c.nextSibling));
+    document.documentElement.classList.remove('mobile-play'); lastHud = '';
+    try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (_) {}
+  };
+  const enterPlay = () => {
+    MODE = 'play'; resetPlay(); keys.clear(); Music.start();
+    if (isMobile()) toMobile(); else stage.classList.add('playing');
+    cv.focus({ preventScroll: true }); announce(U.start);
+  };
+  const exitPlay = () => {
+    MODE = 'demo'; Music.stop(); keys.clear(); finale.hidden = true; pcard.hidden = true; F.dog = false; F.shelf = false; F.locked = false; S.slide = null; stage.classList.remove('playing'); S.tap = null;
+    if (document.documentElement.classList.contains('mobile-play')) fromMobile();
+    Object.assign(S, { scene: 'street', i: 0, done: 0, say: '', conf: [], paper: false, photo: false, fade: 0, fadeDir: 0, wait: 0, egg: null, onClose: null });
+    S.me = { x: 0, y: 128, face: 'right' }; lastHud = ''; startAction();
+  };
+  function showFinale() {
+    finale.hidden = false; document.getElementById('fin-q').hidden = false; document.getElementById('fin-r').hidden = true;
+    finale.querySelector('button').focus(); announce(U.askQ);
+  }
+  finale.querySelectorAll('[data-ans]').forEach(b => b.addEventListener('click', () => {
+    const v = FAKE[+b.dataset.ans][0];
+    document.getElementById('fin-pct').textContent = v + '%';
+    document.getElementById('fin-q').hidden = true; document.getElementById('fin-r').hidden = false;
+    document.getElementById('contact').focus(); announce(U.pctSay(v));
+  }));
+  document.getElementById('again').addEventListener('click', exitPlay);
+  document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); enterPlay(); }));
+  document.getElementById('exit').addEventListener('click', exitPlay);
+  const KEYMAP = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down', A: 'left', D: 'right', W: 'up', S: 'down' };
+  addEventListener('keydown', e => {
+    if (MODE !== 'play') return;
+    if (!pcard.hidden) { if (e.key === ' ' || e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); if (!e.repeat) closeCard(); } return; }
+    if (e.key === 'Escape') { e.preventDefault(); return exitPlay(); }
+    if (overlayOpen()) return;
+    if (KEYMAP[e.key]) { e.preventDefault(); keys.add(KEYMAP[e.key]); }
+    else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!e.repeat) act(); }
+  });
+  addEventListener('keyup', e => { if (KEYMAP[e.key]) keys.delete(KEYMAP[e.key]); });
+  addEventListener('blur', () => keys.clear());
+  // pad buttons: each finger holds one direction until it lifts; a long press never opens the phone's menu
+  const held = new Map();
+  const release = e => { const k = held.get(e.pointerId); if (k) { held.delete(e.pointerId); if (![...held.values()].includes(k)) keys.delete(k); } };
+  document.querySelectorAll('[data-dir]').forEach(b => {
+    const k = b.dataset.dir;
+    b.addEventListener('pointerdown', e => { e.preventDefault(); try { b.setPointerCapture(e.pointerId); } catch (_) {} held.set(e.pointerId, k); keys.add(k); S.tap = null; });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, release));
+  });
+  ['pointerup', 'pointercancel'].forEach(ev => addEventListener(ev, release));
+  document.addEventListener('visibilitychange', () => { keys.clear(); held.clear(); if (document.hidden) Music.suspend(); else if (MODE === 'play') Music.resume(); });
+  [mplay, document.querySelector('.game')].forEach(el => el.addEventListener('contextmenu', e => e.preventDefault()));
+  // while playing, a long press anywhere never brings up the phone's menu or text selection
+  addEventListener('contextmenu', e => { if (MODE === 'play') { e.preventDefault(); e.stopPropagation(); } }, true);
+  addEventListener('selectstart', e => { if (MODE === 'play') e.preventDefault(); }, true);
+  document.querySelectorAll('[data-dir]').forEach(b => b.addEventListener('touchstart', e => e.preventDefault(), { passive: false }));
+  document.getElementById('talk').addEventListener('click', act);
+  const paintSnd = () => sndEl.setAttribute('aria-pressed', Music.on);
+  sndEl.addEventListener('click', () => { Music.toggle(); if (MODE === 'play') Music.start(); paintSnd(); if (MODE === 'play') cv.focus({ preventScroll: true }); }); paintSnd();
+  // stuck for 20 seconds? a bouncing arrow marks where to go next (the person, or the door that leads there)
+  const hintSpot = () => {
+    const sc = S.scene;
+    if (sc === 'office2') return [216, 96];
+    if (sc === 'vault') return [48, 60];
+    if (!F.brief) return sc === 'street' ? [S.ed.x + 8, S.ed.y + 4] : sc === 'office' ? [216, 96] : [112, 184];
+    let room = null;
+    if (!F.manoStart) room = [188, 36];
+    else if (!F.design) room = [52, 40];
+    else if (!F.call) room = [62, 128];
+    else if (!F.panel) room = [124, 42];
+    else if (!F.findings) room = [52, 40];
+    else if (!F.manoEnd) room = [188, 36];
+    if (sc === 'office2') return [216, 96];
+    if (sc === 'vault') return [48, 60];
+    if (room) return sc === 'office' ? room : sc === 'street' ? [64, 74] : [112, 184];
+    return sc === 'news' ? [114, 38] : sc === 'office' ? [216, 96] : [175, 74];
+  };
+  const hintAt = (dt, t) => {
+    if (MODE !== 'play') return;
+    // walking does not count as progress: only talking to someone resets the clock
+    const free = !S.say && !S.photo && !S.paper && !S.slide && S.fadeDir === 0 && !overlayOpen() && !edBusy();
+    if (!free) return;
+    S.idle = (S.idle || 0) + dt;
+    if (S.idle < 7000) return;
+    const [hx, hy] = hintSpot();
+    if (!S.hintOn) { S.hintOn = true; const n = PLAY_STEPS.findIndex(k => !F[k]); if (n >= 0) announce(U.hint + ' ' + U.steps[n]); }
+    // a ring pulsing on the floor, a gold arrow hopping above it, and sparkles circling
+    const ph = (t % 1100) / 1100, rr = 4 + ph * 9;
+    x.strokeStyle = `rgba(242,193,78,${1 - ph})`; x.lineWidth = 1.2; x.beginPath(); x.ellipse(hx, hy + 12, rr, rr * .45, 0, 0, Math.PI * 2); x.stroke();
+    const hop = Math.round(Math.abs(Math.sin(t / 180)) * 5), ay = hy - 14 - hop;
+    R('k', hx - 5, ay - 1, 11, 6); R('k', hx - 4, ay + 5, 9, 2); R('k', hx - 3, ay + 7, 7, 2); R('k', hx - 2, ay + 9, 5, 2); R('k', hx - 1, ay + 11, 3, 1);
+    R('y', hx - 4, ay, 9, 5); R('y', hx - 3, ay + 5, 7, 2); R('y', hx - 2, ay + 7, 5, 2); R('y', hx - 1, ay + 9, 3, 2); R('w', hx - 3, ay + 1, 2, 2);
+    for (let i = 0; i < 3; i++) { const a = t / 400 + i * 2.09; const sx = hx + Math.cos(a) * 12, sy = hy - 2 + Math.sin(a) * 6; R('y', sx, sy - 1, 1, 3); R('y', sx - 1, sy, 3, 1); }
+    // the player wonders: a small thought bubble with a question mark
+    if (Math.floor(t / 900) % 3 !== 2) { const bx2 = S.me.x + 11, by2 = S.me.y - 11; R('k', bx2, by2, 9, 9); R('w', bx2 + 1, by2 + 1, 7, 7); R('k', bx2 - 1, by2 + 9, 2, 2); R('k', bx2 - 3, by2 + 12, 1, 1); txt('?', bx2 + 4.5, by2 + 4.7, 6.5, 'b', 800); }
+  };
+  const promptAt = (t) => {
+    if (MODE !== 'play' || S.say || S.photo || S.fadeDir || overlayOpen()) return;
+    const t2 = nearest(); if (!t2) return;
+    const yy = t2.y - 26 + (Math.floor(t / 300) % 2);
+    R('k', t2.x - 4, yy, 9, 10); R('w', t2.x - 3, yy + 1, 7, 8); txt('!', t2.x + .5, yy + 5, 7, 'b', 800);
+  };
+
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { setLang(b.dataset.lang, true); if (MODE === 'play') cv.focus({ preventScroll: true }); }));
+  { let l0 = new URLSearchParams(location.search).get('lang'); if (!l0) try { l0 = localStorage.getItem('midgam-lang'); } catch (_) {} if (l0 && l0 !== 'he') setLang(l0); }
+  if (new URLSearchParams(location.search).has('debug')) window.__midgam = { S, F, TARGETS, BLOCK, feet, hit, nearest, Music };
+
+  /* ---------- loop ---------- */
+  let last = performance.now();
+  startAction();
+  const frame = (t) => {
+    const dt = Math.min(50, t - last); last = t;
+    const sh = S.shake > 0 ? Math.round((Math.random() - .5) * 2) : 0; if (S.shake > 0) S.shake -= dt; x.setTransform(3, 0, 0, 3, sh * 3, 0);
+    if (F.shelf && S.shelfP < 1) S.shelfP = Math.min(1, S.shelfP + dt / 600);
+    if (F.locked && S.barsP < 1) S.barsP = Math.min(1, S.barsP + dt / 220);
+    if (S.scene === 'street') drawStreet(); else if (S.scene === 'office') drawOffice(t); else if (S.scene === 'office2') drawOffice2(t); else if (S.scene === 'vault') drawVault(t); else drawNews(t);
+    // people standing in the scene
+    if (S.scene === 'street' && MODE === 'demo' && S.i <= 1) person(PEOPLE.editor, 136, 80, 'left');
+    if (MODE === 'play') edStep(dt);
+    if (S.scene === 'street' && MODE === 'play' && S.ed.phase !== 'gone') {
+      const e = S.ed, moving = e.phase === 'walk' || e.phase === 'leave';
+      person(PEOPLE.editor, e.x, e.y, e.face, moving && Math.floor(e.leg / 140) % 2);
+      if (e.phase === 'spot') { const yy = e.y - 13; R('k', e.x + 4, yy, 9, 11); R('w', e.x + 5, yy + 1, 7, 9); R('r', e.x + 8, yy + 2, 1, 5); R('r', e.x + 8, yy + 8, 1, 1); }
+    }
+    if (S.scene === 'street') { person(PEOPLE.field, 160, 124, 'down'); R('k', 162, 116, 13, 6); R('b', 163, 117, 11, 4); txt(U.badge, 168.5, 119.2, 3.6, 'w', 800); }
+    if (S.scene === 'street') { person(PEOPLE.a, 186 - (t / 30 % 220), 112 + 18, 'left', Math.floor(t / 200) % 2); }
+    if (S.scene === 'news' && (MODE === 'demo' || F.brief)) person(PEOPLE.editor, 106, 32, 'down');
+    // the player
+    let playMoving = false;
+    if (MODE === 'play') { playMoving = playStep(dt); Music.want(SCENE_TUNE[S.scene]); }
+    else if (S.fadeDir === 0 && S.wait <= 0 && S.wps.length && !reduce) {
+      const [gx, gy] = S.wps[0], dx = gx - S.me.x, dy = gy - S.me.y, d = Math.hypot(dx, dy), sp = .95 * dt / 16;
+      if (d <= sp) { S.me.x = gx; S.me.y = gy; S.wps.shift(); if (!S.wps.length) finishWalk(); }
+      else { S.me.x += dx / d * sp; S.me.y += dy / d * sp; S.me.face = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down'); S.leg += dt; }
+    }
+    const walking = MODE === 'play' ? playMoving : S.wps.length > 0 && S.wait <= 0 && S.fadeDir === 0;
+    // the dog, once befriended, trots behind you everywhere and never blocks the way
+    if (MODE === 'play' && F.dog) {
+      const tr = S.trail, last2 = tr[tr.length - 1];
+      if (!last2 || Math.hypot(last2.x - S.me.x, last2.y - S.me.y) > .8) { tr.push({ x: S.me.x, y: S.me.y }); if (tr.length > 60) tr.shift(); }
+      const goal = tr[Math.max(0, tr.length - 19)], d = S.dogP, k = Math.min(1, dt / 110), ox = d.x;
+      d.x += (goal.x - d.x) * k; d.y += (goal.y - d.y) * k; if (Math.abs(d.x - ox) > .05) d.left = d.x < ox;
+      dog(Math.round(d.x), Math.round(d.y + 6), t, d.left);
+    }
+    person(PEOPLE.me, S.me.x, S.me.y, S.me.face, walking && Math.floor(S.leg / 150) % 2);
+    if (MODE === 'demo' && !walking && Math.floor(t / 500) % 2) { R('k', S.me.x + 6, S.me.y - 7, 4, 4); R('y', S.me.x + 7, S.me.y - 6, 2, 2); }
+    if (S.barkT > 0) S.barkT -= dt;
+    if (MODE === 'play') { if (S.shown < (S.say || '').length) S.shown += dt / 22; if (S.partyPending) { S.partyT += dt; if (S.partyT > 900) { S.partyPending = false; S.paper = true; S.paperP = 0; burst(); Music.fanfare(); } }
+      if (S.finaleAt > 0 && S.paper && S.paperP >= 1) { S.finaleAt -= dt; if (S.finaleAt <= 0) { S.finaleAt = 0; showFinale(); } } }
+    else if (S.wait > 0) { S.wait -= dt; if (S.shown < S.say.length) S.shown += dt / 26; if (S.wait <= 0) { if (S.egg) { S.egg = null; S.photo = false; S.say = ''; S.fadeDir = 1; S.next = ['street', '', [0, 128]]; S.reset = true; } else advance(); } }
+    if (MODE === 'demo' && S.scene === 'news' && SCRIPT[S.i] && SCRIPT[S.i].party && S.wait > 0) { S.partyT += dt; if (S.partyT > 1700 && !S.paper) { S.paper = true; S.paperP = 0; burst(); } }
+    if (S.paper) { S.paperP = Math.min(1, S.paperP + dt / 700); newspaper(S.paperP); }
+    if (S.photo) { S.photoP = Math.min(1, S.photoP + dt / 700); photo(S.photoP); }
+    confetti(dt, t);
+    hintAt(dt, t); promptAt(t); hud(); dialog(t);
+    // while someone is speaking (or the photo is up) the button moves the game on: "המשך" instead of "דברו"
+    if (MODE === 'play') { const lbl = (S.say || S.photo) ? U.html.cont : U.html.talk; if (talkEl.textContent !== lbl) talkEl.textContent = lbl; }
+    if (MODE === 'play') talkEl.classList.toggle('off', !(S.fadeDir === 0 && !overlayOpen() && !edBusy() && !S.paper && (S.say || S.photo || nearest())));
+    // scene transitions: fade out, title card, fade in
+    if (S.fadeDir !== 0) {
+      S.fade += S.fadeDir * dt / 320;
+      if (S.fade >= 1 && S.fadeDir === 1) {
+        S.fade = 1; const [scene, title, pos] = S.next; S.scene = scene; S.me.x = pos[0]; S.me.y = pos[1]; S.trail = [{ x: pos[0], y: pos[1] }]; S.dogP = { x: pos[0], y: pos[1], left: false }; S.card = title; S.cardT = title ? 800 : 0;
+        if (MODE === 'play') { S.me.face = S.nextFace || 'down'; }
+        else if (S.reset) { S.reset = false; S.i = 0; S.done = 0; S.conf = []; S.paper = false; S.me.face = 'right'; startAction(); } else if (!SCRIPT[S.i].party) { S.i++; startAction(); }
+        S.fadeDir = 2;
+      }
+      if (S.fadeDir === 2) { S.cardT -= dt; if (S.cardT <= 0) S.fadeDir = -1; }
+      if (S.fade <= 0 && S.fadeDir === -1) { S.fade = 0; S.fadeDir = 0; S.card = ''; }
+      x.fillStyle = `rgba(11,34,56,${Math.min(1, Math.max(0, S.fade))})`; x.fillRect(0, 0, W, H);
+      if (S.card && S.fadeDir === 2) { txt(U[S.card] || S.card, W / 2, H / 2, 11, 'w', 800); R('s', W / 2 - 20, H / 2 + 10, 40, 1); }
+    }
+    // sliding between the two office screens: the old view moves out as the new one moves in, no fade
+    if (S.slide) {
+      S.slide.t += dt; const p = Math.min(1, S.slide.t / 380), off = Math.round(cv.width * (1 - Math.pow(1 - p, 3))), dir = S.slide.dir;
+      const b = bufC.getContext('2d'); b.clearRect(0, 0, bufC.width, bufC.height); b.drawImage(cv, 0, 0);
+      x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.imageSmoothingEnabled = false; x.drawImage(snapC, -dir * off, 0); x.drawImage(bufC, dir * (cv.width - off), 0); x.restore();
+      if (p >= 1) S.slide = null;
+    }
+    requestAnimationFrame(frame);
+  };
+  if (reduce) { S.scene = 'news'; S.done = 8; S.key = 'editor_final'; S.say = TEXT.editor_final; S.paper = true; S.paperP = 1; S.who = 'editor'; S.shown = 999; S.wait = 1e12; S.me = { x: 104, y: 62, face: 'up' }; S.wps = []; }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { requestAnimationFrame(frame); if (new URLSearchParams(location.search).has('play') && !reduce) enterPlay(); });
+})();
+</script>
+</body>
+</html>

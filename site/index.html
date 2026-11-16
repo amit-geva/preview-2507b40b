@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מדגם · ייעוץ ומחקר</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one living population of dots sits behind a scroll story (text on the right, the field on the left),
+   then a research desk you type into, a vote that makes you a dot, the four fields, the game, and contact. Dark by design. */
+:root{
+  --ink:#06111c; --deep:#0b1d2f; --panel:#0f2740; --line:rgba(143,211,245,.14); --line-2:rgba(143,211,245,.26);
+  --fg:#e9f2f9; --mute:#8ea7bc; --dim:#5d778d;
+  --blue:#1d5689; --sky:#229ad6; --glow:#8fd3f5; --gold:#f2c14e; --warn:#ff8a73; --ok:#6fe3b2;
+  --display:"Frank Ruhl Libre","Noto Serif Hebrew",Georgia,serif;
+  --body:"IBM Plex Sans Hebrew","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --ease:cubic-bezier(.23,1,.32,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+a{color:inherit}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.eyebrow{font-family:var(--body);font-size:14px;font-weight:600;letter-spacing:.01em;color:var(--glow)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;border-radius:999px;border:0;background:var(--sky);color:#04111c;font:600 15.5px var(--body);text-decoration:none;cursor:pointer;transition:transform .2s var(--ease),background-color .2s var(--ease)}
+.btn:hover{transform:translateY(-1px);background:var(--glow)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2)}
+.btn.ghost:hover{background:rgba(143,211,245,.08)}
+.btn:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(6,17,28,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{height:34px;width:auto;padding:5px 10px;border-radius:10px;background:#fff}
+.links{display:flex;gap:2px;margin-inline-start:auto}
+.links a{padding:8px 13px;border-radius:999px;text-decoration:none;color:var(--mute);font-size:14.5px;transition:color .2s,background-color .2s}
+.links a:hover{color:var(--fg);background:rgba(143,211,245,.07)}
+.nav .btn{height:40px;padding:0 18px;font-size:14px}
+@media (max-width:900px){.links{display:none}.nav .btn{margin-inline-start:auto}}
+
+/* the scroll story */
+.story{position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100dvh;margin-bottom:-100vh;margin-bottom:-100dvh;overflow:hidden}
+#pop{position:absolute;inset:0;width:100%;height:100%;display:block}
+.lens-card{position:absolute;z-index:4;pointer-events:none;min-width:190px;padding:10px 12px;border-radius:12px;background:rgba(11,29,47,.92);box-shadow:0 0 0 1px var(--line-2),0 18px 40px -18px #000;font-size:13px;line-height:1.45;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.lens-card.on{opacity:1;transform:none}
+.lens-card b{display:block;font-size:14px;color:var(--fg)}
+.lens-card span{color:var(--mute)}
+.lens-card .tag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:999px;font-family:var(--mono);font-size:11px;background:rgba(242,193,78,.14);color:var(--gold)}
+.lens-card .tag.out{background:rgba(143,211,245,.08);color:var(--dim)}
+.steps{position:relative;z-index:2}
+.step{min-height:100vh;min-height:100dvh;display:flex;align-items:center}
+.step .wrap{width:100%;display:flex;justify-content:flex-start}
+.card{width:min(440px,100%);padding:28px 28px 26px;border-radius:22px;background:rgba(9,24,39,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 0 0 1px var(--line),0 30px 60px -40px #000}
+.card h2{margin:10px 0 0;font:700 38px/1.12 var(--display);letter-spacing:-.01em;text-wrap:balance}
+.card p{margin:12px 0 0;color:var(--mute);font-size:16.5px;text-wrap:pretty}
+.card .note{display:inline-block;margin-top:14px;font-size:12.5px;color:var(--dim)}
+.hero{min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding-block:96px 64px}
+.hero .wrap{width:100%}
+.hero-in{width:min(560px,100%)}
+.hero h1{margin:16px 0 0;font:900 clamp(44px,6.4vw,88px)/1.02 var(--display);letter-spacing:-.02em;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.lead{margin:22px 0 0;max-width:30em;font-size:19px;line-height:1.65;color:var(--mute)}
+.hero .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:4px 34px;margin-top:40px;padding-top:22px;border-top:1px solid var(--line)}
+.facts div{display:flex;flex-direction:column}
+.facts b{font:500 26px var(--mono);font-variant-numeric:tabular-nums;color:var(--fg)}
+.facts span{font-size:13px;color:var(--dim)}
+.hint{display:inline-flex;align-items:center;gap:8px;margin-top:26px;font-size:13.5px;color:var(--dim)}
+.hint i{width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--glow);animation:ping 2.4s var(--ease) infinite}
+@keyframes ping{0%{box-shadow:inset 0 0 0 1.5px var(--glow),0 0 0 0 rgba(143,211,245,.45)}70%{box-shadow:inset 0 0 0 1.5px var(--glow),0 0 0 12px rgba(143,211,245,0)}100%{box-shadow:inset 0 0 0 1.5px var(--glow),0 0 0 0 rgba(143,211,245,0)}}
+.rail{position:fixed;inset-inline-end:max(18px,env(safe-area-inset-left,0px));left:max(18px,env(safe-area-inset-left,0px));top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:10px;transition:opacity .3s}
+.rail.off{opacity:0;pointer-events:none}
+.rail button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;flex-direction:row-reverse;font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.rail button i{width:8px;height:8px;border-radius:50%;background:var(--dim);transition:transform .3s var(--ease),background-color .3s}
+.rail button.on{color:var(--fg)}
+.rail button.on i{background:var(--gold);transform:scale(1.5)}
+.rail button span{opacity:0;transition:opacity .2s}
+.rail:hover button span,.rail button.on span{opacity:1}
+@media (max-width:1100px){
+  .rail{display:none}
+  .step{align-items:flex-end;padding-bottom:28px}
+  .card{background:rgba(9,24,39,.9)}
+  .card h2{font-size:30px}
+  .hero{align-items:flex-end}
+  .hero-in{padding:22px;border-radius:22px;background:rgba(6,17,28,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 14px}
+  .facts b{font-size:19px}
+}
+
+/* sections after the story */
+section.band{position:relative;z-index:3;background:var(--ink);padding-block:120px}
+section.band.alt{background:linear-gradient(180deg,var(--ink),var(--deep) 30%,var(--deep) 70%,var(--ink))}
+.head{max-width:720px}
+.head h2{margin:12px 0 0;font:700 clamp(34px,4.4vw,56px)/1.08 var(--display);letter-spacing:-.015em;text-wrap:balance}
+.head p{margin:16px 0 0;color:var(--mute);font-size:18px;max-width:38em;text-wrap:pretty}
+
+/* research desk */
+.desk{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;margin-top:48px}
+@media (max-width:980px){.desk{grid-template-columns:minmax(0,1fr)}}
+.pane{border-radius:22px;background:var(--panel);box-shadow:0 0 0 1px var(--line);padding:26px;min-width:0}
+.pane h3{margin:0;font:600 15px var(--body);color:var(--glow)}
+.q{width:100%;min-height:128px;margin-top:14px;padding:16px 18px;border-radius:14px;border:0;background:var(--ink);color:var(--fg);font:500 19px/1.55 var(--body);resize:vertical;box-shadow:inset 0 0 0 1px var(--line-2)}
+.q::placeholder{color:var(--dim)}
+.examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;font-size:13px;color:var(--mute);box-shadow:inset 0 0 0 1px var(--line-2);transition:background-color .2s,color .2s}
+.chip:hover{color:var(--fg);background:rgba(143,211,245,.07)}
+.chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.checks{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.checks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;padding:12px 14px;border-radius:12px;background:rgba(6,17,28,.5);font-size:15px;animation:in .35s var(--ease) both}
+.checks li i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 12px var(--mono);font-style:normal;color:#04111c}
+.checks li.warn i{background:var(--warn)}.checks li.ok i{background:var(--ok)}.checks li.info i{background:var(--glow)}
+.checks li b{font-weight:600}
+.checks li small{display:block;color:var(--mute);font-size:13.5px;margin-top:2px}
+@keyframes in{from{opacity:.0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.rewrite{margin-top:16px;padding:16px 18px;border-radius:14px;background:rgba(111,227,178,.07);box-shadow:inset 0 0 0 1px rgba(111,227,178,.25)}
+.rewrite small{font-size:13px;font-weight:600;color:var(--ok)}
+.rewrite p{margin:6px 0 0;font-size:17px;line-height:1.55}
+.plan{display:flex;flex-direction:column;gap:18px}
+.slider{margin-top:14px}
+.slider label{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--mute)}
+.slider label b{font:600 30px var(--mono);color:var(--fg)}
+input[type=range]{width:100%;margin-top:10px;accent-color:var(--gold)}
+.moe{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.moe div{padding:12px;border-radius:12px;background:rgba(6,17,28,.5)}
+.moe b{display:block;font:600 22px var(--mono);font-variant-numeric:tabular-nums}
+.moe span{font-size:12.5px;color:var(--dim)}
+.ci{position:relative;height:46px;margin-top:16px}
+.ci .axis{position:absolute;inset:auto 0 12px;height:1px;background:var(--line-2)}
+.ci .band{position:absolute;bottom:6px;height:12px;border-radius:6px;background:rgba(242,193,78,.25);box-shadow:inset 0 0 0 1px rgba(242,193,78,.6);transition:left .25s var(--ease),right .25s var(--ease)}
+.ci .mid{position:absolute;bottom:2px;width:2px;height:20px;background:var(--gold);left:calc(50% - 1px)}
+.ci .t{position:absolute;bottom:-10px;font:500 11px var(--mono);color:var(--dim);transform:translateX(50%)}
+.mix{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:10px;background:var(--ink)}
+.mix i{display:block;height:100%;transition:width .35s var(--ease)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px;font-size:13px;color:var(--mute)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend span::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--c)}
+.timeline{display:flex;align-items:baseline;gap:10px;font-size:15px;color:var(--mute)}
+.timeline b{font:600 24px var(--mono);color:var(--fg)}
+.desk-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;font-size:13px;color:var(--dim)}
+
+/* vote */
+.vote{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:40px;align-items:center;margin-top:48px}
+@media (max-width:980px){.vote{grid-template-columns:minmax(0,1fr)}}
+.vote h3{margin:0;font:700 34px/1.2 var(--display)}
+.answers{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.answers button{all:unset;cursor:pointer;padding:12px 22px;border-radius:999px;font-weight:600;background:rgba(143,211,245,.08);box-shadow:inset 0 0 0 1px var(--line-2);transition:background-color .2s,transform .2s}
+.answers button:hover{background:rgba(143,211,245,.16)}
+.answers button:active{transform:scale(.97)}
+.answers button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.answers button[aria-pressed=true]{background:var(--gold);color:#04111c;box-shadow:none}
+.answers button:disabled{cursor:default}
+.res{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.res .row{display:grid;grid-template-columns:86px minmax(0,1fr) 56px;gap:12px;align-items:center;font-size:15px}
+.res .bar{height:10px;border-radius:5px;background:rgba(143,211,245,.08);overflow:hidden}
+.res .bar i{display:block;height:100%;border-radius:5px;background:var(--sky);transition:width .6s var(--ease)}
+.res .row.mine .bar i{background:var(--gold)}
+.res .row b{font:600 15px var(--mono);text-align:left}
+.res-note{margin-top:14px;font-size:13px;color:var(--dim)}
+#crowd{width:100%;aspect-ratio:1.35;max-width:100%;border-radius:22px;background:radial-gradient(ellipse at 50% 60%,rgba(34,154,214,.12),transparent 70%);display:block}
+
+/* four fields */
+.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:48px}
+@media (max-width:1100px){.fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.fields{grid-template-columns:minmax(0,1fr)}}
+.field{position:relative;display:flex;flex-direction:column;padding:22px;border-radius:22px;background:var(--panel);box-shadow:0 0 0 1px var(--line);min-height:330px;transition:transform .25s var(--ease),box-shadow .25s}
+.field:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--line-2),0 24px 50px -30px #000}
+.field canvas{width:100%;height:150px;display:block;border-radius:14px;background:rgba(6,17,28,.55)}
+.field h3{margin:18px 0 0;font:700 24px/1.2 var(--display)}
+.field p{margin:8px 0 0;color:var(--mute);font-size:15px}
+.field .k{margin-top:auto;padding-top:14px;font-size:13px;color:var(--glow)}
+
+/* findings ticker */
+.ticker{position:relative;z-index:3;overflow:hidden;border-block:1px solid var(--line);background:var(--deep)}
+.ticker .track{display:flex;gap:44px;width:max-content;padding-block:16px;animation:tick 60s linear infinite}
+.ticker:hover .track{animation-play-state:paused}
+@keyframes tick{to{transform:translateX(50%)}}
+.ticker .it{display:flex;align-items:center;gap:12px;white-space:nowrap;font-size:15px;color:var(--mute)}
+.ticker .it b{font:600 18px var(--mono);color:var(--fg)}
+.ticker .it em{font-style:normal;font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:999px;background:rgba(143,211,245,.08);color:var(--dim)}
+.ticker .it i{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+
+/* game */
+.game{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;margin-top:48px}
+@media (max-width:980px){.game{grid-template-columns:minmax(0,1fr)}}
+.game .frame{position:relative;aspect-ratio:704/712;width:100%;max-width:600px;justify-self:center;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px var(--line-2),0 40px 80px -40px #000;background:var(--deep)}
+.game iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.game ul{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:10px;color:var(--mute)}
+.game li{display:flex;gap:10px}
+.game li::before{content:"";flex:none;width:7px;height:7px;margin-top:9px;border-radius:2px;background:var(--gold)}
+
+/* contact */
+.contact{position:relative;z-index:3;padding-block:110px;background:radial-gradient(900px 400px at 70% 0%,rgba(34,154,214,.18),transparent 70%),var(--ink);border-top:1px solid var(--line)}
+.contact h2{margin:0;font:900 clamp(40px,5.6vw,76px)/1.04 var(--display);letter-spacing:-.02em;max-width:14ch;text-wrap:balance}
+.contact p{margin:18px 0 0;color:var(--mute);font-size:18px;max-width:34em}
+.contact .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+footer{position:relative;z-index:3;border-top:1px solid var(--line);background:var(--ink);padding-block:28px;color:var(--dim);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+
+</head>
+<body>
+<div dir="rtl" lang="he">
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="מדגם, לראש העמוד"><img src="assets/midgam-logo.png" alt="מדגם ייעוץ ומחקר"></a>
+    <nav class="links" aria-label="ניווט ראשי"><a href="#method">איך זה עובד</a><a href="#desk">שולחן המחקר</a><a href="#vote">אתם במדגם</a><a href="#fields">תחומים</a><a href="#game">המשחק</a></nav>
+    <a class="btn" href="#contact">פנייה למחקר</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- the living population: one field of dots, regrouped by the scroll story -->
+  <div class="story" id="method">
+    <div class="stage" aria-hidden="true"><canvas id="pop"></canvas><div class="lens-card" id="lens"></div></div>
+    <div class="steps">
+      <div class="hero" data-step="0">
+        <div class="wrap"><div class="hero-in">
+          <span class="eyebrow">מדגם · ייעוץ ומחקר · מאז 1988</span>
+          <h1>מדינה שלמה, בתוך <em>1,000</em> תשובות.</h1>
+          <p class="lead">כל נקודה כאן היא אדם. מחקר טוב לא שואל את כולם, הוא יודע את מי לשאול, איך לשאול, ומה לעשות עם התשובה. גללו כדי לראות איך.</p>
+          <div class="acts"><a class="btn" href="#desk">לשולחן המחקר</a><a class="btn ghost" href="#contact">פנייה למחקר</a></div>
+          <div class="facts">
+            <div><b class="num" id="f-pop">≈10M</b><span>אוכלוסייה</span></div>
+            <div><b class="num">1,000</b><span>מדגם טיפוסי</span></div>
+            <div><b class="num">±3.1%</b><span>טעות דגימה</span></div>
+          </div>
+          <span class="hint"><i></i>העבירו את העכבר על הנקודות כדי להכיר את האנשים</span>
+        </div></div>
+      </div>
+      <div class="step" data-step="1"><div class="wrap"><div class="card"><span class="eyebrow">שלב 1 · בחירה</span><h2>בוחרים מדגם, לא מנחשים.</h2><p>לכל אדם באוכלוסייה יש סיכוי ידוע להיבחר. הנקודות המוארות הן המדגם: מעטות, אבל נבחרו נכון.</p></div></div></div>
+      <div class="step" data-step="2"><div class="wrap"><div class="card"><span class="eyebrow">שלב 2 · ייצוג</span><h2>המדגם צריך להיראות כמו המדינה.</h2><p>גיל, מגדר, אזור, דת ולאום. מכסות ושקלול דואגים שאף קבוצה לא תיבלע, ושאף קבוצה לא תקבל משקל שלא מגיע לה.</p><span class="note">התפלגות גיל לדוגמה</span></div></div></div>
+      <div class="step" data-step="3"><div class="wrap"><div class="card"><span class="eyebrow">שלב 3 · ממצא</span><h2>תשובה עם טעות דגימה גלויה.</h2><p>התשובות הופכות לממצא, והממצא מגיע תמיד עם הטווח שלו. סקר בלי טעות דגימה הוא סתם מספר.</p><span class="note">נתוני דוגמה</span></div></div></div>
+      <div class="step" data-step="4"><div class="wrap"><div class="card"><span class="eyebrow">שלב 4 · מגמה</span><h2>סקר אחד הוא תמונה. סדרה היא סרט.</h2><p>כששואלים את אותה שאלה לאורך זמן, באותה שיטה, רואים לאן הציבור זז ומתי.</p><span class="note">נתוני דוגמה · 12 חודשים</span></div></div></div>
+    </div>
+  </div>
+  <nav class="rail" id="rail" aria-label="שלבי הסיפור"></nav>
+
+  <div class="ticker" aria-label="ממצאים לדוגמה"><div class="track" id="track"></div></div>
+
+  <!-- the research desk: type a question, see what a researcher would flag -->
+  <section class="band alt" id="desk">
+    <div class="wrap">
+      <div class="head"><span class="eyebrow">שולחן המחקר</span><h2>כתבו שאלה. נראה לכם מה חוקר היה רואה בה.</h2><p>הבדיקה רצה כאן בדפדפן, תוך כדי הקלדה: ניסוח מכווין, שאלה כפולה, מילים מוחלטות, סולם תשובות, ומה המדגם צריך לכלול.</p></div>
+      <div class="desk">
+        <div class="pane">
+          <h3><label for="q">השאלה שלכם</label></h3>
+          <textarea class="q" id="q" rows="3" placeholder="למשל: האם אתם בעד הארכת שעון הקיץ?"></textarea>
+          <div class="examples" aria-label="שאלות לדוגמה">
+            <button class="chip" type="button">האם אתם לא חושבים שהממשלה צריכה לפעול מיד?</button>
+            <button class="chip" type="button">עד כמה אתם מרוצים מהתחבורה הציבורית בעיר?</button>
+            <button class="chip" type="button">האם צרכנים יתבלבלו בין שני סימני המסחר?</button>
+          </div>
+          <ul class="checks" id="checks" aria-live="polite"></ul>
+          <div class="rewrite" id="rewrite"><small>ניסוח ניטרלי מוצע</small><p id="rewrite-t"></p></div>
+        </div>
+        <div class="pane plan">
+          <div>
+            <h3>המדגם</h3>
+            <div class="slider"><label for="n">גודל המדגם <b class="num" id="n-v">800</b></label><input type="range" id="n" min="200" max="3000" step="50" value="800"></div>
+            <div class="moe"><div><b class="num" id="moe">±3.5%</b><span>טעות דגימה</span></div><div><b class="num">95%</b><span>רמת ביטחון</span></div><div><b class="num" id="sub">±9.8%</b><span>לתת־קבוצה של 100</span></div></div>
+            <div class="ci" aria-hidden="true"><div class="axis"></div><div class="band" id="ci"></div><div class="mid"></div><span class="t" style="right:0">0%</span><span class="t" style="right:50%">50%</span><span class="t" style="right:100%">100%</span></div>
+          </div>
+          <div>
+            <h3>שיטת איסוף</h3>
+            <div class="mix" id="mix"></div>
+            <div class="legend" id="mix-l"></div>
+          </div>
+          <div>
+            <h3>לוח זמנים משוער</h3>
+            <div class="timeline"><b class="num" id="days">3–5</b><span>ימי עבודה</span><span id="days-why"></span></div>
+          </div>
+          <div class="desk-foot"><span>בדיקה ראשונית אוטומטית. חוקר של מדגם עובר על כל שאלה.</span><a class="btn" href="#contact">לשלוח לחוקר</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- the vote: answer and become a dot -->
+  <section class="band" id="vote">
+    <div class="wrap">
+      <div class="head"><span class="eyebrow">אתם במדגם</span><h2>ענו, והפכו לנקודה.</h2><p>כל תשובה כאן נכנסת לאוכלוסייה הקטנה שלמטה. ככה מרגיש להיות אחד מ־1,000.</p></div>
+      <div class="vote">
+        <div>
+          <h3>להישאר בשעון קיץ כל השנה?</h3>
+          <div class="answers" id="answers"><button type="button" data-a="0" aria-pressed="false">בעד</button><button type="button" data-a="1" aria-pressed="false">נגד</button><button type="button" data-a="2" aria-pressed="false">לא יודע/ת</button></div>
+          <div class="res" id="res"></div>
+          <p class="res-note">נתוני דוגמה עד שיחובר מונה אמיתי. התשובה שלכם נשמרת רק בדפדפן שלכם.</p>
+        </div>
+        <canvas id="crowd" aria-label="אוכלוסייה קטנה של נקודות; התשובה שלכם מצטרפת כנקודה זהובה"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- four fields, one method -->
+  <section class="band alt" id="fields">
+    <div class="wrap">
+      <div class="head"><span class="eyebrow">ארבעה תחומים, שיטה אחת</span><h2>אותה הקפדה, בכל שאלה.</h2></div>
+      <div class="fields">
+        <article class="field"><canvas data-viz="polls"></canvas><h3>סקרי דעת קהל</h3><p>מה הציבור חושב, איך זה משתנה, ומי חושב אחרת. לתקשורת, למוסדות ולקבלת החלטות.</p><span class="k">טלפון · אינטרנט · ערבית</span></article>
+        <article class="field"><canvas data-viz="market"></canvas><h3>מחקר שווקים</h3><p>מי הלקוחות, מה הם רוצים ומה יגרום להם לבחור בכם. פילוח, מיתוג, מוצר ומחיר.</p><span class="k">פילוח · מותג · מוצר</span></article>
+        <article class="field"><canvas data-viz="social"></canvas><h3>מחקר חברתי</h3><p>קהילות, רשויות וארגונים חברתיים: מדידה שמובילה למדיניות, כולל בחברה הערבית ובקבוצות שקשה להגיע אליהן.</p><span class="k">רשויות · קהילות · מדיניות</span></article>
+        <article class="field"><canvas data-viz="legal"></canvas><h3>חוות דעת לבתי משפט</h3><p>סקרים שמשמשים ראיה: הטעיה צרכנית, סימני מסחר, ייצוגיות. שיטה שעומדת גם בחקירה נגדית.</p><span class="k">סימני מסחר · הטעיה · ייצוגיות</span></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- the game -->
+  <section class="band" id="game">
+    <div class="wrap">
+      <div class="game">
+        <div>
+          <span class="eyebrow">יום אחד במדגם</span>
+          <div class="head"><h2>תצליחו להגיש סקר תקין?</h2><p>משחק קצר בסגנון פיקסלים: פוגשים עורך ברחוב, עוברים בכל המחלקות של מדגם לפי הסדר הנכון, ומגישים לו סקר שמתפרסם בעיתון.</p></div>
+          <ul><li>שלוש דקות, בעברית, באנגלית ובערבית</li><li>אפשר לשחק במחשב ובטלפון</li><li>יש בו גם מדרגות סודיות</li></ul>
+          <div class="acts" style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap"><a class="btn" href="d-game.html?play">לשחק במסך מלא</a></div>
+        </div>
+        <div class="frame"><iframe src="d-game.html?embed" title="המשחק יום אחד במדגם: הדגמה, ואפשר ללחוץ ״שחקו״ ולשחק כאן" loading="lazy" allow="fullscreen"></iframe></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <span class="eyebrow">פנייה למחקר</span>
+      <h2>יש לכם שאלה. לנו יש את מי לשאול.</h2>
+      <p>ספרו לנו מה אתם רוצים לדעת. נחזור אליכם עם הצעה: שאלון, מדגם, שיטה ולוח זמנים.</p>
+      <div class="acts"><a class="btn" href="#desk">להתחיל בשולחן המחקר</a></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>מדגם ייעוץ ומחקר בע״מ</span><span>טיוטת עיצוב · הנתונים בעמוד הם נתוני דוגמה</span></div></footer>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // each animated canvas draws only while it is on screen
+  const seen = new WeakMap(), io = new IntersectionObserver(es => es.forEach(e => seen.set(e.target, e.isIntersecting)), { rootMargin: '120px' });
+  const watch = el => { seen.set(el, true); io.observe(el); }, onScreen = el => seen.get(el) !== false;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const C = { sky: css('--sky'), glow: css('--glow'), gold: css('--gold'), dim: css('--dim'), mute: css('--mute'), fg: css('--fg'), line: css('--line-2') };
+
+  /* ---------------- the living population ---------------- */
+  const cv = document.getElementById('pop'), x = cv.getContext('2d'), lens = document.getElementById('lens');
+  const story = document.querySelector('.story'), steps = [...document.querySelectorAll('[data-step]')];
+  let W = 0, H = 0, DPR = 1, N = 0, P = [], F = [], A = null, mobile = false;
+  const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(20240917);
+  // who each dot is: a believable mix, drawn deterministically so the same dot is always the same person
+  const CITIES = ['תל אביב', 'ירושלים', 'חיפה', 'באר שבע', 'נצרת', 'אשדוד', 'ראשון לציון', 'פתח תקווה', 'אום אל־פחם', 'רהט', 'בני ברק', 'קריית שמונה', 'אילת', 'מודיעין', 'טמרה', 'נתניה', 'דימונה', 'כרמיאל'];
+  const LANGS = ['עברית', 'עברית', 'עברית', 'עברית', 'ערבית', 'ערבית', 'רוסית', 'אמהרית', 'אנגלית'];
+  const MODES = ['בטלפון', 'בפאנל האינטרנטי', 'בטלפון', 'בפאנל האינטרנטי', 'פנים אל פנים'];
+  const AGES = [[18, 29, .22], [30, 44, .26], [45, 64, .31], [65, 88, .21]];
+  const build = () => {
+    mobile = innerWidth < 1100; DPR = Math.min(2, devicePixelRatio || 1);
+    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; x.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // the field lives left of the text column on desktop, everywhere on phones
+    A = mobile ? { x: 14, y: 78, w: W - 28, h: H * .5 } : { x: 36, y: 96, w: W - 680, h: H - 170 };
+    const want = mobile ? 1300 : 2600;
+    if (N !== want) {
+      N = want; P = [];
+      for (let i = 0; i < N; i++) {
+        const r = rnd(), ageG = r < .22 ? 0 : r < .48 ? 1 : r < .79 ? 2 : 3, [a0, a1] = AGES[ageG];
+        P.push({ x: 0, y: 0, ph: rnd() * 6.28, sp: .7 + rnd() * .6, s: i % 6 === 0, age: Math.round(a0 + rnd() * (a1 - a0)), ageG,
+          g: rnd() < .5 ? 'אישה' : 'גבר', city: CITIES[Math.floor(rnd() * CITIES.length)], lang: LANGS[Math.floor(rnd() * LANGS.length)], mode: MODES[Math.floor(rnd() * MODES.length)],
+          ans: rnd(), gx: rnd(), gy: rnd(), init: false });
+      }
+    }
+    // formations: where each dot belongs at each step of the story
+    const sampled = P.filter(p => p.s), S = sampled.length;
+    F = [0, 1, 2, 3, 4].map(() => new Array(N));
+    const cx = A.x + A.w / 2, cy = A.y + A.h / 2;
+    // 0: the whole population, spread evenly with a little jitter
+    const cols = Math.ceil(Math.sqrt(N * A.w / A.h)), rows = Math.ceil(N / cols);
+    P.forEach((p, i) => { const c = i % cols, r = Math.floor(i / cols); F[0][i] = { x: A.x + (c + .5 + (p.gx - .5) * .9) * A.w / cols, y: A.y + (r + .5 + (p.gy - .5) * .9) * A.h / rows, a: .55, k: 'all' }; });
+    // 1: the sample gathers into a disc; everyone else dims where they stand
+    const R = Math.min(A.w, A.h) * .34;
+    sampled.forEach((p, j) => { const rr = R * Math.sqrt((j + .5) / S), th = j * 2.39996; p.j = j; F[1][P.indexOf(p)] = { x: cx + Math.cos(th) * rr, y: cy + Math.sin(th) * rr, a: 1, k: 'sample' }; });
+    // 2: the sample stands in four age groups, as columns of dots
+    const gap = mobile ? 7 : 9, colsPer = mobile ? 4 : 5, groups = [[], [], [], []];
+    sampled.forEach(p => groups[p.ageG].push(p));
+    const colW = A.w / 4, base = A.y + A.h * .8;
+    groups.forEach((g, gi) => g.forEach((p, k) => { const c = k % colsPer, r = Math.floor(k / colsPer); F[2][P.indexOf(p)] = { x: A.x + colW * (3 - gi) + colW / 2 + (c - (colsPer - 1) / 2) * gap, y: base - r * gap, a: 1, k: 'age', gi }; }));
+    // 3: the answers, as three horizontal bars of dots (for / against / don't know)
+    const shares = [.54, .38, .08], order = sampled.slice().sort((a, b) => a.ans - b.ans), barRows = mobile ? 4 : 5, gxB = (A.w - 190) / (S / barRows); A.gxB = gxB; A.barRows = barRows;
+    let off = 0;
+    shares.forEach((sh, bi) => {
+      const cnt = Math.round(S * sh), y0 = A.y + A.h * (.28 + bi * .22);
+      order.slice(off, bi === 2 ? S : off + cnt).forEach((p, k) => { const c = Math.floor(k / barRows), r = k % barRows; F[3][P.indexOf(p)] = { x: A.x + A.w - 80 - c * gxB, y: y0 + (r - (barRows - 1) / 2) * gap, a: 1, k: 'bar', bi }; });
+      off += cnt;
+    });
+    // 4: the same sample traces a year of a trend, as a ribbon with its confidence band
+    const trend = u => 44 + 9 * Math.sin(u * 5.2 + .4) + u * 10;
+    sampled.forEach((p, j) => { const u = (j + .5) / S, v = trend(u) + (p.gy - .5) * 6; F[4][P.indexOf(p)] = { x: A.x + A.w - 40 - u * (A.w - 80), y: A.y + A.h * .85 - (v - 30) / 40 * A.h * .7, a: 1, k: 'trend' }; });
+    // the rest of the population waits, dimmed, where it stood
+    P.forEach((p, i) => { for (let f = 1; f < 5; f++) if (!F[f][i]) F[f][i] = { x: F[0][i].x, y: F[0][i].y, a: f === 1 ? .14 : .07, k: 'rest' }; if (!p.init) { p.x = F[0][i].x; p.y = F[0][i].y; p.init = true; } });
+    A.trend = trend;
+  };
+
+  // where we are in the story: 0..4, fractional between steps
+  let prog = 0, mouse = { x: -999, y: -999, on: false };
+  const readProg = () => {
+    const mid = innerHeight * .55; let best = 0;
+    steps.forEach((el, i) => { const r = el.getBoundingClientRect(); if (r.top < mid) best = i + Math.min(1, Math.max(0, (mid - r.top) / r.height - .5) * 1.4) * (i < steps.length - 1 ? 1 : 0); });
+    return Math.min(steps.length - 1, best);
+  };
+  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  const label = (s, X, Y, size, c, al, align = 'center', font = 'var(--mono)') => { x.globalAlpha = al; x.fillStyle = c; x.font = `500 ${size}px "IBM Plex Mono", monospace`; x.textAlign = align; x.textBaseline = 'middle'; x.direction = 'rtl'; x.fillText(s, X, Y); x.globalAlpha = 1; };
+  const labelHe = (s, X, Y, size, c, al, align = 'center') => { x.globalAlpha = al; x.fillStyle = c; x.font = `600 ${size}px "IBM Plex Sans Hebrew", sans-serif`; x.textAlign = align; x.textBaseline = 'middle'; x.direction = 'rtl'; x.fillText(s, X, Y); x.globalAlpha = 1; };
+  let hot = -1, last = performance.now(), manual = false;
+  const frame = t => {
+    const dt = Math.min(50, t - last); last = t;
+    if (!onScreen(story)) { if (!manual) requestAnimationFrame(frame); return; }
+    const target = readProg(); prog += (target - prog) * Math.min(1, dt * .008);
+    const s0 = Math.floor(prog), s1 = Math.min(4, s0 + 1), k = ease(prog - s0);
+    x.clearRect(0, 0, W, H);
+    // a slow glow behind the field, breathing
+    const br = .5 + .5 * Math.sin(t / 2600);
+    const gr = x.createRadialGradient(A.x + A.w / 2, A.y + A.h / 2, 10, A.x + A.w / 2, A.y + A.h / 2, Math.max(A.w, A.h) * .7);
+    gr.addColorStop(0, `rgba(34,154,214,${.08 + .05 * br})`); gr.addColorStop(1, 'rgba(34,154,214,0)'); x.fillStyle = gr; x.fillRect(0, 0, W, H);
+    // overlays that belong to each formation
+    const w = f => f === s0 ? 1 - k : f === s1 ? k : 0;
+    if (w(1) > .01) { x.globalAlpha = w(1) * .5; x.strokeStyle = C.line; x.setLineDash([3, 6]); x.beginPath(); x.arc(A.x + A.w / 2, A.y + A.h / 2, Math.min(A.w, A.h) * .37, 0, 6.283); x.stroke(); x.setLineDash([]); x.globalAlpha = 1;
+      label(`n = ${P.filter(p => p.s).length.toLocaleString('he-IL')} נקודות מדגם · כל נקודה ≈ 1 מתוך 6`, A.x + A.w / 2, A.y + A.h / 2 + Math.min(A.w, A.h) * .43, 12, C.mute, w(1)); }
+    if (w(2) > .01) { const colW = A.w / 4; ['18–29', '30–44', '45–64', '65+'].forEach((s, gi) => { const X = A.x + colW * (3 - gi) + colW / 2; label(s, X, A.y + A.h * .8 + 22, 13, C.fg, w(2)); label(`${Math.round(AGES[gi][2] * 100)}%`, X, A.y + A.h * .8 + 40, 12, C.mute, w(2)); }); labelHe('גיל המשיבים', A.x + A.w - 6, A.y + 10, 14, C.glow, w(2), 'right'); }
+    if (w(3) > .01) { const lab = ['בעד', 'נגד', 'לא יודעים'], v = [54, 38, 8];
+      lab.forEach((s, bi) => { const y0 = A.y + A.h * (.28 + bi * .22); labelHe(s, A.x + A.w - 6, y0, 15, C.fg, w(3), 'right'); const S = P.filter(p => p.s).length, cols = Math.ceil(S * [.54, .38, .08][bi] / A.barRows), endX = A.x + A.w - 80 - cols * A.gxB; label(`${v[bi]}% ±3.1`, endX - 14, y0, 13, bi === 0 ? C.gold : C.mute, w(3), 'right'); });
+      labelHe('להישאר בשעון קיץ כל השנה? · נתוני דוגמה', A.x + A.w - 6, A.y + 10, 14, C.glow, w(3), 'right'); }
+    if (w(4) > .01) { x.globalAlpha = w(4) * .35; x.fillStyle = C.gold; x.beginPath();
+      for (let u = 0; u <= 1.001; u += .02) { const X = A.x + A.w - 40 - u * (A.w - 80), Y = A.y + A.h * .85 - (A.trend(u) + 4 - 30) / 40 * A.h * .7; u ? x.lineTo(X, Y) : x.moveTo(X, Y); }
+      for (let u = 1; u >= -.001; u -= .02) { const X = A.x + A.w - 40 - u * (A.w - 80), Y = A.y + A.h * .85 - (A.trend(u) - 4 - 30) / 40 * A.h * .7; x.lineTo(X, Y); }
+      x.closePath(); x.globalAlpha = w(4) * .12; x.fill(); x.globalAlpha = 1;
+      ['ינו׳', 'מרץ', 'מאי', 'יולי', 'ספט׳', 'נוב׳'].forEach((m, i) => labelHe(m, A.x + A.w - 40 - (i / 5) * (A.w - 80), A.y + A.h * .85 + 26, 12, C.mute, w(4)));
+      labelHe('אמון במוסדות לאורך שנה · נתוני דוגמה', A.x + A.w - 6, A.y + 10, 14, C.glow, w(4), 'right'); }
+    // the dots: drift toward their place, breathe, and make room for the lens
+    let near = -1, nd = 22;
+    const lensR = mobile ? 0 : 90;
+    for (let i = 0; i < N; i++) {
+      const p = P[i], a0 = F[s0][i], a1 = F[s1][i];
+      let tx = a0.x + (a1.x - a0.x) * k, ty = a0.y + (a1.y - a0.y) * k, al = a0.a + (a1.a - a0.a) * k;
+      if (!reduce) { const amp = (s0 === 0 && k < .5 ? 2.6 : s0 === 1 && k < .5 ? 1 : .35); tx += Math.sin(t / 1300 * p.sp + p.ph) * amp; ty += Math.cos(t / 1700 * p.sp + p.ph * 1.3) * amp; }
+      const ease2 = reduce ? 1 : Math.min(1, dt * .0045 * p.sp);
+      p.x += (tx - p.x) * ease2; p.y += (ty - p.y) * ease2;
+      let X = p.x, Y = p.y, r = 1.6 + (p.s ? .5 : 0);
+      if (lensR && mouse.on) { const dx = X - mouse.x, dy = Y - mouse.y, d = Math.hypot(dx, dy); if (d < lensR) { const f = 1 - d / lensR; X += dx / (d || 1) * f * 12; Y += dy / (d || 1) * f * 12; r *= 1 + f * 1.3; al = Math.min(1, al + f * .6); } if (d < nd && al > .25) { nd = d; near = i; } }
+      // colour: the sample in sky, groups and answers in their own tones
+      const fk = (k < .5 ? a0 : a1);
+      let col = C.glow;
+      if (p.s && (s0 > 0 || k > .3)) col = fk.k === 'bar' ? (fk.bi === 0 ? C.gold : fk.bi === 1 ? C.sky : C.dim) : fk.k === 'trend' ? C.gold : C.sky;
+      if (i === hot) { r += 2; col = C.gold; al = 1; }
+      x.globalAlpha = al * (reduce ? 1 : (.82 + .18 * Math.sin(t / 900 + p.ph))); x.fillStyle = col; x.beginPath(); x.arc(X, Y, r, 0, 6.283); x.fill();
+    }
+    x.globalAlpha = 1;
+    if (lensR && mouse.on) { x.strokeStyle = 'rgba(242,193,78,.35)'; x.lineWidth = 1; x.beginPath(); x.arc(mouse.x, mouse.y, lensR, 0, 6.283); x.stroke(); }
+    // the person under the lens
+    if (near !== hot) {
+      hot = near;
+      if (near >= 0) { const p = P[near]; lens.innerHTML = `<b>${p.g}, ${p.age}, ${p.city}</b><span>מדבר/ת ${p.lang}</span>` + (p.s ? `<br><span>נדגם/ה הפעם · עונה ${p.mode}</span><span class="tag">במדגם</span>` : `<span class="tag out">לא נדגם/ה הפעם</span>`); }
+      lens.classList.toggle('on', near >= 0);
+    }
+    if (near >= 0) { const p = P[near]; lens.style.left = Math.min(W - 210, Math.max(10, p.x + 14)) + 'px'; lens.style.top = Math.max(70, p.y - 70) + 'px'; }
+    rail.querySelectorAll('button').forEach((b, i) => b.classList.toggle('on', Math.round(prog) === i));
+    rail.classList.toggle('off', story.getBoundingClientRect().bottom < innerHeight * .5);
+    if (!manual) requestAnimationFrame(frame);
+  };
+  addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; mouse.on = e.pointerType === 'mouse' && mouse.y > 0 && mouse.y < r.height && story.getBoundingClientRect().bottom > innerHeight * .4; });
+  document.addEventListener('pointerleave', () => { mouse.on = false; });
+  // a rail to jump between the steps of the story
+  const rail = document.getElementById('rail');
+  ['אוכלוסייה', 'בחירה', 'ייצוג', 'ממצא', 'מגמה'].forEach((n, i) => { const b = document.createElement('button'); b.type = 'button'; b.innerHTML = `<i></i><span>${n}</span>`; b.setAttribute('aria-label', n); b.addEventListener('click', () => steps[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' })); rail.appendChild(b); });
+  watch(story); addEventListener('resize', () => { build(); });
+  // for testing only: ?debug lets a script step the animation forward
+  if (/[?&]debug/.test(location.search)) window.__pop = { run(n) { manual = true; let t = last; for (let i = 0; i < n; i++) { t += 16; frame(t); } manual = false; } };
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { build(); requestAnimationFrame(frame); });
+  build();
+
+  /* ---------------- findings ticker (sample data) ---------------- */
+  const FIND = [['54%', 'בעד שעון קיץ כל השנה'], ['61%', 'עובדים לפחות יום אחד מהבית'], ['72%', 'מודאגים מיוקר המחיה'], ['48%', 'משתמשים בבינה מלאכותית בעבודה'], ['66%', 'סומכים על מדענים'], ['39%', 'נוסעים בתחבורה ציבורית כל שבוע']];
+  const track = document.getElementById('track');
+  track.innerHTML = [...FIND, ...FIND].map(([v, t]) => `<span class="it"><i></i><b>${v}</b>${t}<em>דוגמה</em></span>`).join('');
+
+  /* ---------------- the research desk: rule-based checks, live ---------------- */
+  const q = document.getElementById('q'), checks = document.getElementById('checks'), rw = document.getElementById('rewrite-t'), rwBox = document.getElementById('rewrite');
+  const LOADED = ['המבורכת', 'המבורך', 'מבורכת', 'הכושלת', 'הכושל', 'המסוכנת', 'המסוכן', 'השערורייתית', 'השערורייתי', 'המושחתת', 'המושחת', 'הנפלאה', 'הנפלא', 'הגרועה', 'הגרוע', 'ההרסנית', 'ההרסני', 'החשובה', 'החשוב', 'הנחוצה', 'הנחוץ', 'הצודקת', 'הצודק'];
+  const PUSH = ['ברור ש', 'כולם יודעים', 'הרי ', 'האם אינך', 'האם אינכם', 'האם אתם לא', 'האם את לא', 'האם אתה לא', 'לא נכון ש', 'אין ספק'];
+  const ABS = ['תמיד', 'אף פעם', 'כולם', 'אף אחד', 'לעולם', 'בשום מקרה'];
+  const state = { n: 800, arabic: false, young: false, old: false, legal: false, haredi: false };
+  const analyze = () => {
+    const t = q.value.trim(), out = [];
+    Object.assign(state, { arabic: /ערבי|ערבית|ערבים|מגזר הערבי|בדואי/.test(t), young: /צעיר|סטודנט|בני נוער|דור ה/.test(t), old: /מבוגר|קשיש|גמלאי|פנסיונר|גיל הזהב/.test(t), legal: /בית משפט|סימן מסחר|סימני המסחר|סימני מסחר|הטעיה|יתבלבלו|ייצוגית|תביעה|מותג מתחרה/.test(t), haredi: /חרד/.test(t) });
+    if (t.length < 8) { out.push(['info', 'כתבו שאלה מלאה', 'שאלה אחת, כמו שהייתם שואלים אדם בטלפון.']); }
+    else {
+      const loaded = LOADED.filter(w => t.includes(w)).filter((w, i, all) => !all.some(o => o !== w && o.includes(w)));
+      if (loaded.length) out.push(['warn', `מילה טעונה: ״${loaded.join('״, ״')}״`, 'תואר שמכריע מראש עלול לכוון את התשובה. עדיף לתאר בלי לשפוט.']);
+      const push = PUSH.filter(w => t.includes(w));
+      if (push.length) out.push(['warn', 'ניסוח שדוחף לתשובה', `״${push[0].trim()}״ מניח מה המשיב חושב. שאלה שלילית גם מבלבלת את מי שמסכים.`]);
+      const abs = ABS.filter(w => new RegExp(`(^|\\s)${w}(\\s|$|\\?)`).test(t));
+      if (abs.length) out.push(['warn', `מילה מוחלטת: ״${abs[0]}״`, 'מעטים עונים ״תמיד״ או ״אף פעם״ בכנות. סולם תדירות מדויק יותר.']);
+      const ands = (t.match(/\s(ו[א-ת]{2,})/g) || []).filter(m => !/^\s(ועד|וכן|ולא|ואם|וגם)$/.test(m));
+      if (/\sוגם\s/.test(t) || ands.length >= 1 && /\sוב|\sוה|\sול/.test(t)) out.push(['warn', 'ייתכן ששתי שאלות בשאלה אחת', 'מי שבעד חלק אחד ונגד השני לא יוכל לענות. כדאי לפצל לשתי שאלות.']);
+      if (!/\?$/.test(t)) out.push(['info', 'חסר סימן שאלה', 'זה קטן, אבל ברור יותר למשיב.']);
+      const scale = /^(עד כמה|באיזו מידה)/.test(t) ? 'סולם של 1 עד 5, עם ״לא יודע/ת״' : /^(כמה|באיזו תדירות)/.test(t) ? 'סולם תדירות: אף פעם, לעיתים רחוקות, לפעמים, לעיתים קרובות' : /^(מי|איזה|איזו|אילו)/.test(t) ? 'רשימת אפשרויות בסדר מתחלף, עם ״אחר״' : 'בעד, נגד, לא יודע/ת';
+      out.push(['ok', 'סולם תשובות מומלץ', scale]);
+      if (state.arabic) out.push(['info', 'צריך גם ראיונות בערבית', 'שאלון בערבית מהיום הראשון וסוקרים דוברי ערבית, לא תרגום בסוף.']);
+      if (state.legal) out.push(['info', 'נשמע כמו חוות דעת לבית משפט', 'צריך קבוצת ביקורת, תיעוד מלא של השיטה ושאלות שאינן רומזות על התשובה.']);
+      if (state.haredi) out.push(['info', 'קהל שקשה להגיע אליו באינטרנט', 'החברה החרדית נשענת בעיקר על ראיונות טלפוניים ומדגם ייעודי.']);
+      if (out.filter(o => o[0] === 'warn').length === 0) out.unshift(['ok', 'הניסוח נראה מאוזן', 'לא מצאנו מילים טעונות או שאלה כפולה.']);
+    }
+    checks.innerHTML = out.map(([c, h, s]) => `<li class="${c}"><i>${c === 'warn' ? '!' : c === 'ok' ? '✓' : 'i'}</i><div><b>${h}</b><small>${s}</small></div></li>`).join('');
+    // a neutral rewrite: drop the loaded words, offer both sides, end with a question mark
+    let r = t; LOADED.forEach(w => { r = r.replace(new RegExp(`\\s?${w}`, 'g'), ''); });
+    r = r.replace(/^האם (אינכם|אינך|אתם לא|את לא|אתה לא) חושב(ים|ת)? ש/, 'האם לדעתכם ').replace(/ברור ש|כולם יודעים ש|אין ספק ש|הרי /g, '').replace(/\s{2,}/g, ' ').trim();
+    if (/בעד/.test(r) && !/נגד/.test(r)) r = r.replace(/בעד/, 'בעד או נגד');
+    if (r && !/\?$/.test(r)) r += '?';
+    rwBox.hidden = !t || r === t; rw.textContent = r;
+    plan();
+  };
+  let tq; q.addEventListener('input', () => { clearTimeout(tq); tq = setTimeout(analyze, 180); });
+  document.querySelectorAll('.examples .chip').forEach(b => b.addEventListener('click', () => { q.value = b.textContent; analyze(); q.focus(); }));
+  const nEl = document.getElementById('n');
+  const plan = () => {
+    const n = +nEl.value, moe = 1.96 * Math.sqrt(.25 / n) * 100, sub = 1.96 * Math.sqrt(.25 / 100) * 100;
+    document.getElementById('n-v').textContent = n.toLocaleString('he-IL');
+    document.getElementById('moe').textContent = '±' + moe.toFixed(1) + '%';
+    document.getElementById('sub').textContent = '±' + sub.toFixed(1) + '%';
+    const ci = document.getElementById('ci'); ci.style.right = (50 - moe) + '%'; ci.style.left = (50 - moe) + '%';
+    // method mix follows who you are asking
+    let phone = 45, web = 45, face = 0, ar = 10;
+    if (state.young) { phone = 25; web = 65; }
+    if (state.old) { phone = 65; web = 25; }
+    if (state.haredi) { phone = 75; web = 15; }
+    if (state.legal) { face = 20; phone -= 10; web -= 10; }
+    if (state.arabic) { ar = 22; phone -= 6; web -= 6; }
+    const parts = [['טלפון', phone, 'var(--sky)'], ['פאנל אינטרנטי', web, 'var(--glow)'], ['בערבית', ar, 'var(--gold)'], ['פנים אל פנים', face, 'var(--ok)']].filter(p => p[1] > 0);
+    const tot = parts.reduce((a, p) => a + p[1], 0);
+    document.getElementById('mix').innerHTML = parts.map(([, v, c]) => `<i style="width:${v / tot * 100}%;background:${c}"></i>`).join('');
+    document.getElementById('mix-l').innerHTML = parts.map(([l, v, c]) => `<span style="--c:${c}">${l} ${Math.round(v / tot * 100)}%</span>`).join('');
+    let lo = n <= 600 ? 2 : n <= 1200 ? 3 : n <= 2000 ? 5 : 7, hi = lo + 2; const why = [];
+    if (state.arabic) { lo += 1; hi += 2; why.push('כולל ערבית'); }
+    if (state.legal) { lo += 3; hi += 5; why.push('כולל תיעוד לבית משפט'); }
+    document.getElementById('days').textContent = `${lo}–${hi}`; document.getElementById('days-why').textContent = why.length ? '· ' + why.join(' · ') : '';
+  };
+  nEl.addEventListener('input', plan);
+  q.value = 'האם אתם בעד הרפורמה המבורכת בתחבורה הציבורית ובהורדת מחירי הדלק'; analyze();
+
+  /* ---------------- the vote: your answer becomes a gold dot ---------------- */
+  const crowd = document.getElementById('crowd'), cx2 = crowd.getContext('2d'), res = document.getElementById('res');
+  const BASE = [540, 380, 80], LAB = ['בעד', 'נגד', 'לא יודע/ת'];
+  let mine = null; try { const v = localStorage.getItem('midgam-vote'); if (v !== null) mine = +v; } catch (_) {}
+  const dots = [];
+  const sizeCrowd = () => { const w = crowd.clientWidth, h = crowd.clientHeight, d = Math.min(2, devicePixelRatio || 1); crowd.width = w * d; crowd.height = h * d; cx2.setTransform(d, 0, 0, d, 0, 0); return [w, h]; };
+  let [CW, CH] = sizeCrowd();
+  const home = (a, k, of) => { const cx = CW * (a === 0 ? .78 : a === 1 ? .45 : .16), R = Math.min(CW, CH) * (a === 0 ? .28 : a === 1 ? .24 : .1), rr = R * Math.sqrt((k + .5) / of), th = k * 2.39996; return [cx + Math.cos(th) * rr, CH * .52 + Math.sin(th) * rr]; };
+  const seed = () => { dots.length = 0; BASE.forEach((n, a) => { const cnt = Math.round(n / 4); for (let k = 0; k < cnt; k++) { const [hx, hy] = home(a, k, cnt + (a === mine ? 1 : 0)); dots.push({ x: Math.random() * CW, y: Math.random() * CH, hx, hy, a, ph: Math.random() * 6.3 }); } }); if (mine !== null) { const [hx, hy] = home(mine, Math.round(BASE[mine] / 4), Math.round(BASE[mine] / 4) + 1); dots.push({ x: CW / 2, y: -10, hx, hy, a: mine, me: true, ph: 0 }); } };
+  const paintRes = () => {
+    const counts = BASE.map((n, a) => n + (a === mine ? 1 : 0)), tot = counts.reduce((a, b) => a + b, 0);
+    res.innerHTML = counts.map((n, a) => `<div class="row${a === mine ? ' mine' : ''}"><span>${LAB[a]}${a === mine ? ' · אתם' : ''}</span><div class="bar"><i style="width:${n / tot * 100}%"></i></div><b class="num">${Math.round(n / tot * 100)}%</b></div>`).join('');
+    document.querySelectorAll('#answers button').forEach(b => { b.setAttribute('aria-pressed', +b.dataset.a === mine); b.disabled = mine !== null; });
+  };
+  document.querySelectorAll('#answers button').forEach(b => b.addEventListener('click', () => { if (mine !== null) return; mine = +b.dataset.a; try { localStorage.setItem('midgam-vote', mine); } catch (_) {} const keep = dots.map(d => ({ x: d.x, y: d.y })); seed(); dots.forEach((d, i) => { if (keep[i] && !d.me) { d.x = keep[i].x; d.y = keep[i].y; } }); paintRes(); }));
+  seed(); paintRes();
+  watch(crowd);
+  const crowdFrame = t => {
+    if (!onScreen(crowd)) { requestAnimationFrame(crowdFrame); return; }
+    cx2.clearRect(0, 0, CW, CH);
+    ['בעד', 'נגד', 'לא יודעים'].forEach((s, a) => { cx2.fillStyle = C.mute; cx2.font = '600 13px "IBM Plex Sans Hebrew", sans-serif'; cx2.textAlign = 'center'; cx2.direction = 'rtl'; cx2.fillText(s, CW * (a === 0 ? .78 : a === 1 ? .45 : .16), CH * .93); });
+    dots.forEach(d => {
+      d.x += (d.hx + (reduce ? 0 : Math.sin(t / 1100 + d.ph) * 1.4) - d.x) * .05; d.y += (d.hy + (reduce ? 0 : Math.cos(t / 1300 + d.ph) * 1.4) - d.y) * .05;
+      cx2.globalAlpha = d.me ? 1 : .8; cx2.fillStyle = d.me ? C.gold : d.a === 0 ? C.sky : d.a === 1 ? C.glow : C.dim;
+      cx2.beginPath(); cx2.arc(d.x, d.y, d.me ? 5 + Math.sin(t / 300) : 2.4, 0, 6.283); cx2.fill();
+      if (d.me) { cx2.globalAlpha = .3 + .2 * Math.sin(t / 300); cx2.strokeStyle = C.gold; cx2.beginPath(); cx2.arc(d.x, d.y, 11, 0, 6.283); cx2.stroke(); cx2.globalAlpha = 1; cx2.fillStyle = C.fg; cx2.font = '600 12px "IBM Plex Sans Hebrew", sans-serif'; cx2.fillText('אתם', d.x, d.y - 17); }
+    });
+    cx2.globalAlpha = 1; requestAnimationFrame(crowdFrame);
+  };
+  requestAnimationFrame(crowdFrame);
+  addEventListener('resize', () => { [CW, CH] = sizeCrowd(); seed(); });
+
+  /* ---------------- the four fields, each with its own small living picture ---------------- */
+  document.querySelectorAll('[data-viz]').forEach(c => {
+    const g = c.getContext('2d'), kind = c.dataset.viz; let w, h;
+    const size = () => { const d = Math.min(2, devicePixelRatio || 1); w = c.clientWidth; h = c.clientHeight; c.width = w * d; c.height = h * d; g.setTransform(d, 0, 0, d, 0, 0); }; size(); addEventListener('resize', size);
+    const pts = Array.from({ length: 46 }, (_, i) => ({ u: Math.random(), v: Math.random(), ph: Math.random() * 6.3, k: i % 3 }));
+    watch(c);
+    const draw = t => {
+      if (!onScreen(c)) { requestAnimationFrame(draw); return; }
+      g.clearRect(0, 0, w, h); const T = reduce ? 0 : t;
+      if (kind === 'polls') { [.62, .3, .08].forEach((v, i) => { const vv = v + Math.sin(T / 1400 + i) * .03, bw = (w - 40) * vv; g.fillStyle = [C.gold, C.sky, C.dim][i]; for (let x2 = 0; x2 < bw; x2 += 7) for (let y2 = 0; y2 < 3; y2++) { g.beginPath(); g.arc(w - 20 - x2, 34 + i * 40 + y2 * 7, 2, 0, 6.283); g.fill(); } }); }
+      if (kind === 'market') { const cs = [[.3, .4], [.68, .32], [.5, .72]]; pts.forEach(p => { const [cx, cy] = cs[p.k]; const X = (cx + (p.u - .5) * .3 + Math.sin(T / 1600 + p.ph) * .02) * w, Y = (cy + (p.v - .5) * .3 + Math.cos(T / 1900 + p.ph) * .03) * h; g.fillStyle = [C.sky, C.gold, C.glow][p.k]; g.beginPath(); g.arc(X, Y, 3, 0, 6.283); g.fill(); }); }
+      if (kind === 'social') { const ns = pts.slice(0, 22).map(p => [(.1 + p.u * .8 + Math.sin(T / 2000 + p.ph) * .02) * w, (.12 + p.v * .76 + Math.cos(T / 2300 + p.ph) * .03) * h]); g.strokeStyle = 'rgba(143,211,245,.18)'; ns.forEach((a, i) => ns.forEach((b, j) => { if (j > i && Math.hypot(a[0] - b[0], a[1] - b[1]) < 62) { g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); } })); ns.forEach((a, i) => { g.fillStyle = i % 5 === 0 ? C.gold : C.glow; g.beginPath(); g.arc(a[0], a[1], i % 5 === 0 ? 4 : 2.6, 0, 6.283); g.fill(); }); }
+      if (kind === 'legal') { const tilt = Math.sin(T / 1800) * .08, cx = w / 2, cy = h * .32; g.strokeStyle = C.glow; g.lineWidth = 2; g.beginPath(); g.moveTo(cx, cy - 6); g.lineTo(cx, h * .82); g.stroke(); g.beginPath(); g.moveTo(cx - 70, cy + tilt * 70); g.lineTo(cx + 70, cy - tilt * 70); g.stroke();
+        [[-70, 1], [70, -1]].forEach(([dx, s], i) => { const px = cx + dx, py = cy + s * tilt * 70; g.beginPath(); g.moveTo(px, py); g.lineTo(px - 18, py + 34); g.moveTo(px, py); g.lineTo(px + 18, py + 34); g.stroke(); for (let k = 0; k < (i ? 9 : 14); k++) { g.fillStyle = i ? C.sky : C.gold; g.beginPath(); g.arc(px - 14 + (k % 5) * 7, py + 32 - Math.floor(k / 5) * 6, 2.4, 0, 6.283); g.fill(); } }); g.fillStyle = C.glow; g.fillRect(cx - 30, h * .82, 60, 3); }
+      requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  });
+})();
+</script>
+
+</body>
+</html>

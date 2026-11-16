@@ -161,6 +161,11 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   #mplay canvas{max-width:none;width:auto;height:calc(100dvh - 76px);max-height:calc(100dvh - 76px)}
   #mplay .mhint{display:none}
 }
+html.embed,html.embed body{background:#06111c}
+html.embed .stage{background:none}
+html.embed .nav,html.embed .copy{display:none}
+html.embed .game{animation:none;opacity:1;transform:none;box-shadow:none}
+html.embed .stage.playing .game{left:72px;top:118px;transform:none}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 [data-up]{opacity:0;transform:translateY(14px);animation:up .7s var(--ease) forwards;animation-delay:calc(var(--i,0)*90ms + 120ms)}
@@ -218,7 +223,12 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
 <script>
 (() => {
   const st = document.getElementById('stage');
-  const fit = () => { const k = Math.min(innerWidth / 1440, innerHeight / 900); st.style.transform = `translate(${(innerWidth - 1440 * k) / 2}px,${(innerHeight - 900 * k) / 2}px) scale(${k})`; };
+  // ?embed shows only the game box, scaled to fill the frame, so another page can place it
+  const EMBED = /[?&]embed/.test(location.search); if (EMBED) document.documentElement.classList.add('embed');
+  const fit = () => {
+    if (EMBED) { const k = Math.min(innerWidth / 704, innerHeight / 712); st.style.transform = `translate(${(innerWidth - 704 * k) / 2 - 72 * k}px,${(innerHeight - 712 * k) / 2 - 118 * k}px) scale(${k})`; return; }
+    const k = Math.min(innerWidth / 1440, innerHeight / 900); st.style.transform = `translate(${(innerWidth - 1440 * k) / 2}px,${(innerHeight - 900 * k) / 2}px) scale(${k})`;
+  };
   addEventListener('resize', fit); fit();
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1159,7 +1169,7 @@ html.mobile-play,html.mobile-play body{overflow:hidden;overscroll-behavior:none}
   const stage = document.getElementById('stage');
   const mplay = document.getElementById('mplay'), mtop = document.getElementById('mtop'), mctl = document.getElementById('mctl'), mhint = document.getElementById('mhint');
   document.body.appendChild(mplay);
-  const isMobile = () => matchMedia('(pointer:coarse)').matches || innerWidth < 900;
+  const isMobile = () => matchMedia('(pointer:coarse)').matches || (!EMBED && innerWidth < 900);
   const padEl = document.querySelector('.pad'), talkEl = document.getElementById('talk'), exitEl = document.getElementById('exit');
   // remember where each piece lives, so leaving play puts it back exactly
   const glang = document.getElementById('glang');
