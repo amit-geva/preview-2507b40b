@@ -567,18 +567,22 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 
   const FORMS = {
     wave(s, t) { // the hero: the Midgam swarm draws the mark and its tagline; a question turns it into the topic's shape
-      const box = rects(s, '[data-anchor=swarm]')[0]; if (!box) return null;
+      const sb = s.querySelector('[data-anchor=swarm]').getBoundingClientRect(), box = sb.width ? { x: sb.left, y: sb.top, w: sb.width, h: sb.height } : null; if (!box) return null;
+      // leaving the hero: dots break off the mark one by one and fall away while you can still see it; scrolling back reassembles it
+      const hr = s.getBoundingClientRect(), leave = Math.min(1.5, Math.max(0, -hr.top / (H * .45)));
+      const crumble = f => leave <= 0 ? f : p => { const tg = f(p); if (!tg) return tg; const th = ((p.i * .7548776662) % 1) * .85, d = leave - th; if (d <= 0) return tg;
+        return [tg[0] + (p.u - .5) * d * W * .3, tg[1] + d * d * H * .8 + d * 40 * p.s, tg[2] * Math.max(.12, 1 - d * .8), tg[3] * Math.max(.6, 1 - d * .3)]; };
       const breathe = 1 + .012 * Math.sin(t / 1400), sweep = (t / 2400) % 1.4 - .2, cx = box.x + box.w / 2, cy = box.y + box.h / 2;
       const live = (X0, Y0, p) => [cx + (X0 - cx) * breathe + Math.sin(t / 900 + p.ph) * .6, cy + (Y0 - cy) * breathe + Math.cos(t / 1100 + p.ph) * .6];
       if (heroKind) { const D = DRAW[heroKind]; if (!D) return null; const sh = shape(heroKind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
-        return p => { const pt = sh.pts[p.i % sh.pts.length], [X, Y] = live(...fit(box, sh, pt, 4), p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .7 + .3 * hit, 1.5 + hit]; }; }
+        return crumble(p => { const pt = sh.pts[p.i % sh.pts.length], [X, Y] = live(...fit(box, sh, pt, 4), p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .7 + .3 * hit, 1.5 + hit]; }); }
       const D = DRAW.logo, sh = shape('logo', D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
       // the mark fills the top of the box; the tagline gets its own strip, as wide as the mark
       const markBox = phone ? { x: box.x, y: box.y, w: box.w, h: box.h } : { x: box.x, y: box.y, w: box.w, h: box.h * .74 }, mw = Math.min(markBox.w - 8, (markBox.h - 8) * sh.ar), tagBox = { x: cx - mw / 2, y: box.y + box.h * .79, w: mw, h: box.h * .17 };
       const tag = tagline(Math.round(tagBox.w), Math.round(tagBox.h));
-      return p => {
+      return crumble(p => {
         if (p.i % 3 === 2 && tag && !phone) { const j = Math.floor(p.i / 3), pt = tag.pts[j % tag.pts.length], X0 = tagBox.x + pt[0] * tagBox.w, Y0 = tagBox.y + pt[1] * tagBox.h, [X, Y] = live(X0, Y0, p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .9 + .1 * hit, .85 + hit * .35]; }
-        const pt = sh.pts[p.i % sh.pts.length], [X, Y] = live(...fit(markBox, sh, pt, 4), p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .7 + .3 * hit, 1.5 + hit]; };
+        const pt = sh.pts[p.i % sh.pts.length], [X, Y] = live(...fit(markBox, sh, pt, 4), p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .7 + .3 * hit, 1.5 + hit]; });
     },
     sample(s, t) { // credibility: a sample gathers into a disc, rings marking the population around it
       const d = rects(s, '[data-anchor=disc]')[0]; if (!d || d.w < 10) return null;
