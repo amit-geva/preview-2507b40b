@@ -164,14 +164,14 @@ h2{margin-top:0;font-size:clamp(46px,6.6vw,118px);line-height:.96;font-weight:40
 @keyframes enter{from{opacity:.001;transform:translateY(18px)}to{opacity:1;transform:none}}
 
 /* credibility */
-.cred .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
-.facts{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 40px}
+.cred .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"head viz" "facts facts";gap:24px 48px;align-items:center}
+.cred-head{grid-area:head}.cred .slot{grid-area:viz}.cred .facts{grid-area:facts}
+.facts{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 40px}
 .facts li{padding-top:18px;border-top:1px solid var(--line-2)}
-.facts b{display:block;font-family:var(--display);font-size:clamp(40px,4.4vw,64px);font-weight:400;letter-spacing:-.02em;line-height:1.1}
+.facts b{display:block;font-family:var(--display);font-size:clamp(28px,2.7vw,40px);font-weight:400;letter-spacing:-.02em;line-height:1.1}
 .facts span{display:block;margin-top:6px;color:var(--mute);font-size:16px}
-.facts .wide{grid-column:1/-1}
 .slot{min-height:420px}
-.cred .slot{position:sticky;top:110px;align-self:start}
+.cred .slot{min-height:360px}
 html.holding,html.holding *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 
 /* six questions */
@@ -272,6 +272,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   .hero .wrap{gap:20px}.play{order:-1;width:100%;max-width:520px;margin-inline:auto}
   .swarm{max-height:30vh}
   .slot{min-height:180px;order:-1}
+  .cred .wrap{grid-template-areas:"viz" "head" "facts"}.cred .slot{min-height:200px}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}
   .qs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .caps,.team{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fields4{grid-template-columns:repeat(2,minmax(0,1fr))}.fields5{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -332,19 +333,18 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   <!-- 2. credibility -->
   <section class="cred" id="credibility" data-form="lanes">
     <div class="wrap">
-      <div>
+      <div class="cred-head">
         <span class="kicker">אמינות</span>
         <h2 style="margin-top:14px">38 שנים של מחקר שעומד בבדיקה</h2>
         <p class="lede">כל מחקר נבנה על מדגם שמייצג את האוכלוסייה שעליה הוא מדבר, ועובר אצלנו את כל הדרך עם אותו צוות.</p>
-        <ul class="facts">
-          <li><b class="num">1988</b><span>שנת ההקמה של מכון מדגם</span></li>
-          <li><b>דגימה מייצגת</b><span>מכסות ושקלול לפי גיל, מגדר, אזור ומגזר</span></li>
-          <li><b>כמותי ואיכותני</b><span>סקרים, קבוצות מיקוד וראיונות עומק</span></li>
-          <li><b>ליווי מלא</b><span>מהגדרת השאלה ועד הצגת הממצאים</span></li>
-          <li class="wide"><b>חברות מקצועית</b><span>חברה באיגוד חוקרי השוק ודעת הקהל בישראל</span></li>
-        </ul>
       </div>
       <div class="slot" data-anchor="viz" data-kind="year"></div>
+      <ul class="facts">
+        <li><b>דגימה מייצגת</b><span>מכסות ושקלול לפי גיל, מגדר, אזור ומגזר</span></li>
+        <li><b>כמותי ואיכותני</b><span>סקרים, קבוצות מיקוד וראיונות עומק</span></li>
+        <li><b>ליווי מלא</b><span>מהגדרת השאלה ועד הצגת הממצאים</span></li>
+        <li><b>חברות מקצועית</b><span>חברה באיגוד חוקרי השוק ודעת הקהל בישראל</span></li>
+      </ul>
     </div>
   </section>
 
