@@ -8,24 +8,22 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Karantina:wght@700&family=Frank+Ruhl+Libre:wght@700;900&family=Heebo:wght@300;400;500;700;800&family=Assistant:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* Layout: one living atmosphere (light, grain, three depths of dots) sits behind the whole site.
    Each section gathers the dots around its own content: a wave of people, a sample, six questions,
    four capabilities, nine fields, two areas of expertise, the team, and the contact form. Dark by design. */
 :root{
-  /* Midgam's own two colours, from the logo: navy #1d5689 and sky #2098d0 */
-  --ink:#0a2240; --ink-2:#0f2c50; --line:rgba(140,205,240,.16); --line-2:rgba(140,205,240,.3);
-  --fg:#f3f8fc; --mute:#a9c4dc; --dim:#7a98b4;
-  --blue:#1d5689; --sky:#2098d0; --glow:#8fd0f2; --gold:#f2c14e;
-  --card:rgba(8,28,54,.55); --card-hi:rgba(14,42,76,.72); --field:rgba(6,22,44,.8); --navbg:rgba(10,34,64,.78); --menubg:rgba(10,34,64,.97); --foot:rgba(6,22,44,.6);
-  --chip:rgba(140,205,240,.1); --btn-bg:#f3f8fc; --btn-fg:#0a2240; --btn-hi:#fff; --grid-line:rgba(140,205,240,.06);
-  --l1:rgba(32,152,208,.5); --l2:rgba(29,86,137,.85); --l3:rgba(32,152,208,.22); --vig:rgba(4,16,32,.7); --face:rgba(140,205,240,.28);
-  --dot-a:32,152,208; --dot-b:143,208,242; --dot-c:243,248,252; --dot-d:38,196,180; --dot-e:242,169,59; --grain:.08;
-  --teal:#26c4b4; --amber:#f2a93b;
+  /* Midgam's own two colours, from the logo: navy #1d5689 and sky #2098d0. The dark version sits on the logo's navy itself. */
+  --ink:#174a7a; --ink-2:#1d5689; --line:rgba(190,228,250,.2); --line-2:rgba(190,228,250,.36);
+  --fg:#ffffff; --mute:#cfe5f5; --dim:#9cc3e0;
+  --blue:#1d5689; --sky:#2098d0; --glow:#a9dcf6; --gold:#f2c14e;
+  --card:rgba(13,52,92,.42); --card-hi:rgba(13,52,92,.62); --field:rgba(10,42,76,.6); --navbg:rgba(23,74,122,.82); --menubg:rgba(23,74,122,.97); --foot:rgba(12,46,82,.5);
+  --chip:rgba(190,228,250,.14); --btn-bg:#ffffff; --btn-fg:#1d5689; --btn-hi:#eaf6fd; --grid-line:rgba(190,228,250,.08);
+  --l1:rgba(32,152,208,.6); --l2:rgba(18,58,98,.7); --l3:rgba(143,208,242,.35); --vig:rgba(10,40,72,.55); --face:rgba(190,228,250,.3);
+  --dot-a:32,152,208; --dot-b:169,220,246; --dot-c:255,255,255; --dot-d:255,255,255; --dot-e:143,208,242; --grain:.07;
   --display:"Secular One","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --body:"Assistant","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
-  --dw:400; --fs:1;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --ease:cubic-bezier(.23,1,.32,1);
   --padt:128px; --gut:max(24px,env(safe-area-inset-left,0px));
@@ -33,13 +31,12 @@
 }
 /* the bright version: same structure, Midgam navy on a pale sky ground */
 html[data-look=light]{
-  --ink:#f2f7fb; --ink-2:#e4eff8; --line:rgba(29,86,137,.14); --line-2:rgba(29,86,137,.28);
-  --fg:#0d2c4f; --mute:#46647f; --dim:#6f88a0; --glow:#1d5689;
-  --card:rgba(255,255,255,.62); --card-hi:rgba(255,255,255,.88); --field:#fff; --navbg:rgba(242,247,251,.82); --menubg:rgba(242,247,251,.98); --foot:rgba(255,255,255,.6);
-  --chip:rgba(29,86,137,.08); --btn-bg:#1d5689; --btn-fg:#fff; --btn-hi:#16466f; --grid-line:rgba(29,86,137,.05);
-  --l1:rgba(32,152,208,.32); --l2:rgba(29,86,137,.2); --l3:rgba(143,208,242,.45); --vig:rgba(242,247,251,.6); --face:rgba(29,86,137,.25);
-  --dot-a:29,86,137; --dot-b:32,152,208; --dot-c:13,44,79; --dot-d:20,150,138; --dot-e:214,134,24; --grain:.05;
-  --teal:#14968a; --amber:#d68618;
+  --ink:#eaf6fd; --ink-2:#d6edfa; --line:rgba(29,86,137,.16); --line-2:rgba(29,86,137,.32);
+  --fg:#123d66; --mute:#2f5b82; --dim:#5d82a4; --glow:#2098d0;
+  --card:rgba(255,255,255,.7); --card-hi:#fff; --field:#fff; --navbg:rgba(234,246,253,.86); --menubg:rgba(234,246,253,.98); --foot:rgba(255,255,255,.6);
+  --chip:rgba(29,86,137,.1); --btn-bg:#1d5689; --btn-fg:#fff; --btn-hi:#2098d0; --grid-line:rgba(29,86,137,.07);
+  --l1:rgba(32,152,208,.5); --l2:rgba(29,86,137,.32); --l3:rgba(143,208,242,.7); --vig:rgba(234,246,253,.35); --face:rgba(29,86,137,.25);
+  --dot-a:29,86,137; --dot-b:32,152,208; --dot-c:18,61,102; --dot-d:32,152,208; --dot-e:29,86,137; --grain:.05;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -108,20 +105,12 @@ section{position:relative;min-height:100svh;padding-block:var(--padt) 72px;displ
 .kicker{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--glow)}
 .kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sky);box-shadow:0 0 12px var(--sky)}
 h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
-h2{margin-top:0;font-size:calc(clamp(34px,4.3vw,60px) * var(--fs));line-height:1.08;font-weight:var(--dw);letter-spacing:-.01em}
-.lede{margin:18px 0 0;max-width:36em;color:var(--mute);font-size:19px;text-wrap:pretty}
+h2{margin-top:0;font-size:clamp(46px,6.6vw,118px);line-height:.96;font-weight:400;letter-spacing:-.02em;max-width:16ch}
+.lede{margin:22px 0 0;max-width:34em;color:var(--mute);font-size:21px;line-height:1.55;text-wrap:pretty}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
 /* placeholders: anything still to come from Midgam, easy to spot */
 .ph{display:inline-block;padding:1px 10px;border-radius:8px;border:1px dashed rgba(242,193,78,.7);background:rgba(242,193,78,.1);color:var(--gold);font-weight:500}
-
-/* the four pairings on review */
-html[data-font=karantina]{--display:"Karantina","Heebo",Arial,sans-serif;--dw:700;--fs:1.32}
-html[data-font=frank]{--display:"Frank Ruhl Libre","Heebo",Georgia,serif;--dw:900;--fs:1}
-html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sans-serif;--dw:800;--fs:1}
-.fontpick{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:65;display:flex;align-items:center;gap:4px;padding:5px 6px 5px 12px;border-radius:999px;background:var(--navbg);box-shadow:inset 0 0 0 1px var(--line-2),0 14px 30px -16px rgba(0,0,0,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:500 13px var(--body);color:var(--dim)}
-.fontpick button{height:32px;padding:0 12px;border-radius:999px;border:0;background:transparent;color:var(--fg);cursor:pointer;font-size:15px}
-.fontpick button[aria-pressed=true]{background:var(--btn-bg);color:var(--btn-fg)}
 
 /* hero */
 .hero{align-items:flex-end;padding-bottom:88px}
@@ -151,10 +140,10 @@ html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sa
 .secrets{margin:0;min-height:22px;font-size:14px;color:var(--dim);text-align:center}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .hero-text{max-width:720px}
-.hero h1{margin-top:18px;font-size:calc(clamp(44px,5.8vw,94px) * var(--fs));line-height:1.02;font-weight:var(--dw);letter-spacing:-.015em}
+.hero h1{margin-top:18px;font-size:clamp(58px,8.4vw,156px);line-height:.92;font-weight:400;letter-spacing:-.025em}
 .hero h1 span{font-family:var(--body)}
 .hero h1 span{display:block;color:var(--glow);font-weight:300}
-.hero .lede{font-size:20.5px;max-width:31em}
+.hero .lede{font-size:22px;max-width:30em}
 .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 [data-enter]>*{animation:enter .9s var(--ease) both}
 [data-enter]>*:nth-child(2){animation-delay:.08s}[data-enter]>*:nth-child(3){animation-delay:.16s}[data-enter]>*:nth-child(4){animation-delay:.24s}
@@ -164,7 +153,7 @@ html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sa
 .cred .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
 .facts{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 40px}
 .facts li{padding-top:18px;border-top:1px solid var(--line-2)}
-.facts b{display:block;font-family:var(--display);font-size:40px;font-weight:var(--dw);letter-spacing:-.02em;line-height:1.1}
+.facts b{display:block;font-family:var(--display);font-size:clamp(40px,4.4vw,64px);font-weight:400;letter-spacing:-.02em;line-height:1.1}
 .facts span{display:block;margin-top:6px;color:var(--mute);font-size:16px}
 .facts .wide{grid-column:1/-1}
 .slot{min-height:420px}
@@ -173,14 +162,14 @@ html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sa
 .qs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:44px}
 .q{position:relative;display:flex;flex-direction:column;gap:10px;padding:26px 26px 24px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
 .q:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--line-2);background:var(--card-hi)}
-.q h3{font-size:23px;line-height:1.25;font-weight:var(--dw)}
+.q h3{font-size:28px;line-height:1.15;font-weight:400}
 .q p{margin:0;color:var(--mute);font-size:16px}
 .q .tag{margin-top:auto;padding-top:10px;font-size:14px;font-weight:500;color:var(--glow)}
 
 /* capabilities */
 .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
 .cap .viz{height:190px;border-radius:18px;box-shadow:inset 0 0 0 1px var(--line)}
-.cap h3{margin-top:22px;font-size:25px;font-weight:var(--dw)}
+.cap h3{margin-top:22px;font-size:32px;line-height:1.1;font-weight:400}
 .cap p{margin:8px 0 0;color:var(--mute);font-size:16px}
 .cap ul{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .cap li{padding:4px 11px;border-radius:999px;font-size:13.5px;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2)}
@@ -193,7 +182,7 @@ html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sa
 .fld .viz{height:150px;margin:-4px -6px 18px;border-radius:12px}
 .fld .mark{font-size:13px;font-weight:600;color:var(--sky)}
 .fld h3{font-size:20px;font-weight:700;line-height:1.25}
-.fld.big h3{margin-top:4px;font-size:26px;font-weight:var(--dw)}
+.fld.big h3{margin-top:4px;font-size:34px;line-height:1.05;font-weight:400}
 .fld p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
 .fields5 .fld{min-height:96px;justify-content:center}
 /* two areas of expertise */
@@ -201,7 +190,7 @@ html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sa
 .area{display:grid;grid-template-rows:auto 1fr;border-radius:24px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
 .area .viz{height:230px}
 .area .txt{padding:28px 30px 30px}
-.area h3{font-size:32px;font-weight:var(--dw);letter-spacing:-.01em}
+.area h3{font-size:clamp(34px,3.4vw,52px);line-height:1;font-weight:400;letter-spacing:-.01em}
 .area p{margin:10px 0 0;color:var(--mute)}
 .area ul{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .area li{display:flex;gap:10px}
@@ -210,13 +199,13 @@ html[data-font=heebo]{--display:"Heebo",Arial,sans-serif;--body:"Heebo",Arial,sa
 
 /* people */
 .team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
-.person .face{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:22px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px var(--line),0 30px 60px -36px rgba(0,0,0,.65)}
-.person .face::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 45% at 50% 34%,rgba(242,169,59,.16),transparent 70%),radial-gradient(80% 60% at 50% 40%,rgba(32,152,208,.22),transparent 75%)}
-.person .face .ht{position:absolute;inset:0;width:100%;height:100%;display:block}
-.person .face .src{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.person{cursor:default}
-.person:hover .face{box-shadow:inset 0 0 0 1px var(--line-2),0 34px 70px -36px rgba(0,0,0,.7)}
-.person h3{margin-top:20px;font-size:24px;font-weight:var(--dw)}
+.person .face{position:relative;aspect-ratio:1/1.06;max-width:100%;border-radius:22px;overflow:hidden;isolation:isolate;background:#8fd0f2;box-shadow:0 30px 60px -36px rgba(0,0,0,.55)}
+/* duotone: the photo in grey, multiplied over light sky, with Midgam navy lifted into the shadows */
+.person .face img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(1) contrast(1.12) brightness(1.06);mix-blend-mode:multiply;transform:scale(1);transition:filter .6s var(--ease),transform .7s var(--ease)}
+.person .face::after{content:"";position:absolute;inset:0;background:#1d5689;mix-blend-mode:lighten;transition:opacity .6s var(--ease);pointer-events:none}
+.person:hover .face img{filter:none;mix-blend-mode:normal;transform:scale(1.03)}
+.person:hover .face::after{opacity:0}
+.person h3{margin-top:20px;font-size:30px;line-height:1.05;font-weight:400}
 .person .role{margin:2px 0 0;color:var(--glow);font-size:15.5px;font-weight:500}
 .person p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
 
@@ -395,10 +384,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     <div class="wrap">
             <h2>הצוות שמלווה את המחקר שלכם</h2>
       <div class="team">
-        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/mano.jpg" alt="מנו גבע"></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/mina.jpg" alt="ד״ר מינה צמח"></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/ihab.jpg" alt="איהאב קדאח"></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><canvas class="ht" aria-hidden="true"></canvas><img class="src" src="assets/team/michal.jpg" alt="מיכל שפירא"></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/mano.jpg" alt="מנו גבע" loading="lazy"></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/mina.jpg" alt="ד״ר מינה צמח" loading="lazy"></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/ihab.jpg" alt="איהאב קדאח" loading="lazy"></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/michal.jpg" alt="מיכל שפירא" loading="lazy"></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
       </div>
     </div>
   </section>
@@ -424,7 +413,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     </div>
   </section>
 </main>
-<div class="fontpick" role="group" aria-label="בחירת גופן לבדיקה"><span>גופן לבדיקה:</span><button type="button" data-font="secular" style="font-family:'Secular One'">א</button><button type="button" data-font="karantina" style="font-family:Karantina;font-size:19px">ב</button><button type="button" data-font="frank" style="font-family:'Frank Ruhl Libre';font-weight:900">ג</button><button type="button" data-font="heebo" style="font-family:Heebo;font-weight:800">ד</button></div>
 <p class="toast" id="toast" role="status" aria-live="polite"></p>
 <footer><div class="wrap"><span>מדגם ייעוץ ומחקר בע״מ · מאז 1988</span><span class="eggs" id="eggs"></span><nav aria-label="ניווט תחתון"><a href="#solutions">פתרונות מחקר</a><a href="#fields">תחומי פעילות</a><a href="#capabilities">יכולות מחקר</a><a href="#expertise">סגמנטים</a><a href="#people">אודות</a><a href="#contact">צור קשר</a></nav></div></footer>
 </div>
@@ -447,10 +435,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const lookBtn = document.getElementById('look');
   const setLook = (l, save) => { document.documentElement.dataset.look = l; lookBtn.setAttribute('aria-pressed', l === 'light'); lookBtn.querySelector('span').textContent = l === 'light' ? 'גרסה כהה' : 'גרסה בהירה'; lookBtn.setAttribute('aria-label', l === 'light' ? 'מעבר לגרסה הכהה' : 'מעבר לגרסה הבהירה'); readCol(); if (save) try { localStorage.setItem('midgam-look', l); } catch (_) {} };
   { let l0 = /[?&]light/.test(location.search) ? 'light' : null; if (!l0) try { l0 = localStorage.getItem('midgam-look'); } catch (_) {} setLook(l0 === 'light' ? 'light' : 'dark'); }
-  // font pairings on review: remembered in this browser
-  const setFont = f => { document.documentElement.dataset.font = f; document.querySelectorAll('.fontpick button').forEach(b => b.setAttribute('aria-pressed', b.dataset.font === f)); try { localStorage.setItem('midgam-font', f); } catch (_) {} };
-  { let f0 = 'secular'; try { f0 = localStorage.getItem('midgam-font') || 'secular'; } catch (_) {} setFont(f0); }
-  document.querySelectorAll('.fontpick button').forEach(b => b.addEventListener('click', () => setFont(b.dataset.font)));
   lookBtn.addEventListener('click', () => setLook(document.documentElement.dataset.look === 'light' ? 'dark' : 'light', true));
   const size = () => {
     phone = innerWidth < 760; DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
@@ -518,11 +502,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const TAGS = {};
   const tagline = (w, h) => { if (w < 60 || h < 8) return null; const key = w + 'x' + h; if (TAGS[key]) return TAGS[key];
     const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.direction = 'rtl';
-    let fs = h * .9; g.font = `700 ${fs}px "Assistant", "Heebo", Arial`; const text = 'ייעוץ ומחקר בע״מ';
-    // spread the letters to the mark's width, the way the logo does
-    const natural = g.measureText(text).width, gap = Math.max(0, (w - natural) / (text.length - 1)); try { g.letterSpacing = gap + 'px'; } catch (_) {}
-    if (g.measureText(text).width > w) { fs *= w / g.measureText(text).width; g.font = `700 ${fs}px "Assistant", "Heebo", Arial`; }
-    g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, w / 2, h * .55);
+    // each letter gets its own evenly spaced slot, right to left, like the logo; drawn one by one so none is clipped
+    const chars = [...'ייעוץ ומחקר בע״מ'], slot = w / chars.length, fs = Math.min(h * .92, slot * 1.35);
+    g.font = `500 ${fs}px "Assistant", "Heebo", Arial`; g.textAlign = 'center'; g.textBaseline = 'middle';
+    chars.forEach((ch, i) => { if (ch !== ' ') g.fillText(ch, w - (i + .5) * slot, h * .55); });
     const d = g.getImageData(0, 0, w, h).data, want = Math.ceil(P.length / 3); let pts = [];
     for (let step = 1.6; step < 6; step += .2) { pts = []; for (let y = step / 2; y < h; y += step) for (let X = step / 2; X < w; X += step) if (d[((y | 0) * w + (X | 0)) * 4 + 3] > 140) pts.push([X / w, y / h]); if (pts.length <= want * 1.05) break; }
     for (let i = pts.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pts[i], pts[j]] = [pts[j], pts[i]]; }
@@ -545,7 +528,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       const markBox = { x: box.x, y: box.y, w: box.w, h: box.h * .74 }, mw = Math.min(markBox.w - 8, (markBox.h - 8) * sh.ar), tagBox = { x: cx - mw / 2, y: box.y + box.h * .79, w: mw, h: box.h * .17 };
       const tag = tagline(Math.round(tagBox.w), Math.round(tagBox.h));
       return p => {
-        if (p.i % 3 === 2 && tag) { const j = Math.floor(p.i / 3), pt = tag.pts[j % tag.pts.length], X0 = tagBox.x + pt[0] * tagBox.w, Y0 = tagBox.y + pt[1] * tagBox.h, [X, Y] = live(X0, Y0, p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .85 + .15 * hit, 1.05 + hit * .4]; }
+        if (p.i % 3 === 2 && tag) { const j = Math.floor(p.i / 3), pt = tag.pts[j % tag.pts.length], X0 = tagBox.x + pt[0] * tagBox.w, Y0 = tagBox.y + pt[1] * tagBox.h, [X, Y] = live(X0, Y0, p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .9 + .1 * hit, .85 + hit * .35]; }
         const pt = sh.pts[p.i % sh.pts.length], [X, Y] = live(...fit(markBox, sh, pt, 4), p), hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8); return [X, Y, .7 + .3 * hit, 1.5 + hit]; };
     },
     sample(s, t) { // credibility: a sample gathers into a disc, rings marking the population around it
@@ -680,12 +663,12 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 
   // each section has its own mood; the background blends from one to the next as you scroll
   const MOODS = {
-    dark: [ // base, light 1, light 2, light 3
-      ['#0a2240', '#2098d0', '#1d5689', '#26c4b4'], ['#072a3c', '#26c4b4', '#2098d0', '#1d5689'], ['#0b2142', '#2098d0', '#f2a93b', '#1d5689'], ['#06203a', '#26c4b4', '#8fd0f2', '#2098d0'],
-      ['#0c2440', '#f2a93b', '#2098d0', '#26c4b4'], ['#0a1f38', '#2098d0', '#26c4b4', '#f2a93b'], ['#0d2540', '#8fd0f2', '#f2a93b', '#2098d0'], ['#0a2240', '#2098d0', '#26c4b4', '#1d5689']],
+    dark: [ // base, light 1, light 2, light 3: all from Midgam's navy and sky
+      ['#1d5689', '#2098d0', '#0f3a63', '#8fd0f2'], ['#174a7a', '#8fd0f2', '#2098d0', '#0f3a63'], ['#1a5285', '#2098d0', '#a9dcf6', '#123f6b'], ['#154675', '#2098d0', '#0d345a', '#8fd0f2'],
+      ['#1d5689', '#a9dcf6', '#2098d0', '#0f3a63'], ['#123f6b', '#2098d0', '#8fd0f2', '#1d5689'], ['#174a7a', '#8fd0f2', '#2098d0', '#0d345a'], ['#1d5689', '#2098d0', '#a9dcf6', '#0f3a63']],
     light: [
-      ['#eef6fc', '#9fd6f2', '#c9dff1', '#b6ece5'], ['#ecf8f6', '#a9e8e0', '#9fd6f2', '#d4e3f2'], ['#f1f6fc', '#9fd6f2', '#fbdcae', '#cfe0f1'], ['#ecf6fb', '#a9e8e0', '#c6e8f8', '#9fd6f2'],
-      ['#f6f6f4', '#fbdcae', '#9fd6f2', '#a9e8e0'], ['#eef4fb', '#9fd6f2', '#a9e8e0', '#fbdcae'], ['#f2f5fa', '#c6e8f8', '#fbdcae', '#9fd6f2'], ['#eef6fc', '#9fd6f2', '#a9e8e0', '#c9dff1']]
+      ['#e3f3fc', '#2098d0', '#8fd0f2', '#1d5689'], ['#f2f9fe', '#8fd0f2', '#2098d0', '#a9dcf6'], ['#dceffb', '#2098d0', '#1d5689', '#8fd0f2'], ['#eef8fe', '#8fd0f2', '#2098d0', '#1d5689'],
+      ['#e3f3fc', '#2098d0', '#a9dcf6', '#1d5689'], ['#f2f9fe', '#1d5689', '#8fd0f2', '#2098d0'], ['#dceffb', '#8fd0f2', '#2098d0', '#1d5689'], ['#e3f3fc', '#2098d0', '#8fd0f2', '#a9dcf6']]
   };
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), mixC = (a, b, f) => a.map((v, i) => Math.round(v + (b[i] - v) * f));
   const airbox = document.getElementById('airbox'); let moodNow = null, inkC = [32, 152, 208];
@@ -694,7 +677,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     const set = MOODS[document.documentElement.dataset.look === 'light' ? 'light' : 'dark'], a = set[i % set.length], b = set[Math.min(sections.length - 1, i + 1) % set.length], m = Math.min(1, Math.max(0, (f - .55) / .45));
     const c = [0, 1, 2, 3].map(k => mixC(hex(a[k]), hex(b[k]), m)), key = c.flat().join();
     inkC = c[1]; if (key === moodNow) return; moodNow = key;
-    const light = document.documentElement.dataset.look === 'light', al = light ? [.7, .6, .55] : [.55, .5, .32];
+    const light = document.documentElement.dataset.look === 'light', al = light ? [.55, .35, .3] : [.6, .55, .4];
     airbox.style.setProperty('--base', `rgb(${c[0]})`); [1, 2, 3].forEach(k => airbox.style.setProperty('--m' + k, `rgba(${c[k]},${al[k - 1]})`));
   };
   const ink = a => `rgba(${inkC},${a})`;
@@ -748,50 +731,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     const my2 = 90 + prog * (H - 130); x.fillStyle = `rgb(${COL.sky})`; x.beginPath(); x.arc(gx, my2, 4.5, 0, 6.283); x.fill(); x.font = '600 11px "IBM Plex Mono", monospace'; x.textAlign = 'left'; x.fillText('n = ' + Math.round(prog * 1000).toLocaleString('en'), gx + 14, my2 + 4);
   };
 
-
-  /* ---------- portraits as halftone: the person drawn in dots, dissolving downward into the swarm ---------- */
-  const portraits = [...document.querySelectorAll('.person .face')].map(face => ({ face, cv: face.querySelector('.ht'), img: face.querySelector('.src'), cells: null, hover: 0, want: 0 }));
-  const sampleImg = pr => { const { cv: c, img } = pr, w = c.clientWidth, h = c.clientHeight; if (!w || !img.naturalWidth) return;
-    const off = document.createElement('canvas'), cell = w < 200 ? 4 : 5; off.width = Math.ceil(w); off.height = Math.ceil(h); const g = off.getContext('2d');
-    // the head sits high in the card; shoulders are drawn under it, so the portrait reads as a bust
-    const sz = w * .9, ix = (w - sz) / 2, iy = h * .02; g.drawImage(img, ix, iy, sz, sz);
-    const hx = w / 2, hy = iy + sz * .46, rx = sz * .37, ry = sz * .47, neck = iy + sz * .9;
-    const torso = (X, y) => { if (y < neck - sz * .06) return 0; const half = w * (.16 + Math.min(.3, (y - neck) / h * 1.6)); const dx = Math.abs(X - hx) / half; return dx > 1 ? 0 : 1 - dx ** 6; };
-    const d = g.getImageData(0, 0, off.width, off.height).data, cells = [], rr = seedR(Math.round(w));
-    for (let y = cell / 2; y < h; y += cell) for (let X = cell / 2 + ((y / cell | 0) % 2) * cell / 2; X < w; X += cell) {
-      const head = Math.max(0, 1 - Math.pow(Math.hypot((X - hx) / rx, (y - hy) / ry), 4)), body = torso(X, y) * Math.min(1, Math.max(0, (h * .98 - y) / (h * .3)));
-      let lum, m;
-      if (head > .02 && y < neck + 4) { const k = ((y | 0) * off.width + (X | 0)) * 4; lum = (d[k] * .3 + d[k + 1] * .59 + d[k + 2] * .11) / 255; m = head; }
-      else if (body > .02) { lum = .62 + .12 * Math.sin(X / 9) * Math.cos(y / 13); m = body; }
-      else { if (rr() > .05) continue; lum = .5; m = .12; }
-      cells.push({ x: X, y, lum, m, ph: rr() * 6.283, head: head > .02 && y < neck + 4, z: head > .02 && y < neck + 4 ? head : body * .4 });
-    }
-    // stretch each face's own range, so every portrait has full contrast whatever the photo's lighting
-    const hl = cells.filter(q => q.head).map(q => q.lum).sort((a2, b2) => a2 - b2), lo = hl[Math.floor(hl.length * .04)] || 0, hi = hl[Math.floor(hl.length * .97)] || 1;
-    cells.forEach(q => { if (q.head) { q.lum = Math.min(1, Math.max(0, (q.lum - lo) / Math.max(.05, hi - lo))) ** .8; q.z = q.z * .7 + q.lum * .3; } });
-    pr.cells = cells; pr.cell = cell; pr.w = w; pr.h = h;
-  };
-  const drawPortrait = (pr, t) => {
-    const { cv: c } = pr; if (!pr.cells) return; const d2 = Math.min(2, devicePixelRatio || 1); if (c.width !== Math.round(pr.w * d2)) { c.width = Math.round(pr.w * d2); c.height = Math.round(pr.h * d2); }
-    const g = c.getContext('2d'); g.setTransform(d2, 0, 0, d2, 0, 0); g.clearRect(0, 0, pr.w, pr.h);
-    const light = document.documentElement.dataset.look === 'light', hv = pr.hover, mx = pr.mx || 0, my = pr.my || 0;
-    // shadows in Midgam blue, highlights in a warm white, so the faces look alive rather than ghostly
-    const A = light ? [29, 86, 137] : [52, 150, 206], B = light ? [13, 44, 79] : [255, 244, 228], T2 = light ? [20, 150, 138] : [38, 196, 180];
-    for (const q of pr.cells) {
-      const v = light ? 1 - q.lum : q.lum, tone = (.3 + .7 * v) * q.m;
-      let r = pr.cell * .56 * tone * (1 + hv * .12 * Math.sin(t / 300 + q.ph)); if (r < .35) continue;
-      const mix = Math.min(1, Math.max(0, (v - .25) * 1.4)), col = q.m < .2 ? T2 : A.map((a2, i) => Math.round(a2 + (B[i] - a2) * mix));
-      // parallax: nearer dots move further, so the face turns a little toward the pointer
-      const dz = (q.z - .35) * 7 * hv, X = q.x + mx * dz, Y = q.y + my * dz * .8;
-      g.globalAlpha = q.m < .2 ? .55 : .95; g.fillStyle = `rgb(${col})`; g.beginPath(); g.arc(X, Y, r, 0, 6.283); g.fill();
-    }
-  };
-  const portraitLoop = t => { portraits.forEach(pr => { pr.hover += (pr.want - pr.hover) * .12; pr.mx = (pr.mx || 0) + ((pr.tx || 0) - (pr.mx || 0)) * .15; pr.my = (pr.my || 0) + ((pr.ty || 0) - (pr.my || 0)) * .15; if (pr.hover > .01 || pr.dirty) { drawPortrait(pr, t); pr.dirty = pr.hover > .01; } }); requestAnimationFrame(portraitLoop); };
-  const setupPortraits = () => portraits.forEach(pr => { const go = () => { sampleImg(pr); drawPortrait(pr, 0); }; pr.img.complete && pr.img.naturalWidth ? go() : pr.img.addEventListener('load', go, { once: true }); });
-  portraits.forEach(pr => { const card = pr.face.closest('.person'); card.addEventListener('pointerenter', () => { pr.want = 1; }); card.addEventListener('pointerleave', () => { pr.want = 0; pr.tx = pr.ty = 0; pr.dirty = true; });
-    card.addEventListener('pointermove', e => { const r = pr.face.getBoundingClientRect(); pr.tx = Math.max(-1, Math.min(1, (e.clientX - r.left) / r.width * 2 - 1)); pr.ty = Math.max(-1, Math.min(1, (e.clientY - r.top) / r.height * 2 - 1)); }); });
-  setupPortraits(); addEventListener('resize', () => setupPortraits()); requestAnimationFrame(portraitLoop);
-  lookBtn.addEventListener('click', () => portraits.forEach(pr => drawPortrait(pr, 0)));
 
   let last = performance.now(), manual = false, born = performance.now();
   const frame = t => {
