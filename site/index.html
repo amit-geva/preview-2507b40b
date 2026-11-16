@@ -67,7 +67,10 @@ a{color:inherit}
 .nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;transition:background-color .3s,box-shadow .3s}
 .nav.solid{background:var(--navbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
 .nav .in{display:flex;align-items:center;gap:20px;height:76px;max-width:1440px;margin:0 auto;padding-left:var(--gut);padding-right:max(24px,env(safe-area-inset-right,0px))}
-.brand img{display:block;height:36px;width:auto;padding:6px 11px;border-radius:10px;background:#fff}
+.brand img{display:block;height:46px;width:auto}
+.brand .n{display:none}
+html[data-look=light] .brand .w{display:none}
+html[data-look=light] .brand .n{display:block}
 .menu{display:flex;gap:2px;margin-inline-start:auto}
 .menu a{padding:8px 11px;border-radius:999px;color:var(--mute);font-size:14.5px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color .2s,background-color .2s}
 .menu a:hover{color:var(--fg);background:var(--chip)}
@@ -166,9 +169,9 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 /* people */
 .team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
 .person .face{position:relative;aspect-ratio:1;max-width:100%;border-radius:50%;display:grid;place-items:center}
-.person .face{background:var(--card);border:1px dashed var(--line-2);color:var(--face);overflow:hidden;align-content:center;gap:6px}
-.person .face svg{width:46%;height:auto}
-.person .face .ph{font-size:13px}
+.person .face{overflow:hidden;box-shadow:0 0 0 1px var(--line-2),0 24px 50px -30px rgba(0,0,0,.6)}
+.person .face img{width:100%;height:100%;object-fit:cover;border-radius:50%;transition:transform .5s var(--ease)}
+.person:hover .face img{transform:scale(1.03)}
 .person h3{margin-top:20px;font-size:24px;font-weight:700}
 .person .role{margin:2px 0 0;color:var(--glow);font-size:15.5px;font-weight:500}
 .person p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
@@ -208,7 +211,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   .qs,.caps,.team,.exp,.fields4,.facts{grid-template-columns:minmax(0,1fr)}
   .fields5{grid-template-columns:repeat(2,minmax(0,1fr))}
   .person{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 18px;align-items:center}
-  .person .face .ph{display:none}
   .person h3{margin-top:0}
   form{grid-template-columns:minmax(0,1fr);padding:22px}
   .acts .btn{flex:1 1 100%}
@@ -224,7 +226,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 
 <header class="nav" id="nav">
   <div class="in">
-    <a class="brand" href="#top" aria-label="מדגם, לראש העמוד"><img src="assets/midgam-logo.png" alt="מדגם ייעוץ ומחקר"></a>
+    <a class="brand" href="#top" aria-label="מדגם ייעוץ ומחקר, לראש העמוד"><img class="w" src="assets/midgam-mark-white.png" alt=""><img class="n" src="assets/midgam-mark.png" alt=""></a>
     <nav class="menu" id="menu" aria-label="ניווט ראשי">
       <a href="#solutions">פתרונות מחקר</a><a href="#fields">תחומי פעילות</a><a href="#capabilities">שיטות איסוף נתונים</a><a href="#capabilities">יכולות מחקר</a><a href="#expertise">סגמנטים</a><a href="#people">אודות</a><a href="#people">ידע ותקשורת</a><a href="#contact">צור קשר</a>
     </nav>
@@ -340,10 +342,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     <div class="wrap">
             <h2>הצוות שמלווה את המחקר שלכם</h2>
       <div class="team">
-        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/mano.jpg" alt="מנו גבע" loading="lazy"></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/mina.jpg" alt="ד״ר מינה צמח" loading="lazy"></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/ihab.jpg" alt="איהאב קדאח" loading="lazy"></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><img src="assets/team/michal.jpg" alt="מיכל שפירא" loading="lazy"></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
       </div>
     </div>
   </section>
@@ -425,9 +427,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   // place a shape's point inside a rectangle, keeping its proportions
   const fit = (r, sh, pt, pad = 14) => { const aw = r.w - pad * 2, ah = r.h - pad * 2, sc = Math.min(aw / sh.ar, ah); const w = sc * sh.ar, h = sc; return [r.x + pad + (aw - w) / 2 + pt[0] * w, r.y + pad + (ah - h) / 2 + pt[1] * h]; };
   const rr = (g, x2, y, w, h, r) => { g.beginPath(); g.moveTo(x2 + r, y); g.arcTo(x2 + w, y, x2 + w, y + h, r); g.arcTo(x2 + w, y + h, x2, y + h, r); g.arcTo(x2, y + h, x2, y, r); g.arcTo(x2, y, x2 + w, y, r); g.closePath(); };
-  const logoImg = new Image(); logoImg.src = 'assets/midgam-logo.png';
+  const logoImg = new Image(); logoImg.src = 'assets/midgam-mark.png';
   const DRAW = {
-    logo: [1024, 251, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 1024, 251); }],
+    logo: [530, 225, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 530, 225); }],
     year: [520, 200, g => { g.font = '900 190px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
     qmark: [300, 420, g => { g.font = '900 420px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 225); }],
     arabic: [760, 220, g => { g.direction = 'rtl'; g.font = '800 120px "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('استطلاع رأي', 380, 120); }],
@@ -501,7 +503,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     pair(s, t) { return FORMS.lanes(s, t); },
     halo(s, t) { // the team: a soft halo of people around each person
       const fs = rects(s, '[data-anchor=face]'); if (!fs.length) return null;
-      return p => { const r = fs[p.i % fs.length], cx = r.x + r.w / 2, cy = r.y + r.h / 2, R = Math.min(r.w, r.h) / 2, a = p.u * 6.283 + t / (7000 + p.v * 5000), rr = R * (.55 + p.v * .5); return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr, p.v > .82 ? .4 : .75]; };
+      return p => { const r = fs[p.i % fs.length], cx = r.x + r.w / 2, cy = r.y + r.h / 2, R = Math.min(r.w, r.h) / 2, a = p.u * 6.283 + t / (7000 + p.v * 5000), rr = R * (1.06 + p.v * .3); return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr, p.v > .7 ? .35 : .8]; };
     },
     contact(s, t) { // contact: a big question mark made of people, and more of them along the form's edge
       const q = rects(s, '[data-kind=qmark]')[0], f = rects(s, '[data-anchor=form]')[0];
