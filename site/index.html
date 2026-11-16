@@ -242,6 +242,10 @@ html.holding,html.holding *{-webkit-user-select:none;user-select:none;-webkit-to
 .f label{font-size:14.5px;font-weight:500;color:var(--mute)}
 .f input,.f select,.f textarea{width:100%;height:50px;padding:0 14px;border-radius:12px;border:0;background:var(--field);color:var(--fg);font:400 16px var(--body);box-shadow:inset 0 0 0 1px var(--line-2)}
 .f textarea{height:110px;padding:12px 14px;resize:vertical}
+/* the topic dropdown: our own caret, at the end side (left in Hebrew), clear of the border */
+.f select{appearance:none;-webkit-appearance:none;padding-left:46px;padding-right:16px;cursor:pointer;background-repeat:no-repeat;background-position:left 18px center;background-size:14px 14px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 8 10.5 12.5 6' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+html[data-look=light] .f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 8 10.5 12.5 6' stroke='%231d5689' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.f select option{color:#0d2c4f;background:#fff}
 .f input:focus,.f select:focus,.f textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sky)}
 #form .btn{grid-column:1/-1;justify-self:start}
 .sent{grid-column:1/-1;margin:0;color:var(--glow);font-size:15px}
@@ -355,7 +359,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
         <div class="cap"><div class="viz" data-anchor="viz" data-kind="bars"></div><h3>מחקר כמותי</h3><p>סקרים מייצגים, שקלול וניתוח סטטיסטי, בהיקף של מאות עד אלפי משיבים.</p></div>
         <div class="cap"><div class="viz" data-anchor="viz" data-kind="chat"></div><h3>מחקר איכותני</h3><p>קבוצות מיקוד וראיונות עומק שמסבירים את הסיבות שמאחורי המספרים.</p></div>
         <div class="cap"><div class="viz" data-anchor="viz" data-kind="methods"></div><h3>שיטות איסוף נתונים</h3><p>כל שיטה לחוד, או שילוב שמגיע לכל הקהל.</p><ul><li>סקר טלפוני</li><li>פאנל אינטרנטי</li><li>סקרי SMS</li><li>סקרי שטח</li></ul></div>
-        <div class="cap"><div class="viz" data-anchor="viz" data-kind="neural"></div><h3>כלי בינה מלאכותית</h3><p>ניתוח תשובות פתוחות וזיהוי דפוסים בהיקפים גדולים, תמיד עם בקרה של חוקר.</p></div>
+        <div class="cap"><div class="viz" data-anchor="viz" data-kind="ai"></div><h3>כלי בינה מלאכותית</h3><p>ניתוח תשובות פתוחות וזיהוי דפוסים בהיקפים גדולים, תמיד עם בקרה של חוקר.</p></div>
       </div>
     </div>
   </section>
@@ -368,7 +372,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
         <div class="fld big"><div class="viz" data-anchor="viz" data-kind="health"></div><span class="mark">תחום דגש</span><h3>בריאות ופרמצבטיקה</h3><p>מחקר בקרב מטופלים, אנשי מקצוע וקובעי מדיניות.</p></div>
         <div class="fld big"><div class="viz" data-anchor="viz" data-kind="ballot"></div><span class="mark">תחום דגש</span><h3>פוליטיקה מקומית וארצית</h3><p>סקרי דעת קהל ובחירות, ברמה הארצית וברשויות.</p></div>
         <div class="fld big"><div class="viz" data-anchor="viz" data-kind="cap"></div><span class="mark">תחום דגש</span><h3>חינוך</h3><p>מחקר בקרב הורים, צוותי הוראה ותלמידים.</p></div>
-        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="mic"></div><span class="mark">תחום דגש</span><h3>תקשורת ומדיה</h3><p>סקרים לפרסום בתקשורת ומחקר קהלים.</p></div>
+        <div class="fld big"><div class="viz" data-anchor="viz" data-kind="tv"></div><span class="mark">תחום דגש</span><h3>תקשורת ומדיה</h3><p>סקרים לפרסום בתקשורת ומחקר קהלים.</p></div>
       </div>
       <div class="fields5">
         <div class="fld"><div class="ico" data-anchor="viz" data-kind="cart"></div><h3>צרכנות וקמעונאות</h3></div>
@@ -485,7 +489,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d');
     g.fillStyle = '#fff'; g.strokeStyle = '#fff'; g.lineCap = 'round'; g.lineJoin = 'round';
     if (draw(g, w, h) === false) return null;
-    const d = g.getImageData(0, 0, w, h).data, pts = [], step = Math.max(2, Math.round(Math.sqrt(w * h / 2600)));
+    const d = g.getImageData(0, 0, w, h).data, pts = [], step = FILLED.has(key) ? Math.max(2, Math.round(Math.sqrt(w * h / 2600))) : 4;
     for (let y = 0; y < h; y += step) for (let x2 = 0; x2 < w; x2 += step) { const k = (y * w + x2) * 4; if (d[k + 3] > 120 && (d[k] + d[k + 1] + d[k + 2]) / 3 < 235 || (d[k + 3] > 120 && key !== 'logo')) pts.push([x2 / w, y / h]); }
     for (let i = pts.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pts[i], pts[j]] = [pts[j], pts[i]]; }
     // trim to the drawing's own outline: every shape then centres and fills its box the same way
@@ -497,43 +501,47 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const fit = (r, sh, pt, pad = 14) => { const aw = r.w - pad * 2, ah = r.h - pad * 2, sc = Math.min(aw / sh.ar, ah); const w = sc * sh.ar, h = sc; return [r.x + pad + (aw - w) / 2 + pt[0] * w, r.y + pad + (ah - h) / 2 + pt[1] * h]; };
   const rr = (g, x2, y, w, h, r) => { g.beginPath(); g.moveTo(x2 + r, y); g.arcTo(x2 + w, y, x2 + w, y + h, r); g.arcTo(x2 + w, y + h, x2, y + h, r); g.arcTo(x2, y + h, x2, y, r); g.arcTo(x2, y, x2 + w, y, r); g.closePath(); };
   const logoImg = new Image(); logoImg.src = 'assets/midgam-mark.png';
+  const FILLED = new Set(['logo', 'year', 'qmark', 'arabic']);
+  const LW = 9; // the one stroke weight of every line icon
   const DRAW = {
     logo: [530, 153, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 530, 153, 0, 0, 530, 153); }],
     year: [520, 200, g => { g.font = '900 190px "Secular One", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
-    health: [420, 300, g => { // a heart with a heartbeat running through it
-      g.beginPath(); g.moveTo(210, 280); g.bezierCurveTo(30, 170, 20, 40, 110, 30); g.bezierCurveTo(160, 24, 195, 60, 210, 90); g.bezierCurveTo(225, 60, 260, 24, 310, 30); g.bezierCurveTo(400, 40, 390, 170, 210, 280); g.closePath(); g.lineWidth = 16; g.stroke();
-      g.lineWidth = 12; g.beginPath(); g.moveTo(20, 150); g.lineTo(140, 150); g.lineTo(170, 100); g.lineTo(205, 210); g.lineTo(240, 120); g.lineTo(262, 150); g.lineTo(400, 150); g.stroke(); }],
-    cart: [300, 240, g => { g.lineWidth = 16; g.beginPath(); g.moveTo(20, 30); g.lineTo(70, 30); g.lineTo(105, 160); g.lineTo(250, 160); g.lineTo(280, 70); g.lineTo(85, 70); g.stroke(); [[120, 205], [235, 205]].forEach(([a2, b2]) => { g.beginPath(); g.arc(a2, b2, 20, 0, 6.283); g.fill(); }); }],
-    gov: [300, 260, g => { g.beginPath(); g.moveTo(150, 15); g.lineTo(285, 80); g.lineTo(15, 80); g.closePath(); g.fill(); [55, 115, 185, 245].forEach(a2 => g.fillRect(a2 - 13, 100, 26, 110)); g.fillRect(10, 222, 280, 26); }],
-    bus: [300, 260, g => { g.lineWidth = 16; rr(g, 30, 20, 240, 180, 30); g.stroke(); g.fillRect(50, 50, 200, 70); g.beginPath(); g.arc(85, 160, 15, 0, 6.283); g.arc(215, 160, 15, 0, 6.283); g.fill(); g.fillRect(60, 200, 36, 40); g.fillRect(204, 200, 36, 40); }],
-    food: [280, 280, g => { g.lineWidth = 16; g.beginPath(); g.moveTo(80, 20); g.lineTo(80, 260); g.moveTo(45, 20); g.lineTo(45, 100); g.quadraticCurveTo(80, 140, 115, 100); g.lineTo(115, 20); g.stroke(); g.beginPath(); g.moveTo(200, 260); g.lineTo(200, 20); g.quadraticCurveTo(255, 60, 245, 150); g.lineTo(200, 150); g.stroke(); }],
-    bank: [300, 260, g => { [[150, 220], [150, 170], [150, 120], [150, 70]].forEach(([cx2, cy2], i) => { g.beginPath(); g.ellipse(cx2 + (i % 2 ? 12 : -8), cy2, 110, 28, 0, 0, 6.283); g.lineWidth = 14; g.stroke(); }); g.font = '900 64px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('₪', 150, 70); }],
-    lens: [420, 320, g => { // research: a magnifying glass over a few data points
-      g.lineWidth = 26; g.beginPath(); g.arc(170, 140, 100, 0, 6.283); g.stroke(); g.lineWidth = 34; g.beginPath(); g.moveTo(245, 215); g.lineTo(330, 300); g.stroke();
-      [[130, 170, 18], [170, 120, 18], [210, 150, 18]].forEach(([cx2, cy2, r2]) => { g.beginPath(); g.arc(cx2, cy2, r2, 0, 6.283); g.fill(); }); }],
-    answer: [520, 300, g => { // a result: three bars and a tick
-      [[.82, 40], [.56, 120], [.3, 200]].forEach(([v, y]) => { rr(g, 20, y, 400 * v, 46, 23); g.fill(); });
-      g.lineWidth = 26; g.beginPath(); g.moveTo(360, 170); g.lineTo(420, 236); g.lineTo(508, 80); g.stroke(); }],
     qmark: [300, 420, g => { g.font = '900 420px "Secular One", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 225); }],
     arabic: [760, 220, g => { g.direction = 'rtl'; g.font = '800 120px "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('استطلاع رأي', 380, 120); }],
-    chat: [440, 260, g => { g.lineWidth = 12; rr(g, 16, 16, 240, 120, 44); g.stroke(); g.beginPath(); g.moveTo(70, 134); g.lineTo(52, 178); g.lineTo(112, 136); g.stroke();
-      rr(g, 180, 120, 240, 110, 44); g.fill(); g.beginPath(); g.moveTo(370, 228); g.lineTo(396, 256); g.lineTo(330, 228); g.fill(); g.globalCompositeOperation = 'destination-out'; [250, 300, 350].forEach(cx => { g.beginPath(); g.arc(cx, 175, 13, 0, 6.283); g.fill(); }); g.globalCompositeOperation = 'source-over'; }],
-    methods: [880, 220, g => { g.lineWidth = 12;
-      rr(g, 52, 30, 96, 160, 18); g.stroke(); g.beginPath(); g.arc(100, 166, 8, 0, 6.283); g.fill(); g.fillRect(84, 46, 32, 6);
-      rr(g, 262, 50, 150, 100, 10); g.stroke(); g.beginPath(); g.moveTo(236, 172); g.lineTo(438, 172); g.lineTo(420, 152); g.lineTo(254, 152); g.closePath(); g.fill();
-      rr(g, 480, 46, 160, 110, 30); g.stroke(); g.beginPath(); g.moveTo(520, 154); g.lineTo(506, 192); g.lineTo(556, 156); g.stroke(); g.font = '800 46px "Secular One", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('SMS', 560, 103);
-      g.beginPath(); g.arc(760, 66, 30, 0, 6.283); g.fill(); g.beginPath(); g.moveTo(706, 196); g.quadraticCurveTo(708, 112, 760, 108); g.quadraticCurveTo(812, 112, 814, 196); g.closePath(); g.fill(); rr(g, 800, 128, 52, 66, 6); g.globalCompositeOperation = 'destination-out'; g.fill(); g.globalCompositeOperation = 'source-over'; g.lineWidth = 7; g.stroke(); }],
-    neural: [520, 260, g => { const L = [[4, 70], [5, 260], [3, 450]], nodes = L.map(([n, x2]) => Array.from({ length: n }, (_, i) => [x2, 30 + (i + .5) * 200 / n])); g.lineWidth = 3;
-      for (let a = 0; a < 2; a++) nodes[a].forEach(p => nodes[a + 1].forEach(q => { g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke(); }));
-      nodes.flat().forEach(([x2, y]) => { g.beginPath(); g.arc(x2, y, 17, 0, 6.283); g.fill(); }); }],
-    ballot: [360, 280, g => { g.lineWidth = 14; g.save(); g.translate(176, 70); g.rotate(-.12); g.fillRect(-46, -66, 92, 104); g.globalCompositeOperation = 'destination-out'; g.lineWidth = 9; g.beginPath(); g.moveTo(-22, -16); g.lineTo(-4, 4); g.lineTo(28, -34); g.stroke(); g.restore();
-      g.globalCompositeOperation = 'destination-out'; g.fillRect(70, 100, 220, 40); g.globalCompositeOperation = 'source-over'; g.lineWidth = 14; g.strokeRect(70, 110, 220, 150); g.fillRect(96, 104, 168, 12); g.font = '800 40px "Secular One", Arial'; g.textAlign = 'center'; g.fillText('קלפי', 180, 210); }],
-    cap: [380, 260, g => { g.beginPath(); g.moveTo(190, 30); g.lineTo(360, 100); g.lineTo(190, 170); g.lineTo(20, 100); g.closePath(); g.fill(); g.beginPath(); g.moveTo(96, 136); g.lineTo(96, 206); g.quadraticCurveTo(190, 250, 284, 206); g.lineTo(284, 136); g.lineTo(190, 176); g.closePath(); g.fill();
-      g.lineWidth = 6; g.beginPath(); g.moveTo(190, 100); g.lineTo(320, 130); g.lineTo(320, 200); g.stroke(); g.beginPath(); g.arc(320, 212, 14, 0, 6.283); g.fill(); }],
-    mic: [420, 280, g => { rr(g, 170, 20, 80, 140, 40); g.fill(); g.lineWidth = 12; g.beginPath(); g.arc(210, 120, 72, .15, Math.PI - .15); g.stroke(); g.beginPath(); g.moveTo(210, 192); g.lineTo(210, 236); g.moveTo(166, 244); g.lineTo(254, 244); g.stroke();
-      g.lineWidth = 9; [[70, 1], [110, .9]].forEach(([rad]) => { g.beginPath(); g.arc(210, 90, rad + 30, -.6, .6); g.stroke(); g.beginPath(); g.arc(210, 90, rad + 30, Math.PI - .6, Math.PI + .6); g.stroke(); }); }],
-    justice: [440, 260, g => { g.lineWidth = 12; g.beginPath(); g.moveTo(220, 34); g.lineTo(220, 222); g.moveTo(60, 72); g.lineTo(380, 72); g.stroke(); g.beginPath(); g.arc(220, 30, 16, 0, 6.283); g.fill(); g.beginPath(); g.moveTo(150, 248); g.lineTo(290, 248); g.lineTo(262, 218); g.lineTo(178, 218); g.closePath(); g.fill();
-      g.lineWidth = 4; [[80, 1], [360, 1]].forEach(([cx]) => { g.beginPath(); g.moveTo(cx, 72); g.lineTo(cx - 44, 160); g.moveTo(cx, 72); g.lineTo(cx + 44, 160); g.stroke(); g.beginPath(); g.moveTo(cx - 56, 160); g.lineTo(cx + 56, 160); g.arc(cx, 160, 56, 0, Math.PI); g.fill(); }); }]
+    // line icons: one stroke weight everywhere, so every picture reads as a clean outline of dots
+    bars: [440, 300, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(30, 20); g.lineTo(30, 270); g.lineTo(420, 270); g.stroke();
+      [[70, 150], [150, 90], [230, 190], [310, 120]].forEach(([x2, top]) => g.strokeRect(x2, top, 50, 270 - top - 10));
+      g.beginPath(); g.moveTo(95, 120); g.lineTo(175, 60); g.lineTo(255, 160); g.lineTo(335, 90); g.lineTo(400, 40); g.stroke(); [[95, 120], [175, 60], [255, 160], [335, 90]].forEach(([a2, b2]) => { g.beginPath(); g.arc(a2, b2, 11, 0, 6.283); g.fill(); }); }],
+    chat: [460, 300, g => { g.lineWidth = LW; rr(g, 20, 20, 250, 140, 50); g.stroke(); g.beginPath(); g.moveTo(80, 158); g.lineTo(60, 210); g.lineTo(130, 160); g.stroke();
+      rr(g, 190, 130, 250, 130, 50); g.stroke(); g.beginPath(); g.moveTo(380, 258); g.lineTo(405, 292); g.lineTo(340, 260); g.stroke(); [265, 315, 365].forEach(c2 => { g.beginPath(); g.arc(c2, 196, 12, 0, 6.283); g.fill(); }); }],
+    ai: [420, 320, g => { g.lineWidth = LW; const star = (cx2, cy2, R) => { g.beginPath(); g.moveTo(cx2, cy2 - R); g.quadraticCurveTo(cx2, cy2, cx2 + R, cy2); g.quadraticCurveTo(cx2, cy2, cx2, cy2 + R); g.quadraticCurveTo(cx2, cy2, cx2 - R, cy2); g.quadraticCurveTo(cx2, cy2, cx2, cy2 - R); g.closePath(); g.stroke(); };
+      star(170, 175, 130); star(340, 70, 55); star(345, 250, 38); }],
+    methods: [900, 230, g => { g.lineWidth = LW;
+      rr(g, 50, 25, 100, 180, 20); g.stroke(); g.beginPath(); g.arc(100, 180, 9, 0, 6.283); g.fill();
+      rr(g, 255, 45, 160, 110, 10); g.stroke(); g.beginPath(); g.moveTo(225, 185); g.lineTo(445, 185); g.lineTo(425, 158); g.lineTo(245, 158); g.closePath(); g.stroke();
+      rr(g, 495, 40, 170, 120, 34); g.stroke(); g.beginPath(); g.moveTo(535, 158); g.lineTo(520, 200); g.lineTo(575, 160); g.stroke(); g.font = '700 46px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('SMS', 580, 100);
+      g.beginPath(); g.arc(770, 62, 32, 0, 6.283); g.stroke(); g.beginPath(); g.moveTo(710, 210); g.quadraticCurveTo(712, 118, 770, 114); g.quadraticCurveTo(828, 118, 830, 210); g.stroke(); rr(g, 820, 130, 54, 72, 6); g.stroke(); }],
+    health: [420, 300, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(210, 280); g.bezierCurveTo(30, 170, 20, 40, 110, 30); g.bezierCurveTo(160, 24, 195, 60, 210, 90); g.bezierCurveTo(225, 60, 260, 24, 310, 30); g.bezierCurveTo(400, 40, 390, 170, 210, 280); g.closePath(); g.stroke();
+      g.beginPath(); g.moveTo(20, 150); g.lineTo(140, 150); g.lineTo(170, 100); g.lineTo(205, 210); g.lineTo(240, 120); g.lineTo(262, 150); g.lineTo(400, 150); g.stroke(); }],
+    ballot: [360, 300, g => { g.lineWidth = LW; g.strokeRect(50, 130, 260, 150); g.beginPath(); g.moveTo(110, 130); g.lineTo(250, 130); g.stroke(); g.fillRect(105, 122, 150, 10);
+      g.save(); g.translate(180, 70); g.rotate(-.1); g.strokeRect(-55, -60, 110, 100); g.beginPath(); g.moveTo(-26, -12); g.lineTo(-6, 10); g.lineTo(30, -30); g.stroke(); g.restore(); }],
+    cap: [400, 300, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(200, 30); g.lineTo(380, 105); g.lineTo(200, 180); g.lineTo(20, 105); g.closePath(); g.stroke();
+      g.beginPath(); g.moveTo(95, 140); g.lineTo(95, 220); g.quadraticCurveTo(200, 280, 305, 220); g.lineTo(305, 140); g.stroke();
+      g.beginPath(); g.moveTo(200, 105); g.lineTo(345, 130); g.lineTo(345, 215); g.stroke(); g.beginPath(); g.arc(345, 232, 14, 0, 6.283); g.fill(); }],
+    tv: [420, 320, g => { g.lineWidth = LW; rr(g, 20, 80, 380, 220, 26); g.stroke(); g.beginPath(); g.moveTo(140, 20); g.lineTo(210, 78); g.lineTo(280, 20); g.stroke();
+      g.beginPath(); g.moveTo(180, 140); g.lineTo(270, 190); g.lineTo(180, 240); g.closePath(); g.stroke(); }],
+    justice: [440, 280, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(220, 40); g.lineTo(220, 240); g.moveTo(60, 72); g.lineTo(380, 72); g.moveTo(150, 260); g.lineTo(290, 260); g.stroke(); g.beginPath(); g.arc(220, 32, 14, 0, 6.283); g.fill();
+      [80, 360].forEach(cx2 => { g.beginPath(); g.moveTo(cx2, 72); g.lineTo(cx2 - 46, 160); g.moveTo(cx2, 72); g.lineTo(cx2 + 46, 160); g.stroke(); g.beginPath(); g.moveTo(cx2 - 58, 160); g.lineTo(cx2 + 58, 160); g.arc(cx2, 160, 58, 0, Math.PI); g.stroke(); }); }],
+    cart: [300, 240, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(20, 30); g.lineTo(70, 30); g.lineTo(105, 160); g.lineTo(250, 160); g.lineTo(280, 70); g.lineTo(85, 70); g.stroke(); [[120, 205], [235, 205]].forEach(([a2, b2]) => { g.beginPath(); g.arc(a2, b2, 18, 0, 6.283); g.stroke(); }); }],
+    gov: [300, 260, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(150, 15); g.lineTo(285, 80); g.lineTo(15, 80); g.closePath(); g.stroke(); [55, 115, 185, 245].forEach(a2 => { g.beginPath(); g.moveTo(a2, 100); g.lineTo(a2, 210); g.stroke(); }); g.beginPath(); g.moveTo(10, 235); g.lineTo(290, 235); g.stroke(); }],
+    bus: [300, 260, g => { g.lineWidth = LW; rr(g, 30, 20, 240, 180, 30); g.stroke(); g.strokeRect(55, 50, 190, 70); g.beginPath(); g.arc(85, 160, 14, 0, 6.283); g.stroke(); g.beginPath(); g.arc(215, 160, 14, 0, 6.283); g.stroke(); g.beginPath(); g.moveTo(75, 200); g.lineTo(75, 240); g.moveTo(225, 200); g.lineTo(225, 240); g.stroke(); }],
+    food: [280, 280, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(80, 20); g.lineTo(80, 260); g.moveTo(45, 20); g.lineTo(45, 100); g.quadraticCurveTo(80, 140, 115, 100); g.lineTo(115, 20); g.stroke(); g.beginPath(); g.moveTo(200, 260); g.lineTo(200, 20); g.quadraticCurveTo(255, 60, 245, 150); g.lineTo(200, 150); g.stroke(); }],
+    bank: [300, 260, g => { g.lineWidth = LW; [[150, 220], [150, 170], [150, 120], [150, 70]].forEach(([cx2, cy2], i) => { g.beginPath(); g.ellipse(cx2 + (i % 2 ? 10 : -6), cy2, 110, 26, 0, 0, 6.283); g.stroke(); }); }],
+    lens: [420, 320, g => { g.lineWidth = LW; g.beginPath(); g.arc(170, 140, 100, 0, 6.283); g.stroke(); g.lineWidth = LW * 1.6; g.beginPath(); g.moveTo(245, 215); g.lineTo(330, 300); g.stroke();
+      [[130, 170], [170, 120], [210, 150]].forEach(([a2, b2]) => { g.beginPath(); g.arc(a2, b2, 12, 0, 6.283); g.fill(); }); }],
+    envelope: [440, 300, g => { g.lineWidth = LW * 1.2; rr(g, 20, 40, 400, 240, 18); g.stroke(); g.beginPath(); g.moveTo(30, 52); g.lineTo(220, 180); g.lineTo(410, 52); g.stroke(); }],
+    answer: [520, 300, g => { g.lineWidth = LW; [[.82, 40], [.56, 120], [.3, 200]].forEach(([v, y]) => { rr(g, 20, y, 400 * v, 46, 23); g.stroke(); });
+      g.lineWidth = LW * 1.6; g.beginPath(); g.moveTo(360, 170); g.lineTo(420, 236); g.lineTo(508, 80); g.stroke(); }],
   };
   // any word becomes a shape: measured first, then drawn wide enough to hold it
   let heroWord = '', heroKind = '';
@@ -554,7 +562,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   // a scanning light passes over each shape, as if it were being assembled
   const shaped = (r, kind, p, t, k) => { const D = DRAW[kind]; if (!D) return null; const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
     const pt = sh.pts[Math.floor(p.i / k) % sh.pts.length], [X, Y] = fit(r, sh, pt), sweep = ((t / 2600 + r.x / 900) % 1.4) - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 9);
-    return [X + Math.sin(t / 900 + p.ph) * .8, Y + Math.cos(t / 1100 + p.ph) * .8, .62 + .38 * hit, 1.5 + hit * .9]; };
+    return [X + Math.sin(t / 900 + p.ph) * .6, Y + Math.cos(t / 1100 + p.ph) * .6, .7 + .3 * hit, (FILLED.has(kind) ? 1.5 : 1.2) + hit * .7]; };
   if (document.fonts) document.fonts.load('800 120px "Noto Sans Arabic"').then(() => { delete SHAPES.arabic; }).catch(() => {});
 
   const FORMS = {
@@ -634,7 +642,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   // a shape the whole swarm draws in the middle of the screen for a moment
   let special = null; const show = kind => { special = { kind, until: performance.now() + 3600 }; };
   // 1. hold the pointer down: the dots swarm into an orb around it, and burst when you let go
-  let hold = null, fx = -999, fy = -999, lastTouch = null;
+  let hold = null, fx = -999, fy = -999, lastTouch = null, sendFx = null;
   addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') { lastTouch = { x: e.clientX, y: e.clientY }; if (fx < -500) { fx = e.clientX; fy = e.clientY; } } }, { passive: true });
   const interactive = el => el.closest && el.closest('a,button,input,select,textarea,label,form');
   // mouse: hold anywhere. touch: hold still for a moment (a swipe stays a scroll); while held, text is not selected and the page does not scroll
@@ -805,6 +813,14 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     // the near field: drift toward the active section's shape
     const s = active(); let place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
     if (special && t < special.until) { const box = { x: W * .1, y: H * .18, w: W * .8, h: H * .64 }, base = place, k0 = special.kind; place = p => p.i % 5 === 4 && base ? base(p) : shaped(box, k0, p, t, 1); }
+    if (sendFx) { const e3 = (t - sendFx.t0) / 1000;
+      if (e3 > 3.2) sendFx = null;
+      else { const f = sendFx.r, fly = Math.max(0, e3 - 1.4), k3 = fly * fly * 1.6, sc = Math.max(.15, 1 - fly * .55);
+        const w0 = Math.min(f.w * .7, 340), h0 = w0 * .68, cx3 = f.x + f.w / 2 - k3 * W * .35, cy3 = f.y + f.h / 2 - k3 * H * .9;
+        const box3 = { x: cx3 - w0 * sc / 2, y: cy3 - h0 * sc / 2, w: w0 * sc, h: h0 * sc };
+        if (fly > 0 && !sendFx.burst) { sendFx.burst = true; waves.push({ x: cx3, y: cy3, t: t, k: 3.5 }); }
+        place = p => { const sp = shaped(box3, 'envelope', p, t, 1); if (!sp) return null; // a trail behind it while it flies
+          return fly > 0 && p.i % 4 === 0 ? [sp[0] + (p.u - .5) * 30 + k3 * W * .35 * p.v * .4, sp[1] + k3 * H * .9 * p.v * .5, sp[2] * .6, 1] : sp; }; } }
     const orb = hold && t - hold.t0 > (hold.touch ? TOUCH_HOLD : 260);
     // the follow point eases toward the mouse, or toward the last place a finger touched
     if (mx > -500) { fx += (mx - fx) * .08; fy += (my - fy) * .08; } else if (lastTouch) { fx += (lastTouch.x - fx) * .08; fy += (lastTouch.y - fy) * .08; }
@@ -840,9 +856,13 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   /* ---------- the form: a design preview, nothing is sent ---------- */
   document.getElementById('form').addEventListener('submit', e => {
     e.preventDefault(); const f = e.target, sent = document.getElementById('sent');
-    if (!f.name.value.trim()) { sent.hidden = false; sent.textContent = 'כתבו את שמכם, כדי שנדע למי לחזור.'; f.name.focus(); return; }
-    if (!/^\S+@\S+\.\S+$/.test(f.email.value)) { sent.hidden = false; sent.textContent = 'כתבו כתובת דוא״ל מלאה, כמו name@company.co.il.'; f.email.focus(); return; }
-    sent.hidden = false; sent.textContent = 'זו תצוגה מקדימה של העיצוב, ולכן הפנייה לא נשלחה. באתר החי היא תגיע ישירות לצוות מדגם.';
+    const nameEl = document.getElementById('fn'), mailEl = document.getElementById('em');
+    if (!nameEl.value.trim()) { sent.hidden = false; sent.textContent = 'כתבו את שמכם, כדי שנדע למי לחזור.'; nameEl.focus(); return; }
+    if (!/^\S+@\S+\.\S+$/.test(mailEl.value)) { sent.hidden = false; sent.textContent = 'כתבו כתובת דוא״ל מלאה, כמו name@company.co.il.'; mailEl.focus(); return; }
+    // the delight: the swarm folds into an envelope over the form and flies off with it
+    const r = f.getBoundingClientRect(); sendFx = { t0: performance.now(), r: { x: r.left, y: r.top, w: r.width, h: r.height } };
+    const btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+    setTimeout(() => { sent.hidden = false; sent.textContent = 'הפנייה בדרך לצוות מדגם. (בתצוגה המקדימה הזו היא לא נשלחת באמת; באתר החי היא תגיע ישירות לצוות.)'; btn.disabled = false; }, 2200);
   });
 })();
 </script>
