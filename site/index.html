@@ -76,6 +76,9 @@ html[data-look=light] #fields.flip{--fg:#fff;--mute:#d6ebf8;--dim:#a9cde6;--sky:
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-2%,3%)}80%{transform:translate(4%,1%)}100%{transform:translate(0,0)}}
 .air .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,var(--vig))}
 
+.dotlayer{position:fixed;inset:0;z-index:3;pointer-events:none}
+.dotlayer canvas{width:100%;height:100%;display:block}
+
 /* ---------- nav ---------- */
 .nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;transition:background-color .3s,box-shadow .3s}
 .nav.solid{background:var(--navbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
@@ -201,6 +204,7 @@ html.holding,html.holding *{-webkit-user-select:none;user-select:none;-webkit-to
 .fld p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
 .fields5 .fld{min-height:96px;flex-direction:row;align-items:center;gap:14px}
 .fields5 .ico{flex:none;width:64px;height:56px}
+.fields5 .fld h3{min-width:0;overflow-wrap:anywhere}
 /* two areas of expertise */
 .exp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:44px}
 .area{display:grid;grid-template-rows:auto 1fr;border-radius:24px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
@@ -258,7 +262,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   :root{--padt:104px}
   section{padding-bottom:56px}
   .qs,.caps,.team,.exp,.fields4,.facts{grid-template-columns:minmax(0,1fr)}
-  .fields5{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fields5{grid-template-columns:minmax(0,1fr)}
+  .fields5 .ico{width:48px;height:42px}
+  .fields5 .fld h3{font-size:20px;min-width:0}
   .person{display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 18px;align-items:center}
   .person h3{margin-top:0}
   #form{grid-template-columns:minmax(0,1fr);padding:22px}
@@ -273,6 +279,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 <a class="skip" href="#main">דילוג לתוכן</a>
 <div class="air" id="airbox" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><div class="light l4"></div><div class="light l5"></div><div class="grid"></div><div class="flood" id="flood"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
 
+<div class="dotlayer" aria-hidden="true"><canvas id="dots"></canvas></div>
 <header class="nav" id="nav">
   <div class="in">
     <a class="brand" href="#top" aria-label="מדגם ייעוץ ומחקר, לראש העמוד"><img class="w" src="assets/midgam-mark-white.png" alt=""><img class="n" src="assets/midgam-mark.png" alt=""></a>
@@ -441,7 +448,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 40), { passive: true });
 
   /* ---------- the living atmosphere ---------- */
-  const cv = document.getElementById('air'), x = cv.getContext('2d');
+  const cv = document.getElementById('air'), x = cv.getContext('2d'), cvD = document.getElementById('dots'), xd = cvD.getContext('2d');
   const sections = [...document.querySelectorAll('section[data-form]')];
   let W, H, DPR, P = [], FAR = [], phone;
   const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(1988);
@@ -453,7 +460,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   lookBtn.addEventListener('click', () => setLook(document.documentElement.dataset.look === 'light' ? 'dark' : 'light', true));
   const size = () => {
     phone = innerWidth < 760; DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
-    cv.width = W * DPR; cv.height = H * DPR; x.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cv.width = W * DPR; cv.height = H * DPR; x.setTransform(DPR, 0, 0, DPR, 0, 0); cvD.width = W * DPR; cvD.height = H * DPR; xd.setTransform(DPR, 0, 0, DPR, 0, 0);
     const n = phone ? 1100 : 2300, nf = phone ? 220 : 520;
     if (P.length !== n) P = Array.from({ length: n }, (_, i) => ({ x: rnd() * W, y: rnd() * H, vx: 0, vy: 0, u: rnd(), v: rnd(), ph: rnd() * 6.283, s: .6 + rnd() * .8, i, c: (q => q < .08 ? 'amber' : q < .26 ? 'teal' : q < .36 ? 'gold' : q < .66 ? 'glow' : 'sky')(rnd()), a: .5 }));
     if (FAR.length !== nf) FAR = Array.from({ length: nf }, () => ({ u: rnd(), v: rnd(), ph: rnd() * 6.283, r: .5 + rnd() * .9, d: .08 + rnd() * .25 }));
@@ -579,11 +586,12 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       const cs = rects(s, '[data-anchor=card]'); if (!cs.length) return null;
       return p => { const r = cs[p.i % cs.length]; if (p.i % 2) return null; const [X, Y] = perim(r, p.u + t / 26000 * p.s, 7 + p.v * 12); return [X, Y, .8, 1.9]; };
     },
-    lanes(s, t) { // four capabilities: each panel draws its own picture with the dots
-      const vs = rects(s, '[data-anchor=viz]'); if (!vs.length) return null;
-      return p => { const r = vs[p.i % vs.length], k = r.el.dataset.kind, u = p.u, v = p.v;
+    lanes(s, t) { // every picture in the section keeps its own share of dots (sized to the picture) for as long as you stay in the section
+      const vs = [...s.querySelectorAll('[data-anchor=viz]')].map(el => { const q = el.getBoundingClientRect(); return { x: q.left, y: q.top, w: q.width, h: q.height, el }; }).filter(q => q.w > 0); if (!vs.length) return null;
+      const tot = vs.reduce((a2, q) => a2 + Math.sqrt(q.w * q.h), 0); let acc = 0; const cum = vs.map(q => (acc += Math.sqrt(q.w * q.h) / tot));
+      return p => { const fr = (p.i * .6180339887) % 1, r = vs[Math.max(0, cum.findIndex(c2 => fr <= c2))], k = r.el.dataset.kind, u = p.u, v = p.v;
         if (p.i % 5 === 4) return null; // a share of the dots stays free to follow the pointer
-        if (DRAW[k]) return shaped(r, k, p, t, vs.length);
+        if (DRAW[k]) return shaped(r, k, p, t, 1);
         if (k === 'bars') { const b = Math.floor(u * 6), hgt = [.45, .7, .55, .9, .62, .8][b] * (.92 + .08 * Math.sin(t / 900 + b)); return [r.x + 22 + b * (r.w - 44) / 6 + (u * 6 % 1) * ((r.w - 44) / 6 - 10), r.y + r.h - 18 - v * (r.h - 36) * hgt, .85]; }
         if (k === 'pulse') { const q = (u + t / 7000) % 1, X = r.x + r.w - q * r.w, ph = (q * 3) % 1, beat = ph > .42 && ph < .58 ? Math.sin((ph - .42) / .16 * Math.PI * 2) * (ph < .5 ? 1 : -.45) : 0; return [X, r.y + r.h * .55 - beat * r.h * .38 + (v - .5) * 5, .85]; }
         if (k === 'rings') { const ring = Math.floor(v * 3), a = u * 6.283 + t / (3000 + ring * 1500), rr = (18 + ring * 22) * (1 + .06 * Math.sin(t / 700 + ring)); return [r.x + r.w / 2 + Math.cos(a) * rr * 1.6, r.y + r.h / 2 + Math.sin(a) * rr, .8]; }
@@ -800,6 +808,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     const orb = hold && t - hold.t0 > (hold.touch ? TOUCH_HOLD : 260);
     // the follow point eases toward the mouse, or toward the last place a finger touched
     if (mx > -500) { fx += (mx - fx) * .08; fy += (my - fy) * .08; } else if (lastTouch) { fx += (lastTouch.x - fx) * .08; fy += (lastTouch.y - fy) * .08; }
+    xd.clearRect(0, 0, W, H);
     for (const p of P) {
       let tgt = place && place(p); p.anch = !!tgt;
       if (orb && p.i % 3 !== 2) { const j = p.i, rad = 8 + Math.sqrt(j % 700) * 3.1, a = j * 2.39996 + t / (260 + (j % 5) * 90); tgt = [hold.x + Math.cos(a) * rad, hold.y + Math.sin(a) * rad * .92, .95, 1.7]; }
@@ -814,13 +823,13 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       for (const w of waves) { const age = (t - w.t) / 1000; if (age > 1.6) continue; const R = age * 260, d = Math.hypot(X - w.x, Y - w.y), band = Math.abs(d - R); if (band < 26) { const f = (1 - band / 26) * (1 - age / 1.6) * w.k; X += (X - w.x) / (d || 1) * f * 7; Y += (Y - w.y) / (d || 1) * f * 7; al = Math.min(1, al + f * .7); r += f * 1.4; } }
       const near = Math.hypot(X - mx, Y - my); if (near < 120) { const f = 1 - near / 120; al = Math.min(1, al + f * .45); r += f; }
       // over the flood the dots switch to white and deep navy, so they stay visible on the sky
-      const c = rvNow > .5 ? (p.i % 2 ? [255, 255, 255] : [196, 233, 252]) : COL[p.c]; x.globalAlpha = al; x.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`; x.beginPath(); x.arc(X, Y, Math.max(.3, r), 0, 6.283); x.fill();
+      const c = rvNow > .5 ? (p.i % 2 ? [255, 255, 255] : [196, 233, 252]) : COL[p.c]; xd.globalAlpha = al; xd.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`; xd.beginPath(); xd.arc(X, Y, Math.max(.3, r), 0, 6.283); xd.fill();
     }
-    x.globalAlpha = 1;
+    xd.globalAlpha = 1;
     // the golden respondent
     if (!gold.on && t > gold.next && !reduce) spawnGold();
     if (gold.on) { gold.x += gold.vx * dt + Math.sin(t / 700) * .3; gold.y += gold.vy * dt; if (gold.y < -20) { gold.on = false; gold.next = t + 12000; }
-      const pulse = .5 + .5 * Math.sin(t / 220); x.globalAlpha = .25 + .2 * pulse; x.fillStyle = '#f2c14e'; x.beginPath(); x.arc(gold.x, gold.y, 9 + pulse * 4, 0, 6.283); x.fill(); x.globalAlpha = 1; x.beginPath(); x.arc(gold.x, gold.y, 4, 0, 6.283); x.fill(); }
+      const pulse = .5 + .5 * Math.sin(t / 220); xd.globalAlpha = .25 + .2 * pulse; xd.fillStyle = '#f2c14e'; xd.beginPath(); xd.arc(gold.x, gold.y, 9 + pulse * 4, 0, 6.283); xd.fill(); xd.globalAlpha = 1; xd.beginPath(); xd.arc(gold.x, gold.y, 4, 0, 6.283); xd.fill(); }
     while (waves.length && t - waves[0].t > 1600) waves.shift();
     if (!manual) requestAnimationFrame(frame);
   };
