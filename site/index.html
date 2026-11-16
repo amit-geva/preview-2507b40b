@@ -78,6 +78,9 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 .lede{margin:18px 0 0;max-width:36em;color:var(--mute);font-size:19px;text-wrap:pretty}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
+/* placeholders: anything still to come from Midgam, easy to spot */
+.ph{display:inline-block;padding:1px 10px;border-radius:8px;border:1px dashed rgba(242,193,78,.7);background:rgba(242,193,78,.1);color:var(--gold);font-weight:500}
+
 /* hero */
 .hero{align-items:flex-end;padding-bottom:88px}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:end}
@@ -96,6 +99,7 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 .facts li{padding-top:18px;border-top:1px solid var(--line-2)}
 .facts b{display:block;font-family:var(--display);font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
 .facts span{display:block;margin-top:6px;color:var(--mute);font-size:16px}
+.facts .wide{grid-column:1/-1}
 .slot{min-height:420px}
 
 /* six questions */
@@ -140,13 +144,19 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 /* people */
 .team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
 .person .face{position:relative;aspect-ratio:1;max-width:100%;border-radius:50%;display:grid;place-items:center}
-.person .face b{font-family:var(--display);font-size:48px;font-weight:800;color:var(--fg);letter-spacing:-.02em;opacity:.9}
+.person .face{background:rgba(6,18,30,.55);border:1px dashed rgba(242,193,78,.45);color:rgba(160,205,235,.28);overflow:hidden;align-content:center;gap:6px}
+.person .face svg{width:46%;height:auto}
+.person .face .ph{font-size:13px}
 .person h3{margin-top:20px;font-size:24px;font-weight:700}
 .person .role{margin:2px 0 0;color:var(--glow);font-size:15.5px;font-weight:500}
 .person p{margin:8px 0 0;color:var(--mute);font-size:15.5px}
 
 /* contact */
 .contact .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start}
+.reach{display:flex;flex-wrap:wrap;gap:22px 40px;margin:32px 0 0}
+.reach div{display:flex;flex-direction:column;gap:4px}
+.reach dt{font-size:14px;color:var(--dim)}
+.reach dd{margin:0;font-size:18px}
 form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:30px;border-radius:24px;background:rgba(6,18,30,.62);box-shadow:inset 0 0 0 1px var(--line-2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .f{display:flex;flex-direction:column;gap:6px;min-width:0}
 .f.wide{grid-column:1/-1}
@@ -174,7 +184,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   .qs,.caps,.team,.exp,.fields4,.facts{grid-template-columns:minmax(0,1fr)}
   .fields5{grid-template-columns:repeat(2,minmax(0,1fr))}
   .person{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 18px;align-items:center}
-  .person .face b{font-size:28px}
+  .person .face .ph{display:none}
   .person h3{margin-top:0}
   form{grid-template-columns:minmax(0,1fr);padding:22px}
   .acts .btn{flex:1 1 100%}
@@ -222,6 +232,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
           <li><b>דגימה מייצגת</b><span>מכסות ושקלול לפי גיל, מגדר, אזור ומגזר</span></li>
           <li><b>כמותי ואיכותני</b><span>סקרים, קבוצות מיקוד וראיונות עומק</span></li>
           <li><b>ליווי מלא</b><span>מהגדרת השאלה ועד הצגת הממצאים</span></li>
+          <li class="wide"><b>חברות מקצועית</b><span><span class="ph">שם האיגוד או הארגון המקצועי</span></span></li>
         </ul>
       </div>
       <div class="slot" data-anchor="disc"></div>
@@ -304,10 +315,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     <div class="wrap">
             <h2>הצוות שמלווה את המחקר שלכם</h2>
       <div class="team">
-        <div class="person"><div class="face" data-anchor="face"><b>מ״ג</b></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><b>מ״צ</b></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><b>א״ק</b></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
-        <div class="person"><div class="face" data-anchor="face"><b>מ״ש</b></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>מנו גבע</h3><p class="role">ראש מכון מדגם</p><p>מלווה כל מחקר מהשאלה הראשונה ועד האישור הסופי.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>ד״ר מינה צמח</h3><p class="role">חוות דעת מומחה</p><p>מובילה את עבודת חוות הדעת לבתי משפט וחותמת על כל אחת מהן.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>איהאב קדאח</h3><p class="role">מדגם אל־ערב</p><p>מוביל את המחקר בחברה הערבית, משלב השאלון ועד האיסוף.</p></div></div>
+        <div class="person"><div class="face" data-anchor="face"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11" fill="currentColor"/><path d="M12 54c2-11 10-17 20-17s18 6 20 17" fill="currentColor"/></svg><span class="ph">תמונה</span></div><div><h3>מיכל שפירא</h3><p class="role">מחקר איכותני</p><p>מובילה קבוצות מיקוד וראיונות עומק.</p></div></div>
       </div>
     </div>
   </section>
@@ -318,6 +329,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       <div data-anchor="text">
                 <h2>פנייה לצוות מדגם</h2>
         <p class="lede">ספרו לנו מה אתם רוצים לדעת. נחזור אליכם עם הצעה: שאלון, מדגם, שיטה ולוח זמנים.</p>
+        <dl class="reach"><div><dt>טלפון</dt><dd><span class="ph">מספר טלפון</span></dd></div><div><dt>דוא״ל</dt><dd><span class="ph">כתובת דוא״ל</span></dd></div><div><dt>כתובת</dt><dd><span class="ph">רחוב ועיר</span></dd></div></dl>
       </div>
       <form id="form" data-anchor="form" novalidate>
         <div class="f"><label for="fn">שם מלא</label><input id="fn" name="name" autocomplete="name" required></div>
