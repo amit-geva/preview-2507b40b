@@ -614,7 +614,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     wave(s, t) { // the hero: the Midgam swarm draws the mark and its tagline; a question turns it into the topic's shape
       const sb = s.querySelector('[data-anchor=swarm]').getBoundingClientRect(), box = sb.width ? { x: sb.left, y: sb.top, w: sb.width, h: sb.height } : null; if (!box) return null;
       // leaving the hero: dots break off the mark one by one and fall away while you can still see it; scrolling back reassembles it
-      const hr = s.getBoundingClientRect(), leave = Math.min(1.5, Math.max(0, -hr.top / (H * .45)));
+      const hr = s.getBoundingClientRect(), leave = scrollDir < 0 ? 0 : Math.min(1.5, Math.max(0, -hr.top / (H * .45)));
       const crumble = f => leave <= 0 ? f : p => { const tg = f(p); if (!tg) return tg; const th = ((p.i * .7548776662) % 1) * .85, d = leave - th; if (d <= 0) return tg;
         return [tg[0] + (p.u - .5) * d * W * .3, tg[1] + d * d * H * .8 + d * 40 * p.s, tg[2] * Math.max(.12, 1 - d * .8), tg[3] * Math.max(.6, 1 - d * .3)]; };
       const breathe = 1 + .012 * Math.sin(t / 1400), sweep = (t / 2400) % 1.4 - .2, cx = box.x + box.w / 2, cy = box.y + box.h / 2;
@@ -870,20 +870,22 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   };
 
 
-  let last = performance.now(), manual = false, born = performance.now();
+  let last = performance.now(), manual = false, born = performance.now(); let scrollDir = 1;
   const frame = t => {
     const dt = Math.max(0, Math.min(48, t - last)); last = Math.max(last, t);
     x.clearRect(0, 0, W, H);
     // far layer: tiny, slow, moving a little with the scroll for depth
     const sy = scrollY, dsy = sy - (frame.lastSy ?? sy); frame.lastSy = sy;
     if (dsy) for (const p of P) if (p.anch) p.y -= dsy;
+    // which way the reader is going: shapes only break apart on the way down; on the way up they gather again
+    if (dsy > 2) scrollDir = 1; else if (dsy < -2) scrollDir = -1;
     research(reduce ? 0 : t, sy);
     for (const f of FAR) { const X = (f.u * W + Math.sin(t / 7000 + f.ph) * 20) % W, Y = ((f.v * H - sy * f.d) % H + H) % H; x.globalAlpha = .18 + .12 * Math.sin(t / 1400 + f.ph); x.fillStyle = FARC; x.fillRect(X, Y, f.r, f.r); }
     // the near field: drift toward the active section's shape
     const s = active(); teamPaint(t, s === peopleSec); let place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
     // every section lets go the way the hero does: as its end rises past the bottom of the screen, its dots break off one by one and fall,
     // still in view, before the next section gathers them; scrolling back reassembles it
-    if (place && s.dataset.form !== 'wave' && !reduce) { const sr = s.getBoundingClientRect(), lv = Math.min(1.5, Math.max(0, (H - sr.bottom) / (H * .45)));
+    if (place && s.dataset.form !== 'wave' && !reduce) { const sr = s.getBoundingClientRect(), lv = scrollDir < 0 ? 0 : Math.min(1.5, Math.max(0, (H - sr.bottom) / (H * .45)));
       if (lv > 0) { const base = place; place = p => { const tg = base(p); if (!tg) return tg; const th = ((p.i * .7548776662) % 1) * .85, d = lv - th; if (d <= 0) return tg;
         return [tg[0] + (p.u - .5) * d * W * .3, tg[1] + d * d * H * .8 + d * 40 * p.s, tg[2] * Math.max(.12, 1 - d * .8), (tg[3] || 1.5) * Math.max(.6, 1 - d * .3)]; }; } }
     if (special && t < special.until) { const box = { x: W * .1, y: H * .18, w: W * .8, h: H * .64 }, base = place, k0 = special.kind; place = p => p.i % 5 === 4 && base ? base(p) : shaped(box, k0, p, t, 1); }
