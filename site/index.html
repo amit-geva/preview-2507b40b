@@ -8,7 +8,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Noto+Sans+Arabic:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* Layout: one living atmosphere (light, grain, three depths of dots) sits behind the whole site.
    Each section gathers the dots around its own content: a wave of people, a sample, six questions,
@@ -21,9 +21,10 @@
   --card:rgba(8,28,54,.55); --card-hi:rgba(14,42,76,.72); --field:rgba(6,22,44,.8); --navbg:rgba(10,34,64,.78); --menubg:rgba(10,34,64,.97); --foot:rgba(6,22,44,.6);
   --chip:rgba(140,205,240,.1); --btn-bg:#f3f8fc; --btn-fg:#0a2240; --btn-hi:#fff; --grid-line:rgba(140,205,240,.045);
   --l1:rgba(32,152,208,.5); --l2:rgba(29,86,137,.85); --l3:rgba(32,152,208,.22); --vig:rgba(4,16,32,.7); --face:rgba(140,205,240,.28);
-  --dot-a:32,152,208; --dot-b:143,208,242; --dot-c:243,248,252; --grain:.09;
-  --display:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
-  --body:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --dot-a:32,152,208; --dot-b:143,208,242; --dot-c:243,248,252; --dot-d:38,196,180; --dot-e:242,169,59; --grain:.08;
+  --teal:#26c4b4; --amber:#f2a93b;
+  --display:"Rubik","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --body:"IBM Plex Sans Hebrew","Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --ease:cubic-bezier(.23,1,.32,1);
   --padt:128px; --gut:max(24px,env(safe-area-inset-left,0px));
@@ -36,7 +37,8 @@ html[data-look=light]{
   --card:rgba(255,255,255,.62); --card-hi:rgba(255,255,255,.88); --field:#fff; --navbg:rgba(242,247,251,.82); --menubg:rgba(242,247,251,.98); --foot:rgba(255,255,255,.6);
   --chip:rgba(29,86,137,.08); --btn-bg:#1d5689; --btn-fg:#fff; --btn-hi:#16466f; --grid-line:rgba(29,86,137,.05);
   --l1:rgba(32,152,208,.32); --l2:rgba(29,86,137,.2); --l3:rgba(143,208,242,.45); --vig:rgba(242,247,251,.6); --face:rgba(29,86,137,.25);
-  --dot-a:29,86,137; --dot-b:32,152,208; --dot-c:13,44,79; --grain:.05;
+  --dot-a:29,86,137; --dot-b:32,152,208; --dot-c:13,44,79; --dot-d:20,150,138; --dot-e:214,134,24; --grain:.05;
+  --teal:#14968a; --amber:#d68618;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -49,11 +51,16 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--sky);outline-offset:3px}
 
 /* ---------- the atmosphere: light, grain, dots; fixed behind every section ---------- */
-.air{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.air{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--base,var(--ink))}
 .air .light{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;will-change:transform}
-.air .l1{width:62vmax;height:62vmax;background:radial-gradient(circle,var(--l1),transparent 65%);top:-18vmax;left:-12vmax;animation:drift1 38s ease-in-out infinite alternate}
-.air .l2{width:52vmax;height:52vmax;background:radial-gradient(circle,var(--l2),transparent 65%);bottom:-20vmax;right:-14vmax;animation:drift2 44s ease-in-out infinite alternate}
-.air .l3{width:34vmax;height:34vmax;background:radial-gradient(circle,var(--l3),transparent 65%);top:40%;left:42%;animation:drift3 52s ease-in-out infinite alternate}
+.air .light{opacity:.85}
+.air .l1{width:66vmax;height:66vmax;background:radial-gradient(circle,var(--m1,var(--l1)),transparent 62%);top:-18vmax;left:-12vmax;animation:drift1 38s ease-in-out infinite alternate}
+.air .l2{width:58vmax;height:58vmax;background:radial-gradient(circle,var(--m2,var(--l2)),transparent 62%);bottom:-20vmax;right:-14vmax;animation:drift2 44s ease-in-out infinite alternate}
+.air .l3{width:40vmax;height:40vmax;background:radial-gradient(circle,var(--m3,var(--l3)),transparent 62%);top:40%;left:42%;animation:drift3 52s ease-in-out infinite alternate}
+.air .l4{width:30vmax;height:30vmax;background:radial-gradient(circle,var(--m2,var(--l2)),transparent 62%);top:10%;right:8%;animation:drift4 27s ease-in-out infinite alternate}
+.air .l5{width:26vmax;height:26vmax;background:radial-gradient(circle,var(--m3,var(--l3)),transparent 62%);bottom:6%;left:20%;animation:drift5 33s ease-in-out infinite alternate}
+@keyframes drift4{to{transform:translate(-24vmax,22vmax) scale(1.25)}}
+@keyframes drift5{to{transform:translate(26vmax,-18vmax) scale(.85)}}
 @keyframes drift1{to{transform:translate(18vmax,14vmax) scale(1.12)}}
 @keyframes drift2{to{transform:translate(-16vmax,-12vmax) scale(.92)}}
 @keyframes drift3{to{transform:translate(-22vmax,10vmax) scale(1.2)}}
@@ -99,7 +106,7 @@ section{position:relative;min-height:100svh;padding-block:var(--padt) 72px;displ
 .kicker{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--glow)}
 .kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sky);box-shadow:0 0 12px var(--sky)}
 h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
-h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:800;letter-spacing:-.025em}
+h2{margin-top:0;font-size:clamp(34px,4.3vw,60px);line-height:1.08;font-weight:700;letter-spacing:-.02em}
 .lede{margin:18px 0 0;max-width:36em;color:var(--mute);font-size:19px;text-wrap:pretty}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
@@ -110,7 +117,22 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 .hero{align-items:flex-end;padding-bottom:88px}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:end}
 .play{display:flex;flex-direction:column;align-items:center;gap:14px;align-self:center;min-width:0}
-.swarm{width:100%;height:min(46vh,420px)}
+.swarm{width:100%;aspect-ratio:3.1/1;max-height:44vh}
+.tagline{margin:-6px 0 6px;font:500 clamp(17px,2vw,28px)/1 var(--body);letter-spacing:.34em;color:var(--fg);opacity:.9;transition:opacity .4s var(--ease)}
+.tagline.off{opacity:0}
+.ask{position:relative;width:min(520px,100%)}
+.ask input{width:100%;height:58px;padding:0 24px 0 64px;border-radius:999px;border:0;background:var(--card);color:var(--fg);font:500 17px var(--body);box-shadow:inset 0 0 0 1px var(--line-2),0 18px 40px -26px rgba(0,0,0,.6);transition:box-shadow .2s}
+.ask input::placeholder{color:var(--dim)}
+.ask input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sky)}
+.ask-go{position:absolute;top:8px;left:8px;width:42px;height:42px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--sky);color:#fff;cursor:pointer;transition:transform .2s var(--ease)}
+.ask-go:hover{transform:translateX(-2px)}
+.ask-go:active{transform:scale(.94)}
+.ask-go[disabled]{opacity:.5;cursor:default}
+.answer{width:min(520px,100%);padding:18px 22px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);animation:enter .5s var(--ease) both}
+.answer p{margin:0;font-size:16.5px;line-height:1.6;white-space:pre-line}
+.answer-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:10px;font-size:13.5px;color:var(--dim)}
+.answer-foot a{color:var(--sky);font-weight:600;text-decoration:none}
+.answer-foot a:hover{text-decoration:underline}
 .say{position:relative;width:min(420px,100%)}
 .say input{width:100%;height:54px;padding:0 22px;border-radius:999px;border:0;background:var(--card);color:var(--fg);font:500 17px var(--body);text-align:center;box-shadow:inset 0 0 0 1px var(--line-2);transition:box-shadow .2s}
 .say input::placeholder{color:var(--dim)}
@@ -119,7 +141,7 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 .secrets{margin:0;min-height:22px;font-size:14px;color:var(--dim);text-align:center}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .hero-text{max-width:720px}
-.hero h1{margin-top:18px;font-size:clamp(46px,6.4vw,104px);line-height:.98;font-weight:900;letter-spacing:-.035em}
+.hero h1{margin-top:18px;font-size:clamp(44px,5.8vw,94px);line-height:1;font-weight:800;letter-spacing:-.03em}
 .hero h1 span{display:block;color:var(--glow);font-weight:300}
 .hero .lede{font-size:20.5px;max-width:31em}
 .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
@@ -193,14 +215,14 @@ h2{margin-top:0;font-size:clamp(36px,4.6vw,64px);line-height:1.06;font-weight:80
 .reach dd{margin:0;font-size:18px}
 .qm{height:300px;margin-top:20px}
 @media (max-width:1100px){.qm{height:200px}}
-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:30px;border-radius:24px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:30px;border-radius:24px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .f{display:flex;flex-direction:column;gap:6px;min-width:0}
 .f.wide{grid-column:1/-1}
 .f label{font-size:14.5px;font-weight:500;color:var(--mute)}
 .f input,.f select,.f textarea{width:100%;height:50px;padding:0 14px;border-radius:12px;border:0;background:var(--field);color:var(--fg);font:400 16px var(--body);box-shadow:inset 0 0 0 1px var(--line-2)}
 .f textarea{height:110px;padding:12px 14px;resize:vertical}
 .f input:focus,.f select:focus,.f textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sky)}
-form .btn{grid-column:1/-1;justify-self:start}
+#form .btn{grid-column:1/-1;justify-self:start}
 .sent{grid-column:1/-1;margin:0;color:var(--glow);font-size:15px}
 footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--foot)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 28px;padding-block:28px;color:var(--dim);font-size:14px}
@@ -209,7 +231,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 
 @media (max-width:1100px){
   .hero .wrap,.cred .wrap,.contact .wrap{grid-template-columns:minmax(0,1fr)}
-  .hero .wrap{gap:20px}.play{order:-1}.swarm{height:30vh}
+  .hero .wrap{gap:20px}.play{order:-1}
   .slot{display:none}
   .qs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .caps,.team{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -222,7 +244,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   .fields5{grid-template-columns:repeat(2,minmax(0,1fr))}
   .person{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 18px;align-items:center}
   .person h3{margin-top:0}
-  form{grid-template-columns:minmax(0,1fr);padding:22px}
+  #form{grid-template-columns:minmax(0,1fr);padding:22px}
   .acts .btn{flex:1 1 100%}
 }
 @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
@@ -232,7 +254,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 <body>
 <div dir="rtl" lang="he">
 <a class="skip" href="#main">דילוג לתוכן</a>
-<div class="air" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
+<div class="air" id="airbox" aria-hidden="true"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div><div class="light l4"></div><div class="light l5"></div><canvas id="air"></canvas><div class="vig"></div><div class="grain"></div></div>
 
 <header class="nav" id="nav">
   <div class="in">
@@ -257,8 +279,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     </div>
       <div class="play" data-enter>
         <div class="swarm" data-anchor="swarm" aria-hidden="true"></div>
-        <label class="sr" for="word">מילה שהנחיל יכתוב</label>
-        <div class="say"><input id="word" maxlength="14" autocomplete="off" placeholder="הקלידו מילה, והנחיל יכתוב אותה"><button type="button" id="word-clear" class="say-x" aria-label="חזרה ללוגו" hidden>×</button></div>
+        <p class="tagline" id="tagline">ייעוץ ומחקר בע״מ</p>
+        <form class="ask" id="ask"><label class="sr" for="q">שאלה לצוות מדגם</label><input id="q" maxlength="200" autocomplete="off" placeholder="שאלו את מדגם, למשל: איזה מחקר מתאים לי?"><button type="submit" class="ask-go" aria-label="שליחת השאלה"><svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></form>
+        <div class="answer" id="answer" aria-live="polite" hidden><p id="answer-t"></p><div class="answer-foot"><a id="answer-go" href="#solutions" hidden>לקריאה בעמוד</a><span id="answer-src"></span></div></div>
         <p class="secrets" id="secrets"></p>
       </div>
     </div>
@@ -406,7 +429,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   let W, H, DPR, P = [], FAR = [], phone;
   const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(1988);
   // dot colours come from the theme tokens, so both versions stay in Midgam's colours
-  let COL = {}; const readCol = () => { const cs = getComputedStyle(document.documentElement), v = n => cs.getPropertyValue(n).trim().split(',').map(Number); COL = { sky: v('--dot-a'), glow: v('--dot-b'), gold: v('--dot-c'), fg: v('--dot-c') }; FARC = `rgb(${COL.glow})`; }; let FARC = '#8fd0f2';
+  let COL = {}; const readCol = () => { const cs = getComputedStyle(document.documentElement), v = n => cs.getPropertyValue(n).trim().split(',').map(Number); COL = { sky: v('--dot-a'), glow: v('--dot-b'), gold: v('--dot-c'), fg: v('--dot-c'), teal: v('--dot-d'), amber: v('--dot-e') }; FARC = `rgb(${COL.glow})`; }; let FARC = '#8fd0f2';
   const lookBtn = document.getElementById('look');
   const setLook = (l, save) => { document.documentElement.dataset.look = l; lookBtn.setAttribute('aria-pressed', l === 'light'); lookBtn.querySelector('span').textContent = l === 'light' ? 'גרסה כהה' : 'גרסה בהירה'; lookBtn.setAttribute('aria-label', l === 'light' ? 'מעבר לגרסה הכהה' : 'מעבר לגרסה הבהירה'); readCol(); if (save) try { localStorage.setItem('midgam-look', l); } catch (_) {} };
   { let l0 = /[?&]light/.test(location.search) ? 'light' : null; if (!l0) try { l0 = localStorage.getItem('midgam-look'); } catch (_) {} setLook(l0 === 'light' ? 'light' : 'dark'); }
@@ -415,7 +438,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     phone = innerWidth < 760; DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
     cv.width = W * DPR; cv.height = H * DPR; x.setTransform(DPR, 0, 0, DPR, 0, 0);
     const n = phone ? 650 : 1500, nf = phone ? 220 : 520;
-    if (P.length !== n) P = Array.from({ length: n }, (_, i) => ({ x: rnd() * W, y: rnd() * H, vx: 0, vy: 0, u: rnd(), v: rnd(), ph: rnd() * 6.283, s: .6 + rnd() * .8, i, c: rnd() < .12 ? 'gold' : rnd() < .5 ? 'glow' : 'sky', a: .5 }));
+    if (P.length !== n) P = Array.from({ length: n }, (_, i) => ({ x: rnd() * W, y: rnd() * H, vx: 0, vy: 0, u: rnd(), v: rnd(), ph: rnd() * 6.283, s: .6 + rnd() * .8, i, c: (q => q < .08 ? 'amber' : q < .26 ? 'teal' : q < .36 ? 'gold' : q < .66 ? 'glow' : 'sky')(rnd()), a: .5 }));
     if (FAR.length !== nf) FAR = Array.from({ length: nf }, () => ({ u: rnd(), v: rnd(), ph: rnd() * 6.283, r: .5 + rnd() * .9, d: .08 + rnd() * .25 }));
   };
   size(); addEventListener('resize', size);
@@ -446,22 +469,22 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const rr = (g, x2, y, w, h, r) => { g.beginPath(); g.moveTo(x2 + r, y); g.arcTo(x2 + w, y, x2 + w, y + h, r); g.arcTo(x2 + w, y + h, x2, y + h, r); g.arcTo(x2, y + h, x2, y, r); g.arcTo(x2, y, x2 + w, y, r); g.closePath(); };
   const logoImg = new Image(); logoImg.src = 'assets/midgam-mark.png';
   const DRAW = {
-    logo: [530, 225, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 530, 225); }],
-    year: [520, 200, g => { g.font = '900 190px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
-    qmark: [300, 420, g => { g.font = '900 420px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 225); }],
+    logo: [530, 153, g => { if (!logoImg.complete || !logoImg.naturalWidth) return false; g.drawImage(logoImg, 0, 0, 530, 153, 0, 0, 530, 153); }],
+    year: [520, 200, g => { g.font = '900 190px Rubik, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('1988', 260, 108); }],
+    qmark: [300, 420, g => { g.font = '900 420px Rubik, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 225); }],
     arabic: [760, 220, g => { g.direction = 'rtl'; g.font = '800 120px "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('استطلاع رأي', 380, 120); }],
     chat: [440, 260, g => { g.lineWidth = 12; rr(g, 16, 16, 240, 120, 44); g.stroke(); g.beginPath(); g.moveTo(70, 134); g.lineTo(52, 178); g.lineTo(112, 136); g.stroke();
       rr(g, 180, 120, 240, 110, 44); g.fill(); g.beginPath(); g.moveTo(370, 228); g.lineTo(396, 256); g.lineTo(330, 228); g.fill(); g.globalCompositeOperation = 'destination-out'; [250, 300, 350].forEach(cx => { g.beginPath(); g.arc(cx, 175, 13, 0, 6.283); g.fill(); }); g.globalCompositeOperation = 'source-over'; }],
     methods: [880, 220, g => { g.lineWidth = 12;
       rr(g, 52, 30, 96, 160, 18); g.stroke(); g.beginPath(); g.arc(100, 166, 8, 0, 6.283); g.fill(); g.fillRect(84, 46, 32, 6);
       rr(g, 262, 50, 150, 100, 10); g.stroke(); g.beginPath(); g.moveTo(236, 172); g.lineTo(438, 172); g.lineTo(420, 152); g.lineTo(254, 152); g.closePath(); g.fill();
-      rr(g, 480, 46, 160, 110, 30); g.stroke(); g.beginPath(); g.moveTo(520, 154); g.lineTo(506, 192); g.lineTo(556, 156); g.stroke(); g.font = '800 46px Heebo, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('SMS', 560, 103);
+      rr(g, 480, 46, 160, 110, 30); g.stroke(); g.beginPath(); g.moveTo(520, 154); g.lineTo(506, 192); g.lineTo(556, 156); g.stroke(); g.font = '800 46px Rubik, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('SMS', 560, 103);
       g.beginPath(); g.arc(760, 66, 30, 0, 6.283); g.fill(); g.beginPath(); g.moveTo(706, 196); g.quadraticCurveTo(708, 112, 760, 108); g.quadraticCurveTo(812, 112, 814, 196); g.closePath(); g.fill(); rr(g, 800, 128, 52, 66, 6); g.globalCompositeOperation = 'destination-out'; g.fill(); g.globalCompositeOperation = 'source-over'; g.lineWidth = 7; g.stroke(); }],
     neural: [520, 260, g => { const L = [[4, 70], [5, 260], [3, 450]], nodes = L.map(([n, x2]) => Array.from({ length: n }, (_, i) => [x2, 30 + (i + .5) * 200 / n])); g.lineWidth = 3;
       for (let a = 0; a < 2; a++) nodes[a].forEach(p => nodes[a + 1].forEach(q => { g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke(); }));
       nodes.flat().forEach(([x2, y]) => { g.beginPath(); g.arc(x2, y, 17, 0, 6.283); g.fill(); }); }],
     ballot: [360, 280, g => { g.lineWidth = 14; g.save(); g.translate(176, 70); g.rotate(-.12); g.fillRect(-46, -66, 92, 104); g.globalCompositeOperation = 'destination-out'; g.lineWidth = 9; g.beginPath(); g.moveTo(-22, -16); g.lineTo(-4, 4); g.lineTo(28, -34); g.stroke(); g.restore();
-      g.globalCompositeOperation = 'destination-out'; g.fillRect(70, 100, 220, 40); g.globalCompositeOperation = 'source-over'; g.lineWidth = 14; g.strokeRect(70, 110, 220, 150); g.fillRect(96, 104, 168, 12); g.font = '800 40px Heebo, Arial'; g.textAlign = 'center'; g.fillText('קלפי', 180, 210); }],
+      g.globalCompositeOperation = 'destination-out'; g.fillRect(70, 100, 220, 40); g.globalCompositeOperation = 'source-over'; g.lineWidth = 14; g.strokeRect(70, 110, 220, 150); g.fillRect(96, 104, 168, 12); g.font = '800 40px Rubik, Arial'; g.textAlign = 'center'; g.fillText('קלפי', 180, 210); }],
     cap: [380, 260, g => { g.beginPath(); g.moveTo(190, 30); g.lineTo(360, 100); g.lineTo(190, 170); g.lineTo(20, 100); g.closePath(); g.fill(); g.beginPath(); g.moveTo(96, 136); g.lineTo(96, 206); g.quadraticCurveTo(190, 250, 284, 206); g.lineTo(284, 136); g.lineTo(190, 176); g.closePath(); g.fill();
       g.lineWidth = 6; g.beginPath(); g.moveTo(190, 100); g.lineTo(320, 130); g.lineTo(320, 200); g.stroke(); g.beginPath(); g.arc(320, 212, 14, 0, 6.283); g.fill(); }],
     mic: [420, 280, g => { rr(g, 170, 20, 80, 140, 40); g.fill(); g.lineWidth = 12; g.beginPath(); g.arc(210, 120, 72, .15, Math.PI - .15); g.stroke(); g.beginPath(); g.moveTo(210, 192); g.lineTo(210, 236); g.moveTo(166, 244); g.lineTo(254, 244); g.stroke();
@@ -470,9 +493,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       g.lineWidth = 4; [[80, 1], [360, 1]].forEach(([cx]) => { g.beginPath(); g.moveTo(cx, 72); g.lineTo(cx - 44, 160); g.moveTo(cx, 72); g.lineTo(cx + 44, 160); g.stroke(); g.beginPath(); g.moveTo(cx - 56, 160); g.lineTo(cx + 56, 160); g.arc(cx, 160, 56, 0, Math.PI); g.fill(); }); }]
   };
   // any word becomes a shape: measured first, then drawn wide enough to hold it
-  let heroWord = '';
-  const wordShape = w => { const key = 'w:' + w; if (DRAW[key]) return key; const m = document.createElement('canvas').getContext('2d'); m.font = '900 170px Heebo, "Noto Sans Arabic", Arial'; m.direction = 'rtl';
-    const width = Math.max(200, Math.ceil(m.measureText(w).width) + 40); DRAW[key] = [width, 230, g => { g.direction = 'rtl'; g.font = '900 170px Heebo, "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(w, width / 2, 125); }]; return key; };
+  let heroWord = '', heroKind = '';
+  const wordShape = w => { const key = 'w:' + w; if (DRAW[key]) return key; const m = document.createElement('canvas').getContext('2d'); m.font = '900 170px Rubik, "Noto Sans Arabic", Arial'; m.direction = 'rtl';
+    const width = Math.max(200, Math.ceil(m.measureText(w).width) + 40); DRAW[key] = [width, 230, g => { g.direction = 'rtl'; g.font = '900 170px Rubik, "Noto Sans Arabic", Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(w, width / 2, 125); }]; return key; };
   // a scanning light passes over each shape, as if it were being assembled
   const shaped = (r, kind, p, t, k) => { const D = DRAW[kind]; if (!D) return null; const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
     const pt = sh.pts[Math.floor(p.i / k) % sh.pts.length], [X, Y] = fit(r, sh, pt), sweep = ((t / 2600 + r.x / 900) % 1.4) - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 9);
@@ -482,10 +505,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const FORMS = {
     wave(s, t) { // the hero: the Midgam swarm; it writes whatever word you type in the field below it
       const box = rects(s, '[data-anchor=swarm]')[0]; if (!box) return null;
-      const kind = heroWord ? wordShape(heroWord) : 'logo', D = DRAW[kind]; if (!D) return null;
+      const kind = heroKind || 'logo', D = DRAW[kind]; if (!D) return null;
       const sh = shape(kind, D[0], D[1], D[2]); if (!sh || !sh.pts.length) return null;
       const breathe = 1 + .012 * Math.sin(t / 1400);
-      return p => { const pt = sh.pts[p.i % sh.pts.length], [X0, Y0] = fit(box, sh, pt, 6), cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+      return p => { const pt = sh.pts[p.i % sh.pts.length], [X0, Y0] = fit(box, sh, pt, 2), cx = box.x + box.w / 2, cy = box.y + box.h / 2;
         const X = cx + (X0 - cx) * breathe + Math.sin(t / 900 + p.ph) * .7, Y = cy + (Y0 - cy) * breathe + Math.cos(t / 1100 + p.ph) * .7;
         const sweep = (t / 2400) % 1.4 - .2, hit = Math.max(0, 1 - Math.abs(pt[0] - sweep) * 8);
         return [X, Y, .7 + .3 * hit, 1.5 + hit]; };
@@ -561,11 +584,52 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   addEventListener('keydown', e => { if (interactive(e.target) || e.key.length !== 1) return; typed = (typed + e.key).slice(-6);
     if (typed.endsWith('1988')) { show('year'); egg('year', 'גילית את שנת ההקמה'); typed = ''; }
     else if (typed.endsWith('מדגם') || typed.toLowerCase().endsWith('midgam')) { show('logo'); egg('word', 'כתבת מדגם, והנקודות הקשיבו'); typed = ''; } });
-  // the field under the swarm: whatever you type, the swarm writes; 1988 and מדגם are also secrets
-  const wordEl = document.getElementById('word'), clearEl = document.getElementById('word-clear');
-  const setWord = v => { heroWord = v.trim().slice(0, 14); clearEl.hidden = !heroWord; if (heroWord === '1988') egg('year', 'גילית את שנת ההקמה'); else if (/^(מדגם|midgam)$/i.test(heroWord)) egg('word', 'כתבת מדגם, והנקודות הקשיבו'); };
-  let wt; wordEl.addEventListener('input', () => { clearTimeout(wt); wt = setTimeout(() => setWord(wordEl.value), 260); });
-  clearEl.addEventListener('click', () => { wordEl.value = ''; setWord(''); wordEl.focus(); });
+  // ask Midgam: a question about the site; the answer comes from the site's own text
+  const askF = document.getElementById('ask'), qEl = document.getElementById('q'), ansBox = document.getElementById('answer'), ansT = document.getElementById('answer-t'), ansGo = document.getElementById('answer-go'), ansSrc = document.getElementById('answer-src'), tagEl = document.getElementById('tagline');
+  const setKind = k => { heroKind = k; tagEl.classList.toggle('off', !!k); };
+  // topics: which shape the swarm draws and which part of the page answers
+  const TOPICS = [
+    [/משפט|חוות דעת|ראיה|ראייה|תביע|ייצוגי|עורך דין|עו״ד|עו"ד|סימן מסחר|הטעיה/, 'justice', '#expertise'],
+    [/ערב|ערבית|מגזר|חרד|רוסי|אל.?ערב/, 'arabic', '#expertise'],
+    [/בחיר|פוליטי|מפלג|קלפי|ראש עיר|רשות|עירי/, 'ballot', '#fields'],
+    [/חינוך|בית ספר|תלמיד|מורים|הורים|אוניברסיט/, 'cap', '#fields'],
+    [/תקשורת|מדיה|עיתון|טלוויזיה|ערוץ|כתב|פרסום/, 'mic', '#fields'],
+    [/קבוצת מיקוד|קבוצות מיקוד|ראיון עומק|ראיונות|איכותני/, 'chat', '#capabilities'],
+    [/טלפון|פאנל|אינטרנט|סמס|sms|שטח|איסוף|שיט/i, 'methods', '#capabilities'],
+    [/בינה מלאכותית|ai|AI|אוטומט|טקסט פתוח/, 'neural', '#capabilities'],
+    [/1988|ותק|שנים|מתי הוק|היסטוריה|אמינ/, 'year', '#credibility'],
+    [/צוות|מנו|מינה|איהאב|מיכל|מי עובד|אנשים/, null, '#people'],
+    [/מחיר|עלות|כמה עולה|הצעת מחיר|קשר|טלפון של|מייל|כתובת/, 'qmark', '#contact']
+  ];
+  const topicOf = q => TOPICS.find(([re]) => re.test(q));
+  // without AI: the passage of the page that shares the most words with the question
+  const passages = () => [...document.querySelectorAll('.q, .cap, .fld.big, .area, .person, .cred .facts li, #contact .lede')].map(el => { const h = el.querySelector('h3, b'), ps = [...el.querySelectorAll('p:not(.role), span:not(.tag):not(.mark)')].map(n => n.textContent.trim()).filter(Boolean); return { el, title: h ? h.textContent.trim() : '', body: ps.join(' ') || el.textContent.trim(), text: el.innerText, sec: el.closest('section') }; });
+  const words = s2 => s2.replace(/[^֐-׿a-zA-Z0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 2).map(w => w.replace(/^[והבלמכש](?=[֐-׿]{3,})/, ''));
+  const localAnswer = q => { const qw = words(q); let best = null, bs = 0; passages().forEach(p => { const pw = words(p.text), sc = qw.filter(w => pw.some(x => x.includes(w) || w.includes(x))).length; if (sc > bs) { bs = sc; best = p; } }); return bs ? best : null; };
+  const siteText = () => [...document.querySelectorAll('main section')].map(sec => sec.innerText.replace(/[ \t]+/g, ' ').replace(/\n{2,}/g, '\n').trim()).join('\n\n').slice(0, 7000);
+  let sample = null, ctl = null;
+  if (window.claude && window.claude.use) window.claude.use('sample').then(f => { sample = f; }).catch(() => {});
+  const showAns = (text, href, src) => { ansBox.hidden = false; ansT.textContent = text; ansGo.hidden = !href; if (href) ansGo.href = href; ansSrc.textContent = src || ''; };
+  const answerLocally = (q, t) => { const hit = localAnswer(q), href = t ? t[2] : hit ? '#' + hit.sec.id : '#contact';
+    if (hit) showAns(hit.body, href, hit.title ? 'מתוך: ' + hit.title.replace(/[״"]/g, '') : 'מתוך האתר'); else showAns('על זה כדאי לדבר עם הצוות שלנו. השאירו פנייה ונחזור אליכם עם תשובה מסודרת.', '#contact', '');
+    setKind(t ? (t[1] || '') : hit ? '' : 'qmark'); };
+  askF.addEventListener('submit', async e => {
+    e.preventDefault(); const q = qEl.value.trim(); if (!q) { qEl.focus(); return; }
+    if (q === '1988') { setKind('year'); egg('year', 'גילית את שנת ההקמה'); showAns('מדגם ייעוץ ומחקר פועלת מאז 1988.', '#credibility', ''); return; }
+    if (/^(מדגם|midgam)$/i.test(q)) { setKind(''); showAns('ייעוץ ומחקר, מאז 1988.', '#credibility', ''); egg('word', 'כתבת מדגם, והנקודות הקשיבו'); return; }
+    const t = topicOf(q);
+    if (!sample) return answerLocally(q, t);
+    // with AI: the swarm turns into a question mark while Midgam thinks
+    setKind('qmark'); showAns('חושבים…', '', ''); ctl?.abort(); ctl = new AbortController(); askF.querySelector('button').disabled = true;
+    const prompt = `את/ה העוזר של אתר "מדגם ייעוץ ומחקר", מכון סקרים ומחקר בישראל. ענה/י בשפת השאלה, בשניים עד שלושה משפטים קצרים וברורים, רק על סמך תוכן האתר שלמטה. אם התשובה לא מופיעה בתוכן, אמור/י שצוות מדגם ישמח לענות והצע/י להשאיר פנייה. אל תמציא/י מספרים, שמות, מחירים או לקוחות.\nבשורה האחרונה כתוב/כתבי רק: TOPIC: ואחת מהמילים justice, arabic, ballot, cap, mic, chat, methods, neural, year, none.\n\nתוכן האתר:\n${siteText()}\n\nהשאלה: ${q}`;
+    const clean = s2 => s2.replace(/\n?\s*TOPIC:.*$/s, '').trim();
+    try {
+      const { text } = await sample(prompt, { modelTier: 'quick', signal: ctl.signal, onText: ({ text: tx }) => { const c = clean(tx); if (c) showAns(c, '', 'תשובה של מדגם, מתוך תוכן האתר'); } });
+      const m = /TOPIC:\s*([a-z]+)/.exec(text), k = m && DRAW[m[1]] ? m[1] : t ? t[1] : '';
+      showAns(clean(text), t ? t[2] : '#contact', 'תשובה של מדגם, מתוך תוכן האתר'); setKind(k || '');
+    } catch (err) { if (err && err.code === 'not_granted') sample = null; answerLocally(q, t); }
+    finally { askF.querySelector('button').disabled = false; }
+  });
   // 4. click the logo: it assembles again
   document.querySelector('.brand').addEventListener('click', () => { show('logo'); egg('logo', 'הלוגו נבנה מחדש מנקודות'); });
   // 5. double-click anywhere: a burst
@@ -578,7 +642,27 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   const TB = (() => { const r = seedR(19); return Array.from({ length: 48 }, () => Math.round(8 + r() * 70)); })();
   const NET = (() => { const r = seedR(5); return Array.from({ length: 26 }, () => [r(), r()]); })();
   const NOTES = ['n = 1,000', '±3.1%', '95% CI', 'p < 0.05', 'σ', 'r = 0.62', 'χ²', 'μ', 'שקלול', 'מכסות', 'N = 9.8M', 'α = 0.05'].map((s2, i) => { const r = seedR(i + 3); return { s: s2, u: r(), v: r(), d: .15 + r() * .5, ph: r() * 6.28 }; });
-  const ink = a => `rgba(${COL.sky},${a})`;
+
+  // each section has its own mood; the background blends from one to the next as you scroll
+  const MOODS = {
+    dark: [ // base, light 1, light 2, light 3
+      ['#0a2240', '#2098d0', '#1d5689', '#26c4b4'], ['#072a3c', '#26c4b4', '#2098d0', '#1d5689'], ['#0b2142', '#2098d0', '#f2a93b', '#1d5689'], ['#06203a', '#26c4b4', '#8fd0f2', '#2098d0'],
+      ['#0c2440', '#f2a93b', '#2098d0', '#26c4b4'], ['#0a1f38', '#2098d0', '#26c4b4', '#f2a93b'], ['#0d2540', '#8fd0f2', '#f2a93b', '#2098d0'], ['#0a2240', '#2098d0', '#26c4b4', '#1d5689']],
+    light: [
+      ['#eef6fc', '#9fd6f2', '#c9dff1', '#b6ece5'], ['#ecf8f6', '#a9e8e0', '#9fd6f2', '#d4e3f2'], ['#f1f6fc', '#9fd6f2', '#fbdcae', '#cfe0f1'], ['#ecf6fb', '#a9e8e0', '#c6e8f8', '#9fd6f2'],
+      ['#f6f6f4', '#fbdcae', '#9fd6f2', '#a9e8e0'], ['#eef4fb', '#9fd6f2', '#a9e8e0', '#fbdcae'], ['#f2f5fa', '#c6e8f8', '#fbdcae', '#9fd6f2'], ['#eef6fc', '#9fd6f2', '#a9e8e0', '#c9dff1']]
+  };
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), mixC = (a, b, f) => a.map((v, i) => Math.round(v + (b[i] - v) * f));
+  const airbox = document.getElementById('airbox'); let moodNow = null, inkC = [32, 152, 208];
+  const mood = () => {
+    let i = 0, f = 0; sections.forEach((s2, k) => { const r = s2.getBoundingClientRect(); if (r.top <= H * .5 && r.bottom > H * .5) { i = k; f = (H * .5 - r.top) / r.height; } });
+    const set = MOODS[document.documentElement.dataset.look === 'light' ? 'light' : 'dark'], a = set[i % set.length], b = set[Math.min(sections.length - 1, i + 1) % set.length], m = Math.min(1, Math.max(0, (f - .55) / .45));
+    const c = [0, 1, 2, 3].map(k => mixC(hex(a[k]), hex(b[k]), m)), key = c.flat().join();
+    inkC = c[1]; if (key === moodNow) return; moodNow = key;
+    const light = document.documentElement.dataset.look === 'light', al = light ? [.7, .6, .55] : [.55, .5, .32];
+    airbox.style.setProperty('--base', `rgb(${c[0]})`); [1, 2, 3].forEach(k => airbox.style.setProperty('--m' + k, `rgba(${c[k]},${al[k - 1]})`));
+  };
+  const ink = a => `rgba(${inkC},${a})`;
   const CHARTS = [
     (a, t) => { x.lineWidth = 1.2; for (let k = 0; k < 9; k++) { x.strokeStyle = ink(a * (.5 + k / 18)); x.beginPath(); for (let X = -20; X <= W + 20; X += 22) { const Y = H * (.12 + k * .1) + Math.sin(X / 230 + k * .7 + t / 4200) * 34 * (1 + k * .12) + Math.cos(X / 140 - t / 5600 + k) * 14; X < 0 ? x.moveTo(X, Y) : x.lineTo(X, Y); } x.stroke(); } },
     (a, t) => { const mu = W * .5 + Math.sin(t / 6000) * 20, sg = W * .12, base = H * .86, top = H * .5, f = X => base - Math.exp(-((X - mu) ** 2) / (2 * sg * sg)) * top;
@@ -590,8 +674,15 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     (a) => { const cols = 6, rows = 8, cw = W * .84 / cols, rh = H * .7 / rows, X0 = W * .08, Y0 = H * .16; x.strokeStyle = ink(a); x.lineWidth = 1;
       for (let i = 0; i <= rows; i++) { x.beginPath(); x.moveTo(X0, Y0 + i * rh); x.lineTo(X0 + cols * cw, Y0 + i * rh); x.stroke(); } for (let j = 0; j <= cols; j++) { x.beginPath(); x.moveTo(X0 + j * cw, Y0); x.lineTo(X0 + j * cw, Y0 + rows * rh); x.stroke(); }
       for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) note(TB[i * cols + j] + '%', X0 + (j + .5) * cw, Y0 + (i + .5) * rh, a * 2.2); },
-    (a, t) => { const cx = W * .5, cy = H * .52, R = Math.min(W, H) * .34, sh = [.34, .22, .18, .14, .12]; let ang = t / 30000; x.lineWidth = Math.min(W, H) * .06;
-      sh.forEach((v, i) => { x.strokeStyle = ink(a * (1 + i * .35)); x.beginPath(); x.arc(cx, cy, R, ang, ang + v * 6.283 - .03); x.stroke(); const m = ang + v * 3.14; note(Math.round(v * 100) + '%', cx + Math.cos(m) * (R + 50), cy + Math.sin(m) * (R + 50), a * 3); ang += v * 6.283; }); },
+    (a, t) => { // nine fields: a radar with nine axes, its shape breathing as the values shift
+      const cx = W * .5, cy = H * .54, R = Math.min(W, H) * .4, n = 9, ang = k => -Math.PI / 2 + k * 6.283 / n;
+      x.lineWidth = 1; x.strokeStyle = ink(a * 1.1);
+      [.25, .5, .75, 1].forEach(f => { x.beginPath(); for (let k = 0; k <= n; k++) { const X = cx + Math.cos(ang(k)) * R * f, Y = cy + Math.sin(ang(k)) * R * f; k ? x.lineTo(X, Y) : x.moveTo(X, Y); } x.stroke(); });
+      for (let k = 0; k < n; k++) { x.beginPath(); x.moveTo(cx, cy); x.lineTo(cx + Math.cos(ang(k)) * R, cy + Math.sin(ang(k)) * R); x.stroke(); }
+      const val = k => .45 + .35 * Math.abs(Math.sin(k * 1.9 + 1)) + .08 * Math.sin(t / 2600 + k);
+      x.beginPath(); for (let k = 0; k <= n; k++) { const v = val(k % n), X = cx + Math.cos(ang(k)) * R * v, Y = cy + Math.sin(ang(k)) * R * v; k ? x.lineTo(X, Y) : x.moveTo(X, Y); }
+      x.fillStyle = ink(a * .5); x.fill(); x.strokeStyle = ink(a * 1.7); x.lineWidth = 1.6; x.stroke();
+      for (let k = 0; k < n; k++) { const v = val(k), X = cx + Math.cos(ang(k)) * R * v, Y = cy + Math.sin(ang(k)) * R * v; x.fillStyle = ink(a * 3); x.beginPath(); x.arc(X, Y, 4, 0, 6.283); x.fill(); note(Math.round(v * 100) + '%', cx + Math.cos(ang(k)) * (R + 30), cy + Math.sin(ang(k)) * (R + 30), a * 2.6); } },
     (a, t) => { const n = 7; for (let i = 0; i < n; i++) { const X = W * (.12 + i * .76 / (n - 1)), v = .3 + .4 * Math.abs(Math.sin(i * 1.7 + 1)), Y = H * (.82 - v * .6), e = H * (.05 + .03 * Math.sin(i + t / 3000));
       x.strokeStyle = ink(a * 1.6); x.lineWidth = 1.6; x.beginPath(); x.moveTo(X, Y - e); x.lineTo(X, Y + e); x.moveTo(X - 10, Y - e); x.lineTo(X + 10, Y - e); x.moveTo(X - 10, Y + e); x.lineTo(X + 10, Y + e); x.stroke(); x.fillStyle = ink(a * 2); x.beginPath(); x.arc(X, Y, 5, 0, 6.283); x.fill(); } note('95% CI', W * .88, H * .15, a * 3); },
     (a, t) => { const pts = NET.map(([u, v], i) => [W * (.06 + u * .88) + Math.sin(t / 3000 + i) * 10, H * (.1 + v * .8) + Math.cos(t / 3400 + i) * 10]); x.lineWidth = 1;
@@ -600,8 +691,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     (a, t) => { const f = u => H * (.82 - (u * .5 + .08 * Math.sin(u * 9 + t / 3000))) ; x.fillStyle = ink(a * .5); x.beginPath(); x.moveTo(W * .06, H * .86); for (let u = 0; u <= 1.001; u += .02) x.lineTo(W * (.06 + u * .88), f(u)); x.lineTo(W * .94, H * .86); x.fill();
       x.strokeStyle = ink(a * 1.8); x.lineWidth = 2; x.beginPath(); for (let u = 0; u <= 1.001; u += .02) u ? x.lineTo(W * (.06 + u * .88), f(u)) : x.moveTo(W * .06, f(u)); x.stroke(); }
   ];
-  function note(s2, X, Y, a) { x.globalAlpha = Math.min(1, a); x.fillStyle = `rgb(${COL.sky})`; x.font = '500 13px "IBM Plex Mono", monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(s2, X, Y); x.globalAlpha = 1; }
+  function note(s2, X, Y, a) { x.globalAlpha = Math.min(1, a); x.fillStyle = `rgb(${inkC})`; x.font = '500 13px "IBM Plex Mono", monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(s2, X, Y); x.globalAlpha = 1; }
   const research = (t, sy) => {
+    mood();
     const A = document.documentElement.dataset.look === 'light' ? .085 : .13;
     // which two charts are on screen, and how far between them
     let i = 0, f = 0; sections.forEach((s2, k) => { const r = s2.getBoundingClientRect(); if (r.top <= H * .5 && r.bottom > H * .5) { i = k; f = (H * .5 - r.top) / r.height; } });
