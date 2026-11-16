@@ -589,6 +589,18 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     return [X + Math.sin(t / 900 + p.ph) * .6, Y + Math.cos(t / 1100 + p.ph) * .6, .7 + .3 * hit, (FILLED.has(kind) ? 1.5 : 1.2) + hit * .7]; };
   if (document.fonts) document.fonts.load('800 120px "Noto Sans Arabic"').then(() => { delete SHAPES.arabic; }).catch(() => {});
 
+  // the team's arrival: ?team=fly brings the portraits in from far away, otherwise the swarm prints them
+  const TEAM_MODE = /[?&]team=fly/.test(location.search) ? 'fly' : 'print', FACES = [...document.querySelectorAll('#people [data-anchor=face]')], peopleSec = document.getElementById('people');
+  const ease = q => 1 - Math.pow(1 - q, 3); let teamT0 = null;
+  const teamProg = (k, t) => reduce ? 1 : teamT0 == null ? 0 : Math.min(1, Math.max(0, (t - teamT0 - 250 - k * 330) / (TEAM_MODE === 'fly' ? 1500 : 1900)));
+  const teamPaint = (t, act) => { if (reduce) return; const r = peopleSec.getBoundingClientRect();
+    if (act && teamT0 == null) teamT0 = t; else if (!act && teamT0 != null && (r.bottom < 0 || r.top > H)) teamT0 = null;
+    FACES.forEach((f, k) => { const q = teamProg(k, t), key = q.toFixed(3); if (f._q === key) return; f._q = key;
+      if (TEAM_MODE === 'print') { f.style.clipPath = q >= 1 ? '' : `inset(0 0 ${((1 - q) * 100).toFixed(2)}% 0)`; return; }
+      if (q >= 1) { f.style.transform = ''; f.style.opacity = ''; return; }
+      f.style.transform = 'none'; const L = f.getBoundingClientRect(), e = ease(q), sc = .03 + .97 * e, team = f.closest('.team').getBoundingClientRect();
+      const ox = W / 2 - (L.left + L.width / 2), oy = team.top - 140 - (L.top + L.height / 2);
+      f.style.transform = `translate(${(ox * (1 - e)).toFixed(1)}px,${(oy * (1 - e)).toFixed(1)}px) scale(${sc.toFixed(3)})`; f.style.opacity = Math.max(0, Math.min(1, (q - .55) / .35)).toFixed(3); }); };
   const FORMS = {
     wave(s, t) { // the hero: the Midgam swarm draws the mark and its tagline; a question turns it into the topic's shape
       const sb = s.querySelector('[data-anchor=swarm]').getBoundingClientRect(), box = sb.width ? { x: sb.left, y: sb.top, w: sb.width, h: sb.height } : null; if (!box) return null;
@@ -645,9 +657,18 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       return p => { if (false) { const r = ts[Math.floor(p.i / 5) % ts.length], [X, Y] = perim(r, p.u + t / 30000, 7 + p.v * 8); return [X, Y, .6, 1.6]; } return pics && pics(p); };
     },
     pair(s, t) { return FORMS.lanes(s, t); },
-    halo(s, t) { // the team: people moving along the edge of each portrait
-      const fs = rects(s, '[data-anchor=face]'); if (!fs.length || phone) return null;
-      return p => { const r = fs[p.i % fs.length], [X, Y] = perim(r, p.u + t / (24000 + p.v * 9000), 6 + p.v * 16); return [X, Y, p.v > .6 ? .35 : .75, 1.4 + (1 - p.v)]; };
+    halo(s, t) { // the team: each portrait arrives through the swarm (printed line by line, or flown in from far away), then people move along its edge
+      const fs = rects(s, '[data-anchor=face]'); if (!fs.length) return null;
+      return p => { const r = fs[p.i % fs.length], k = FACES.indexOf(r.el), q = teamProg(k, t), j = Math.floor(p.i / fs.length);
+        if (q < 1 && !reduce) {
+          if (TEAM_MODE === 'print') { // a print head: a bar of dots lays the picture down, a bright carriage runs back and forth along it
+            if (j % 3 === 2) return null; const Y = r.y + q * r.h;
+            if (p.v < .22) { const scan = .5 + .5 * Math.sin(t / 110 + k); return [r.x + (scan + (p.u - .5) * .12) * r.w, Y + (p.s - 1) * 6, 1, 2.1]; }
+            return [r.x + p.u * r.w, Y + (p.v - .5) * 7, q > 0 ? .95 : .55, 1.6]; }
+          // flying in: the swarm holds the picture as a tile of dots that grows as it comes close, then the photo shows through it
+          if (j >= 320) return null; const sc = Math.max(.03, ease(q));
+          return [r.x + ((j % 16) + .5) / 16 * r.w, r.y + (Math.floor(j / 16) + .5) / 20 * r.h, .95 * (1 - Math.max(0, (q - .7) / .3)) + .05, .7 + sc * 1.3]; }
+        if (phone) return null; const [X, Y] = perim(r, p.u + t / (24000 + p.v * 9000), 6 + p.v * 16); return [X, Y, p.v > .6 ? .35 : .75, 1.4 + (1 - p.v)]; };
     },
     contact(s, t) { // contact: a big question mark made of people, and more of them along the form's edge
       const q = rects(s, '[data-kind=qmark]')[0], f = rects(s, '[data-anchor=form]')[0];
@@ -843,7 +864,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
     research(reduce ? 0 : t, sy);
     for (const f of FAR) { const X = (f.u * W + Math.sin(t / 7000 + f.ph) * 20) % W, Y = ((f.v * H - sy * f.d) % H + H) % H; x.globalAlpha = .18 + .12 * Math.sin(t / 1400 + f.ph); x.fillStyle = FARC; x.fillRect(X, Y, f.r, f.r); }
     // the near field: drift toward the active section's shape
-    const s = active(); let place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
+    const s = active(); teamPaint(t, s === peopleSec); let place = (FORMS[s.dataset.form] || (() => null))(s, reduce ? 0 : t);
     // every section lets go the way the hero does: as its end rises past the bottom of the screen, its dots break off one by one and fall,
     // still in view, before the next section gathers them; scrolling back reassembles it
     if (place && s.dataset.form !== 'wave' && !reduce) { const sr = s.getBoundingClientRect(), lv = Math.min(1.5, Math.max(0, (H - sr.bottom) / (H * .45)));
