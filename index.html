@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>מדגם — חוות דעת מומחה על סקרים בהליכים משפטיים</title>
 <meta name="description" content="מדגם בוחנת סקרים מבחינה מתודולוגית — ביקורת על ראיות הצד השני, או בניית מחקר עצמאי לבחינת טענה. חוות דעת חתומה בידי ד״ר מינה צמח.">
-<meta name="theme-color" content="#f1f5f9">
+<meta name="theme-color" content="#1d5689">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -452,9 +452,9 @@ main>section>.wrap{position:relative;z-index:1}
 .amb{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .orb{position:absolute;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,var(--c) 0%,transparent 68%);animation:drift var(--d) ease-in-out infinite alternate;will-change:transform}
 @keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(var(--x1),var(--y1)) scale(1.1)}100%{transform:translate(var(--x2),var(--y2)) scale(.94)}}
-.field{position:absolute;inset:-56px;background-image:radial-gradient(rgba(29,86,137,.2) 1.4px,transparent 1.8px);background-size:28px 28px;animation:pan 40s linear infinite;
+.amb-field{position:absolute;inset:-56px;background-image:radial-gradient(rgba(29,86,137,.2) 1.4px,transparent 1.8px);background-size:28px 28px;animation:pan 40s linear infinite;
   -webkit-mask-image:radial-gradient(70% 60% at 50% 45%,#000 0%,transparent 75%);mask-image:radial-gradient(70% 60% at 50% 45%,#000 0%,transparent 75%)}
-.amb--dark .field{background-image:radial-gradient(rgba(255,255,255,.13) 1.4px,transparent 1.8px)}
+.amb--dark .amb-field{background-image:radial-gradient(rgba(255,255,255,.13) 1.4px,transparent 1.8px)}
 @keyframes pan{to{transform:translate(28px,28px)}}
 .gl{position:absolute;width:var(--z);height:var(--z);display:grid;place-items:center;color:rgba(29,86,137,.2);fill:currentColor;animation:bob var(--d) ease-in-out infinite alternate}
 .gl svg{width:100%;height:100%}
@@ -464,6 +464,46 @@ main>section>.wrap{position:relative;z-index:1}
 .hero>.wrap{position:relative;z-index:1}
 @media (max-width:640px){.gl{display:none}.orb{--s:420px!important}}
 @media (prefers-reduced-motion:reduce){.amb *{animation:none!important}}
+
+/* ---------- blue theme: the whole page on Midgam blue; white surfaces keep dark text ---------- */
+body{background:#123a5e;color:#fff}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1100px 700px at 85% -10%,rgba(34,154,214,.35),transparent 70%),linear-gradient(170deg,#1d5689 0%,#174b7a 40%,#113656 100%)}
+:focus-visible{outline-color:#fff;box-shadow:0 0 0 5px #0f3253}
+.card:not(.card--blue) :focus-visible,.cbox .form :focus-visible,.statement :focus-visible,.motion:focus-visible,.mode button:focus-visible{outline-color:var(--blue);box-shadow:none}
+.btn{background:#fff;color:var(--blue);box-shadow:0 14px 26px -14px rgba(0,0,0,.6)}
+.btn .ar{background:var(--blue);color:#fff}
+@media (hover:hover){.btn:hover{background:#eaf2f9;box-shadow:0 20px 32px -14px rgba(0,0,0,.65)}}
+.btn--soft{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55)}
+@media (hover:hover){.btn--soft:hover{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1.5px #fff}}
+.cbox .btn,.statement .btn{background:var(--blue);color:#fff}
+.cbox .btn .ar,.statement .btn .ar{background:#fff;color:var(--blue)}
+.nav.is-scrolled{background:rgba(17,54,86,.9);box-shadow:0 1px 0 rgba(255,255,255,.08)}
+.links{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.links a{color:#e3eef8}
+.hero{background:transparent}
+.hero h1 span,.h2 span{color:#8fd3f5}
+.hero .sub,.lead{color:#e3eef8}
+.facts{border-top-color:rgba(255,255,255,.16)}
+.facts div+div{border-inline-start-color:rgba(255,255,255,.16)}
+.facts dt{color:#c9dcee}
+.eyebrow{background:rgba(255,255,255,.14);color:#fff}
+.card:not(.card--blue),.step:not(:last-child),.statement,.cbox{color:var(--ink)}
+.card:not(.card--blue) .eyebrow,.cbox .form .eyebrow{background:var(--sky-soft);color:var(--blue)}
+.card--blue,.step:last-child{box-shadow:inset 0 0 0 1.5px rgba(143,211,245,.45),0 30px 60px -36px rgba(0,0,0,.6)}
+.card,.step,.statement,.cbox{box-shadow:0 30px 60px -40px rgba(0,0,0,.55)}
+.lane .lb{background-image:linear-gradient(90deg,rgba(255,255,255,.35) 50%,transparent 0)}
+.ld{box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.tic{background:#fff;color:var(--blue)}
+.about{background:transparent}
+.foot p{color:#c9dcee}
+.foot nav a{color:#e3eef8}
+@media (hover:hover){.foot nav a:hover{background:rgba(255,255,255,.1);color:#fff}}
+.amb-field{background-image:radial-gradient(rgba(255,255,255,.13) 1.4px,transparent 1.8px)}
+.gl{color:rgba(255,255,255,.16)}.gl.gt{color:rgba(255,255,255,.13)}
+.amb:not(.amb--dark) .orb:nth-of-type(1){--c:rgba(34,154,214,.42)!important}
+.amb:not(.amb--dark) .orb:nth-of-type(2){--c:rgba(10,35,62,.6)!important}
+.amb:not(.amb--dark) .orb:nth-of-type(3){--c:rgba(143,211,245,.18)!important}
+.skip{background:#fff;color:var(--blue)}
 
 /* ---------- responsive ---------- */
 @media (max-width:1100px){
@@ -530,7 +570,7 @@ main>section>.wrap{position:relative;z-index:1}
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="home" href="#top" aria-label="מדגם — לראש העמוד"><img class="logo" src="assets/midgam-logo-blue.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="114" height="48"></a>
+    <a class="home" href="#top" aria-label="מדגם — לראש העמוד"><img class="logo" src="assets/midgam-logo-white.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="114" height="48"></a>
     <nav class="links" aria-label="ניווט ראשי"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a></nav>
     <a class="btn btn--sm" href="#contact">תיאום שיחה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </div>
@@ -539,7 +579,7 @@ main>section>.wrap{position:relative;z-index:1}
 <main id="main" tabindex="-1">
   <!-- ================= HERO ================= -->
   <section class="hero" id="top" aria-labelledby="h1">
-    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-2s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-7s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-11s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-5s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-14s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-9s">N</span></div>
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="amb-field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-2s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-7s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-11s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-5s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-14s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-9s">N</span></div>
     <div class="wrap">
       <div>
         <div class="mode" id="mode" role="group" aria-label="מה המצב בתיק?" data-up style="--i:0">
@@ -639,7 +679,7 @@ main>section>.wrap{position:relative;z-index:1}
 
   <!-- ================= SERVICES ================= -->
   <section id="services" aria-labelledby="svc-h">
-    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-6s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-11s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-15s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-9s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-18s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-13s">N</span></div>
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="amb-field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-6s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-11s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-15s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-9s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-18s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-13s">N</span></div>
     <div class="wrap">
       <div class="head">
         <div><span class="eyebrow">שירותים</span><h2 class="h2" id="svc-h">שני מסלולי עבודה. <span>שאלה אחת: האם הראיה עומדת בבדיקה?</span></h2></div>
@@ -681,7 +721,7 @@ main>section>.wrap{position:relative;z-index:1}
 
   <!-- ================= ABOUT ================= -->
   <section class="about" id="about" aria-labelledby="about-h">
-    <div class="amb amb--dark" aria-hidden="true"><i class="orb" style="--s:700px;--c:rgba(34,154,214,.38);top:-200px;left:-120px;--d:26s;--x1:120px;--y1:80px;--x2:40px;--y2:160px"></i><i class="orb" style="--s:560px;--c:rgba(143,211,245,.16);bottom:-200px;right:10%;--d:32s;--x1:-140px;--y1:-60px;--x2:-60px;--y2:-140px"></i><i class="orb" style="--s:420px;--c:rgba(18,58,94,.55);top:30%;right:-120px;--d:22s;--x1:-80px;--y1:60px;--x2:-40px;--y2:-40px"></i><i class="field"></i></div>
+    <div class="amb amb--dark" aria-hidden="true"><i class="orb" style="--s:700px;--c:rgba(34,154,214,.38);top:-200px;left:-120px;--d:26s;--x1:120px;--y1:80px;--x2:40px;--y2:160px"></i><i class="orb" style="--s:560px;--c:rgba(143,211,245,.16);bottom:-200px;right:10%;--d:32s;--x1:-140px;--y1:-60px;--x2:-60px;--y2:-140px"></i><i class="orb" style="--s:420px;--c:rgba(18,58,94,.55);top:30%;right:-120px;--d:22s;--x1:-80px;--y1:60px;--x2:-40px;--y2:-40px"></i><i class="amb-field"></i></div>
     <div class="adots" aria-hidden="true"></div>
     <svg class="asig" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true" fill="none">
       <path pathLength="1" d="M-40 720C70 706 150 620 220 636S238 756 192 736 268 586 356 604 402 724 470 712 548 616 622 626 652 748 606 728 716 640 800 656 848 604 920 596 958 712 1040 700 1100 640 1180 648 1312 728 1480 690"/>
@@ -705,7 +745,7 @@ main>section>.wrap{position:relative;z-index:1}
 
   <!-- ================= PROCESS ================= -->
   <section id="process" aria-labelledby="proc-h">
-    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-11s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-16s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-20s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-14s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-23s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-18s">N</span></div>
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="amb-field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-11s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-16s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-20s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-14s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-23s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-18s">N</span></div>
     <div class="wrap">
       <div class="head">
         <div><span class="eyebrow">תהליך העבודה</span><h2 class="h2" id="proc-h">מהשיחה הראשונה <span>ועד דוכן העדים</span></h2></div>
@@ -729,7 +769,7 @@ main>section>.wrap{position:relative;z-index:1}
 
   <!-- ================= CONTACT ================= -->
   <section class="contact" id="contact" aria-labelledby="contact-h">
-    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-4s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-9s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-13s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-7s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-16s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-11s">N</span></div>
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="amb-field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-4s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-9s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-13s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-7s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-16s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-11s">N</span></div>
     <div class="wrap">
       <div class="cbox">
         <div class="cside">
@@ -781,7 +821,7 @@ main>section>.wrap{position:relative;z-index:1}
 
 <footer class="foot">
   <div class="wrap">
-    <img class="logo" src="assets/midgam-logo-blue.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="100" height="42">
+    <img class="logo" src="assets/midgam-logo-white.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="100" height="42">
     <p>מדגם ייעוץ ומחקר · נוסד ב־<span class="ltr">1988</span> · © <span class="ltr">2026</span></p>
     <nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a><a href="#contact">תיאום שיחה</a><a href="accessibility.html">הצהרת נגישות</a></nav>
     <a class="totop" href="#top">חזרה למעלה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 9.5 8 5l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
