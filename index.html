@@ -63,7 +63,7 @@ ul,ol{padding:0;list-style:none}
 .nav.is-scrolled{background:rgba(241,245,249,.94);box-shadow:0 1px 0 var(--line)}
 .nav .wrap{display:flex;align-items:center;height:88px;gap:24px}
 .nav .home{display:inline-flex;align-items:center;min-height:44px}
-.logo{height:40px;width:auto}
+.logo{height:48px;width:auto}
 .links{display:flex;gap:4px;margin-inline-start:auto;padding:5px;border-radius:999px;background:rgba(255,255,255,.75);box-shadow:0 0 0 1px var(--line)}
 .links a{height:36px;display:inline-flex;align-items:center;padding:0 16px;border-radius:999px;font-size:14.5px;font-weight:400;color:var(--ink-2);transition:background-color .2s var(--ease),color .2s}
 @media (hover:hover){.links a:hover{background:#fff;color:var(--blue);box-shadow:0 1px 2px rgba(14,18,22,.08)}}
@@ -361,7 +361,7 @@ main>section{position:relative;padding-block:112px}
 /* ---------- footer ---------- */
 .foot{padding:36px 0 44px}
 .foot .wrap{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
-.foot .logo{height:34px}
+.foot .logo{height:42px}
 .foot p{font-size:14.5px;color:var(--mute)}
 .foot nav{margin-inline-start:auto;display:flex;gap:6px;flex-wrap:wrap}
 .foot nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 12px;border-radius:999px;font-size:14.5px;color:var(--ink-2);transition:background-color .2s,color .2s}
@@ -446,6 +446,25 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 .sent h3:focus{outline:none}
 @media (max-width:640px){.motion{width:44px;padding:0;justify-content:center}.motion span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 
+/* ---------- ambient background: drifting glows, a slow dot field, floating survey marks ---------- */
+main>section{overflow:clip}
+main>section>.wrap{position:relative;z-index:1}
+.amb{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,var(--c) 0%,transparent 68%);animation:drift var(--d) ease-in-out infinite alternate;will-change:transform}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(var(--x1),var(--y1)) scale(1.1)}100%{transform:translate(var(--x2),var(--y2)) scale(.94)}}
+.field{position:absolute;inset:-56px;background-image:radial-gradient(rgba(29,86,137,.2) 1.4px,transparent 1.8px);background-size:28px 28px;animation:pan 40s linear infinite;
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 45%,#000 0%,transparent 75%);mask-image:radial-gradient(70% 60% at 50% 45%,#000 0%,transparent 75%)}
+.amb--dark .field{background-image:radial-gradient(rgba(255,255,255,.13) 1.4px,transparent 1.8px)}
+@keyframes pan{to{transform:translate(28px,28px)}}
+.gl{position:absolute;width:var(--z);height:var(--z);display:grid;place-items:center;color:rgba(29,86,137,.2);fill:currentColor;animation:bob var(--d) ease-in-out infinite alternate}
+.gl svg{width:100%;height:100%}
+.gl.gt{font:900 var(--z)/1 var(--font);color:rgba(29,86,137,.13)}
+@keyframes bob{0%{transform:translateY(0) rotate(-6deg)}100%{transform:translateY(-38px) rotate(8deg)}}
+.hero{position:relative}
+.hero>.wrap{position:relative;z-index:1}
+@media (max-width:640px){.gl{display:none}.orb{--s:420px!important}}
+@media (prefers-reduced-motion:reduce){.amb *{animation:none!important}}
+
 /* ---------- responsive ---------- */
 @media (max-width:1100px){
   .hero .wrap,.about .wrap,.cbox,.head,.svc{grid-template-columns:1fr}
@@ -511,7 +530,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="home" href="#top" aria-label="מדגם — לראש העמוד"><img class="logo" src="assets/midgam-logo.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="163" height="40"></a>
+    <a class="home" href="#top" aria-label="מדגם — לראש העמוד"><img class="logo" src="assets/midgam-logo-blue.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="114" height="48"></a>
     <nav class="links" aria-label="ניווט ראשי"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a></nav>
     <a class="btn btn--sm" href="#contact">תיאום שיחה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </div>
@@ -520,6 +539,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 <main id="main" tabindex="-1">
   <!-- ================= HERO ================= -->
   <section class="hero" id="top" aria-labelledby="h1">
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-2s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-7s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-11s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-5s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-14s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-9s">N</span></div>
     <div class="wrap">
       <div>
         <div class="mode" id="mode" role="group" aria-label="מה המצב בתיק?" data-up style="--i:0">
@@ -619,6 +639,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 
   <!-- ================= SERVICES ================= -->
   <section id="services" aria-labelledby="svc-h">
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-6s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-11s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-15s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-9s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-18s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-13s">N</span></div>
     <div class="wrap">
       <div class="head">
         <div><span class="eyebrow">שירותים</span><h2 class="h2" id="svc-h">שני מסלולי עבודה. <span>שאלה אחת: האם הראיה עומדת בבדיקה?</span></h2></div>
@@ -660,6 +681,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 
   <!-- ================= ABOUT ================= -->
   <section class="about" id="about" aria-labelledby="about-h">
+    <div class="amb amb--dark" aria-hidden="true"><i class="orb" style="--s:700px;--c:rgba(34,154,214,.38);top:-200px;left:-120px;--d:26s;--x1:120px;--y1:80px;--x2:40px;--y2:160px"></i><i class="orb" style="--s:560px;--c:rgba(143,211,245,.16);bottom:-200px;right:10%;--d:32s;--x1:-140px;--y1:-60px;--x2:-60px;--y2:-140px"></i><i class="orb" style="--s:420px;--c:rgba(18,58,94,.55);top:30%;right:-120px;--d:22s;--x1:-80px;--y1:60px;--x2:-40px;--y2:-40px"></i><i class="field"></i></div>
     <div class="adots" aria-hidden="true"></div>
     <svg class="asig" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true" fill="none">
       <path pathLength="1" d="M-40 720C70 706 150 620 220 636S238 756 192 736 268 586 356 604 402 724 470 712 548 616 622 626 652 748 606 728 716 640 800 656 848 604 920 596 958 712 1040 700 1100 640 1180 648 1312 728 1480 690"/>
@@ -683,6 +705,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 
   <!-- ================= PROCESS ================= -->
   <section id="process" aria-labelledby="proc-h">
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-11s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-16s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-20s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-14s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-23s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-18s">N</span></div>
     <div class="wrap">
       <div class="head">
         <div><span class="eyebrow">תהליך העבודה</span><h2 class="h2" id="proc-h">מהשיחה הראשונה <span>ועד דוכן העדים</span></h2></div>
@@ -706,6 +729,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 
   <!-- ================= CONTACT ================= -->
   <section class="contact" id="contact" aria-labelledby="contact-h">
+    <div class="amb" aria-hidden="true"><i class="orb" style="--s:760px;--c:rgba(34,154,214,.28);top:-220px;right:-160px;--d:28s;--x1:-90px;--y1:70px;--x2:40px;--y2:140px"></i><i class="orb" style="--s:640px;--c:rgba(29,86,137,.16);bottom:-240px;left:-160px;--d:34s;--x1:110px;--y1:-60px;--x2:60px;--y2:-120px"></i><i class="orb" style="--s:460px;--c:rgba(143,211,245,.36);top:38%;left:34%;--d:24s;--x1:-120px;--y1:-50px;--x2:90px;--y2:40px"></i><i class="field"></i><span class="gl" style="top:16%;left:7%;--d:19s;--z:46px;animation-delay:-4s"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1.5"/><rect x="10" y="6" width="4" height="15" rx="1.5"/><rect x="17" y="9" width="4" height="12" rx="1.5"/></svg></span><span class="gl gt" style="top:68%;left:16%;--d:23s;--z:54px;animation-delay:-9s">%</span><span class="gl" style="top:28%;left:46%;--d:21s;--z:40px;animation-delay:-13s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg></span><span class="gl" style="bottom:14%;right:9%;--d:25s;--z:48px;animation-delay:-7s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4" stroke-linecap="round"/></svg></span><span class="gl" style="top:10%;right:38%;--d:22s;--z:42px;animation-delay:-16s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><span class="gl gt" style="bottom:30%;left:52%;--d:27s;--z:40px;animation-delay:-11s">N</span></div>
     <div class="wrap">
       <div class="cbox">
         <div class="cside">
@@ -757,7 +781,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 
 <footer class="foot">
   <div class="wrap">
-    <img class="logo" src="assets/midgam-logo.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="139" height="34">
+    <img class="logo" src="assets/midgam-logo-blue.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="100" height="42">
     <p>מדגם ייעוץ ומחקר · נוסד ב־<span class="ltr">1988</span> · © <span class="ltr">2026</span></p>
     <nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a><a href="#contact">תיאום שיחה</a><a href="accessibility.html">הצהרת נגישות</a></nav>
     <a class="totop" href="#top">חזרה למעלה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 9.5 8 5l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
