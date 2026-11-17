@@ -1209,6 +1209,10 @@ html.embed .stage.playing .game{left:72px;top:118px;transform:none}
   document.getElementById('again').addEventListener('click', exitPlay);
   document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); enterPlay(); }));
   document.getElementById('exit').addEventListener('click', exitPlay);
+  // ?autoplay: opened from the home page's play button, the game starts at once (one click is enough); leaving it tells the page to close it
+  const AUTOPLAY = /[?&]autoplay/.test(location.search);
+  if (AUTOPLAY) requestAnimationFrame(() => enterPlay());
+  if (AUTOPLAY && window.parent !== window) document.getElementById('exit').addEventListener('click', () => { try { window.parent.postMessage({ midgam: 'game-exit' }, '*'); } catch (_) {} });
   const KEYMAP = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down', A: 'left', D: 'right', W: 'up', S: 'down' };
   addEventListener('keydown', e => {
     if (MODE !== 'play') return;
