@@ -89,6 +89,7 @@ main>section{position:relative;padding-block:112px}
 .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
 .facts{display:flex;margin-top:52px;padding-top:24px;border-top:1px solid var(--line)}
 .facts div{flex:1;padding-inline-end:20px;min-width:0}
+.facts .f-team{flex:2.2}
 .facts div+div{padding-inline-start:20px;border-inline-start:1px solid var(--line)}
 .facts dt{font-size:13px;color:var(--mute)}
 .facts dd{margin-top:4px;font-size:16.5px;font-weight:600}
@@ -249,6 +250,7 @@ main>section{position:relative;padding-block:112px}
 .about .wrap{position:relative;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:96px;align-items:center}
 .about .eyebrow{background:rgba(255,255,255,.14);color:#fff}
 .about .h2{font-size:clamp(44px,4.6vw,68px)}
+.about .h2 span{color:#8fd3f5}
 .about .role{margin-top:16px;font-size:22px;font-weight:500;color:#fff;text-wrap:balance}
 .about .body{margin-top:14px;font-size:18px;line-height:1.7;color:#e3eef8;max-width:34em}
 .vows{margin-top:36px;display:grid;gap:10px;max-width:600px}
@@ -276,6 +278,19 @@ main>section{position:relative;padding-block:112px}
 .sigcard i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--sky-soft);color:var(--blue)}
 .sigcard i svg{width:16px;height:16px}
 .sigcard small{display:block;font-weight:400;color:var(--ink-2);font-size:13px}
+
+/* team photo */
+.about .wrap:has(.team){grid-template-columns:minmax(0,4.6fr) minmax(0,7.4fr);gap:72px}
+@media (max-width:1100px){.about .wrap:has(.team){grid-template-columns:1fr;gap:40px}}
+.pwrap.team{max-width:none;justify-self:stretch}
+.team .portrait{aspect-ratio:3/2}
+.names{position:absolute;inset:auto 0 18px 0;height:0}
+.names span{position:absolute;bottom:0;transform:translateX(-50%);white-space:nowrap;display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;background:#fff;color:var(--ink);font-size:15.5px;font-weight:700;box-shadow:0 12px 24px -12px rgba(0,0,0,.5)}
+.about .body{max-width:24em}
+.names span.all{display:none}
+.faces{flex:none;display:flex}
+.faces img{width:48px;height:48px;border-radius:50%;box-shadow:0 0 0 3px #1d5689;background:#2a6aa3}
+.faces img+img{margin-inline-start:-14px}
 
 /* ---------- process ---------- */
 .steps{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
@@ -468,6 +483,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
   .flow{flex-wrap:wrap;row-gap:10px}.flow i{min-width:14px;flex:0 0 14px}
   .vows li{padding:16px;gap:14px}.vows b{font-size:17.5px}
   .pwrap{order:-1;width:calc(100% - 24px);margin:0 auto 0 12px}
+  .names span{display:none}.names span.all{display:inline-flex;height:32px;padding:0 14px;font-size:13px}.names{bottom:12px}
   .pframe{transform:translate(-10px,10px) rotate(-2deg)}.about.in .pframe{transform:translate(-12px,12px) rotate(-3deg)}
   .sigcard{left:-8px;bottom:24px}
   .asig{top:auto;height:340px}
@@ -496,7 +512,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
 <header class="nav" id="nav">
   <div class="wrap">
     <a class="home" href="#top" aria-label="מדגם — לראש העמוד"><img class="logo" src="assets/midgam-logo.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="163" height="40"></a>
-    <nav class="links" aria-label="ניווט ראשי"><a href="#services">שירותים</a><a href="#about">ד״ר מינה צמח</a><a href="#process">תהליך העבודה</a></nav>
+    <nav class="links" aria-label="ניווט ראשי"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a></nav>
     <a class="btn btn--sm" href="#contact">תיאום שיחה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </div>
 </header>
@@ -531,8 +547,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
           </div>
         </div>
         <dl class="facts" data-up style="--i:4">
-          <div><dt>חותמת על כל חוות דעת</dt><dd>ד״ר מינה צמח</dd></div>
-          <div><dt>ראש המכון</dt><dd>מנו גבע</dd></div>
+          <div class="f-team"><dt>הצוות</dt><dd>מנו גבע · עדי גבע · ד״ר מינה צמח</dd></div>
           <div><dt>מכון המחקר</dt><dd>נוסד ב־<span class="ltr">1988</span></dd></div>
         </dl>
       </div>
@@ -651,24 +666,17 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
     </svg>
     <div class="wrap">
       <div>
-        <span class="eyebrow">מי חותמת על חוות הדעת</span>
-        <h2 class="h2" id="about-h">ד״ר מינה צמח</h2>
-        <p class="role">מובילה את כל עבודת חוות הדעת במדגם, ומופיעה בבית המשפט.</p>
-        <p class="body">עשרות שנים של כתיבת חוות דעת מומחה והופעה בבתי משפט. כל חוות דעת נכתבת מתוך ידיעה שהיא תיבחן בחקירה נגדית.</p>
-        <ol class="vows">
-          <li style="--n:0"><span class="vn">01</span><div><b>כל טענה נשענת על נתון</b><span>המסקנה לא הולכת רחוק יותר ממה שהנתונים מראים.</span></div></li>
-          <li style="--n:1"><span class="vn">02</span><div><b>כל מגבלה מוצגת מראש</b><span>לפני שהצד השני מגלה אותה בחקירה.</span></div></li>
-          <li style="--n:2"><span class="vn">03</span><div><b>עומדת מאחורי חוות הדעת על הדוכן</b><span>הכנה לחקירה נגדית היא חלק מהעבודה, לא תוספת.</span></div></li>
-        </ol>
+        <span class="eyebrow">הצוות</span>
+        <h2 class="h2" id="about-h">האנשים מאחורי<br><span>חוות הדעת</span></h2>
+        <p class="body">כל חוות דעת נבנית כדי לעמוד בחקירה נגדית: כל טענה נשענת על נתון, וכל מגבלה מוצגת מראש.</p>
       </div>
-      <div class="pwrap">
-        <!-- PORTRAIT: assets/mina-tzamach.jpg (4:5, at least 960×1200) -->
+      <div class="pwrap team">
         <figure class="portrait" id="portrait">
-          <img src="assets/mina-tzamach.jpg" alt="ד״ר מינה צמח" width="960" height="1200" loading="lazy">
-          <div class="slot" aria-hidden="true"><svg viewBox="0 0 100 110" fill="#fff"><circle cx="50" cy="34" r="22"/><path d="M6 110c0-26 20-44 44-44s44 18 44 44z"/></svg><span>דיוקן · ד״ר מינה צמח</span></div>
+          <img src="assets/team.jpg" alt="מנו גבע, עדי גבע וד״ר מינה צמח" width="1536" height="1024" loading="lazy">
+          <div class="slot" aria-hidden="true"><span>הצוות של מדגם</span></div>
+          <figcaption class="names"><span style="left:31%">מנו גבע</span><span style="left:50.5%">עדי גבע</span><span style="left:69%">ד״ר מינה צמח</span><span class="all" style="left:50%">ד״ר מינה צמח · עדי גבע · מנו גבע</span></figcaption>
         </figure>
         <div class="pframe" aria-hidden="true"></div>
-        <div class="sigcard"><i><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 17c3-1 4-9 7-9s0 9 3 9 3-4 6-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 21h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></i><div>חוות דעת חתומה<small>ד״ר מינה צמח</small></div></div>
       </div>
     </div>
   </section>
@@ -709,7 +717,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
             <div class="bub them dots"><i></i><i></i><i></i></div>
             <div class="bub them gone"><small>מדגם</small>נבדוק את הדגימה ואת ניסוח השאלות, ונחזור עם הערכה.</div>
           </div>
-          <div class="who"><i><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></i><div><b>שיחה עם ד״ר מינה צמח</b><span>בשיחה הראשונה נבחן אם המקרה מתאים לביקורת, למחקר חדש או לשניהם.</span></div></div>
+          <div class="who"><span class="faces" aria-hidden="true"><img src="assets/face-mano.png" alt=""><img src="assets/face-adi.png" alt=""><img src="assets/face-mina.png" alt=""></span><div><b>שיחה עם הצוות</b><span>מנו גבע, עדי גבע וד״ר מינה צמח</span></div></div>
         </div>
         <!-- FORM: no destination yet (data-endpoint empty = review mode, nothing is sent) -->
         <form class="form" id="form" novalidate data-endpoint="">
@@ -751,7 +759,7 @@ html.stop *,html.stop *::before,html.stop *::after{animation-play-state:paused!i
   <div class="wrap">
     <img class="logo" src="assets/midgam-logo.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="139" height="34">
     <p>מדגם ייעוץ ומחקר · נוסד ב־<span class="ltr">1988</span> · © <span class="ltr">2026</span></p>
-    <nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#about">ד״ר מינה צמח</a><a href="#process">תהליך העבודה</a><a href="#contact">תיאום שיחה</a><a href="accessibility.html">הצהרת נגישות</a></nav>
+    <nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a><a href="#contact">תיאום שיחה</a><a href="accessibility.html">הצהרת נגישות</a></nav>
     <a class="totop" href="#top">חזרה למעלה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 9.5 8 5l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </div>
 </footer>
