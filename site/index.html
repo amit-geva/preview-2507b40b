@@ -219,6 +219,18 @@ html.holding,html.holding *{-webkit-user-select:none;user-select:none;-webkit-to
 .area li::before{content:"";flex:none;width:7px;height:7px;margin-top:10px;border-radius:2px;background:var(--sky)}
 .area .lead{margin-top:16px;font-size:15px;color:var(--glow)}
 
+/* the game: the same two columns as the rest of the page; the frame is navy like the game itself, the swarm draws its play button */
+.gamesec .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:56px;align-items:center}
+.game-steps{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px}
+.game-steps b{font-size:clamp(24px,2.2vw,32px)}
+.gamesec .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.gframe{position:relative;aspect-ratio:592/600;border-radius:24px;overflow:hidden;background:#06111c;box-shadow:0 30px 60px -34px rgba(0,0,0,.55),inset 0 0 0 1px var(--line-2)}
+.gframe .poster{all:unset;position:absolute;inset:0;cursor:pointer;display:block}
+.gframe .poster:focus-visible{outline:2px solid #fff;outline-offset:-4px;border-radius:24px}
+.gframe img{display:block;width:100%;height:100%;object-fit:cover;opacity:.42;transition:opacity .5s var(--ease),transform .8s var(--ease)}
+.gframe .poster:hover img{opacity:.55;transform:scale(1.02)}
+.gframe .go{position:absolute;inset-inline:0;bottom:22px;margin-inline:auto;width:max-content;padding:9px 18px;border-radius:999px;background:rgba(6,17,28,.72);color:#fff;font-size:15px;font-weight:600;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.gframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 /* people */
 .team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:48px}
 .person .face{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:24px;overflow:hidden;background:#cfe8f7;box-shadow:0 30px 60px -34px rgba(0,0,0,.5)}
@@ -272,6 +284,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   .hero .wrap{gap:20px}.play{order:-1;width:100%;max-width:520px;margin-inline:auto}
   .swarm{max-height:30vh}
   .slot{min-height:180px;order:-1}
+  .gamesec .wrap{grid-template-columns:minmax(0,1fr);gap:32px}.gframe{max-width:560px;width:100%;margin-inline:auto;order:-1}
   .cred .wrap{grid-template-areas:"viz" "head" "facts"}.cred .slot{min-height:200px}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}
   .qs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .caps,.team{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -281,6 +294,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   :root{--padt:104px}
   section{padding-bottom:56px}
   .qs,.caps,.team,.exp,.fields4,.facts{grid-template-columns:minmax(0,1fr)}
+  .game-steps{grid-template-columns:minmax(0,1fr)}
   .fields5{grid-template-columns:minmax(0,1fr)}
   .fields5 .ico{width:48px;height:42px}
   .fields5 .fld h3{font-size:20px;min-width:0}
@@ -456,6 +470,26 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       <div class="thanks" id="thanks" hidden><div class="thanks-word" data-anchor="thanks"></div><p>הפנייה התקבלה. נחזור אליכם בהקדם.</p><small>בתצוגה המקדימה הזו הפנייה לא נשלחת באמת; באתר החי היא תגיע ישירות לצוות מדגם.</small><button type="button" class="btn line" id="again">שליחת פנייה נוספת</button></div>
     </div>
   </section>
+
+  <!-- 9. the game: a day at Midgam -->
+  <section class="gamesec" id="game" data-form="game">
+    <div class="wrap">
+      <div class="game-copy">
+        <span class="kicker">משחק · 3 דקות</span>
+        <h2 style="margin-top:14px">יום אחד במדגם</h2>
+        <p class="lede">עורך עיתון צריך סקר עד הערב. עוברים איתו בכל מחלקות המכון, מהחוקרים ועד מוקד הטלפונים, ומגישים סקר שעומד בבדיקה.</p>
+        <ol class="facts game-steps">
+          <li><b>ברחוב</b><span>מקבלים בריף מהעורך</span></li>
+          <li><b>במכון</b><span>שאלון, מדגם ואיסוף עם הצוות</span></li>
+          <li><b>בחדר החדשות</b><span>הסקר נבדק, או חוזר לתיקון</span></li>
+        </ol>
+        <div class="acts"><button type="button" class="btn" id="game-go">לשחק עכשיו</button><a class="btn line" id="game-full" href="https://amit-geva.github.io/preview-2507b40b/game/" target="_blank" rel="noopener">פתיחה במסך מלא</a></div>
+      </div>
+      <div class="gframe" data-anchor="game">
+        <button type="button" class="poster" id="game-poster" aria-label="לשחק ביום אחד במדגם"><img src="assets/game-poster.jpg" alt="" loading="lazy"><span class="go">לחצו כדי לשחק</span></button>
+      </div>
+    </div>
+  </section>
 </main>
 <p class="toast" id="toast" role="status" aria-live="polite"></p>
 <footer><div class="wrap"><span>מדגם ייעוץ ומחקר בע״מ · מאז 1988</span><span class="eggs" id="eggs"></span><nav aria-label="ניווט תחתון"><a href="#solutions">פתרונות מחקר</a><a href="#fields">תחומי פעילות</a><a href="#capabilities">יכולות מחקר</a><a href="#expertise">סגמנטים</a><a href="#people">אודות</a><a href="#contact">צור קשר</a></nav></div></footer>
@@ -551,6 +585,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
       g.beginPath(); g.moveTo(180, 140); g.lineTo(270, 190); g.lineTo(180, 240); g.closePath(); g.stroke(); }],
     justice: [440, 280, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(220, 40); g.lineTo(220, 240); g.moveTo(60, 72); g.lineTo(380, 72); g.moveTo(150, 260); g.lineTo(290, 260); g.stroke(); g.beginPath(); g.arc(220, 32, 14, 0, 6.283); g.fill();
       [80, 360].forEach(cx2 => { g.beginPath(); g.moveTo(cx2, 72); g.lineTo(cx2 - 46, 160); g.moveTo(cx2, 72); g.lineTo(cx2 + 46, 160); g.stroke(); g.beginPath(); g.moveTo(cx2 - 58, 160); g.lineTo(cx2 + 58, 160); g.arc(cx2, 160, 58, 0, Math.PI); g.stroke(); }); }],
+    play: [260, 280, g => { g.lineWidth = LW; g.lineJoin = 'round'; g.beginPath(); g.moveTo(50, 25); g.lineTo(235, 140); g.lineTo(50, 255); g.closePath(); g.stroke(); }],
     cart: [300, 240, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(20, 30); g.lineTo(70, 30); g.lineTo(105, 160); g.lineTo(250, 160); g.lineTo(280, 70); g.lineTo(85, 70); g.stroke(); [[120, 205], [235, 205]].forEach(([a2, b2]) => { g.beginPath(); g.arc(a2, b2, 18, 0, 6.283); g.stroke(); }); }],
     gov: [300, 260, g => { g.lineWidth = LW; g.beginPath(); g.moveTo(150, 15); g.lineTo(285, 80); g.lineTo(15, 80); g.closePath(); g.stroke(); [55, 115, 185, 245].forEach(a2 => { g.beginPath(); g.moveTo(a2, 100); g.lineTo(a2, 210); g.stroke(); }); g.beginPath(); g.moveTo(10, 235); g.lineTo(290, 235); g.stroke(); }],
     bus: [300, 260, g => { g.lineWidth = LW; rr(g, 30, 20, 240, 180, 30); g.stroke(); g.strokeRect(55, 50, 190, 70); g.beginPath(); g.arc(85, 160, 14, 0, 6.283); g.stroke(); g.beginPath(); g.arc(215, 160, 14, 0, 6.283); g.stroke(); g.beginPath(); g.moveTo(75, 200); g.lineTo(75, 240); g.moveTo(225, 200); g.lineTo(225, 240); g.stroke(); }],
@@ -690,6 +725,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
           let X, Y; if (j % 5 === 0 || !st) { [X, Y] = perim(r, (j / n * 5) % 1, 2 + p.v * 3); } else { X = r.x + st.x[j] * r.w; Y = r.y + st.y[j] * r.h; }
           return [X + Math.sin(t / 1400 + p.ph) * wob, Y + Math.cos(t / 1700 + p.ph) * wob, (.4 + .5 * lum) * (1 - fade * .8), 1.1 + lum * .7, 1.8]; }
         if (phone) return null; const [X, Y] = perim(r, p.u + t / (24000 + p.v * 9000), 6 + p.v * 16); return [X, Y, p.v > .6 ? .35 : .75, 1.4 + (1 - p.v)]; };
+    },
+    game(s, t) { const r = rects(s, '[data-anchor=game]')[0]; if (!r) return null; const pb = { x: r.x + r.w * .36, y: r.y + r.h * .32, w: r.w * .28, h: r.h * .3 };
+      return p => { if (!gameOn && p.i % 3 === 0) return shaped(pb, 'play', p, t, 3); if (p.i % (gameOn ? 4 : 2)) return null; const [X, Y] = perim(r, p.u + t / 26000 * p.s, 8 + p.v * 16); return [X, Y, gameOn ? .35 : .6, 1.3 + (1 - p.v) * .6]; };
     },
     contact(s, t) { // contact: a big question mark made of people, and more of them along the form's edge
       const q = rects(s, '[data-kind=qmark]')[0], f = rects(s, '[data-anchor=form]')[0];
@@ -928,7 +966,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
         const a = p.u * 6.283 + t / (2600 + p.v * 3000), rad = 26 + p.v * 110; tgt = [fx + Math.cos(a) * rad, fy + Math.sin(a) * rad * .8, .5 - p.v * .25, 1.3]; }
       if (!tgt) { // resting in the air across the whole screen
         tgt = [p.u * W + Math.sin(t / 5000 * p.s + p.ph) * 30, ((p.v * H * 1.2 - (phone ? 0 : sy * .12)) % H + H) % H + Math.cos(t / 6000 * p.s + p.ph) * 20, .18]; }
-      const k = reduce ? 1 : Math.min(1, dt * .0032 * p.s * (tgt[4] || 1) * (phone ? 1.5 : 1) * (1 + Math.min(4, scrollSpeed / 9))); // a fifth value asks a dot to hold its place tighter
+      const k = reduce ? 1 : Math.min(1, dt * .0032 * p.s * (tgt[4] || 1) * (1 + Math.min(5, Math.max(0, scrollSpeed - 6) / 10)));  // resting pace when idle or scrolling slowly; it rises only with a fast scroll // a fifth value asks a dot to hold its place tighter
       p.x += (tgt[0] - p.x) * k; p.y += (tgt[1] - p.y) * k; p.a += (tgt[2] - p.a) * Math.min(1, dt * .004);
       p.r = (p.r || 1.5) + ((tgt[3] || 1.5) - (p.r || 1.5)) * Math.min(1, dt * .004);
       let X = p.x, Y = p.y, al = p.a, r = p.r;
@@ -948,6 +986,13 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { born = performance.now(); requestAnimationFrame(frame); });
   // for testing only: ?debug lets a script step the animation forward
   if (/[?&]debug/.test(location.search)) window.__air = { P: () => P, SHAPES, toneOf, run(n) { manual = true; let t = last; for (let i = 0; i < n; i++) { t += 16; frame(t); } manual = false; } };
+
+  /* ---------- the game: loads only when asked for, so it never runs under the page ---------- */
+  let gameOn = false; const GAME = 'https://amit-geva.github.io/preview-2507b40b/game/';
+  const startGame = () => { if (gameOn) return; gameOn = true; const fr = document.querySelector('.gframe'), ifr = document.createElement('iframe');
+    ifr.src = GAME + '?embed'; ifr.title = 'יום אחד במדגם'; ifr.allow = 'autoplay; fullscreen'; fr.replaceChildren(ifr); const b = fr.getBoundingClientRect(); waves.push({ x: b.left + b.width / 2, y: b.top + b.height / 2, t: performance.now(), k: 2.4 });
+    if (fr.getBoundingClientRect().top < 0 || fr.getBoundingClientRect().bottom > H) fr.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => ifr.focus(), 400); };
+  document.getElementById('game-go').addEventListener('click', startGame); document.getElementById('game-poster').addEventListener('click', startGame);
 
   /* ---------- the form: a design preview, nothing is sent ---------- */
   document.getElementById('again').addEventListener('click', () => { sendFx = null; const f = document.getElementById('form'), th = document.getElementById('thanks'); th.hidden = true; th.style.cssText = ''; f.inert = false; f.reset(); requestAnimationFrame(() => f.classList.remove('gone')); document.getElementById('fn').focus(); });
