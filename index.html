@@ -604,6 +604,12 @@ body{font-weight:400;font-size:19px}
 .amb .gl{translate:0 calc(var(--py,0px) * -.38 * var(--pk))}
 .hero .vcol{translate:0 calc(var(--hy,0px) * .12 * var(--pk))}
 
+/* ---------- one continuous background: no section clips its glows; only the page sides are clipped ---------- */
+main{overflow-x:clip}
+main>section,.hero,.about{overflow:visible}
+.amb{overflow:visible}
+.about::before{display:none}
+
 /* ---------- responsive ---------- */
 @media (max-width:1100px){
   .hero .wrap,.about .wrap,.cbox,.head,.svc{grid-template-columns:1fr}
