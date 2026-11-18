@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#1d5689">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* Midgam blue · modern, soft, one idea per screen: the loupe finds what others miss */
 :root{
@@ -17,7 +17,8 @@
   --ink:#0e1216; --ink-2:#545e69; --mute:#5f6975; --line:rgba(14,18,22,.08);
   --blue:#1d5689; --blue-d:#194b78; --blue-dd:#123a5e; --sky:#229ad6; --sky-soft:#eaf2f9; --grey-blue:#5d7d9c;
   --red:#c0392b; --red-soft:rgba(192,57,43,.1);
-  --font:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --display:"Secular One","Assistant",Arial,sans-serif;
+  --font:"Assistant",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --ease:cubic-bezier(.23,1,.32,1);
   --wrap:1296px; --gutter:72px; --r-lg:28px; --r-md:20px; --r-sm:14px;
   color-scheme:light;
@@ -618,6 +619,11 @@ main>section,.hero,.about{overflow:visible}
 .trio figcaption{font-size:20px;font-weight:700;color:#fff;text-align:center}
 @media (max-width:640px){.trio{gap:10px}.trio img{border-radius:14px}.trio figcaption{font-size:15px}}
 
+/* ---------- type: match main site (Secular One + Assistant) ---------- */
+h1,h2,h3,.h2,.hero h1,.card h3,.sent h3{font-family:var(--display);font-weight:400;letter-spacing:-.015em}
+.hero h1{line-height:1.04}
+.h2{line-height:1.08}
+
 /* ---------- responsive ---------- */
 @media (max-width:1100px){
   .hero .wrap,.about .wrap,.cbox,.head,.svc{grid-template-columns:1fr}
@@ -683,7 +689,7 @@ main>section,.hero,.about{overflow:visible}
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="home" href="#top" aria-label="מדגם — לראש העמוד"><img class="logo" src="assets/midgam-logo-white.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="114" height="48"></a>
+    <a class="home" href="#top" aria-label="מדגם — לראש העמוד"><img class="logo" src="assets/midgam-mark-white.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="114" height="48"></a>
     <nav class="links" aria-label="ניווט ראשי"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a></nav>
     <a class="btn btn--sm" href="#contact">תיאום שיחה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </div>
@@ -933,7 +939,7 @@ main>section,.hero,.about{overflow:visible}
 
 <footer class="foot">
   <div class="wrap">
-    <img class="logo" src="assets/midgam-logo-white.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="100" height="42">
+    <img class="logo" src="assets/midgam-mark-white.png" alt="מדגם — ייעוץ ומחקר בע״מ" width="100" height="42">
     <p>מדגם ייעוץ ומחקר · נוסד ב־<span class="ltr">1988</span> · © <span class="ltr">2026</span></p>
     <nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#about">הצוות</a><a href="#process">תהליך העבודה</a><a href="#contact">תיאום שיחה</a><a href="accessibility.html">הצהרת נגישות</a></nav>
     <a class="totop" href="#top">חזרה למעלה<span class="ar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 9.5 8 5l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
